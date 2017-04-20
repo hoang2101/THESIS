@@ -27,6 +27,7 @@ class CreateAccountTable extends Migration
             $table->date('dob');
             $table->integer('number_visit');
             $table->enum('gender', ['male', 'female']);
+            $table->rememberToken();
             $table->timestamps();
         });
     }

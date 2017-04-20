@@ -18,3 +18,4 @@ Route::get('/','MainController@index');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+Route::get('/abc/','SubController@index');

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="MyApp">
+<html lang="en">
   <head>
     <!--=============================================== 
     Template Design By WpFreeware Team.
@@ -9,7 +9,8 @@
     <!-- Basic Page Needs
     ================================================== -->
     <meta charset="utf-8">
-    <title>THESIS : Home</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <title>WpF Degree : Home</title>
 
     <!-- Mobile Specific Metas
     ================================================== -->
@@ -33,16 +34,18 @@
     <!-- smooth animate css file -->
     <link rel="stylesheet" href="css/animate.css"> 
     <!-- preloader -->
-    <!--<link rel="stylesheet" href="css/queryLoader.css" type="text/css" /> -->
+   <! <link rel="stylesheet" href="css/queryLoader.css" type="text/css" />
     <!-- gallery slider css -->
     <link type="text/css" media="all" rel="stylesheet" href="css/jquery.tosrus.all.css" />    
     <!-- Default Theme css file -->
     <link id="switcher" href="css/themes/default-theme.css" rel="stylesheet">
     <!-- Main structure css file -->
     <link href="css/style.css" rel="stylesheet">
-    <!<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+    <!-- angular -->
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
     <link rel='stylesheet prefetch' href='https://material.angularjs.org/1.1.3/docs.css'>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+   
     <!-- Google fonts -->
     <link href='http://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet' type='text/css'>   
     <link href='http://fonts.googleapis.com/css?family=Varela' rel='stylesheet' type='text/css'>    
@@ -55,8 +58,7 @@
     <![endif]-->
  
   </head>
-  <body ng-controller="AccountCtrl">   
-  
+  <body>    
 
     <!-- SCROLL TOP BUTTON -->
     <a class="scrollToTop" href="#"></a>
@@ -77,91 +79,38 @@
               </button>
               <!-- LOGO -->
               <!-- TEXT BASED LOGO -->
-              <a class="navbar-brand" href="/">THESIS <span></span></a>              
+              <a class="navbar-brand" href="index.html">WpF <span>Degree</span></a>              
               <!-- IMG BASED LOGO  -->
                <!-- <a class="navbar-brand" href="index.html"><img src="img/logo.png" alt="logo"></a>  -->            
                      
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul id="top-menu" class="nav navbar-nav navbar-right main-nav">
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="#aboutUs">About Us</a></li>
-                <li><a href="#whyUs">Why Us</a></li>
-                <li><a href="#pricing">Pricing</a></li>
-                <li><a href="#footer">Contact</a></li>
-                <li><a id="btn-login" class="btn" ng-click="showLogin($event)">Login</a></li>   
-                <li><a id="btn-reg" class="btn" ng-click="showRegister($event)">Register</a></li> 
-                <li><a href="#" data-toggle="modal" data-target="#login-modal">Login</a></li> 
-                
-
-<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog">
-        <div class="loginmodal-container">
-          <h1>Login to Your Account</h1><br>
-          <form>
-          <input type="text" name="user" placeholder="Username">
-          <input type="password" name="pass" placeholder="Password">
-          <input type="submit" name="login" class="login loginmodal-submit" value="Login">
-          </form>
-          
-          <div class="login-help">
-          <a href="#">Register</a> - <a href="#">Forgot Password</a>
-          </div>
-        </div>
-      </div>
-      </div>
+                <li class="active"><a href="index.html">Home</a></li>
+                <li><a href="course-archive.html">Course</a></li>
+                <li><a href="scholarship.html">Scholarship</a></li>
+                <li><a href="events-archive.html">Events</a></li>
+                <li><a href="gallery.html">Gallery</a></li>                
+                <li><a href="blog-archive.html">Blog</a></li>
                 <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Login</b> <span class="caret"></span></a>
-                    <ul id="login-dp" class="dropdown-menu">
-                      <li>
-                         <div class="row">
-                            <div class="col-md-12">
-                              Login via
-                              <div class="social-buttons">
-                                <a href="#" class="btn btn-fb"><i class="fa fa-facebook"></i> Facebook</a>
-                                <a href="#" class="btn btn-tw"><i class="fa fa-twitter"></i> Twitter</a>
-                              </div>
-                                              or
-                               <form class="form" role="form" method="post" action="login" accept-charset="UTF-8" id="login-nav">
-                                  <div class="form-group">
-                                     <label class="sr-only" for="exampleInputEmail2">Email address</label>
-                                     <input type="email" class="form-control" id="exampleInputEmail2" placeholder="Email address" required>
-                                  </div>
-                                  <div class="form-group">
-                                     <label class="sr-only" for="exampleInputPassword2">Password</label>
-                                     <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Password" required>
-                                                           <div class="help-block text-right"><a href="">Forget the password ?</a></div>
-                                  </div>
-                                  <div class="form-group">
-                                     <button type="submit" class="btn btn-primary btn-block">Sign in</button>
-                                  </div>
-                                  <div class="checkbox">
-                                     <label>
-                                     <input type="checkbox"> keep me logged-in
-                                     </label>
-                                  </div>
-                               </form>
-                            </div>
-                            <div class="bottom text-center">
-                              New here ? <a href="#"><b>Join Us</b></a>
-                            </div>
-                         </div>
-                      </li>
-                    </ul>
-                </li>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Page<span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="404.html">404 Page</a></li>
+                    <li><a href="#">Link Two</a></li>
+                    <li><a href="#">Link Three</a></li>               
+                  </ul>
+                </li>               
+                <li><a href="contact.html">Contact</a></li>
               </ul>           
             </div><!--/.nav-collapse -->
           </div>     
         </nav>  
       </div>
-      <!-- END MENU --> 
-
+      <!-- END MENU -->    
     </header>
     <!--=========== END HEADER SECTION ================--> 
-<!-- login -->
 
     <!--=========== BEGIN SLIDER SECTION ================-->
-   
     <section id="slider">
       <div class="row">
         <div class="col-lg-12 col-md-12">
@@ -174,6 +123,7 @@
                    <div class="slider_caption">
                     <h2>Largest & Beautiful University</h2>
                     <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</p>
+                    <a class="slider_btn" href="#">Know More</a>
                   </div>
                   </li>
                 <!-- Start single slider-->
@@ -182,6 +132,7 @@
                    <div class="slider_caption slider_right_caption">
                     <h2>Better Education Environment</h2>
                     <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search</p>
+                    <a class="slider_btn" href="#">Know More</a>
                   </div>
                 </li>
                 <!-- Start single slider-->
@@ -190,6 +141,7 @@
                    <div class="slider_caption">
                     <h2>Find out you in better way</h2>
                     <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search</p>
+                    <a class="slider_btn" href="#">Know More</a>
                   </div>
                 </li>
               </ul>
@@ -205,7 +157,7 @@
     <!--=========== END SLIDER SECTION ================-->
 
     <!--=========== BEGIN ABOUT US SECTION ================-->
-    <section id="aboutUs">
+     <section id="aboutUs">
       <div class="container">
       <div class="row">
                 <div class="col-lg-12 col-md-12"> 
@@ -268,7 +220,7 @@
     <!--=========== END ABOUT US SECTION ================--> 
 
     <!--=========== BEGIN WHY US SECTION ================-->
-    <section id="whyUs">
+   <section id="whyUs">
       <!-- Start why us top -->
       <div class="row">        
         <div class="col-lg-12 col-sm-12">
@@ -332,8 +284,7 @@
 
     </section>
     <!--=========== END WHY US SECTION ================-->
-
-    <!--=========== BEGIN pricing ================-->
+ <!--=========== BEGIN pricing ================-->
    <!-- Pricing Section -->
   <section id="pricing" class="pb80 pt80">
     <div class="container">
@@ -416,7 +367,7 @@
     </div>
   </section>
    
-   
+
     <!--=========== BEGIN FOOTER SECTION ================-->
     <footer id="footer">
       <!-- Start footer top area -->
@@ -425,13 +376,11 @@
           <div class="row">
             <div class="col-ld-3  col-md-3 col-sm-3">
               <div class="single_footer_widget">
-                <h3>Liên Hệ</h3>
-                <div><strong>Email</strong>: thesis@gmail.com</div>
-                <div><strong>điện thoại:</strong>: (+84) 163 846 0544</div>
-                <div><strong>Địa chỉ</strong>: 227 Nguyễn Văn Cừ, Phường 4, Quận 5, Hồ Chí Minh</div>
+                <h3>About Us</h3>
+                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
               </div>
             </div>
-            <div class="col-ld-6 col-md-6 col-sm-6">
+            <div class="col-ld-3  col-md-3 col-sm-3">
               <div class="single_footer_widget">
                 <h3>Community</h3>
                 <ul class="footer_widget_nav">
@@ -443,7 +392,18 @@
                 </ul>
               </div>
             </div>
-         
+            <div class="col-ld-3  col-md-3 col-sm-3">
+              <div class="single_footer_widget">
+                <h3>Others</h3>
+                <ul class="footer_widget_nav">
+                  <li><a href="#">Link 1</a></li>
+                  <li><a href="#">Link 2</a></li>
+                  <li><a href="#">Link 3</a></li>
+                  <li><a href="#">Link 4</a></li>
+                  <li><a href="#">Link 5</a></li>
+                </ul>
+              </div>
+            </div>
             <div class="col-ld-3  col-md-3 col-sm-3">
               <div class="single_footer_widget">
                 <h3>Social Links</h3>
@@ -462,63 +422,37 @@
       <!-- End footer top area -->
 
       <!-- Start footer bottom area -->
-
+      <div class="footer_bottom">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+              <div class="footer_bootomLeft">
+                <p> Copyright &copy; All Rights Reserved</p>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+              <div class="footer_bootomRight">
+                <p>Designed by <a href="http://wpfreeware.com/" rel="nofollow">Wpfreeware.com</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- End footer bottom area -->
     </footer>
     <!--=========== END FOOTER SECTION ================--> 
 
-
-<!-- dialog -->
-
-<script type="text/ng-template" "  id="dialog.login.html">
-  <md-dialog id="login-dialog" aria-label="Login" ng-cloak>
-      <form name="loginForm" ng-submit="answer('zxc')">
-        <md-toolbar>
-          <div class="md-toolbar-tools">
-            <h2>Log In</h2>
-            <span flex></span>
-            <md-button class="md-icon-button" ng-click="cancel()">
-              <md-icon  aria-label="Close dialog" ><i class="material-icons">close</i></md-icon>
-            </md-button>
-          </div>
-        </md-toolbar>
-
-        <md-dialog-content>
-          <div class="md-dialog-content">
-            <md-input-container class="md-block">
-              <label>Username</label>
-              <input name="username" ng-model="username" md-autofocus required />
-            </md-input-container>
-            <md-input-container class="md-block">
-              <label>Password</label>
-              <input type="password" name="password" ng-model="password" required />
-            </md-input-container>
-          </div>
-        </md-dialog-content>
-
-        <md-dialog-actions layout="row">
-          <a href="" class="md-primary">Forgot Password?</a>
-          <span flex></span>
-          <md-button type="submit" ng-disabled="loginForm.$invalid" class="md-raised md-primary">Login</md-button>
-        </md-dialog-actions>
-      </form>
-    </md-dialog>
-
-</script>
   
 
     <!-- Javascript Files
     ================================================== -->
 
     <!-- initialize jQuery Library -->
-     
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Preloader js file -->
-   <!-- <script src="js/queryloader2.min.js" type="text/javascript"></script> -->
+    <!<script src="js/queryloader2.min.js" type="text/javascript"></script>
     <!-- For smooth animatin  -->
-    <script src="js/jquery.min.js"></script>
     <script src="js/wow.min.js"></script>  
-    <script src="//cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>
-    <script src="js/jquery.counterup.min.js"></script>
     <!-- Bootstrap js -->
     <script src="js/bootstrap.min.js"></script>
     <!-- slick slider -->
@@ -531,23 +465,9 @@
     <script src='https://cdn.rawgit.com/pguso/jquery-plugin-circliful/master/js/jquery.circliful.min.js'></script>
     <!-- Gallery slider -->
     <script type="text/javascript" language="javascript" src="js/jquery.tosrus.min.all.js"></script>   
-
-
-    <!-- angular -->
-    <script src="js/angular.min.js"></script>
-    <script src="js/angular-app.js"></script>
-    
-    <script src="js/angular-animate.min.js"></script>
-    <script src="js/angular-aria.min.js"></script>
-    <script src="js/angular-messages.min.js"></script>
-    <script src="js/angular-route.min.js"></script>
-    <script src="js/angular-index.js"></script>
-    <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/svg-assets-cache.js'></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
-
+   
     <!-- Custom js-->
     <script src="js/custom.js"></script>
-  
     <!--=============================================== 
     Template Design By WpFreeware Team.
     Author URI : http://www.wpfreeware.com/

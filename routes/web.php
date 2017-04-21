@@ -19,3 +19,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 Route::get('/abc/','SubController@index');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');

@@ -6,14 +6,27 @@ use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
+
+    
+    public function __construct()
+    {
+        $this->middleware('auth',['except' => 'index']);
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    
     public function index()
     {
         return view('main.index');
+    }
+
+    public function manage()
+    {
+        return view('main.manage');
     }
 
     /**

@@ -16,10 +16,6 @@
 // });
 Route::get('/','MainController@index');
 Auth::routes();
+Route::get('/manage','MainController@manage')->name('mainManage');
 
-Route::get('/home', 'HomeController@index');
-Route::get('/abc/','SubController@index');
 
-Auth::routes();
-
-Route::get('/home', 'HomeController@index');

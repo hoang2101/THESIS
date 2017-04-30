@@ -69,10 +69,10 @@
                             <ul class="nav side-menu">
                                 <li><a href="{{ route('mainHome') }}"><i class="fa fa-home"></i> Home </a>
                                 </li>
-                                <li><a class="active" href="{{ route('mainManage') }}"><i class="fa fa-edit"></i> Quản lý khách hàng</a>
+                                <li><a href="{{ route('mainHome') }}"><i class="fa fa-edit"></i> Quản lý khách hàng</a>
                                     
                                 </li>
-                                <li><a href="{{ route('mainManageHotel') }}"><i class="fa fa-desktop"></i> Quản lý hệ thống khách sạn</a>
+                                <li><a class="active"><i class="fa fa-desktop"></i> Quản lý hệ thống khách sạn</a>
                                     
                                 </li>
                                 <li><a><i class="fa fa-table"></i>zxczxc  </a>
@@ -208,39 +208,38 @@
                     <p class="text-muted font-13 m-b-30">
                       Responsive is an extension for DataTables that resolves that problem by optimising the table's layout for different screen sizes through the dynamic insertion and removal of columns from the table.
                     </p>
-                    <p> xxxxxxxxxxxxxxxxxxxxxxxxxxxxx{{$users[1]->first_name}}</p>
-                    
+                    <p id="asd">zxczxczzcxzzxc</p>
                     <table id="responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                       <thead>
                         <tr>
                           <th id="cel1">ID</th>
-                          <th white-space:pre-line" id="cel5">First name</th>
-                          <th id="cel5">Last name</th>
-                          <th id="cel10">Username</th>
-                          <th id="cel10">E-mail</th>
-                          <th id="cel5">tổng phí</th>
+                          <th white-space:pre-line" id="cel5">Hotel name</th>
+                          <th id="cel5">User</th>
+                          <th id="cel10">Domain</th>
+                          <th id="cel10">Expire Date</th>
+                          <th id="cel5">tổng booking</th>
                           <th class="nosort"  id="cel5">Manage</th>
                         </tr>
                       </thead>
                       <tbody>
-                      @foreach ($users as $user)
+                      {{$i = 1}}
+                      	 @foreach ($hotels as $hotel)
+                      	 {{$i ++}}
                             <tr>
-                                <td>{{$user->id}}</td>
-                                <td>{{$user->first_name}}</td>
-                                <td>{{$user->last_name}}</td>
-                                <td>{{$user->username}}</td>
-                                <td>{{$user->email}}</td>
-                                <td>{{$user->dob}}</td>
+                                <td>{{$hotel->hotel_id}}</td>
+                                <td>{{$hotel->hotel_name}}</td>
+                                <td>{{$hotel->hotel_account}}</td>
+                                <td>{{$i}}</td>
+                                <td>{{$hotel->hotel_account}}</td>
+                                <td>{{$hotel->hotel_account}}</td>
                                 <td>
-                                    <a href="#" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
+                                    <a href="#" onclick="showdata({{$i}})" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
                                     <a href="#" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
                                     <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
                                 </td>
                             </tr>
                         @endforeach
-
-                        
-                      
+                       
                         
                        
                       </tbody>
@@ -401,6 +400,16 @@
     <!-- My Cutom Scripts -->
     <script src="js/custom-scripts.js"></script>
 
+    <script>
+    //gets table
+
+function showdata($id) {
+		// document.getElementById("asd").innerHTML = "{!! $hotels[$id]->hotel_name !!}";
+	
+    
+}
+    
+</script>
 </body>
 
 </html>

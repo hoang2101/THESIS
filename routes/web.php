@@ -14,8 +14,9 @@
 // Route::get('/', function () {
 //     return view('main.index');
 // });
-Route::get('/','MainController@index');
+Route::get('/','MainController@index')->name('mainHome');
 Auth::routes();
 Route::get('/manage','MainController@manage')->name('mainManage');
-
+Route::PoST('/manage','MainController@addUserMain')->name('addUserMainSubmit');
+Route::get('/manageMainHotel','MainController@manageHotel')->name('mainManageHotel');
 

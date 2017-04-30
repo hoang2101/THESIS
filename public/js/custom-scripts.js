@@ -1,5 +1,12 @@
 $(document).ready(function() {
 
+ // By class
+    var table = $('#responsive').DataTable({
+       'aoColumnDefs': [{
+           'bSortable': false,
+           'aTargets': 'nosort'
+        }]
+    });
 })
 
 function cancelFullScreen(el) {
@@ -81,5 +88,6 @@ $('.show_less').click(function() {
     $(this).prev().hide();
     $(this).prev().prev().show();
 })
+
 
 $('.datetimepicker4').datetimepicker();

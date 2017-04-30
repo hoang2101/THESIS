@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="MyApp">
+<html >
   <head>
     <!--=============================================== 
     Template Design By WpFreeware Team.
@@ -59,7 +59,7 @@
         ]) !!};
     </script>
   </head>
-  <body ng-controller="AccountCtrl">   
+  <body >   
   
 
     <!-- SCROLL TOP BUTTON -->
@@ -175,17 +175,17 @@
           
           <input type="submit" name="login" class="login loginmodal-submit" value="Login">
           </form>
-                   <a href="#">Register</a> - <a href="#">Forgot Password</a>
+                   <a hhref="#login" data-toggle="modal" data-backdrop="static" data-target="#register-modal">Register</a> - <a href="#">Forgot Password</a>
           </div>
         </div>
       </div>
 
 <div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
         <div class="modal-dialog">
-        <div class="loginmodal-container">
+        <div class="Registermodal-content">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-          <h1>Login to Your Account</h1><br>
+          <h1>Register To Your Account</h1><br>
           <form class="form-horizontal" role="form" method="POST" action="{{ route('register') }}">
                         {{ csrf_field() }}
 
@@ -582,41 +582,7 @@
 
 <!-- dialog -->
 
-<script type="text/ng-template" "  id="dialog.login.html">
-  <md-dialog id="login-dialog" aria-label="Login" ng-cloak>
-      <form name="loginForm" ng-submit="answer('zxc')">
-        <md-toolbar>
-          <div class="md-toolbar-tools">
-            <h2>Log In</h2>
-            <span flex></span>
-            <md-button class="md-icon-button" ng-click="cancel()">
-              <md-icon  aria-label="Close dialog" ><i class="material-icons">close</i></md-icon>
-            </md-button>
-          </div>
-        </md-toolbar>
 
-        <md-dialog-content>
-          <div class="md-dialog-content">
-            <md-input-container class="md-block">
-              <label>Username</label>
-              <input name="username" ng-model="username" md-autofocus required />
-            </md-input-container>
-            <md-input-container class="md-block">
-              <label>Password</label>
-              <input type="password" name="password" ng-model="password" required />
-            </md-input-container>
-          </div>
-        </md-dialog-content>
-
-        <md-dialog-actions layout="row">
-          <a href="" class="md-primary">Forgot Password?</a>
-          <span flex></span>
-          <md-button type="submit" ng-disabled="loginForm.$invalid" class="md-raised md-primary">Login</md-button>
-        </md-dialog-actions>
-      </form>
-    </md-dialog>
-
-</script>
   
 
     <!-- Javascript Files
@@ -661,6 +627,7 @@
     <script src="js/custom.js"></script>
     <script src="js/app.js"></script>
   
+
     <!--=============================================== 
     Template Design By WpFreeware Team.
     Author URI : http://www.wpfreeware.com/

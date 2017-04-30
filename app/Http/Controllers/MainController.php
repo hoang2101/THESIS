@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use DB;
+use App\User;
 
 class MainController extends Controller
 {
@@ -10,7 +12,7 @@ class MainController extends Controller
     
     public function __construct()
     {
-        $this->middleware('auth',['except' => 'index']);
+        $this->middleware('auth');
     }
 
     /**
@@ -26,14 +28,37 @@ class MainController extends Controller
 
     public function manage()
     {
-        return view('main.manage');
-    }
 
+        $users = DB::table('users')->get();
+        return view('main.manage')->with('users',$users);
+    }
+public function addUserMain(Request $request){
+    // DB::table('users')->insertGetId([
+    //         'first_name' => $request->,
+    //         'last_name' => $data['last_name'],
+    //         'email' => $data['email'],
+    //         'username' => $data['username'],
+    //         'password' => bcrypt($data['password']),
+    //     ]);
+    User::create([
+            'first_name' => $request['first_name'],
+            'last_name' => $request['last_name'],
+            'email' => $request['email'],
+            'username' => $request['username'],
+            'password' => bcrypt($request['password']),
+        ]);
+     $users = DB::table('users')->get();
+        return view('main.manage')->with('users',$users);
+}
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
+    public function manageHotel(){
+        $hotels = DB::table('hotel')->get();
+        return view('main.manageMainHotel')->with('hotels',$hotels);
+    }
     public function create()
     {
         //

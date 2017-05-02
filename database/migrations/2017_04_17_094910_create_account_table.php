@@ -20,7 +20,7 @@ class CreateAccountTable extends Migration
             $table->string('email',50)->unique();
             $table->string('phone_number',11);
             $table->string('pay_number');
-            $table->string('adress',100);
+            $table->string('country',100);
             $table->integer('type');
             $table->string('username',20);
             $table->string('password',20);

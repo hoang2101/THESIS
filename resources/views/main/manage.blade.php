@@ -32,7 +32,9 @@
     <link href="vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
     <link href="vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/custommanage.css">
+
     <!-- Custom Theme Style -->
+    <link rel="stylesheet" type="text/css" href="css/style_namage.css"></link>
     <link href="css/custom.min.css" rel="stylesheet">
 
 </head>
@@ -208,8 +210,6 @@
                     <p class="text-muted font-13 m-b-30">
                       Responsive is an extension for DataTables that resolves that problem by optimising the table's layout for different screen sizes through the dynamic insertion and removal of columns from the table.
                     </p>
-                    <p> xxxxxxxxxxxxxxxxxxxxxxxxxxxxx{{$users[1]->first_name}}</p>
-                    
                     <table id="responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                       <thead>
                         <tr>
@@ -232,7 +232,7 @@
                                 <td>{{$user->email}}</td>
                                 <td>{{$user->dob}}</td>
                                 <td>
-                                    <a href="#" class="btn btn-primary btn-xs"><i class="fa fa-folder"></i> View </a>
+                                    <a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal""><i class="fa fa-folder"></i> View </a>
                                     <a href="#" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
                                     <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
                                 </td>
@@ -253,45 +253,37 @@
 
             </div>
             <!-- /page content -->
-<!-- modal dialog  -->
+<!-- modal dialog add user -->
 <div class="modal fade" id="addUserMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
         <div class="modal-dialog">
         <div class="loginmodal-container">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+        <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-          <h1>Login to Your Account</h1><br>
+          <h1>Thêm khách hàng</h1><br>
           <form class="form-horizontal" role="form" method="POST" action="{{ route('addUserMainSubmit') }}">
                         {{ csrf_field() }}
-
+                        <input hidden id="typePost"" name="typePost" value="addUser">
                         <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
                             <div >
-                                <input id="first_name" type="text" class="form-control" placeholder="First Name" name="first_name" value="{{ old('name') }}" required autofocus>
+                                <input id="first_name" type="text" class="form-control" placeholder="First Name" name="first_name" value="{{ old('first_name') }}" required autofocus>
 
-                                @if ($errors->has('name'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                                @endif
+                                
                             </div>
                         </div>
                         <div class="form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
                             <div >
-                                <input id="last_name" type="text" class="form-control" placeholder="Last Name" name="last_name" value="{{ old('name') }}" required autofocus>
+                                <input id="last_name" type="text" class="form-control" placeholder="Last Name" name="last_name" value="{{ old('last_name') }}" required autofocus>
 
-                                @if ($errors->has('name'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                                @endif
+                                
                             </div>
                         </div>
                         <div class="form-group{{ $errors->has('usermane') ? ' has-error' : '' }}">
                             <div >
-                                <input id="username" type="text" class="form-control" placeholder="Username" name="username" value="{{ old('name') }}" required autofocus>
+                                <input id="username" type="text" class="form-control" placeholder="Username" name="username" value="{{ old('username') }}" required autofocus>
 
-                                @if ($errors->has('name'))
+                                @if ($errors->has('username'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('name') }}</strong>
+                                        <strong class="messageError">{{ $errors->first('username') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -299,11 +291,11 @@
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <div >
-                                <input id="email" type="email" class="form-control" placeholder="E-Mail Address" name="email" value="{{ old('email') }}" required>
+                                <input id="email" type="email" class="form-control" placeholder="E-Mail Address" name="email" value="{{ old('email') }}" required autofocus>
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
+                                        <strong class="messageError">{{ $errors->first('email') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -315,7 +307,7 @@
 
                                 @if ($errors->has('password'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
+                                        <strong class="messageError">{{ $errors->first('password') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -326,12 +318,129 @@
                                 <input id="password-confirm" type="password" placeholder="Confirm Password" class="form-control" name="password_confirmation" required>
                             </div>
                         </div>
-                        <input type="submit" name="Register" class="login loginmodal-submit" value="Register">
+                        <input type="submit" name="Register" class="loginmodal-submit " value="Thêm khách hàng">
                        
                     </form>
           </div>
         </div>
       </div>
+
+      <!-- modal dialog view  edit user -->
+      <div class="modal fade" id="viewUserMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog">
+        <div class="Registermodal-content">
+        <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+          <h1>Thêm khách hàng</h1><br>
+          <form class="form-horizontal" role="form" method="POST" action="{{ route('addUserMainSubmit') }}">
+                        {{ csrf_field() }}
+                
+                        <input hidden id="typePost"" name="typePost" value="updateUser">
+                        <input hidden id="id" name="id" value="3">
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" required autofocus>
+
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="last_name" type="text" class="form-control" placeholder="Tên" name="last_name" value="{{ old('last_name') }}" required autofocus>
+
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('usermane') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="email" type="email" class="form-control" placeholder="E-Mail" name="email" value="{{ old('email') }}" required autofocus>
+                          
+                                @if ($errors->has('email'))
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('email') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                        
+                            <div >
+                                <input id="phone_number" type="number" class="form-control" placeholder="Số điện thoại" name="phone_number" value="{{ old('phone_number') }}" required>
+
+                               
+                                @if ($errors->has('email'))
+                                    <br>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="username" type="text" class="form-control" placeholder="Tên tài khoản" name="username" value="{{ old('username') }}" required>
+
+                                @if ($errors->has('username'))
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('username') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="country" type="text" class="form-control" placeholder="Quốc qia" name="country" value="{{ old('country') }}" required>
+
+                                @if ($errors->has('username'))
+                                    <br>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="dob" type="text" onfocus="(this.type='date')" class="form-control" placeholder="Ngày sinh" name="dob" value="{{ old('dob') }}" required>
+
+                                @if ($errors->has('dob'))
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('dob') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="gender" type="text" class="form-control" placeholder="Giới tính" name="gender" required>
+
+                                 @if ($errors->has('dob'))
+                                   <br>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                            <input type="submit" name="Register" class="loginmodal-submit" value="Chỉnh sửa khách hàng">
+                        </div>
+                         <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                            <!-- <a data-toggle="tooltip" data-placement="top"  class="pull-right btn btn-primary btn-xs" href="{{ route('addUserMainSubmit') }}"
+                                            onclick="event.preventDefault();
+                                                     document.getElementById('edit-form').submit();"><i class="fa fa-folder"></i> View  </a> -->
+                            <a href="#" class="btn btn-info btn-xs pull-right"><i class="fa fa-pencil"></i> Edit </a>
+                                    <a href="#" class="btn btn-danger btn-xs pull-right"><i class="fa fa-trash-o"></i> Delete </a>
+                        </div>
+                        
+                        
+                    </form>
+                    <!-- <a href="{{ route('editUserMainSubmit') }}" class="btn btn-primary btn-xs" data-toggle="tooltip" data-backdrop="static" data-target="#viewUserMainmodal""><i class="fa fa-folder"></i> View </a> -->
+                    
+          </div>
+        </div>
+      </div>
+      <!-- form post--> 
+       <form id="edit-form" action="{{ route('addUserMainSubmit') }}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                            <input hidden id="typePost"" name="typePost" value="deleteUser">
+                                        </form>
+                        
+      
+      </form>
             <!-- footer content -->
             <footer>
                 <div class="pull-right">
@@ -342,6 +451,7 @@
             <!-- /footer content -->
         </div>
     </div>
+
    <!-- jQuery -->
     <script src="vendors/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
@@ -400,7 +510,54 @@
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
     <!-- My Cutom Scripts -->
     <script src="js/custom-scripts.js"></script>
+    @if($errors->first('typePost')=="addUser")
+      @if ($errors->has('username') )
+    <script type="text/javascript">  
+    $(document).ready(function () {
+      $('#addUserMainmodal').modal('show');
+    }); </script>
+    @endif  @if ($errors->has('password'))
+      <<script type="text/javascript">  
+    $(document).ready(function () {
+      $('#addUserMainmodal').modal('show');
+    }); </script>
+    @endif @if ($errors->has('email'))
+      <script type="text/javascript">  
+    $(document).ready(function () {
+      $('#addUserMainmodal').modal('show');
+    }); </script>
+    @endif
+    @endif
+    @if($errors->first('typePost') =="updateUser"))
+      @if ($errors->has('username') )
+    <script type="text/javascript">  
+    $(document).ready(function () {
+      $('#viewUserMainmodal').modal('show');
+    }); </script>
+    @endif  @if ($errors->has('password'))
+     <script type="text/javascript">  
+    $(document).ready(function () {
+      $('#viewUserMainmodal').modal('show');
+    }); </script>
+    @endif @if ($errors->has('email'))
+      <script type="text/javascript">  
+    $(document).ready(function () {
+      $('#viewUserMainmodal').modal('show');
+    }); </script>
+    @endif
+    @endif
 
+
+
+<script type="text/javascript">
+    function removeMessage() {
+        $("div").removeClass("has-error");
+        var x = document.getElementsByClassName("messageError");
+        for (i = 0; i < x.length; i++) { 
+            x[i].innerHTML = "";
+        }
+}
+</script>
 </body>
 
 </html>

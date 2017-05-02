@@ -17,6 +17,9 @@
 Route::get('/','MainController@index')->name('mainHome');
 Auth::routes();
 Route::get('/manage','MainController@manage')->name('mainManage');
-Route::PoST('/manage','MainController@addUserMain')->name('addUserMainSubmit');
+Route::POST('/manageEdit','MainController@editUserMain')->name('editUserMainSubmit');
+Route::POST('/manage','MainController@addUserMain')->name('addUserMainSubmit');
 Route::get('/manageMainHotel','MainController@manageHotel')->name('mainManageHotel');
+
+
 

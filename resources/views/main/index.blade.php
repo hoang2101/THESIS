@@ -137,7 +137,7 @@
         <div class="loginmodal-container">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-          <h1>Login to Your Account</h1><br>
+          <h1>Login</h1><br>
           <form role="form" method="POST" action="{{ route('login') }}">
           {{csrf_field()}}
            <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
@@ -145,22 +145,20 @@
                 
                   <input id="username" type="text" class="form-control" name="username" placeholder="Username" value="{{ old('username') }}" required autofocus>
 
-                      @if ($errors->has('username'))
-                        <span class="help-block">
-                           <strong>{{ $errors->first('username') }}</strong>
-                         </span>
-                      @endif
+                      @if ($errors->has('username') )
+                          @if($errors->first('username') == "These credentials do not match our records.")
+                                        <span class="help-block">
+                                        <strong>{{ $errors->first('username') }}</strong>
+                                    </span>
+                                @endif
+                              @endif
            </div>
-           <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+           <div class="form-group">
 
             
                 <input id="password" type="password" class="form-control" name="password" placeholder="Password" required>
 
-                    @if ($errors->has('password'))
-                      <span class="help-block">
-                        <strong>{{ $errors->first('password') }}</strong>
-                      </span>
-                @endif
+                    
             
           </div>
           <div class="form-group">
@@ -182,43 +180,34 @@
 
 <div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
         <div class="modal-dialog">
-        <div class="Registermodal-content">
+        <div class="loginmodal-container">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-          <h1>Register To Your Account</h1><br>
+          <h1>Register</h1><br>
           <form class="form-horizontal" role="form" method="POST" action="{{ route('register') }}">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
                             <div >
-                                <input id="first_name" type="text" class="form-control" placeholder="First Name" name="first_name" value="{{ old('name') }}" required autofocus>
-
-                                @if ($errors->has('name'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                                @endif
+                                <input id="first_name" type="text" class="form-control" placeholder="First Name" name="first_name" value="{{ old('first_name') }}" required autofocus>
                             </div>
                         </div>
                         <div class="form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
                             <div >
-                                <input id="last_name" type="text" class="form-control" placeholder="Last Name" name="last_name" value="{{ old('name') }}" required autofocus>
-
-                                @if ($errors->has('name'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                                @endif
+                                <input id="last_name" type="text" class="form-control" placeholder="Last Name" name="last_name" value="{{ old('last_name') }}" required autofocus>
                             </div>
                         </div>
                         <div class="form-group{{ $errors->has('usermane') ? ' has-error' : '' }}">
                             <div >
-                                <input id="username" type="text" class="form-control" placeholder="Username" name="username" value="{{ old('name') }}" required autofocus>
-
-                                @if ($errors->has('name'))
+                                <input id="username" type="text" class="form-control" placeholder="Username" name="username" value="{{ old('username') }}" required autofocus>
+                               
+                                @if ($errors->has('username'))
+                                <!-- day la text tieng viet -->
+                                  @if($errors->first('username') != "These credentials do not match our records.")
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('name') }}</strong>
+                                        <strong>{{ $errors->first('username') }}</strong>
                                     </span>
+                                @endif
                                 @endif
                             </div>
                         </div>
@@ -632,16 +621,30 @@
     Template Design By WpFreeware Team.
     Author URI : http://www.wpfreeware.com/
     ====================================================-->
-@if ($errors->has('username'))
-  <script type="text/javascript">  
-  $(document).ready(function () {
-    $('#login-modal').modal('show');
+@if ($errors->has('username') )
+  @if($errors->first('username') == "These credentials do not match our records.")
+
+    <script type="text/javascript">  
+    $(document).ready(function () {
+      $('#login-modal').modal('show');
 
 }); </script>
-  @endif @if ($errors->has('password'))
-  <script>  <script>  function myFunction() { 
-    document.getElementById("login-modal").showModal(); </script>
-  @endif 
+ @endif
+ @if($errors->first('username') != "These credentials do not match our records.")
+
+    <script type="text/javascript">  
+    $(document).ready(function () {
+      $('#register-modal').modal('show');
+
+}); </script>
+ @endif
+  @endif  @if ($errors->has('password'))
+      <script>  <script>  function myFunction() { 
+    document.getElementById("register-modal").showModal(); </script>
+  @endif @if ($errors->has('email'))
+      <script>  <script>  function myFunction() { 
+    document.getElementById("register-modal").showModal(); </script>
+  @endif
 
   </body>
 </html>

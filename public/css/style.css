@@ -153,7 +153,7 @@ img{
   position: relative;
 }
 
-.loginmodal-container input[type=text], input[type=password] {
+.loginmodal-container input[type=text]:hover, input[type=email], input[type=number], , input[type="date"],input[type=password] {
   height: 44px;
   font-size: 16px;
   width: 100%;
@@ -168,7 +168,7 @@ img{
   -moz-box-sizing: border-box;
 }
 
-.loginmodal-container input[type=text]:hover, input[type=password]:hover {
+.loginmodal-container input[type=text]:hover, input[type=email], input[type=number], , input[type="date"],input[type=password]:hover {
   border: 1px solid #b9b9b9;
   border-top: 1px solid #a0a0a0;
   -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
@@ -230,7 +230,7 @@ img{
 /*--------------------*/
 .Registermodal-content {
   padding: 30px;
-  max-width: 350px;
+  max-width: 900px;
   width: 100% !important;
   background-color: #F7F7F7;
   margin: 0 auto;
@@ -256,7 +256,7 @@ img{
 .Registermodal-content input[type=text], input[type=password] {
   height: 44px;
   font-size: 16px;
-  width: 40%;
+  width: 100%;
   margin-bottom: 10px;
   -webkit-appearance: none;
   background: #fff;
@@ -266,6 +266,12 @@ img{
   padding: 0 8px;
   box-sizing: border-box;
   -moz-box-sizing: border-box;
+}
+.register-form-left{
+
+}
+.register-form-right{
+  margin-left: 60px;
 }
 
 .Registermodal-content input[type=text]:hover, input[type=password]:hover {

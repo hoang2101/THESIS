@@ -94,8 +94,8 @@
                 <li><a href="#pricing">Bảng giá</a></li>
                 <li><a href="#footer">Liên hệ</a></li> 
                   @if (Auth::guest())
-                            <li><a href="#login" data-toggle="modal" data-backdrop="static" id="auth" data-target="#login-modal">Login</a></li>
-                            <li><a hhref="#login" data-toggle="modal" data-backdrop="static" data-target="#register-modal">Register</a></li>
+                            <li><a href="#login" data-toggle="modal" data-backdrop="static" id="auth" data-target="#login-modal">Đăng nhập</a></li>
+                            <li><a hhref="#login" data-toggle="modal" data-backdrop="static" data-target="#register-modal">Đăng kí</a></li>
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -137,7 +137,7 @@
         <div class="loginmodal-container">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-          <h1>Login</h1><br>
+          <h1>Đăng nhập</h1><br>
           <form role="form" method="POST" action="{{ route('login') }}">
           {{csrf_field()}}
            <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
@@ -183,7 +183,7 @@
         <div class="loginmodal-container">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-          <h1>Đang kí</h1><br>
+          <h1>Đăng kí</h1><br>
           <form class="form-horizontal" role="form" method="POST" action="{{ route('register') }}">
                         {{ csrf_field() }}
 

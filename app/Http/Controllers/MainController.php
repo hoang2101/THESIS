@@ -33,7 +33,7 @@ class MainController extends Controller
 
     public function manage()
     {
-        $users = DB::table('users')->get();
+        $users = $this->getUsersks();
         return view('main.manage')->with('users',$users);
     }
 public function addUserMain(Request $request){
@@ -46,7 +46,7 @@ public function addUserMain(Request $request){
            $messagesResult = "fails";
 
             $validator->errors()->add('typePost', 'addUser');
-            $users = DB::table('users')->get();
+            $users = $this->getUsersks();
             //return $validator->errors();
            // return Redirect::back()->withErrors($validator)->with('users',$users)->withInput();
             return redirect()->route('mainManage')->withErrors($validator)->with('users',$users)->withInput();
@@ -60,8 +60,9 @@ public function addUserMain(Request $request){
              'email' => $request['email'],
              'username' => $request['username'],
              'password' => bcrypt($request['password']),
+             'type' => 2,
          ]);
-     $users = DB::table('users')->get();
+     $users = $this->getUsersks();
         //return view('main.manage')->with('users',$users)->withErrors($errors);
         return redirect()->route('mainManage')->with('users',$users);
   }
@@ -74,41 +75,39 @@ public function addUserMain(Request $request){
      if($getUser != null){
 
             $messages = [
-            'id.not-in' => 'id không tồn tại!',
-        'dob.before' => 'ngày sinh không hợp lệ',];
+            'id.not-in' => 'id không tồn tại!',];
 
 
     $validator = Validator::make($request->all(),[
             'id' => 'required|not-in:users',
-            'dob' => 'required|date|before:'. date('Y-m-d') . '|date_format:Y-m-d',
         ],$messages);
         if ($validator->fails()) {
            $messagesResult = "fails";
            
             $validator->errors()->add('typePost', 'updateUser');
             $validator->errors()->add('id', $request['id']);
-            $users = DB::table('users')->get();
+            $users = $this->getUsersks();
             //return $validator->errors();
              return redirect()->route('mainManage')->withErrors($validator)->with('users',$users)->withInput();            
         }
-        $getUsername = DB::table('users')->where('id', '<>', $request['id'])->where('username','=',$request['username']) ->get();
-        if($getUsername != null){
+        $getUsername = DB::table('users')->where('id', '<>', $request['id'])->where('username','=',$request['username']) ->first();
+        if($getUsername != null){ 
            $messagesResult = "fails";
 
            $validator->errors()->add('typePost', 'updateUser');
             $validator->errors()->add('id', $request['id']);
            $validator->errors()->add('username', 'username đã tồn tại!');
-            $users = DB::table('users')->get();
+            $users = $this->getUsersks();
              return redirect()->route('mainManage')->withErrors($validator)->with('users',$users)->withInput();
         }
-        $getUsername = DB::table('users')->where('id', '<>', $request['id'])->where('email','=',$request['email']) ->get();
+        $getUsername = DB::table('users')->where('id', '<>', $request['id'])->where('email','=',$request['email']) ->first();
         if($getUsername != null){
            $messagesResult = "fails";
 
            $validator->errors()->add('typePost', 'updateUser');
             $validator->errors()->add('id', $request['id']);
            $validator->errors()->add('email', 'email đã tồn tại!');
-            $users = DB::table('users')->get();
+            $users = $this->getUsersks();
              return redirect()->route('mainManage')->withErrors($validator)->with('users',$users)->withInput();
         }
 
@@ -116,13 +115,13 @@ public function addUserMain(Request $request){
             ->where('id', $request['id'])
             ->update(['first_name' => $request['first_name'], 'last_name' => $request['last_name'], 'username' => $request['username'],'email' => $request['email'], 'country' => $request['country'], 'phone_number' => $request['phone_number'], 'dob' => $request['dob'], 'gender' => $request['gender']]);
             //return $request;
-            $users = DB::table('users')->get();
+            $users = $this->getUsersks();
             return redirect()->route('mainManage')->with('users',$users);
 
 
      }else{
         $messagesResult = "fails";
-         $users = DB::table('users')->get();
+         $users = $this->getUsersks();
          return redirect()->route('mainManage')->with('users',$users);
      }
     // validator
@@ -135,16 +134,20 @@ public function addUserMain(Request $request){
 
 
   if($request['typePost'] == "deleteUser"){
-   $getUser = DB::table('users')->where('id', '=', $request['id'])->get();
+   $getUser = DB::table('users')->where('id', '=', $request['id'])->first();
      if($getUser != null){
         DB::table('users')->where('id', '=', $request['id'])->delete();
   }
-   $users = DB::table('users')->get();
+   $users = $this->getUsersks();
    return redirect()->route('mainManage')->with('users',$users);
 
 }
  
     
+}
+
+public function getUsersks(){
+    return $users = DB::table('users')->where('type', '<>',1)->get();
 }
 protected function validatorUpdate(arrray $data){
     $messages = [
@@ -263,7 +266,7 @@ protected function validator(array $data)
                 //return $validator->errors();
                  return redirect()->route('mainManageHotel')->withErrors($validator)->with('users',$users)->withInput();            
             }
-            $getUsername = DB::table('hotel')->where('hotel_id', '<>', $request['id'])->where('hotel_url','=',$request['hotel_url']) ->get();
+            $getUsername = DB::table('hotel')->where('hotel_id', '<>', $request['id'])->where('hotel_url','=',$request['hotel_url']) ->first();
             if($getUsername != null){
                $messagesResult = "fails";
 
@@ -309,9 +312,14 @@ protected function validator(array $data)
      
     
 }
-
+//
 // end controller manage hotel
 
+
+// Manage hoteler
+    public function manageHoteler(){
+        return view('main.manageHoteler');
+    }
     public function editUserMain(Request $request){
         $users = DB::table('users')->get();
         return view('main.manage')->with('users',$users);

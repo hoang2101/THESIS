@@ -95,7 +95,7 @@
                 <li><a href="#footer">Liên hệ</a></li> 
                   @if (Auth::guest())
                             <li><a href="#login" data-toggle="modal" data-backdrop="static" id="auth" data-target="#login-modal">Đăng nhập</a></li>
-                            <li><a hhref="#login" data-toggle="modal" data-backdrop="static" data-target="#register-modal">Đăng kí</a></li>
+                            <li><a href="#login" data-toggle="modal" data-backdrop="static" data-target="#register-modal">Đăng kí</a></li>
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -121,7 +121,7 @@
                                             Manage
                                         </a>
 
-                                        <form id="manage" action="{{ route('mainManage') }}" method="get" style="display: none;">
+                                        <form id="manage" action="@if(Auth::user()->type == 1){{{ route('mainManage') }}}@endif @if(Auth::user()->type == 2){{{ route('mainManageHoteler') }}}@endif" method="get" style="display: none;">
                                             {{ csrf_field() }}
                                         </form>
                                     </li>

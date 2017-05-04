@@ -238,7 +238,7 @@
                                             onclick="event.preventDefault();
                                                      document.getElementById('deleteHotel{{$hotel->hotel_id}}').submit();"><i class="fa fa-trash-o"></i> Delete </a>
 
-                                    <form id="deleteUser{{$hotel->hotel_id}}" action="{{ route('addHotelMainSubmit') }}" method="POST" style="display: none;">
+                                    <form id="deleteHotel{{$hotel->hotel_id}}" action="{{ route('addHotelMainSubmit') }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
                                             <input hidden id="typePosts"" name="typePost" value="deleteHotel">
                                             <input hidden id="id" name="id" value="{{$hotel->hotel_id}}">

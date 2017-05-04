@@ -57,7 +57,7 @@
                         </div>
                         <div class="profile_info">
                             <span>Welcome,</span>
-                            <h2>Đặng Thành LUân</h2>
+                            <h2>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }} </h2>
                         </div>
                     </div>
                     <!-- /menu profile quick info -->
@@ -175,7 +175,7 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="img/img.jpg" alt="">Dang Thanh Luan
+                                    <img src="img/img.jpg" alt="">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }} 
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -231,7 +231,7 @@
                                 <td>{{$user->last_name}}</td>
                                 <td>{{$user->username}}</td>
                                 <td>{{$user->email}}</td>
-                                <td>{{$user->dob}}</td>
+                                <td>0</td>
                                 <td>
                                     <a href="#" class="btn btn-primary btn-xs" onclick="showDataView('{{$user->id}}','{{$user->first_name}}', '{{$user->last_name}}', '{{$user->email}}', '{{$user->phone_number}}', '{{$user->username}}', '{{$user->country}}', '{{$user->dob}}', '{{$user->gender}}') " data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
                                     <a href="#" class="btn btn-info btn-xs"  onclick="showDataEdit('{{$user->id}}','{{$user->first_name}}', '{{$user->last_name}}', '{{$user->email}}', '{{$user->phone_number}}', '{{$user->username}}', '{{$user->country}}', '{{$user->dob}}', '{{$user->gender}}') ;" data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
@@ -377,7 +377,7 @@
                         <div class="col-md-6 col-sm-6 col-xs-12  form-group">
                         
                             <div >
-                                <input id="e_phone_number" type="number" class="form-control" placeholder="Số điện thoại" name="phone_number" value="{{ old('phone_number') }}" required>
+                                <input id="e_phone_number" type="number" class="form-control" placeholder="Số điện thoại" name="phone_number" value="{{ old('phone_number') }}" >
 
                                
                                 @if ($errors->has('email'))
@@ -401,7 +401,7 @@
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12  form-group">
                             <div >
-                                <input id="e_country" type="text" class="form-control" placeholder="Quốc qia" name="country" value="{{ old('country') }}" required>
+                                <input id="e_country" type="text" class="form-control" placeholder="Quốc qia" name="country" value="{{ old('country') }}" >
 
                                 @if ($errors->has('username'))
                                  <span class="help-block">
@@ -413,7 +413,7 @@
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12 form-group">
                             <div >
-                                <input id="e_dob" type="text" onfocus="(this.type='date')" class="form-control" placeholder="Ngày sinh" name="dob" value="{{ old('dob') }}" required>
+                                <input id="e_dob" type="text" onfocus="(this.type='date')" class="form-control" placeholder="Ngày sinh" name="dob" value="{{ old('dob') }}" >
 
                                 @if ($errors->has('dob'))
                                     <span class="help-block">
@@ -424,7 +424,7 @@
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12  form-group">
                             <div >
-                                <input id="e_gender" type="text" class="form-control" placeholder="Giới tính" name="gender" required>
+                                <input id="e_gender" type="text" class="form-control" placeholder="Giới tính" name="gender" >
 
                                  @if ($errors->has('dob'))
                                      <span class="help-block">

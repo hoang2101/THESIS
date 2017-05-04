@@ -39,7 +39,7 @@ body,html{
   overflow-x:hidden;
 }
 body {
-font-family: 'Merriweather', serif;
+font-family: 'roboto', serif;
   overflow-x: hidden !important;
 }
 
@@ -60,7 +60,7 @@ a:focus{
 }
 
 h1,h2,h3,h4,h5,h6{
-	font-family: 'Varela', sans-serif;	
+	font-family: 'roboto', sans-serif;	
 }
 
 h2 {
@@ -190,7 +190,7 @@ img{
 .loginmodal {
   text-align: center;
   font-size: 14px;
-  font-family: 'Arial', sans-serif;
+  font-family: 'roboto', sans-serif;
   font-weight: 700;
   height: 36px;
   padding: 0 8px;
@@ -416,7 +416,7 @@ img{
 .slider_caption p {
   background-color: rgba(49, 59, 61, 0.6);
   color: #fff;
-  font-family: "Varela",sans-serif;
+  font-family: "roboto",sans-serif;
   font-size: 15px;
   font-weight: 600;
   padding: 10px;
@@ -428,7 +428,7 @@ img{
   color: #fff;
   font-size: 16px;
   display: inline-block;
-  font-family: "Varela",sans-serif;
+  font-family: "roboto",sans-serif;
   margin-top: 10px;
   padding: 9px 15px;
   text-decoration: none;
@@ -505,7 +505,7 @@ img{
 .feed_tabs li{margin-bottom: -2px;}
 
 .feed_tabs li a {
-  font-family: "Varela",sans-serif;
+  font-family: "roboto",sans-serif;
   font-size: 18px;
   text-transform: uppercase;
   font-weight: bold;
@@ -655,11 +655,11 @@ img{
   transform:scale(0.9);
 }
 .single_whyus_top>h3{
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
 }
 .single_whyus_top>p{
-  font-size: 13px;
+  font-size: 15px;
 }
 .whyus_bottom{
   float: left;
@@ -1622,7 +1622,7 @@ div[data-dimension] {
   transition: all 0.5s;
 }
 .tos-caption-0{ 
-  font-family: 'Varela', sans-serif;
+  font-family: 'roboto', sans-serif;
   font-size: 22px;
 }
 

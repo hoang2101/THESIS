@@ -135,7 +135,7 @@
 <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
         <div class="modal-dialog">
         <div class="loginmodal-container">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+        <button type="button" class="close" data-dismiss="modal" onclick="removeMessage()" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
           <h1>Đăng nhập</h1><br>
           <form role="form" method="POST" action="{{ route('login') }}">
@@ -148,7 +148,7 @@
                       @if ($errors->has('username') )
                           @if($errors->first('username') == "These credentials do not match our records.")
                                         <span class="help-block">
-                                        <strong>{{ $errors->first('username') }}</strong>
+                                        <strong class="messageError">{{ $errors->first('username') }}</strong>
                                     </span>
                                 @endif
                               @endif
@@ -181,7 +181,7 @@
 <div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
         <div class="modal-dialog">
         <div class="loginmodal-container">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+        <button type="button" class="close" data-dismiss="modal" onclick="removeMessage()" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
           <h1>Đăng kí</h1><br>
           <form class="form-horizontal" role="form" method="POST" action="{{ route('register') }}">
@@ -192,12 +192,12 @@
                                 <input id="first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" required autofocus>
                             </div>
                         </div>
-                        <div class="form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
+                        <div class="form-group {{ ($errors->has('last_name') && $errors->first('username') != 'These credentials do not match our records.') ? ' has-error' : '' }}">
                             <div >
                                 <input id="last_name" type="text" class="form-control" placeholder="Tên" name="last_name" value="{{ old('last_name') }}" required autofocus>
                             </div>
                         </div>
-                        <div class="form-group{{ $errors->has('usermane') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
                             <div >
                                 <input id="username" type="text" class="form-control" placeholder="Username" name="username" value="{{ old('username') }}" required autofocus>
                                
@@ -205,7 +205,7 @@
                                 <!-- day la text tieng viet -->
                                   @if($errors->first('username') != "These credentials do not match our records.")
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('username') }}</strong>
+                                        <strong class="messageError">{{ $errors->first('username') }}</strong>
                                     </span>
                                 @endif
                                 @endif
@@ -218,7 +218,7 @@
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
+                                        <strong class="messageError">{{ $errors->first('email') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -230,7 +230,7 @@
 
                                 @if ($errors->has('password'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
+                                        <strong class="messageError">{{ $errors->first('password') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -241,7 +241,7 @@
                                 <input id="password-confirm" type="password" placeholder="Confirm Password" class="form-control" name="password_confirmation" required>
                             </div>
                         </div>
-                        <input type="submit" name="Register" class="login loginmodal-submit" value="Register">
+                        <input type="submit" name="Register" class="login loginmodal-submit" value="Đăng kí">
                        
                     </form>
           </div>
@@ -642,6 +642,23 @@
       <script>  <script>  function myFunction() { 
     document.getElementById("register-modal").showModal(); </script>
   @endif
+
+<script type="text/javascript">
+   
+    function removeMessage() {
+        $("div").removeClass("has-error");
+        $("span").removeClass("help-block");
+
+        var x = document.getElementsByClassName("messageError");
+        for (i = 0; i < x.length; i++) { 
+            x[i].innerHTML = "";
+        }
+        $("strong").removeClass("messageError");
+        // var element = document.getElementsByClassName("help-block");
+        
+}
+</script>
+
 
   </body>
 </html>

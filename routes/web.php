@@ -17,12 +17,16 @@
 Route::get('/','MainController@index')->name('mainHome');
 Auth::routes();
 Route::get('/manage','MainController@manage')->name('mainManage');
-Route::get('/managehoteler','MainController@manageHoteler')->name('mainManageHoteler');
 Route::POST('/manageEdit','MainController@editUserMain')->name('editUserMainSubmit');
 Route::POST('/manage','MainController@addUserMain')->name('addUserMainSubmit');
-Route::POST('/manageMainHotel','MainController@addHotelMain')->name('addHotelMainSubmit');
 
+Route::POST('/manageMainHotel','MainController@addHotelMain')->name('addHotelMainSubmit');
 Route::get('/manageMainHotel','MainController@manageHotel')->name('mainManageHotel');
+
+Route::get('/managehoteler','MainController@manageHoteler')->name('mainManageHoteler');
+Route::POST('/managehoteler','MainController@addHotelHoteler')->name('addHotelHotelerSubmit');
+
+
 
 
 

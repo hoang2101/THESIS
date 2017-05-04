@@ -288,7 +288,7 @@
                                 
                             </div>
                         </div>
-                        <div class="form-group{{ $errors->has('usermane') ? ' has-error' : '' }}">
+                        <div class="form-group {{ $errors->has('username') ? ' has-error' : '' }}">
                             <div >
                                 <input id="username" type="text" class="form-control" placeholder="Username" name="username" value="{{ old('username') }}" required autofocus>
 

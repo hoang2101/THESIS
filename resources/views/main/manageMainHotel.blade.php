@@ -56,7 +56,7 @@
                         </div>
                         <div class="profile_info">
                             <span>Welcome,</span>
-                            <h2>Đặng Thành Luân</h2>
+                            <h2>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</h2>
                         </div>
                     </div>
                     <!-- /menu profile quick info -->
@@ -174,7 +174,7 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="img/img.jpg" alt="">Dang Thanh Luan
+                                    <img src="img/img.jpg" alt="">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -354,7 +354,7 @@
         <div class="loginmodal-container">
         <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-          <h1>Xem chi tiết khách hàng</h1><br>
+          <h1>Xem chi tiết khách sạn</h1><br>
           <form class="form-horizontal" role="form" method="POST" action="{{ route('addHotelMainSubmit') }}">
                         {{ csrf_field() }}
                 

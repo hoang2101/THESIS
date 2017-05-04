@@ -15,11 +15,12 @@ class CreateHotelServiceTable extends Migration
     {
         Schema::create('hotel_service', function (Blueprint $table) {
              $table->increments('service_id');
-            $table->string('service_name');
-            $table->integer('service_cost');
-            $table->integer('hotel_id');
-            $table->string('service_description');
-            $table->integer('discount');
+            $table->string('service_name')->nullable();
+            $table->integer('service_cost')->nullable();
+            $table->integer('hotel_id')->nullable();
+            $table->string('service_description')->nullable();
+            $table->integer('discount')->nullable();
+            
             $table->timestamps();
         });
     }

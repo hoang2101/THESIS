@@ -15,10 +15,11 @@ class CreateTypeRoomTable extends Migration
     {
         Schema::create('type_room', function (Blueprint $table) {
             $table->increments('type_room_id');
-            $table->string('type_name');
-            $table->integer('cost');
-            $table->integer('hotel_id');
-            $table->string('description');
+            $table->string('type_name')->nullable();
+            $table->integer('cost')->nullable();
+            $table->integer('hotel_id')->nullable();
+            $table->string('description')->nullable();
+            
             $table->timestamps();
         });
     }

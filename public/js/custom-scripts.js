@@ -88,6 +88,3 @@ $('.show_less').click(function() {
     $(this).prev().hide();
     $(this).prev().prev().show();
 })
-
-
-$('.datetimepicker4').datetimepicker();

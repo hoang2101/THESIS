@@ -26,7 +26,7 @@ class CreateAccountTable extends Migration
             $table->string('password',20);
             $table->date('dob');
             $table->integer('number_visit');
-            $table->enum('gender', ['male', 'female']);
+            $table->string('gender');
             $table->rememberToken();
             $table->timestamps();
         });

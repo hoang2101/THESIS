@@ -77,7 +77,7 @@
                                 <li><a href="{{ route('mainManageHotel') }}"><i class="fa fa-desktop"></i> Quản lý hệ thống khách sạn</a>
                                     
                                 </li>
-                                <li><a><i class="fa fa-table"></i>zxczxc  </a>
+                               <!--  <li><a><i class="fa fa-table"></i>zxczxc  </a>
                                     
                                 </li>
                                 <li><a><i class="fa fa-bar-chart-o"></i> Data Presentation <span class="fa fa-chevron-down"></span></a>
@@ -94,10 +94,10 @@
                                         <li><a href="fixed_sidebar.html">Fixed Sidebar</a></li>
                                         <li><a href="fixed_footer.html">Fixed Footer</a></li>
                                     </ul>
-                                </li>
+                                </li> -->
                             </ul>
                         </div>
-                        <div class="menu_section">
+                        <!-- <div class="menu_section">
                             <h3>Live On</h3>
                             <ul class="nav side-menu">
                                 <li><a><i class="fa fa-bug"></i> Additional Pages <span class="fa fa-chevron-down"></span></a>
@@ -139,7 +139,7 @@
                                 </li>
                                 <li><a href="javascript:void(0)"><i class="fa fa-laptop"></i> Landing Page <span class="label label-success pull-right">Coming Soon</span></a></li>
                             </ul>
-                        </div>
+                        </div> -->
 
                     </div>
                     <!-- /sidebar menu -->
@@ -200,30 +200,31 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Responsive example<small>Users</small></h2>
+                    <h2>Danh sách Khách hàng<small></small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-backdrop="static" data-target="#addUserMainmodal"><i class="fa fa-folder"></i> Thêm khách hàng </a>
                     </ul>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <p class="text-muted font-13 m-b-30">
-                      Responsive is an extension for DataTables that resolves that problem by optimising the table's layout for different screen sizes through the dynamic insertion and removal of columns from the table.
-                    </p>
+                    
+                    
                     <table id="responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                       <thead>
                         <tr>
                           <th id="cel1">ID</th>
-                          <th white-space:pre-line" id="cel5">First name</th>
-                          <th id="cel5">Last name</th>
+                          <th white-space:pre-line" id="cel5">Họ</th>
+                          <th id="cel5">Tên</th>
                           <th id="cel10">Username</th>
                           <th id="cel10">E-mail</th>
                           <th id="cel5">tổng phí</th>
-                          <th class="nosort"  id="cel5">Manage</th>
+                          <th class="nosort"  id="cel5">Quản lý</th>
                         </tr>
                       </thead>
                       <tbody>
+                      
                       @foreach ($users as $user)
+                    
                             <tr>
                                 <td>{{$user->id}}</td>
                                 <td>{{$user->first_name}}</td>
@@ -232,12 +233,22 @@
                                 <td>{{$user->email}}</td>
                                 <td>{{$user->dob}}</td>
                                 <td>
-                                    <a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal""><i class="fa fa-folder"></i> View </a>
-                                    <a href="#" class="btn btn-info btn-xs"><i class="fa fa-pencil"></i> Edit </a>
-                                    <a href="#" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i> Delete </a>
+                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataView('{{$user->id}}','{{$user->first_name}}', '{{$user->last_name}}', '{{$user->email}}', '{{$user->phone_number}}', '{{$user->username}}', '{{$user->country}}', '{{$user->dob}}', '{{$user->gender}}') " data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
+                                    <a href="#" class="btn btn-info btn-xs"  onclick="showDataEdit('{{$user->id}}','{{$user->first_name}}', '{{$user->last_name}}', '{{$user->email}}', '{{$user->phone_number}}', '{{$user->username}}', '{{$user->country}}', '{{$user->dob}}', '{{$user->gender}}') ;" data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
+
+                            <a data-toggle="tooltip" data-placement="top"  class="btn btn-danger btn-xs"
+                                            onclick="event.preventDefault();
+                                                     document.getElementById('deleteUser{{$user->id}}').submit();"><i class="fa fa-trash-o"></i> Xóa </a>
+
+                            <form id="deleteUser{{$user->id}}" action="{{ route('addUserMainSubmit') }}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                            <input hidden id="typePosts"" name="typePost" value="deleteUser">
+                                            <input hidden id="id" name="id" value="{{$user->id}}">
+                                        </form>
                                 </td>
                             </tr>
                         @endforeach
+                       
 
                         
                       
@@ -262,10 +273,10 @@
           <h1>Thêm khách hàng</h1><br>
           <form class="form-horizontal" role="form" method="POST" action="{{ route('addUserMainSubmit') }}">
                         {{ csrf_field() }}
-                        <input hidden id="typePost"" name="typePost" value="addUser">
+                        <input hidden id="addtypePost"" name="typePost" value="addUser">
                         <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
                             <div >
-                                <input id="first_name" type="text" class="form-control" placeholder="First Name" name="first_name" value="{{ old('first_name') }}" required autofocus>
+                                <input id="first_name" type="text" class="form-control" placeholder="First Name" name="first_name" value="{{old('first_name') }}" required autofocus >
 
                                 
                             </div>
@@ -331,29 +342,29 @@
         <div class="Registermodal-content">
         <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-          <h1>Thêm khách hàng</h1><br>
+          <h1>Xem chi tiết khách hàng</h1><br>
           <form class="form-horizontal" role="form" method="POST" action="{{ route('addUserMainSubmit') }}">
                         {{ csrf_field() }}
                 
                         <input hidden id="typePost"" name="typePost" value="updateUser">
-                        <input hidden id="id" name="id" value="3">
+                        <input hidden id="idUser" name="id" value="">
                         <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
                             <div >
-                                <input id="first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" required autofocus>
+                                <input id="e_first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" required autofocus>
 
                                 
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
                             <div >
-                                <input id="last_name" type="text" class="form-control" placeholder="Tên" name="last_name" value="{{ old('last_name') }}" required autofocus>
+                                <input id="e_last_name" type="text" class="form-control" placeholder="Tên" name="last_name" value="{{ old('last_name') }}" required autofocus>
 
                                 
                             </div>
                         </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('usermane') ? ' has-error' : '' }}">
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <div >
-                                <input id="email" type="email" class="form-control" placeholder="E-Mail" name="email" value="{{ old('email') }}" required autofocus>
+                                <input id="e_email" type="email" class="form-control" placeholder="E-Mail" name="email" value="{{ old('email') }}" required autofocus>
                           
                                 @if ($errors->has('email'))
                                     <span class="help-block">
@@ -363,21 +374,23 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group">
                         
                             <div >
-                                <input id="phone_number" type="number" class="form-control" placeholder="Số điện thoại" name="phone_number" value="{{ old('phone_number') }}" required>
+                                <input id="e_phone_number" type="number" class="form-control" placeholder="Số điện thoại" name="phone_number" value="{{ old('phone_number') }}" required>
 
                                
                                 @if ($errors->has('email'))
-                                    <br>
+                                     <span class="help-block">
+                                      <br>
+                                    </span>
                                 @endif
                             </div>
                         </div>
 
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group {{ $errors->has('username') ? ' has-error' : '' }}">
                             <div >
-                                <input id="username" type="text" class="form-control" placeholder="Tên tài khoản" name="username" value="{{ old('username') }}" required>
+                                <input id="e_username" type="text" class="form-control" placeholder="Tên tài khoản" name="username" value="{{ old('username') }}" required>
 
                                 @if ($errors->has('username'))
                                     <span class="help-block">
@@ -386,18 +399,21 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group">
                             <div >
-                                <input id="country" type="text" class="form-control" placeholder="Quốc qia" name="country" value="{{ old('country') }}" required>
+                                <input id="e_country" type="text" class="form-control" placeholder="Quốc qia" name="country" value="{{ old('country') }}" required>
 
                                 @if ($errors->has('username'))
-                                    <br>
+                                 <span class="help-block">
+                                      <br>
+                                    </span>
+                                    
                                 @endif
                             </div>
                         </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12 form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
                             <div >
-                                <input id="dob" type="text" onfocus="(this.type='date')" class="form-control" placeholder="Ngày sinh" name="dob" value="{{ old('dob') }}" required>
+                                <input id="e_dob" type="text" onfocus="(this.type='date')" class="form-control" placeholder="Ngày sinh" name="dob" value="{{ old('dob') }}" required>
 
                                 @if ($errors->has('dob'))
                                     <span class="help-block">
@@ -406,24 +422,29 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group">
                             <div >
-                                <input id="gender" type="text" class="form-control" placeholder="Giới tính" name="gender" required>
+                                <input id="e_gender" type="text" class="form-control" placeholder="Giới tính" name="gender" required>
 
                                  @if ($errors->has('dob'))
-                                   <br>
+                                     <span class="help-block">
+                                      <br>
+                                    </span>
                                 @endif
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <input type="submit" name="Register" class="loginmodal-submit" value="Chỉnh sửa khách hàng">
+                            <input id="e_submit" type="submit" name="Register" class="loginmodal-submit" value="Chỉnh sửa khách hàng">
                         </div>
                          <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <!-- <a data-toggle="tooltip" data-placement="top"  class="pull-right btn btn-primary btn-xs" href="{{ route('addUserMainSubmit') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('edit-form').submit();"><i class="fa fa-folder"></i> View  </a> -->
-                            <a href="#" class="btn btn-info btn-xs pull-right"><i class="fa fa-pencil"></i> Edit </a>
-                                    <a href="#" class="btn btn-danger btn-xs pull-right"><i class="fa fa-trash-o"></i> Delete </a>
+                            <a   class="btn btn-danger btn-xs pull-right" onclick="deleteusers()"><i class="fa fa-trash-o"></i> Xóa </a>
+
+                            
+                            <a href="#" id="typeEditView" class="btn btn-info btn-xs pull-right" onclick="addReadonly()"><i class="fa fa-pencil"></i>Sửa</a>
+                                   
                         </div>
                         
                         
@@ -434,10 +455,7 @@
         </div>
       </div>
       <!-- form post--> 
-       <form id="edit-form" action="{{ route('addUserMainSubmit') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                            <input hidden id="typePost"" name="typePost" value="deleteUser">
-                                        </form>
+      
                         
       
       </form>
@@ -548,14 +566,159 @@
     @endif
 
 
+@if( ! empty($messagesResult))
+    @if ($messagesResult=="fails")
+      <script type="text/javascript">  
+      window.alert("Thất bại");
+    </script>
+    @endif @if ($messagesResult=="successful")
+     <script type="text/javascript">  
+      alert("thành công");
+    </script>
+    @endif
+    @endif
+
+
+
+
 
 <script type="text/javascript">
     function removeMessage() {
         $("div").removeClass("has-error");
+        $("span").removeClass("help-block");
+
         var x = document.getElementsByClassName("messageError");
         for (i = 0; i < x.length; i++) { 
             x[i].innerHTML = "";
         }
+        $("strong").removeClass("messageError");
+        // var element = document.getElementsByClassName("help-block");
+        
+}
+
+function openViewdialog(){
+
+}
+function openEditdialog(){
+
+}
+function deleteusers(){
+    document.getElementById("typePost").setAttribute("value", "deleteUser");
+    var l = document.getElementById('e_submit');
+    l.click();
+
+}
+function addReadonly(){
+
+    if(document.getElementById("typeEditView").innerHTML == "Sửa")
+    {
+    document.getElementById("e_submit").setAttribute("type", "submit");
+    document.getElementById("typeEditView").innerHTML = "Xem";
+    document.getElementById("e_first_name").removeAttribute("readonly");
+    document.getElementById("e_last_name").removeAttribute("readonly");
+    document.getElementById("e_email").removeAttribute("readonly");
+    document.getElementById("e_phone_number").removeAttribute("readonly");
+    document.getElementById("e_username").removeAttribute("readonly");
+    document.getElementById("e_country").removeAttribute("readonly");
+    document.getElementById("e_dob").removeAttribute("readonly");
+    document.getElementById("e_gender").removeAttribute("readonly");
+
+    // document.getElementById("e_submit").setAttribute("type", "submit");
+    // document.getElementById("e_first_name").removeAttribute("readonly");
+    // document.getElementById("e_last_name").removeAttribute("readonly");
+    // document.getElementById("e_email").removeAttribute("readonly");
+    // document.getElementById("e_phone_number").removeAttribute("readonly");
+    // document.getElementById("e_username").removeAttribute("readonly");
+    // document.getElementById("e_country").removeAttribute("readonly");
+    // document.getElementById("e_dob").removeAttribute("readonly");
+    // document.getElementById("e_gender").removeAttribute("readonly");
+    return;    
+}
+else(document.getElementById("typeEditView").innerHTML == "Xem")
+{
+    document.getElementById("typeEditView").innerHTML = "Sửa";
+    document.getElementById("e_submit").setAttribute("type", "hidden");
+
+    document.getElementById("e_first_name").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_last_name").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_email").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_phone_number").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_username").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_country").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_dob").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_gender").setAttributeNode(document.createAttribute("readonly"));
+}
+   
+
+}
+
+function removeReadonly(){
+    
+
+
+    document.getElementById("e_submit").setAttribute("type", "submit");
+    document.getElementById("typeEditView").innerHTML = "Xem";
+    document.getElementById("e_first_name").removeAttribute("readonly");
+    document.getElementById("e_last_name").removeAttribute("readonly");
+    document.getElementById("e_email").removeAttribute("readonly");
+    document.getElementById("e_phone_number").removeAttribute("readonly");
+    document.getElementById("e_username").removeAttribute("readonly");
+    document.getElementById("e_country").removeAttribute("readonly");
+    document.getElementById("e_dob").removeAttribute("readonly");
+    document.getElementById("e_gender").removeAttribute("readonly");
+     // document.getElementById("typeEditView").setAttribute("onclick", "addReadonly())");
+    
+
+}
+function showDataView(idUser, first_name, last_name,email,phone_number,username,country,dob,gender){
+      
+   
+    document.getElementById("typeEditView").innerHTML = "Sửa";
+    document.getElementById("e_submit").setAttribute("type", "hidden");
+    document.getElementById("e_first_name").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_last_name").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_email").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_phone_number").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_username").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_country").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_dob").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_gender").setAttributeNode(document.createAttribute("readonly")); 
+
+    document.getElementById("idUser").setAttribute("value", idUser);
+    document.getElementById("e_first_name").setAttribute("value", first_name);
+    document.getElementById("e_last_name").setAttribute("value", last_name); 
+    document.getElementById("e_email").setAttribute("value", email); 
+    document.getElementById("e_phone_number").setAttribute("value", phone_number); 
+    document.getElementById("e_username").setAttribute("value", username);
+    document.getElementById("e_country").setAttribute("value", country); 
+    document.getElementById("e_dob").setAttribute("value",dob); 
+    document.getElementById("e_gender").setAttribute("value", gender);
+
+}
+
+function showDataEdit(idUser, first_name, last_name,email,phone_number,username,country,dob,gender){
+   
+    document.getElementById("e_submit").setAttribute("type", "submit");
+    document.getElementById("typeEditView").innerHTML = "Xem";
+    document.getElementById("e_first_name").removeAttribute("readonly");
+    document.getElementById("e_last_name").removeAttribute("readonly");
+    document.getElementById("e_email").removeAttribute("readonly");
+    document.getElementById("e_phone_number").removeAttribute("readonly");
+    document.getElementById("e_username").removeAttribute("readonly");
+    document.getElementById("e_country").removeAttribute("readonly");
+    document.getElementById("e_dob").removeAttribute("readonly");
+    document.getElementById("e_gender").removeAttribute("readonly");
+
+    document.getElementById("idUser").setAttribute("value", idUser);
+    document.getElementById("e_first_name").setAttribute("value", first_name);
+    document.getElementById("e_last_name").setAttribute("value", last_name); 
+    document.getElementById("e_email").setAttribute("value", email); 
+    document.getElementById("e_phone_number").setAttribute("value", phone_number); 
+    document.getElementById("e_username").setAttribute("value", username);
+    document.getElementById("e_country").setAttribute("value", country); 
+    document.getElementById("e_dob").setAttribute("value",dob); 
+    document.getElementById("e_gender").setAttribute("value", gender);
+
 }
 </script>
 </body>

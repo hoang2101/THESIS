@@ -15,20 +15,22 @@ class CreateBookingTable extends Migration
     {
         Schema::create('booking', function (Blueprint $table) {
              $table->increments('booking_id');
-            $table->integer('room_id');
-            $table->date('date_from');
-            $table->date('date_to');
-            $table->string('first_name',20);
-            $table->string('last_name',20);
-            $table->smallInteger('number_people');
-            $table->string('contry');
-            $table->string('email');
-            $table->string('phone_number',11);
-            $table->string('passport');
-            $table->enum('gender',['male','female']);
-            $table->date('dob');
-            $table->integer('account');
-            $table->integer('type_booking');
+            $table->integer('room_id')->nullable();
+            $table->date('date_from')->nullable();
+            $table->date('date_to')->nullable();
+            $table->string('first_name',20)->nullable();
+            $table->string('last_name',20)->nullable();
+            $table->smallInteger('number_people')->nullable();
+            $table->string('contry')->nullable();
+            $table->string('email')->nullable();
+            $table->string('phone_number',11)->nullable();
+            $table->string('passport')->nullable();
+            $table->enum('gender',['male','female'])->nullable();
+            $table->date('dob')->nullable();
+            $table->integer('account')->nullable();
+            $table->integer('type_booking')->nullable();
+            $table->date('booked_date')->nullable();
+            
             $table->timestamps();
         });
     }

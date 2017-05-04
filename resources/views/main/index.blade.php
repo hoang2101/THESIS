@@ -81,18 +81,18 @@
               </button>
               <!-- LOGO -->
               <!-- TEXT BASED LOGO -->
-              <a class="navbar-brand" href="/">THESIS <span></span></a>              
+              <a class="navbar-brand" href="#">THESIS <span></span></a>              
               <!-- IMG BASED LOGO  -->
                <!-- <a class="navbar-brand" href="index.html"><img src="img/logo.png" alt="logo"></a>  -->            
                      
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul id="top-menu" class="nav navbar-nav navbar-right main-nav">
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="#aboutUs">About Us</a></li>
-                <li><a href="#whyUs">Why Us</a></li>
-                <li><a href="#pricing">Pricing</a></li>
-                <li><a href="#footer">Contact</a></li> 
+                <li class="active"><a href="#">Trang chủ</a></li>
+                <li><a href="#aboutUs">Về chúng tôi</a></li>
+                <li><a href="#whyUs">Lý do</a></li>
+                <li><a href="#pricing">Bảng giá</a></li>
+                <li><a href="#footer">Liên hệ</a></li> 
                   @if (Auth::guest())
                             <li><a href="#login" data-toggle="modal" data-backdrop="static" id="auth" data-target="#login-modal">Login</a></li>
                             <li><a hhref="#login" data-toggle="modal" data-backdrop="static" data-target="#register-modal">Register</a></li>
@@ -183,18 +183,18 @@
         <div class="loginmodal-container">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-          <h1>Register</h1><br>
+          <h1>Đang kí</h1><br>
           <form class="form-horizontal" role="form" method="POST" action="{{ route('register') }}">
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
                             <div >
-                                <input id="first_name" type="text" class="form-control" placeholder="First Name" name="first_name" value="{{ old('first_name') }}" required autofocus>
+                                <input id="first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" required autofocus>
                             </div>
                         </div>
                         <div class="form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
                             <div >
-                                <input id="last_name" type="text" class="form-control" placeholder="Last Name" name="last_name" value="{{ old('last_name') }}" required autofocus>
+                                <input id="last_name" type="text" class="form-control" placeholder="Tên" name="last_name" value="{{ old('last_name') }}" required autofocus>
                             </div>
                         </div>
                         <div class="form-group{{ $errors->has('usermane') ? ' has-error' : '' }}">
@@ -214,7 +214,7 @@
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <div >
-                                <input id="email" type="email" class="form-control" placeholder="E-Mail Address" name="email" value="{{ old('email') }}" required>
+                                <input id="email" type="email" class="form-control" placeholder="E-Mail" name="email" value="{{ old('email') }}" required>
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">
@@ -273,24 +273,22 @@
                 <li>
                   <img src="img/slider/2.jpg" alt="img">
                    <div class="slider_caption">
-                    <h2>Largest & Beautiful University</h2>
-                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</p>
+                    
                   </div>
                   </li>
                 <!-- Start single slider-->
                 <li>
                   <img src="img/slider/3.jpg" alt="img">
                    <div class="slider_caption slider_right_caption">
-                    <h2>Better Education Environment</h2>
-                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search</p>
+                    
                   </div>
                 </li>
                 <!-- Start single slider-->
                 <li>
                   <img src="img/slider/4.jpg" alt="img">
                    <div class="slider_caption">
-                    <h2>Find out you in better way</h2>
-                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search</p>
+                    <h2></h2>
+                    <p></p>
                   </div>
                 </li>
               </ul>
@@ -311,7 +309,7 @@
       <div class="row">
                 <div class="col-lg-12 col-md-12"> 
                   <div class="title_area">
-                    <h2 class="title_two">About Us</h2>
+                    <h2 class="title_two">Về chúng tôi</h2>
                     <span></span> 
                   </div>
                 </div>
@@ -321,7 +319,7 @@
         <div class="col-lg-12 col-md-12">
             
           <div class="descriptive-title">
-              <p>Vestibulum nisl tortor, consectetur quis imperdiet bibendum, laoreet sed arcu. Sed condimentum iaculis ex, in faucibus lorem accumsan non. Donec mattis tincidunt metus. Morbi sed tortor a risus luctus dignissim.</p>
+              <p>Chúng tôi cung cấp giải pháp quản lý khách sạn đầy đủ, đẹp, để dàng sử dụng trên mọi hệ điều hành có thể truy cập web. phần mềm chúng tôi được thiết kế để đáp ứng đầy đủ tính năng cho các khách sạn </p>
           </div>
           </div>
           <div class="awards">
@@ -331,7 +329,7 @@
 
                 <div class="counter_box text-center fadeInDown  wow animated" data-wow-delay=".1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInDown;">
                     <div class="counter_number counter">276</div>
-                    <h4 class="counter_name">Projects Completed</h4>
+                    <h4 class="counter_name">Nhà đầu tư</h4>
                 </div>
                 <!--counter box end-->
             </div>
@@ -339,7 +337,7 @@
                 <!--counter box-->
                 <div class="counter_box text-center fadeInDown  wow animated" data-wow-delay=".2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInDown;">
                     <div class="counter_number counter">153</div>
-                    <h4 class="counter_name">Happy Customer</h4>
+                    <h4 class="counter_name">Khách sạn</h4>
                 </div>
                 <!--counter box end-->
             </div>
@@ -347,7 +345,7 @@
                 <!--counter box-->
                 <div class="counter_box text-center fadeInDown  wow animated" data-wow-delay=".4s" style="visibility: visible; animation-delay: 0.4s; animation-name: fadeInDown;">
                     <div class="counter_number counter">780</div>
-                    <h4 class="counter_name">Positive Feedbacks</h4>
+                    <h4 class="counter_name">Phòng</h4>
                 </div>
                 <!--counter box end-->
             </div>
@@ -355,7 +353,7 @@
                 <!--counter box-->
                 <div class="counter_box text-center fadeInDown  wow animated" data-wow-delay=".6s" style="visibility: visible; animation-delay: 0.6s; animation-name: fadeInDown;">
                     <div class="counter_number counter">1276</div>
-                    <h4 class="counter_name">Working Hours</h4>
+                    <h4 class="counter_name">tài khoản</h4>
                 </div>
                 <!--counter box end-->
             </div>
@@ -379,7 +377,7 @@
               <div class="row">
                 <div class="col-lg-12 col-md-12"> 
                   <div class="title_area">
-                    <h2 class="title_two">Why Us</h2>
+                    <h2 class="title_two">Lý do chọn chúng tôi</h2>
                     <span></span> 
                   </div>
                 </div>
@@ -393,7 +391,7 @@
                       <span class="fa fa-desktop"></span>
                     </div>
                     <h3>RESPONSIVE GRID</h3>
-                    <p>when an unknown printer took a galley of type and scrambled it to make a type specimen book</p>
+                    <p>Phần mềm được thiết kế để có thể hiển thị tương thích trên mọi kích thước hiển thị của trình duyệt</p>
                   </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3">
@@ -440,8 +438,7 @@
     <div class="container">
       <div class="row">
         <div class="header-section text-center mb40 white">
-          <span class="meta-title-top white">what we offers</span>
-          <h2 class="meta-title-2 white">Our Pricing</h2>
+          <h2 class="meta-title-2 white">Bảng giá</h2>
         </div>
       </div>
       <div class="row">
@@ -449,32 +446,32 @@
         <!-- Pricing Table One -->
         <div class="col-sm-3 col-md-3">
           <div class="pricing-table-column pricing1">
-            <h5>standard</h5>
+            <h5>BASIC</h5>
             <div class="price-band">
-              <h2>$150</h2>
-              <p>month</p>
+              <h2>$1000000Đ</h2>
+              <p>1 tháng</p>
             </div>
             <ul>
-              <li>creative design</li>
-              <li>awsome photography</li>
-              <li>free support</li>
+              <li>Miển phí 1 khách sạn</li>
+              <li>Công cụ quản lý đầy đủ</li>
+              <li>Miển phí hổ trợ</li>
             </ul>
-            <div class="button-style-1"><a href="">buy it now</a></div>
+            <div class="button-style-1"><a href="">Đăng kí ngay</a></div>
           </div>
         </div>
 
         <!-- Pricing Table Two -->
         <div class="col-sm-3 col-md-3">
           <div class="pricing-table-column">
-            <h5>creative</h5>
+            <h5>SILVER</h5>
             <div class="price-band">
-              <h2>$350</h2>
-              <p>month</p>
+              <h2>$1500000Đ</h2>
+              <p>2 month</p>
             </div>
             <ul>
-              <li>creative design</li>
-              <li>awsome photography</li>
-              <li>free support</li>
+              <li>Miển phí 3 khách sạn</li>
+              <li>Công cụ quản lý đầy đủ</li>
+              <li>Miển phí hổ trợ</li>
             </ul>
             <div class="button-style-1"><a href="">buy it now</a></div>
           </div>  
@@ -483,15 +480,15 @@
         <!-- Pricing Table Three -->
         <div class="col-sm-3 col-md-3">
           <div class="pricing-table-column">
-            <h5>delux</h5>
+            <h5>GOOL</h5>
             <div class="price-band">
-              <h2>$750</h2>
-              <p>month</p>
+              <h2>$2500000Đ</h2>
+              <p>4 month</p>
             </div>
             <ul>
-              <li>creative design</li>
-              <li>awsome photography</li>
-              <li>free support</li>
+              <li>Miển phí 6 khách sạn</li>
+              <li>Công cụ quản lý đầy đủ</li>
+              <li>Miển phí hổ trợ</li>
             </ul>
             <div class="button-style-1"><a href="">buy it now</a></div>
           </div>  
@@ -502,13 +499,13 @@
           <div class="pricing-table-column">
             <h5>vip</h5>
             <div class="price-band">
-              <h2>$990</h2>
-              <p>month</p>
+              <h2>4000000Đ</h2>
+              <p>6 month</p>
             </div>
             <ul>
-              <li>creative design</li>
-              <li>awsome photography</li>
-              <li>free support</li>
+              <li>Miển phí 10 khách sạn</li>
+              <li>Công cụ quản lý đầy đủ</li>
+              <li>Miển phí hổ trợ</li>
             </ul>
             <div class="button-style-1"><a href="">buy it now</a></div>
           </div>
@@ -534,13 +531,13 @@
             </div>
             <div class="col-ld-6 col-md-6 col-sm-6">
               <div class="single_footer_widget">
-                <h3>Community</h3>
+                <h3><center>Community</center></h3>
                 <ul class="footer_widget_nav">
-                  <li><a href="#">Our Tutors</a></li>
-                  <li><a href="#">Our Students</a></li>
-                  <li><a href="#">Our Team</a></li>
-                  <li><a href="#">Forum</a></li>
-                  <li><a href="#">News &amp; Media</a></li>
+                <li><a href="#"><center>Trang chủ</center></a></li>
+                <li><a href="#aboutUs"><center>Về chúng tôi</center></a></li>
+                <li><a href="#whyUs"><center>Lý do</center></a></li>
+                <li><a href="#pricing"><center>Bảng giá</center></a></li>
+                <li><a href="#footer"><center>Liên hệ</center></a></li> 
                 </ul>
               </div>
             </div>

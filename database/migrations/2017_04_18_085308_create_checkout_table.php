@@ -15,9 +15,10 @@ class CreateCheckoutTable extends Migration
     {
         Schema::create('checkout', function (Blueprint $table) {
             $table->increments('checkout_id');
-            $table->date('date_checkout');
-            $table->integer('total_cost');
-            $table->integer('booked_id');
+            $table->date('date_checkout')->nullable();
+            $table->integer('total_cost')->nullable();
+            $table->integer('booked_id')->nullable();
+            
             $table->timestamps();
         });
     }

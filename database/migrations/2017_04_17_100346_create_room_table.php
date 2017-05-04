@@ -15,12 +15,12 @@ class CreateRoomTable extends Migration
     {
         Schema::create('room', function (Blueprint $table) {
            $table->increments('room_id');
-            $table->integer('hotel_id');
-            $table->integer('room_floor');
-            $table->integer('room_number');
-            $table->integer('room_type');
-            $table->boolean('is_booked');
-            $table->integer('booked_id');
+            $table->integer('hotel_id')->nullable();
+            $table->integer('room_floor')->nullable();
+            $table->integer('room_number')->nullable();
+            $table->integer('room_type')->nullable();
+            $table->boolean('is_booked')->nullable();
+            $table->integer('booked_id')->nullable();
             $table->timestamps();
         });
     }

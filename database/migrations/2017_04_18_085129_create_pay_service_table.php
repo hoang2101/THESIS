@@ -15,12 +15,13 @@ class CreatePayServiceTable extends Migration
     {
         Schema::create('pay_service', function (Blueprint $table) {
             $table->increments('pay_service_id');
-            $table->integer('booked_id');
-            $table->integer('cost');
-            $table->integer('quantity');
-            $table->integer('service_id');
-            $table->integer('discount');
-            $table->integer('total');
+            $table->integer('booked_id')->nullable();
+            $table->integer('cost')->nullable();
+            $table->integer('quantity')->nullable();
+            $table->integer('service_id')->nullable();
+            $table->integer('discount')->nullable();
+            $table->integer('total')->nullable();
+            
             $table->timestamps();
         });
     }

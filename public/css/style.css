@@ -75,6 +75,11 @@ img{
  border:none;
 }
 
+.bgfull{
+  height: auto;
+  width: 100%;
+}
+
 /* Preloader */
 #preloader {
   position: fixed;

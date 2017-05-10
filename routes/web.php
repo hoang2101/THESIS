@@ -26,6 +26,10 @@ Route::get('/manageMainHotel','MainController@manageHotel')->name('mainManageHot
 Route::get('/managehoteler','MainController@manageHoteler')->name('mainManageHoteler');
 Route::POST('/managehoteler','MainController@addHotelHoteler')->name('addHotelHotelerSubmit');
 
+Route::group(['domain' => '{subdomain}'], function () {
+    Route::get('/{subdomain}', 'SubController@index' )->name('subHome');
+});
+
 
 
 

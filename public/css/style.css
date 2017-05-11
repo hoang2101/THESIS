@@ -79,6 +79,9 @@ img{
   height: auto;
   width: 100%;
 }
+.hero_parallax_inner{
+  
+}
 
 /* Preloader */
 #preloader {
@@ -87,7 +90,7 @@ img{
   left:0;
   right:0;
   bottom:0;
-  background-color:#000; /* change if the mask should have another color then white */
+  background-color:#313b3d; /* change if the mask should have another color then white */
   z-index:99999; /* makes sure it stays on top */
 }
 
@@ -316,7 +319,7 @@ img{
   width: 100%;
 }
 .navbar-default .navbar-brand {
-  color: #fff;
+  color: #ffffff;
   font-size: 25px;
   font-weight: bold;
   margin-top: 15px; 

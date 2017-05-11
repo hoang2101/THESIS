@@ -71,8 +71,8 @@
                                 <li><a href="{{ route('mainHome') }}"><i class="fa fa-home"></i> Home </a>
                                 </li>
                                 
-                                <li><a class="active"><i class="fa fa-desktop"></i> Quản lý khách sạn</a>
-                                <li><a class=""><i class="fa fa-user" href="{{ route('mainManageGovermHoteler') }}"></i> Quản lý Quản trị khách sạn</a>
+                                <li><a class=""><i class="fa fa-desktop" href="{{ route('mainManageHoteler') }}"></i> Quản lý khách sạn</a>
+                                <li><a class="active"><i class="fa fa-user" ></i> Quản lý Quản trị khách sạn</a>
                                     
                                 </li>
                                <!--  <li><a><i class="fa fa-table"></i>zxczxc  </a>

@@ -26,6 +26,9 @@ Route::get('/manageMainHotel','MainController@manageHotel')->name('mainManageHot
 Route::get('/managehoteler','MainController@manageHoteler')->name('mainManageHoteler');
 Route::POST('/managehoteler','MainController@addHotelHoteler')->name('addHotelHotelerSubmit');
 
+Route::get('/managegovermhoteler','MainController@manageGovermHoteler')->name('mainManageGovermHoteler');
+Route::POST('/managegovermhoteler','MainController@addGovermHoteler')->name('addGovermHotelerSubmit');
+
 Route::group(['domain' => '{subdomain}'], function () {
     Route::get('/{subdomain}', 'SubController@index' )->name('subHome');
 });

@@ -1,99 +1,83 @@
+
 <!DOCTYPE html>
-<html >
-  <head>
-    <!--=============================================== 
-    Template Design By WpFreeware Team.
-    Author URI : http://www.wpfreeware.com/
-    ====================================================-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<title>Hotel {{$info['name']}}</title>
 
-    <!-- Basic Page Needs
-    ================================================== -->
-    <meta charset="utf-8">
-    <title>{{$info['name']}}</title>
+<!-- Bootstrap CSS -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Mobile Specific Metas
-    ================================================== -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <!-- Favicon -->
-    <link rel="shortcut icon" type="image/icon" href="img/wpf-favicon.png"/>
+<!-- Fontawesome CSS -->
+<link href="css/font-awesome.min.css" rel="stylesheet">
 
-    <!-- CSS
-    ================================================== -->       
-    <!-- Bootstrap css file-->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font awesome css file-->
-    <link href="css/font-awesome.min.css" rel="stylesheet">
-    <!-- Superslide css file-->
-    <link rel="stylesheet" href="css/superslides.css">
-    <!-- Slick slider css file -->
-    <link href="css/slick.css" rel="stylesheet"> 
-    <!-- Circle counter cdn css file -->
-    <link rel='stylesheet prefetch' href='https://cdn.rawgit.com/pguso/jquery-plugin-circliful/master/css/jquery.circliful.css'>  
-    <!-- smooth animate css file -->
-    <link rel="stylesheet" href="css/animate.css"> 
-    <!-- preloader -->
-    <!--<link rel="stylesheet" href="css/queryLoader.css" type="text/css" /> -->
-    <!-- gallery slider css -->
-    <link type="text/css" media="all" rel="stylesheet" href="css/jquery.tosrus.all.css" />    
-    <!-- Default Theme css file -->
-    <link id="switcher" href="css/themes/default-theme.css" rel="stylesheet">
-    <!-- Main structure css file -->
-    <link href="css/style.css" rel="stylesheet">
-    <!<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
-    <link rel='stylesheet prefetch' href='https://material.angularjs.org/1.1.3/docs.css'>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- Google fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet' type='text/css'>   
-    <link href='http://fonts.googleapis.com/css?family=Varela' rel='stylesheet' type='text/css'>    
+<!-- Google Font -->
+<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700|Roboto' rel='stylesheet' type='text/css'>
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
- <script>
-        window.Laravel = {!! json_encode([
-            'csrfToken' => csrf_token(),
-        ]) !!};
-    </script>
-  </head>
-  <body >   
-  
+<!-- Bootsnav CSS -->
+<link href="css/bootsnav.css" rel="stylesheet">
 
-    <!-- SCROLL TOP BUTTON -->
-    <a class="scrollToTop" href="#"></a>
-    <!-- END SCROLL TOP BUTTON -->
+<!-- Owl stylesheet -->
+<!-- <link rel="stylesheet" href="css/owl.carousel.css">
+<link rel="stylesheet" href="css/owl.theme.css"> -->
 
-    <!--=========== BEGIN HEADER SECTION ================-->
-    <header id="header">
-      <!-- BEGIN MENU -->
-      <div class="menu_area">
-        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">  <div class="container">
-            <div class="navbar-header">
-              <!-- FOR MOBILE VIEW COLLAPSED BUTTON -->
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <!-- LOGO -->
-              <!-- TEXT BASED LOGO -->
-              <a class="navbar-brand" href="#">{{strtoupper($info['name']) }}<span></span></a>              
-              <!-- IMG BASED LOGO  -->
-               <!-- <a class="navbar-brand" href="index.html"><img src="img/logo.png" alt="logo"></a>  -->            
-                     
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-              <ul id="top-menu" class="nav navbar-nav navbar-right main-nav">
-                <li class="active"><a href="#">Trang chủ</a></li>
-                <li><a href="#aboutUs">Về chúng tôi</a></li>
-                <li><a href="#whyUs">Lý do</a></li>
-                <li><a href="#pricing">Bảng giá</a></li>
-                <li><a href="#footer">Liên hệ</a></li> 
-                  @if (Auth::guest())
+<!-- Lightbox Theme -->
+<!-- <link href="css/lightbox.css" rel="stylesheet"> -->
+
+<!-- Main css -->
+<link rel="stylesheet" href="css/style2.css">
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+<body>
+
+  <div class="page-loader" style="display: none;">
+    <div class="loader" style="display: none;"> 
+      <span class="dot dot_1"></span> 
+      <span class="dot dot_2"></span> 
+      <span class="dot dot_3"></span> 
+      <span class="dot dot_4"></span> 
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <nav class="navbar navbar-default navbar-fixed white bootsnav on no-full navbar-transparent">
+
+    <div class="container">      
+        <!-- Start Header Navigation -->
+        <div class="navbar-header">
+        <ul class="nav navbar-nav " data-in="fadeInDown" data-out="fadeOutUp">     
+
+              <li> <a  class="nav navbar-nav " data-in="fadeInDown" data-out="fadeOutUp" href="#">{{strtoupper($info['name'])}} <span></span></a> </li>
+              
+            </ul>
+            <!-- <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+                <i class="fa fa-bars"></i>
+            </button>
+            <a class="navbar-brand" href="#brand">
+              <img src="img/logo/logo-white.png" class="logo logo-display" alt="">
+              <img src="img/logo/logo-black.png" class="logo logo-scrolled" alt="">
+            </a> -->
+        </div>
+        <!-- End Header Navigation -->
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="navbar-menu">
+            <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">                  
+              <li><a href="#">Home</a></li>
+              <li><a href="#about">Giới thiệu</a></li>
+              <li><a href="#service">Phòng</a></li>
+              <li><a href="#project">Dịch vụ</a></li>
+              <li><a href="#pricing">liên hệ</a></li>
+               @if (Auth::guest())
                             <li><a href="#login" data-toggle="modal" data-backdrop="static" id="auth" data-target="#login-modal">Đăng nhập</a></li>
                             <li><a href="#login" data-toggle="modal" data-backdrop="static" data-target="#register-modal">Đăng kí</a></li>
                         @else
@@ -128,523 +112,220 @@
                                 </ul>
                             </li>
                         @endif
-              </ul>
-                 
-                
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div>   
+  </nav>
 
-<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-        <div class="modal-dialog">
-        <div class="loginmodal-container">
-        <button type="button" class="close" data-dismiss="modal" onclick="removeMessage()" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-          <h1>Đăng nhập</h1><br>
-          <form role="form" method="POST" action="{{ route('login') }}">
-          {{csrf_field()}}
-           <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
-
-                
-                  <input id="username" type="text" class="form-control" name="username" placeholder="Username" value="{{ old('username') }}" required autofocus>
-
-                      @if ($errors->has('username') )
-                          @if($errors->first('username') == "These credentials do not match our records.")
-                                        <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('username') }}</strong>
-                                    </span>
-                                @endif
-                              @endif
-           </div>
-           <div class="form-group">
-
-            
-                <input id="password" type="password" class="form-control" name="password" placeholder="Password" required>
-
-                    
-            
-          </div>
-          <div class="form-group">
-                          
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-                                    </label>
-                                </div>
-                            </div>
-                       
-          
-          <input type="submit" name="login" class="login loginmodal-submit" value="Login">
-          </form>
-                   <a hhref="#login" data-toggle="modal" data-backdrop="static" data-target="#register-modal">Register</a> - <a href="#">Forgot Password</a>
-          </div>
-        </div>
-      </div>
-
-<div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-        <div class="modal-dialog">
-        <div class="loginmodal-container">
-        <button type="button" class="close" data-dismiss="modal" onclick="removeMessage()" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-          <h1>Đăng kí</h1><br>
-          <form class="form-horizontal" role="form" method="POST" action="{{ route('register') }}">
-                        {{ csrf_field() }}
-
-                        <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" required autofocus>
-                            </div>
-                        </div>
-                        <div class="form-group {{ ($errors->has('last_name') && $errors->first('username') != 'These credentials do not match our records.') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="last_name" type="text" class="form-control" placeholder="Tên" name="last_name" value="{{ old('last_name') }}" required autofocus>
-                            </div>
-                        </div>
-                        <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="username" type="text" class="form-control" placeholder="Username" name="username" value="{{ old('username') }}" required autofocus>
-                               
-                                @if ($errors->has('username'))
-                                <!-- day la text tieng viet -->
-                                  @if($errors->first('username') != "These credentials do not match our records.")
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('username') }}</strong>
-                                    </span>
-                                @endif
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="email" type="email" class="form-control" placeholder="E-Mail" name="email" value="{{ old('email') }}" required>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="password" type="password" class="form-control" placeholder="Password" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div >
-                                <input id="password-confirm" type="password" placeholder="Confirm Password" class="form-control" name="password_confirmation" required>
-                            </div>
-                        </div>
-                        <input type="submit" name="Register" class="login loginmodal-submit" value="Đăng kí">
-                       
-                    </form>
-          </div>
-        </div>
-      </div>
-
-
-
-      </div>
-                
-                      
-        </nav>  
-      </div>
-      <!-- END MENU --> 
-
-    </header>
-    <!--=========== END HEADER SECTION ================--> 
-<!-- login -->
-
-    <!--=========== BEGIN SLIDER SECTION ================-->
-   <section id="slider">
-      <div class="row">
-        <div class="col-lg-12 col-md-12">
-          <div class="slider_area">
-            <!-- Start super slider -->
-            <div id="slides">
-              <ul class="slides-container">                          
-                <li>
-                  <img src="img/slider/2.jpg" alt="img">
-                   <div class="slider_caption">
-                    
-                  </div>
-                  </li>
-                <!-- Start single slider-->
-               
-              </ul>
-              <nav class="slides-navigation">
-                <a href="#" class="next"></a>
-                <a href="#" class="prev"></a>
-              </nav>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!--=========== END SLIDER SECTION ================-->
-
-    <!--=========== BEGIN ABOUT US SECTION ================-->
-    <section id="aboutUs">
+  
+  <!-- Hero Section -->
+   <section id="home"   class="hero hero_full_screen hero_parallax parallax-window" data-stellar-background-ratio="0.5">
+    <div class="bg-overlay opacity-6">
+    </div>
+    <div class="hero_parallax_inner">
       <div class="container">
-      <div class="row">
-                <div class="col-lg-12 col-md-12"> 
-                  <div class="title_area">
-                    <h2 class="title_two">Về chúng tôi</h2>
-                    <span></span> 
-                  </div>
-                </div>
-      </div>
-        <div class="row">
-        <!-- Start about us area -->
-        <div class="col-lg-12 col-md-12">
+        <!--  <div class="search-row">
+          <form class="search-form horizontal container " action="#">
+            <div class="search-fields col-sx-6 col-md-3">
+              <input placeholder="Check-in" class="datepicker-fields check-in" type="text">
+              <i class="fa fa-calendar form-control-feedback"></i>
+            </div>
             
-          <div class="descriptive-title">
-              <p>Chúng tôi cung cấp giải pháp quản lý khách sạn đầy đủ, đẹp, để dàng sử dụng trên mọi hệ điều hành có thể truy cập web. phần mềm chúng tôi được thiết kế để đáp ứng đầy đủ tính năng cho các khách sạn </p>
-          </div>
-          </div>
-          <div class="awards">
-          <div class="row">
-            <div class="col-sm-3 col-xs-6">
-                <!--counter box-->
-
-                <div class="counter_box text-center fadeInDown  wow animated" data-wow-delay=".1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInDown;">
-                    <div class="counter_number counter">276</div>
-                    <h4 class="counter_name">Nhà đầu tư</h4>
-                </div>
-                <!--counter box end-->
-            </div>
-            <div class="col-sm-3 col-xs-6">
-                <!--counter box-->
-                <div class="counter_box text-center fadeInDown  wow animated" data-wow-delay=".2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInDown;">
-                    <div class="counter_number counter">153</div>
-                    <h4 class="counter_name">Khách sạn</h4>
-                </div>
-                <!--counter box end-->
-            </div>
-            <div class="col-sm-3 col-xs-6">
-                <!--counter box-->
-                <div class="counter_box text-center fadeInDown  wow animated" data-wow-delay=".4s" style="visibility: visible; animation-delay: 0.4s; animation-name: fadeInDown;">
-                    <div class="counter_number counter">780</div>
-                    <h4 class="counter_name">Phòng</h4>
-                </div>
-                <!--counter box end-->
-            </div>
-            <div class="col-sm-3 col-xs-6">
-                <!--counter box-->
-                <div class="counter_box text-center fadeInDown  wow animated" data-wow-delay=".6s" style="visibility: visible; animation-delay: 0.6s; animation-name: fadeInDown;">
-                    <div class="counter_number counter">1276</div>
-                    <h4 class="counter_name">tài khoản</h4>
-                </div>
-                <!--counter box end-->
-            </div>
-          </div>
-        </div><!-- Awards -->
+          </form>
         </div>
-        
-      </div>
-      </div>
-    </section>
-    <!--=========== END ABOUT US SECTION ================--> 
-
-    <!--=========== BEGIN WHY US SECTION ================-->
-    <section id="whyUs">
-      <!-- Start why us top -->
-      <div class="row">        
-        <div class="col-lg-12 col-sm-12">
-          <div class="whyus_top">
-            <div class="container">
-              <!-- Why us top titile -->
-              <div class="row">
-                <div class="col-lg-12 col-md-12"> 
-                  <div class="title_area">
-                    <h2 class="title_two">Lý do chọn chúng tôi</h2>
-                    <span></span> 
-                  </div>
-                </div>
+        <h1 class="big-slider-title" data-ix="slide-big-title" style="opacity: 1; transform: translateX(0px) translateY(0px); transition: opacity 500ms ease 0s, transform 500ms ease 0s;">Think creative</h1>
+        <h3 class="slider-sub-txt white" data-ix="slide-sub-title" style="opacity: 1; transform: translateX(0px) translateY(0px); transition: opacity 500ms ease 0s, transform 500ms ease 0s;">we are always working hard</h3>
+        <div class="slider-spc" data-ix="slide-spc" style="opacity: 1; transform: translateX(0px) translateY(200px); transition: opacity 500ms ease 0s, transform 500ms ease 0s;"> -->
+        <div class="search-row">
+          <form class="search-form horizontal container " action="#">
+         <div>
+          <div class="col-md-3">
+            <div class=" col-md-11 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
+              <div>
+                  <input id="check_in" type="text" onclick="(this.type='date')"  class="form-control" placeholder="Check-in" name="check_in" value="{{ old('check_in') }}" required autofocus>
               </div>
-              <!-- End Why us top titile -->
-              <!-- Start Why us top content  -->
-              <div class="row">
-                <div class="col-lg-3 col-md-3 col-sm-3">
-                  <div class="single_whyus_top wow fadeInUp">
-                    <div class="whyus_icon">
-                      <span class="fa fa-desktop"></span>
-                    </div>
-                    <h3>RESPONSIVE GRID</h3>
-                    <p>Phần mềm được thiết kế để có thể hiển thị tương thích trên mọi kích thước hiển thị của trình duyệt</p>
-                  </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-3">
-                  <div class="single_whyus_top wow fadeInUp">
-                    <div class="whyus_icon">
-                      <span class="fa fa-users"></span>
-                    </div>
-                    <h3>Quản lý khách sạn từ xa</h3>
-                    <p>Với công nghệ hiện đại cho phép quản lý, chủ khách sạn có thể truy cập vào phần mềm từ bất kỳ đâu chỉ bằng trình duyệt Web. Các nhà quản lý khách sạn có thể kiểm tra, theo dõi, báo cáo </p>
-                  </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-3">
-                  <div class="single_whyus_top wow fadeInUp">
-                    <div class="whyus_icon">
-                      <span class="fa fa-flask"></span>
-                    </div>
-                    <h3>Đa thiết bị và điều hành</h3>
-                    <p>Với nền tảng phần mềm dạng dịch vụ có thể chạy trên nhiều thiết bị với các hệ điều hành khác nhau như Windows, Mac OS, Linux… chỉ với trình duyệt Web mà không cần cài đăt.</p>
-                  </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-3">
-                  <div class="single_whyus_top wow fadeInUp">
-                    <div class="whyus_icon">
-                      <span class="fa fa-support"></span>
-                    </div>
-                    <h3>Hổ trợ online</h3>
-                    <p>Hệ thống hổ trợ online 24/7, khi bạn gặp vấn vần bất cứ vấn đề gì có thể liên hệ với chúng tôi để được tư vấn thông qua điện thoại, email, chức năng hổ trợ khách hàng của hệ thống</p>
-                  </div>
-                </div>
-              </div>
-              <!-- End Why us top content  -->
             </div>
           </div>
-        </div>        
+          <div class="col-md-3">
+            <div class=" col-md-11 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
+              <div>
+                  <input id="check_out" type="text" onfocus="(this.type='date')" class="form-control" placeholder="Check-out" name="check_out" value="{{ old('check_out') }}" required autofocus>
+              </div>
+            </div>
+          </div>
+           <div class="col-md-3">
+            <div class=" col-md-11 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
+              <div>
+                  <select class="form-control">
+                            <option>Loại phòng</option>
+                            <option>Phòng đơn</option>
+                            <option>Phòng đôi</option>
+                            <option>Phòng vip</option>
+                          </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class=" col-md-11 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
+              <div>
+                  <input id="e_phone_number" type="number" class="form-control" placeholder="Số người" name="phone_number" value="{{ old('phone_number') }}" >
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div style="text-align: center;">
+          <input type="submit" name="Register" class="btn btn-sm btn-default "  style="width:auto;  margin:0 auto; text-align:center" value="Đặt phòng">
+          
+        </div>
+
+          
+            
+          </form>
+        </div>
+        </div>
       </div>
-      <!-- End why us top -->
+  </section> 
+  
 
-    </section>
-    <!--=========== END WHY US SECTION ================-->
-
-    <!--=========== BEGIN pricing ================-->
-   <!-- Pricing Section -->
-  <section id="pricing" class="pb80 pt80">
+  <!-- About Section -->
+  <section id="about" class="pb80 pt80">
     <div class="container">
-      <div class="row">
-        <div class="header-section text-center mb40 white">
-          <h2 class="meta-title-2 white">Bảng giá</h2>
-        </div>
-      </div>
-      <div class="row">
+      <div class="col-md-12">
+        <div class="descriptive-title">
+          <h2>GIỚI THIỆU KHÁCH SẠN</h2>
+          <p>Chào mừng bạn đến với khách sạn của chúng tôi, khách sạn chúng tôi .</p>
+          <p>Khách sạn được chia thành 5 hạng phòng khác nhau, được du khách yêu thích bởi sự sạch sẽ và dịch vụ phòng hoàn hảo. Ngoài ra, khách sạn Đệ Nhất còn trang bị phòng tập thể hình, hồ bơi, 3 sân tennis, CLB trò chơi có thưởng (chỉ dành cho khách nước ngoài) & khu mát-xa – xông hơi để phục vụ khách lưu trú.</p>
+          <p>Ẩm thực cũng là một thế mạnh bởi sự đa dạng phong cách và tinh tế trong từng món ăn. Nhà hàng Phố Nướng Đệ Nhất, Korea House và Hanasushi mang đến những món ăn cũng như không gian đặc trưng đậm chất Việt Nam, Hàn Quốc & Nhật Bản. Với nhà hàng Buffet Đệ Nhất là sự tổng hợp hài hòa các món ăn đến từ Việt – Á – Âu, là một bữa tiệc hoành tráng thật sự cho khách lưu trú tại khách sạn nói riêng và thực khách Sài Gòn nói chung.</p>
 
-        <!-- Pricing Table One -->
-        <div class="col-sm-3 col-md-3">
-          <div class="pricing-table-column pricing1">
-            <h5>BASIC</h5>
-            <div class="price-band">
-              <h2>$1000000Đ</h2>
-              <p>1 tháng</p>
-            </div>
-            <ul>
-              <li>Miển phí 1 khách sạn</li>
-              <li>Công cụ quản lý đầy đủ</li>
-              <li>Miển phí hổ trợ</li>
-            </ul>
-            <div class="button-style-1"><a href="">Đăng kí ngay</a></div>
-          </div>
         </div>
-
-        <!-- Pricing Table Two -->
-        <div class="col-sm-3 col-md-3">
-          <div class="pricing-table-column">
-            <h5>SILVER</h5>
-            <div class="price-band">
-              <h2>$1500000Đ</h2>
-              <p>2 month</p>
-            </div>
-            <ul>
-              <li>Miển phí 3 khách sạn</li>
-              <li>Công cụ quản lý đầy đủ</li>
-              <li>Miển phí hổ trợ</li>
-            </ul>
-            <div class="button-style-1"><a href="">buy it now</a></div>
-          </div>  
-        </div>
-
-        <!-- Pricing Table Three -->
-        <div class="col-sm-3 col-md-3">
-          <div class="pricing-table-column">
-            <h5>GOOL</h5>
-            <div class="price-band">
-              <h2>$2500000Đ</h2>
-              <p>4 month</p>
-            </div>
-            <ul>
-              <li>Miển phí 6 khách sạn</li>
-              <li>Công cụ quản lý đầy đủ</li>
-              <li>Miển phí hổ trợ</li>
-            </ul>
-            <div class="button-style-1"><a href="">buy it now</a></div>
-          </div>  
-        </div>
-
-        <!-- Pricing Table Four -->
-        <div class="col-sm-3 col-md-3">
-          <div class="pricing-table-column">
-            <h5>vip</h5>
-            <div class="price-band">
-              <h2>4000000Đ</h2>
-              <p>6 month</p>
-            </div>
-            <ul>
-              <li>Miển phí 10 khách sạn</li>
-              <li>Công cụ quản lý đầy đủ</li>
-              <li>Miển phí hổ trợ</li>
-            </ul>
-            <div class="button-style-1"><a href="">buy it now</a></div>
-          </div>
-        </div>    
+      
       </div>
     </div>
   </section>
-   
-   
-    <!--=========== BEGIN FOOTER SECTION ================-->
-    <footer id="footer">
-      <!-- Start footer top area -->
-      <div class="footer_top">
-        <div class="container">
-          <div class="row">
-            <div class="col-ld-3  col-md-3 col-sm-3">
-              <div class="single_footer_widget">
-                <h3>Liên Hệ</h3>
-                <div><strong>Email</strong>: thesis@gmail.com</div>
-                <div><strong>điện thoại:</strong>: (+84) 163 846 0544</div>
-                <div><strong>Địa chỉ</strong>: 227 Nguyễn Văn Cừ, Phường 4, Quận 5, Hồ Chí Minh</div>
-              </div>
+
+  <!-- Service Section -->
+  <section id="service" class="pb80 pt80 bg-grey">
+    <div class="container">
+      <div class="row">
+        <div class="header-section text-center mb40">
+          <h2 class="meta-title-2">Thông tin phòng</h2>
+        </div>
+      </div>
+     <div class="row">
+        <div class="col-lg-4 col-sm-6 m-bottom4">
+          <div class="post-cols">
+            <div class="post-thumb">
+              <div class="imgbox"><a href="#"><img src="img/troom1.jpg" alt="" class="img-responsive"></a></div>
             </div>
-            <div class="col-ld-6 col-md-6 col-sm-6">
-              <div class="single_footer_widget">
-                <h3><center>Community</center></h3>
-                <ul class="footer_widget_nav">
-                <li><a href="#"><center>Trang chủ</center></a></li>
-                <li><a href="#aboutUs"><center>Về chúng tôi</center></a></li>
-                <li><a href="#whyUs"><center>Lý do</center></a></li>
-                <li><a href="#pricing"><center>Bảng giá</center></a></li>
-                <li><a href="#footer"><center>Liên hệ</center></a></li> 
-                </ul>
-              </div>
+            <div class="post-dis m-top2">
+              <h4 class="m-bottom1 m-top1 font18"><a href="#">Phòng đơn</a></h4>
+              <p class="m-top1">Đây là phòng có 1 giường. </p>
             </div>
-         
-            <div class="col-ld-3  col-md-3 col-sm-3">
-              <div class="single_footer_widget">
-                <h3>Social Links</h3>
-                <ul class="footer_social">
-                  <li><a data-toggle="tooltip" data-placement="top" title="Facebook" class="soc_tooltip" href="#"><i class="fa fa-facebook"></i></a></li>
-                  <li><a data-toggle="tooltip" data-placement="top" title="Twitter" class="soc_tooltip"  href="#"><i class="fa fa-twitter"></i></a></li>
-                  <li><a data-toggle="tooltip" data-placement="top" title="Google+" class="soc_tooltip"  href="#"><i class="fa fa-google-plus"></i></a></li>
-                  <li><a data-toggle="tooltip" data-placement="top" title="Linkedin" class="soc_tooltip"  href="#"><i class="fa fa-linkedin"></i></a></li>
-                  <li><a data-toggle="tooltip" data-placement="top" title="Youtube" class="soc_tooltip"  href="#"><i class="fa fa-youtube"></i></a></li>
-                </ul>
-              </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-sm-6 m-bottom4">
+          <div class="post-cols">
+            <div class="post-thumb">
+              <div class="imgbox"><a href="#"><img src="img/troom2.jpg" alt="" class="img-responsive"></a></div>
+            </div>
+            <div class="post-dis m-top2">
+              <h4 class="m-bottom1 m-top1 font18"><a href="#">Phòng đôi</a></h4>
+              <p class="m-top1">Đây là phòng có 2 giường </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-sm-6 m-bottom4">
+          <div class="post-cols">
+            <div class="post-thumb">
+              <div class="imgbox"><a href="#"><img src="img/troom3.jpg" alt="" class="img-responsive"></a></div>
+            </div>
+            <div class="post-dis m-top2">
+              <h4 class="m-bottom1 m-top1 font18"><a href="#">Phòng vip</a></h4>
+              <p class="m-top1">Đây là phòng đặt biệt, đẹp, có nhiều dịch vụ đạt biệt </p>
             </div>
           </div>
         </div>
       </div>
-      <!-- End footer top area -->
-
-      <!-- Start footer bottom area -->
-
-      <!-- End footer bottom area -->
-    </footer>
-    <!--=========== END FOOTER SECTION ================--> 
+    </div>
+  </section>
 
 
-<!-- dialog -->
+
+  <!-- Project Section -->
+  <section id="project" class="pt80 pb80">
+    <div class="container">
+      <div class="row">
+        <div class="com-sm-12">
+          <div class="header-section text-center mb40">
+            <h2 class="meta-title-2">Dịch vụ</h2>
+          </div>
+        </div>
+      </div>
+ <div class="row">
+        <div class="col-lg-4 col-sm-6 m-bottom4">
+          <div class="post-cols">
+            <div class="post-thumb">
+              <div class="imgbox"><a href="#"><img src="img/dv1.jpg" alt="" class="img-responsive"></a></div>
+            </div>
+            <div class="post-dis m-top2">
+              <h4 class="m-bottom1 m-top1 font18"><a href="#">Ăn uống</a></h4>
+              <p class="m-top1">Khách sạn chúng tôi có nhà ăn 5* với những món ngon nổi tiếng Việt Nam. </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-sm-6 m-bottom4">
+          <div class="post-cols">
+            <div class="post-thumb">
+              <div class="imgbox"><a href="#"><img src="img/dv2.jpg" alt="" class="img-responsive"></a></div>
+            </div>
+            <div class="post-dis m-top2">
+              <h4 class="m-bottom1 m-top1 font18"><a href="#">Tắm xông hỏi</a></h4>
+              <p class="m-top1">Khách sạn chúng tôi có dịch vụ tắm à xông hỏi giúp khách dàng thư giản </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-sm-6 m-bottom4">
+          <div class="post-cols">
+            <div class="post-thumb">
+              <div class="imgbox"><a href="#"><img src="img/dv3.jpg" alt="" class="img-responsive"></a></div>
+            </div>
+            <div class="post-dis m-top2">
+              <h4 class="m-bottom1 m-top1 font18"><a href="#">buffet</a></h4>
+              <p class="m-top1">Khách sạn chúng tôi có dịch vụ buffet trong những buổi tiệc</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
 
+  <!-- Footer Section -->
+  <footer class="footer">
+    <div class="container inner">
+      <p class="pull-left white"> <a href="#">Khách sạn {{$info['name']}}</a>.</p>
+      <ul class="social pull-right">
+        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+        <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+        <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+      </ul>
+    </div>
+    <!-- .container --> 
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script  src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/bootsnav.js"></script>
+  <!-- <script src="js/owl.carousel.js"></script>
+  <script  src="js/counterup.min.js"></script> -->
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>
+ 
+ 
   
-
-    <!-- Javascript Files
-    ================================================== -->
-
-    <!-- initialize jQuery Library -->
-     
-    <!-- Preloader js file -->
-   <!-- <script src="js/queryloader2.min.js" type="text/javascript"></script> -->
-    <!-- For smooth animatin  -->
-    <script src="js/jquery.min.js"></script>
-    <script src="js/wow.min.js"></script>  
-    <script src="//cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>
-    <script src="js/jquery.counterup.min.js"></script>
-    <!-- Bootstrap js -->
-    <script src="js/bootstrap.min.js"></script>
-    <!-- slick slider -->
-    <script src="js/slick.min.js"></script>
-    <!-- superslides slider -->
-    <script src="js/jquery.easing.1.3.js"></script>
-    <script src="js/jquery.animate-enhanced.min.js"></script>
-    <script src="js/jquery.superslides.min.js" type="text/javascript" charset="utf-8"></script>   
-    <!-- for circle counter -->
-    <script src='https://cdn.rawgit.com/pguso/jquery-plugin-circliful/master/js/jquery.circliful.min.js'></script>
-    <!-- Gallery slider -->
-    <script type="text/javascript" language="javascript" src="js/jquery.tosrus.min.all.js"></script>   
-
-
-    <!-- angular -->
-    <!-- <script src="js/angular.min.js"></script>
-    <script src="js/angular-app.js"></script>
-    
-    <script src="js/angular-animate.min.js"></script>
-    <script src="js/angular-aria.min.js"></script>
-    <script src="js/angular-messages.min.js"></script>
-    <script src="js/angular-route.min.js"></script>
-    <script src="js/angular-index.js"></script>
-    <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/svg-assets-cache.js'></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script> -->
-
-    <!-- Custom js-->
-    <script src="js/custom.js"></script>
-    <script src="js/app.js"></script>
   
-
-    <!--=============================================== 
-    Template Design By WpFreeware Team.
-    Author URI : http://www.wpfreeware.com/
-    ====================================================-->
-@if ($errors->has('username') )
-  @if($errors->first('username') == "These credentials do not match our records.")
-
-    <script type="text/javascript">  
-    $(document).ready(function () {
-      $('#login-modal').modal('show');
-
-}); </script>
- @endif
- @if($errors->first('username') != "These credentials do not match our records.")
-
-    <script type="text/javascript">  
-    $(document).ready(function () {
-      $('#register-modal').modal('show');
-
-}); </script>
- @endif
-  @endif  @if ($errors->has('password'))
-      <script>  <script>  function myFunction() { 
-    document.getElementById("register-modal").showModal(); </script>
-  @endif @if ($errors->has('email'))
-      <script>  <script>  function myFunction() { 
-    document.getElementById("register-modal").showModal(); </script>
-  @endif
-
-<script type="text/javascript">
-   
-    function removeMessage() {
-        $("div").removeClass("has-error");
-        $("span").removeClass("help-block");
-
-        var x = document.getElementsByClassName("messageError");
-        for (i = 0; i < x.length; i++) { 
-            x[i].innerHTML = "";
-        }
-        $("strong").removeClass("messageError");
-        // var element = document.getElementsByClassName("help-block");
-        
-}
-</script>
-
-
-  </body>
+</body>
 </html>

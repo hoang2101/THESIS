@@ -230,7 +230,14 @@
                                 <td>{{$user->last_name}}</td>
                                 <td>{{$user->username}}</td>
                                 <td>{{$user->email}}</td>
-                                <td>{{$user->hotel_id}}</td>
+                                @foreach ($hotels as $hotel)
+                                    @if($user->hotel_id == $hotel->hotel_id)
+                                    {
+                                        <td>{{$hotel->hotel_name}}</td>
+                                    }
+                                    @endif
+                                @endforeach
+                                
                                 <td>
                                     <a href="#" class="btn btn-primary btn-xs" onclick="showDataView('{{$user->account_id}}','{{$user->first_name}}', '{{$user->last_name}}', '{{$user->email}}', '{{$user->phone_number}}', '{{$user->username}}', '{{$user->country}}', '{{$user->dob}}', '{{$user->gender}}') " data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
                                     <a href="#" class="btn btn-info btn-xs"  onclick="showDataEdit('{{$user->account_id}}','{{$user->first_name}}', '{{$user->last_name}}', '{{$user->email}}', '{{$user->phone_number}}', '{{$user->username}}', '{{$user->country}}', '{{$user->dob}}', '{{$user->gender}}') ;" data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal"><i class="fa fa-pencil"></i>Sửa</a>

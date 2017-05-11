@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Quản lý hệ thống khách sạn</title>
+    <title>Quản lý Quản trị khách sạn</title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -32,6 +32,7 @@
     <link href="vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
     <link href="vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/custommanage.css">
+
     <!-- Custom Theme Style -->
     <link rel="stylesheet" type="text/css" href="css/style_namage.css"></link>
     <link href="css/custom.min.css" rel="stylesheet">
@@ -56,7 +57,7 @@
                         </div>
                         <div class="profile_info">
                             <span>Welcome,</span>
-                            <h2>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</h2>
+                            <h2>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }} </h2>
                         </div>
                     </div>
                     <!-- /menu profile quick info -->
@@ -71,8 +72,8 @@
                                 <li><a href="{{ route('mainHome') }}"><i class="fa fa-home"></i> Home </a>
                                 </li>
                                 
-                                <li><a class=""><i class="fa fa-desktop" href="{{ route('mainManageHoteler') }}"></i> Quản lý khách sạn</a>
-                                <li><a class="active"><i class="fa fa-user" ></i> Quản lý Quản trị khách sạn</a>
+                                <li><a href="{{ route('mainManageHoteler') }}"><i class="fa fa-desktop"></i> Quản lý khách sạn</a>
+                                <li><a class="active"><i class="fa fa-user" "></i> Quản lý Quản trị khách sạn</a>
                                     
                                 </li>
                                <!--  <li><a><i class="fa fa-table"></i>zxczxc  </a>
@@ -137,8 +138,8 @@
                                 </li>
                                 <li><a href="javascript:void(0)"><i class="fa fa-laptop"></i> Landing Page <span class="label label-success pull-right">Coming Soon</span></a></li>
                             </ul>
-                        </div>
- -->
+                        </div> -->
+
                     </div>
                     <!-- /sidebar menu -->
 
@@ -173,7 +174,7 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="img/img.jpg" alt="">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+                                    <img src="img/img.jpg" alt="">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }} 
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -195,50 +196,53 @@
             <!-- page content -->
             <div class="right_col" role="main">
 
-<div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Danh sách khách sạn<small></small></h2>
+                    <h2>Danh sách Quản trị khách sạn<small></small></h2>
                     <ul class="nav navbar-right panel_toolbox">
-                      <a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-backdrop="static" data-target="#addHotelMainmodal"><i class="fa fa-folder"></i> Thêm khách sạn</a>
+                      <a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-backdrop="static" data-target="#addUserMainmodal"><i class="fa fa-folder"></i> Thêm Quản trị </a>
                     </ul>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
                     
                     
-                    <table id="responsiveHotel" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                    <table id="responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                       <thead>
                         <tr>
                           <th id="cel1">ID</th>
-                          <th white-space:pre-line" id="cel5">Tên khách sạn</th>
-                          <th id="cel10">Tên miền</th>
-                          <th id="cel10">Ngày hết hạn</th>
-                          <th id="cel5">Tổng booking</th>
-                          <th class="nosort"  id="cel5">Manage</th>
+                          <th white-space:pre-line" id="cel5">Họ</th>
+                          <th id="cel5">Tên</th>
+                          <th id="cel10">Username</th>
+                          <th id="cel10">E-mail</th>
+                          <th id="cel5">Hotel</th>
+                          <th class="nosort"  id="cel5">Quản lý</th>
                         </tr>
                       </thead>
                       <tbody>
-                      @foreach ($hotels as $hotel)
                       
+                      @foreach ($users as $user)
+                    
                             <tr>
-                                <td>{{$hotel->hotel_id}}</td>
-                                <td>{{$hotel->hotel_name}}</td>
-                                <td>{{$hotel->hotel_url}}</td>
-                                <td>{{$hotel->expire_date}}</td>
+                                <td>{{$user->id}}</td>
+                                <td>{{$user->first_name}}</td>
+                                <td>{{$user->last_name}}</td>
+                                <td>{{$user->username}}</td>
+                                <td>{{$user->email}}</td>
                                 <td>0</td>
                                 <td>
-                                    <a href="#" class="btn btn-primary btn-xs" onclick="showHotelView('{{$hotel->hotel_id}}','{{$hotel->hotel_name}}', '{{$hotel->hotel_url}}', '{{$hotel->expire_date}}', '{{$hotel->config_id}}', '{{$hotel->hotel_star}}') " data-toggle="modal" data-backdrop="static" data-target="#viewHotelMainmodal "  ><i class="fa fa-folder"></i> View </a>
-                                    <a href="#" class="btn btn-info btn-xs"  onclick="showHotelEdit('{{$hotel->hotel_id}}','{{$hotel->hotel_name}}', '{{$hotel->hotel_url}}', '{{$hotel->expire_date}}' , '{{$hotel->config_id}}', '{{$hotel->hotel_star}}') ;" data-toggle="modal" data-backdrop="static" data-target="#viewHotelMainmodal"><i class="fa fa-pencil"></i> Edit </a>
+                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataView('{{$user->id}}','{{$user->first_name}}', '{{$user->last_name}}', '{{$user->email}}', '{{$user->phone_number}}', '{{$user->username}}', '{{$user->country}}', '{{$user->dob}}', '{{$user->gender}}') " data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
+                                    <a href="#" class="btn btn-info btn-xs"  onclick="showDataEdit('{{$user->id}}','{{$user->first_name}}', '{{$user->last_name}}', '{{$user->email}}', '{{$user->phone_number}}', '{{$user->username}}', '{{$user->country}}', '{{$user->dob}}', '{{$user->gender}}') ;" data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
 
-                                    <a data-toggle="tooltip" data-placement="top"  class="btn btn-danger btn-xs"
+                            <a data-toggle="tooltip" data-placement="top"  class="btn btn-danger btn-xs"
                                             onclick="event.preventDefault();
-                                                     document.getElementById('deleteHotel{{$hotel->hotel_id}}').submit();"><i class="fa fa-trash-o"></i> Delete </a>
+                                                     document.getElementById('deleteUser{{$user->id}}').submit();"><i class="fa fa-trash-o"></i> Xóa </a>
 
-                                    <form id="deleteHotel{{$hotel->hotel_id}}" action="{{ route('addHotelHotelerSubmit') }}" method="POST" style="display: none;">
+                            <form id="deleteUser{{$user->id}}" action="{{ route('addGovermHotelerSubmit') }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
-                                            <input hidden id="typePosts"" name="typePost" value="deleteHotel">
-                                            <input hidden id="id" name="id" value="{{$hotel->hotel_id}}">
+                                            <input hidden id="typePosts"" name="typePost" value="deleteUser">
+                                            <input hidden id="id" name="id" value="{{$user->id}}">
                                         </form>
                                 </td>
                             </tr>
@@ -259,35 +263,37 @@
 
             </div>
             <!-- /page content -->
-<!-- modal dialog  -->
-<div class="modal fade" id="addHotelMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+<!-- modal dialog add user -->
+<div class="modal fade" id="addUserMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
         <div class="modal-dialog">
         <div class="loginmodal-container">
-        <button type="button" class="close" data-dismiss="modal" onclick="removeMessage()" aria-label="Close"><span aria-hidden="true">&times;</span>
+        <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-          <h1>Thêm khách sạn</h1><br>
-          <form class="form-horizontal" role="form" method="POST" action="{{ route('addHotelHotelerSubmit') }}">
+          <h1>Thêm quản trị</h1><br>
+          <form class="form-horizontal" role="form" method="POST" action="{{ route('addGovermHotelerSubmit') }}">
                         {{ csrf_field() }}
-                        <input hidden id="addtypePost"" name="typePost" value="addHotel">
-                        <div class="form-group{{ $errors->has('hotel_name') ? ' has-error' : '' }}">
+                        <input hidden id="addtypePost"" name="typePost" value="addUser">
+                        <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
                             <div >
-                                <input id="hotel_name" type="text" class="form-control" placeholder="Tên khách sạn" name="hotel_name" value="{{ old('hotel_name') }}" required autofocus>
+                                <input id="first_name" type="text" class="form-control" placeholder="First Name" name="first_name" value="{{old('first_name') }}" required autofocus >
 
-                                @if ($errors->has('hotel_name'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('hotel_name') }}</strong>
-                                    </span>
-                                @endif
+                                
                             </div>
                         </div>
-                        
-                        <div class="form-group{{ $errors->has('hotel_url') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
                             <div >
-                                <input id="hotel_url" type="text" class="form-control" placeholder="Tên miền" name="hotel_url" value="{{ old('name') }}" required autofocus>
+                                <input id="last_name" type="text" class="form-control" placeholder="Last Name" name="last_name" value="{{ old('last_name') }}" required autofocus>
 
-                                @if ($errors->has('hotel_url'))
+                                
+                            </div>
+                        </div>
+                        <div class="form-group {{ $errors->has('username') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="username" type="text" class="form-control" placeholder="Username" name="username" value="{{ old('username') }}" required autofocus>
+
+                                @if ($errors->has('username'))
                                     <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('hotel_url') }}</strong>
+                                        <strong class="messageError">{{ $errors->first('username') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -295,136 +301,163 @@
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <div >
-                                <input id="expire_date" type="text" onfocus="(this.type='date')" class="form-control" placeholder="Ngày hết hạn" name="expire_date" value="{{ old('email') }}" required>
+                                <input id="email" type="email" class="form-control" placeholder="E-Mail Address" name="email" value="{{ old('email') }}" required autofocus>
 
-                                @if ($errors->has('expire_date'))
+                                @if ($errors->has('email'))
                                     <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('expire_date') }}</strong>
+                                        <strong class="messageError">{{ $errors->first('email') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
 
-                        
-                        <div class="form-group{{ $errors->has('config_id') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <div >
-                                <input id="config_id" type="text" class="form-control" placeholder="Config" name="config_id" value="{{ old('config_id') }}" required>
+                                <input id="password" type="password" class="form-control" placeholder="Password" name="password" required>
 
-                                @if ($errors->has('config_id'))
+                                @if ($errors->has('password'))
                                     <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('config_id') }}</strong>
+                                        <strong class="messageError">{{ $errors->first('password') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group{{ $errors->has('hotel_star') ? ' has-error' : '' }}">
+
+                        <div class="form-group">
                             <div >
-
-                                <input id="hotel_star" type="number" class="form-control" placeholder="Loại khách sạn" name="hotel_star" value="{{ old('e_hotel_star') }}" required>
-                                @if ($errors->has('e_hotel_star'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('e_hotel_star') }}</strong>
-                                    </span>
-                                @endif
+                                <input id="password-confirm" type="password" placeholder="Confirm Password" class="form-control" name="password_confirmation" required>
                             </div>
-                            
                         </div>
-                        
-                        <input type="submit" name="Register" class=" loginmodal-submit" value="Thêm khách sạn">
+                        <input type="submit" name="Register" class="loginmodal-submit " value="Thêm khách hàng">
                        
                     </form>
           </div>
         </div>
       </div>
-       <div class="modal fade" id="viewHotelMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+
+      <!-- modal dialog view  edit user -->
+      <div class="modal fade" id="viewUserMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
         <div class="modal-dialog">
-        <div class="loginmodal-container">
+        <div class="Registermodal-content">
         <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-          <h1>Xem chi tiết khách sạn</h1><br>
-          <form class="form-horizontal" role="form" method="POST" action="{{ route('addHotelHotelerSubmit') }}">
+          <h1>Xem chi tiết khách hàng</h1><br>
+          <form class="form-horizontal" role="form" method="POST" action="{{ route('addGovermHotelerSubmit') }}">
                         {{ csrf_field() }}
                 
-                        <input hidden id="typePost"" name="typePost" value="updateHotel">
-                        <input hidden id="idHotel" name="id" value="">
-                        <div class="form-group{{ $errors->has('hotel_name') ? ' has-error' : '' }}">
+                        <input hidden id="typePost"" name="typePost" value="updateUser">
+                        <input hidden id="idUser" name="id" value="">
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
                             <div >
-                                <input id="e_hotel_name" type="text" class="form-control" placeholder="Tên khách sạn" name="hotel_name" value="{{ old('hotel_name') }}" required autofocus>
+                                <input id="e_first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" required autofocus>
 
-                                @if ($errors->has('hotel_name'))
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="e_last_name" type="text" class="form-control" placeholder="Tên" name="last_name" value="{{ old('last_name') }}" required autofocus>
+
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="e_email" type="email" class="form-control" placeholder="E-Mail" name="email" value="{{ old('email') }}" required autofocus>
+                          
+                                @if ($errors->has('email'))
                                     <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('hotel_name') }}</strong>
+                                        <strong class="messageError">{{ $errors->first('email') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group">
                         
-                        <div class="form-group{{ $errors->has('hotel_url') ? ' has-error' : '' }}">
                             <div >
-                                <input id="e_hotel_url" type="text" class="form-control" placeholder="Tên miền" name="hotel_url" value="{{ old('hotel_url') }}" required autofocus>
+                                <input id="e_phone_number" type="number" class="form-control" placeholder="Số điện thoại" name="phone_number" value="{{ old('phone_number') }}" >
 
-                                @if ($errors->has('hotel_url'))
-                                    <span class="help-block">
-                                        <strong class="messageError"> {{ $errors->first('hotel_url') }}</strong>
+                               
+                                @if ($errors->has('email'))
+                                     <span class="help-block">
+                                      <br>
                                     </span>
                                 @endif
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('expire_date') ? ' has-error' : '' }}">
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group {{ $errors->has('username') ? ' has-error' : '' }}">
                             <div >
-                                <input id="e_expire_date" type="date" class="form-control" placeholder="Ngày hết hạn" name="expire_date" value="{{ old('expire_date') }}" >
+                                <input id="e_username" type="text" class="form-control" placeholder="Tên tài khoản" name="username" value="{{ old('username') }}" required>
 
-                                @if ($errors->has('expire_date'))
+                                @if ($errors->has('username'))
                                     <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('expire_date') }}</strong>
+                                        <strong class="messageError">{{ $errors->first('username') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
-
-                        
-                        <div class="form-group{{ $errors->has('tatol') ? ' has-error' : '' }}">
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group">
                             <div >
-                                <input id="e_config_id" type="text" class="form-control" placeholder="Config" name="config_id" value="{{ old('config_id') }}" >
+                                <input id="e_country" type="text" class="form-control" placeholder="Quốc qia" name="country" value="{{ old('country') }}" >
 
-                                @if ($errors->has('config_id'))
+                                @if ($errors->has('username'))
+                                 <span class="help-block">
+                                      <br>
+                                    </span>
+                                    
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                            <div >
+                                <input id="e_dob" type="text" onfocus="(this.type='date')" class="form-control" placeholder="Ngày sinh" name="dob" value="{{ old('dob') }}" >
+
+                                @if ($errors->has('dob'))
                                     <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('config_id') }}</strong>
+                                        <strong class="messageError">{{ $errors->first('dob') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group{{ $errors->has('hotel_star') ? ' has-error' : '' }}">
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group">
                             <div >
-                                <input id="e_hotel_star" type="number" class="form-control" placeholder="Loại khách sạn" name="hotel_star" value="{{ old('expire_date') }}" >
+                                <input id="e_gender" type="text" class="form-control" placeholder="Giới tính" name="gender" >
 
-                                @if ($errors->has('tatol'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('tatol') }}</strong>
+                                 @if ($errors->has('dob'))
+                                     <span class="help-block">
+                                      <br>
                                     </span>
                                 @endif
                             </div>
                         </div>
-
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group>">
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <input id="e_submit" type="submit" name="Register" class="loginmodal-submit" value="Chỉnh sửa khách hàng">
                         </div>
                          <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <a   class="btn btn-danger btn-xs pull-right" onclick="deleteHotel()"><i class="fa fa-trash-o"></i> Delete </a>
+                            <!-- <a data-toggle="tooltip" data-placement="top"  class="pull-right btn btn-primary btn-xs" href="{{ route('addUserMainSubmit') }}"
+                                            onclick="event.preventDefault();
+                                                     document.getElementById('edit-form').submit();"><i class="fa fa-folder"></i> View  </a> -->
+                            <a   class="btn btn-danger btn-xs pull-right" onclick="deleteusers()"><i class="fa fa-trash-o"></i> Xóa </a>
 
                             
-                            <a href="#" id="typeEditView" class="btn btn-info btn-xs pull-right" onclick="addReadHotelonly()"><i class="fa fa-pencil"></i>Edit</a>
+                            <a href="#" id="typeEditView" class="btn btn-info btn-xs pull-right" onclick="addReadonly()"><i class="fa fa-pencil"></i>Sửa</a>
                                    
                         </div>
                         
                         
                     </form>
+                    <!-- <a href="{{ route('editUserMainSubmit') }}" class="btn btn-primary btn-xs" data-toggle="tooltip" data-backdrop="static" data-target="#viewUserMainmodal""><i class="fa fa-folder"></i> View </a> -->
                     
           </div>
         </div>
       </div>
-
+      <!-- form post--> 
+      
+                        
+      
+      </form>
             <!-- footer content -->
             <footer>
                 <div class="pull-right">
@@ -435,6 +468,7 @@
             <!-- /footer content -->
         </div>
     </div>
+
    <!-- jQuery -->
     <script src="vendors/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
@@ -493,25 +527,41 @@
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
     <!-- My Cutom Scripts -->
     <script src="js/custom-scripts.js"></script>
-
-   
-    <!-- //gets table -->
-<script src="js/custom-scripts.js"></script>
-    @if($errors->first('typePost')=="addHotel")
-      @if ($errors->has('hotel_url') )
+    @if($errors->first('typePost')=="addUser")
+      @if ($errors->has('username') )
     <script type="text/javascript">  
     $(document).ready(function () {
-      $('#addHotelMainmodal').modal('show');
+      $('#addUserMainmodal').modal('show');
     }); </script>
-    @endif  
+    @endif  @if ($errors->has('password'))
+      <<script type="text/javascript">  
+    $(document).ready(function () {
+      $('#addUserMainmodal').modal('show');
+    }); </script>
+    @endif @if ($errors->has('email'))
+      <script type="text/javascript">  
+    $(document).ready(function () {
+      $('#addUserMainmodal').modal('show');
+    }); </script>
     @endif
-    @if($errors->first('typePost') =="updateHotel"))
-      @if ($errors->has('hotel_url') )
+    @endif
+    @if($errors->first('typePost') =="updateUser"))
+      @if ($errors->has('username') )
     <script type="text/javascript">  
     $(document).ready(function () {
-      $('#viewHotelMainmodal').modal('show');
+      $('#viewUserMainmodal').modal('show');
     }); </script>
-    @endif 
+    @endif  @if ($errors->has('password'))
+     <script type="text/javascript">  
+    $(document).ready(function () {
+      $('#viewUserMainmodal').modal('show');
+    }); </script>
+    @endif @if ($errors->has('email'))
+      <script type="text/javascript">  
+    $(document).ready(function () {
+      $('#viewUserMainmodal').modal('show');
+    }); </script>
+    @endif
     @endif
 
 
@@ -532,9 +582,6 @@
 
 
 <script type="text/javascript">
-    $('#responsiveHotel').DataTable( {
-    responsive: true
-} );
     function removeMessage() {
         $("div").removeClass("has-error");
         $("span").removeClass("help-block");
@@ -554,23 +601,26 @@ function openViewdialog(){
 function openEditdialog(){
 
 }
-function deleteHotel(){
-    document.getElementById("typePost").setAttribute("value", "deleteHotel");
+function deleteusers(){
+    document.getElementById("typePost").setAttribute("value", "deleteUser");
     var l = document.getElementById('e_submit');
     l.click();
 
 }
-function addReadHotelonly(){
+function addReadonly(){
 
     if(document.getElementById("typeEditView").innerHTML == "Sửa")
     {
     document.getElementById("e_submit").setAttribute("type", "submit");
     document.getElementById("typeEditView").innerHTML = "Xem";
-    document.getElementById("e_hotel_name").removeAttribute("readonly");
-    document.getElementById("e_hotel_url").removeAttribute("readonly");
-    document.getElementById("e_expire_date").removeAttribute("readonly");
-    document.getElementById("e_config_id").removeAttribute("readonly");
-    document.getElementById("e_hotel_star").removeAttribute("readonly");
+    document.getElementById("e_first_name").removeAttribute("readonly");
+    document.getElementById("e_last_name").removeAttribute("readonly");
+    document.getElementById("e_email").removeAttribute("readonly");
+    document.getElementById("e_phone_number").removeAttribute("readonly");
+    document.getElementById("e_username").removeAttribute("readonly");
+    document.getElementById("e_country").removeAttribute("readonly");
+    document.getElementById("e_dob").removeAttribute("readonly");
+    document.getElementById("e_gender").removeAttribute("readonly");
 
     // document.getElementById("e_submit").setAttribute("type", "submit");
     // document.getElementById("e_first_name").removeAttribute("readonly");
@@ -585,73 +635,90 @@ function addReadHotelonly(){
 }
 else(document.getElementById("typeEditView").innerHTML == "Xem")
 {
-     document.getElementById("typeEditView").innerHTML = "Sửa";
+    document.getElementById("typeEditView").innerHTML = "Sửa";
     document.getElementById("e_submit").setAttribute("type", "hidden");
-    document.getElementById("e_hotel_name").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_hotel_url").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_expire_date").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_config_id").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_hotel_star").setAttributeNode(document.createAttribute("readonly"));
+
+    document.getElementById("e_first_name").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_last_name").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_email").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_phone_number").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_username").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_country").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_dob").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_gender").setAttributeNode(document.createAttribute("readonly"));
 }
    
 
 }
 
-function removeReadHotelonly(){
+function removeReadonly(){
     
 
 
     document.getElementById("e_submit").setAttribute("type", "submit");
     document.getElementById("typeEditView").innerHTML = "Xem";
-    document.getElementById("e_hotel_name").removeAttribute("readonly");
-    document.getElementById("e_hotel_url").removeAttribute("readonly");
-    document.getElementById("e_expire_date").removeAttribute("readonly");
-    document.getElementById("e_config_id").removeAttribute("readonly");
-    document.getElementById("e_hotel_star").removeAttribute("readonly");
+    document.getElementById("e_first_name").removeAttribute("readonly");
+    document.getElementById("e_last_name").removeAttribute("readonly");
+    document.getElementById("e_email").removeAttribute("readonly");
+    document.getElementById("e_phone_number").removeAttribute("readonly");
+    document.getElementById("e_username").removeAttribute("readonly");
+    document.getElementById("e_country").removeAttribute("readonly");
+    document.getElementById("e_dob").removeAttribute("readonly");
+    document.getElementById("e_gender").removeAttribute("readonly");
      // document.getElementById("typeEditView").setAttribute("onclick", "addReadonly())");
     
 
 }
-function showHotelView(idHotel, hotel_name,hotel_url,expire_date,config_id,hotel_star){
+function showDataView(idUser, first_name, last_name,email,phone_number,username,country,dob,gender){
       
    
     document.getElementById("typeEditView").innerHTML = "Sửa";
     document.getElementById("e_submit").setAttribute("type", "hidden");
-    document.getElementById("e_hotel_name").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_hotel_url").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_expire_date").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_config_id").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_hotel_star").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_first_name").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_last_name").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_email").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_phone_number").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_username").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_country").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_dob").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_gender").setAttributeNode(document.createAttribute("readonly")); 
 
-    document.getElementById("idHotel").setAttribute("value", idHotel);
-    document.getElementById("e_hotel_name").setAttribute("value", hotel_name); 
-    document.getElementById("e_hotel_url").setAttribute("value", hotel_url); 
-    document.getElementById("e_expire_date").setAttribute("value", expire_date); 
-    document.getElementById("e_config_id").setAttribute("value", config_id); 
-    document.getElementById("e_hotel_star").setAttribute("value", hotel_star); 
+    document.getElementById("idUser").setAttribute("value", idUser);
+    document.getElementById("e_first_name").setAttribute("value", first_name);
+    document.getElementById("e_last_name").setAttribute("value", last_name); 
+    document.getElementById("e_email").setAttribute("value", email); 
+    document.getElementById("e_phone_number").setAttribute("value", phone_number); 
+    document.getElementById("e_username").setAttribute("value", username);
+    document.getElementById("e_country").setAttribute("value", country); 
+    document.getElementById("e_dob").setAttribute("value",dob); 
+    document.getElementById("e_gender").setAttribute("value", gender);
 
 }
 
-function showHotelEdit(idHotel, hotel_name,hotel_url,expire_date,config_id,hotel_star){
+function showDataEdit(idUser, first_name, last_name,email,phone_number,username,country,dob,gender){
    
     document.getElementById("e_submit").setAttribute("type", "submit");
     document.getElementById("typeEditView").innerHTML = "Xem";
-    document.getElementById("e_hotel_name").removeAttribute("readonly");
-    document.getElementById("e_hotel_url").removeAttribute("readonly");
-    document.getElementById("e_expire_date").removeAttribute("readonly");
-    document.getElementById("e_config_id").removeAttribute("readonly");
-    document.getElementById("e_hotel_star").removeAttribute("readonly");
+    document.getElementById("e_first_name").removeAttribute("readonly");
+    document.getElementById("e_last_name").removeAttribute("readonly");
+    document.getElementById("e_email").removeAttribute("readonly");
+    document.getElementById("e_phone_number").removeAttribute("readonly");
+    document.getElementById("e_username").removeAttribute("readonly");
+    document.getElementById("e_country").removeAttribute("readonly");
+    document.getElementById("e_dob").removeAttribute("readonly");
+    document.getElementById("e_gender").removeAttribute("readonly");
 
-    document.getElementById("idHotel").setAttribute("value", idHotel);
-    document.getElementById("e_hotel_name").setAttribute("value", hotel_name); 
-    document.getElementById("e_hotel_url").setAttribute("value", hotel_url); 
-    document.getElementById("e_expire_date").setAttribute("value", expire_date); 
-    document.getElementById("e_config_id").setAttribute("value", config_id); 
-    document.getElementById("e_hotel_star").setAttribute("value", hotel_star); 
+    document.getElementById("idUser").setAttribute("value", idUser);
+    document.getElementById("e_first_name").setAttribute("value", first_name);
+    document.getElementById("e_last_name").setAttribute("value", last_name); 
+    document.getElementById("e_email").setAttribute("value", email); 
+    document.getElementById("e_phone_number").setAttribute("value", phone_number); 
+    document.getElementById("e_username").setAttribute("value", username);
+    document.getElementById("e_country").setAttribute("value", country); 
+    document.getElementById("e_dob").setAttribute("value",dob); 
+    document.getElementById("e_gender").setAttribute("value", gender);
 
 }
-</script>
-    
 </script>
 </body>
 

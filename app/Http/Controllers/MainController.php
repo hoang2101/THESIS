@@ -147,7 +147,7 @@ public function addUserMain(Request $request){
 }
 
 public function getUsersks(){
-    return $users = DB::table('users')->where('type', '<>',1)->get();
+    return $users = DB::table('users')->where('type', '=',2)->get();
 }
 protected function validatorUpdate(arrray $data){
     $messages = [
@@ -403,103 +403,116 @@ protected function validator(array $data)
 
 //manage goverm hoteler
 public function manageGovermHoteler(){
-       $hotels = DB::table('hotel')->where('hotel_account', '=', Auth::user()->username)->get();
+        $users = DB::table('users')->where('type', '=',3)->get();
        // $hotels="zxcx";
-        return view('main.manageHoteler')->with('hotels',$hotels);
+        return view('main.ManageGovernHoteler')->with('users',$users);
     }
 
     public function addGovermHoteler(Request $request){
 
-        if($request['typePost'] == "addHotel"){
-    
-        $messages = ['hotel_url.unique' => 'Tên miền đã tồn tại',];
-        
-
-
-        $validator = Validator::make($request->all(),[
-                'hotel_url' => 'required|unique:hotel',
-
-            ],$messages);
+        if($request['typePost'] == "addUser"){
+    // validator
+    $validator = $this->validator($request->all());
         if ($validator->fails()) {
-              // $messagesResult = "fails";
-               
-                $validator->errors()->add('typePost', 'addHotel');
-                $validator->errors()->add('id', $request['id']);
-                 return redirect()->route('mainManageHoteler')->withErrors($validator)->withInput();            
-            }
-        DB::table('hotel')->insertGetId([
-                 'hotel_name' => $request['hotel_name'],
-                 'hotel_account' => Auth::user()->username,
-                 'hotel_url' => $request['hotel_url'],
-                 'expire_date' => $request['expire_date'],
-                 'hotel_star' => $request['hotel_star'],
-                 'config_id' => $request['config_id'],
-             ]);
-        
-         //$hotels = DB::table('hotel')->where('hotel_account', '=', Auth::user()->username)->get()->get();
-            //return view('main.manage')->with('users',$users)->withErrors($errors);
-            return redirect()->route('mainManageHoteler');
-      }
+           $messagesResult = "fails";
+
+            $validator->errors()->add('typePost', 'addUser');
+            $users = DB::table('users')->where('type', '=',3)->get();
+            //return $validator->errors();
+           // return Redirect::back()->withErrors($validator)->with('users',$users)->withInput();
+            return redirect()->route('mainManageGovermHoteler')->withErrors($validator)->with('users',$users)->withInput();
+           // return Redirect::to('main.manage')->withErrors($validator)->with('users',$users)->withInput();
+            // return view('main.manage')->withErrors($validator)->with('users',$users)->withInput(Input::all());          
+        }
+
+    DB::table('users')->insertGetId([
+             'first_name' => $request['first_name'],
+             'last_name' => $request['last_name'],
+             'email' => $request['email'],
+             'username' => $request['username'],
+             'password' => bcrypt($request['password']),
+             'type' => 3,
+         ]);
+     $users = DB::table('users')->where('type', '=',3)->get();
+        //return view('main.manage')->with('users',$users)->withErrors($errors);
+        return redirect()->route('mainManageGovermHoteler')->with('users',$users);
+  }
 
 
 
-      if($request['typePost'] == "updateHotel"){
+  if($request['typePost'] == "updateUser"){
 
-         $getUser = DB::table('hotel')->where('hotel_id', '=', $request['id'])->get();
-         if($getUser != null){
+     $getUser = DB::table('users')->where('id', '=', $request['id'])->get();
+     if($getUser != null){
 
-                $messages = ['hotel_account.required' => 'tên miền không được để trống',];
-
-
-        $validator = Validator::make($request->all(),[
-                'hotel_url' => 'required',
-            ],$messages);
-            if ($validator->fails()) {
-              // $messagesResult = "fails";
-               
-                $validator->errors()->add('typePost', 'addHotel');
-                $validator->errors()->add('id', $request['id']);
-                 return redirect()->route('mainManageHoteler')->withErrors($validator)->with('users',$users)->withInput();            
-            }
-            $getUsername = DB::table('hotel')->where('hotel_id', '<>', $request['id'])->where('hotel_url','=',$request['hotel_url']) ->first();
-            if($getUsername != null){
-               $messagesResult = "fails";
-
-               $validator->errors()->add('typePost', 'addHotel');
-                $validator->errors()->add('id', $request['id']);
-               $validator->errors()->add('hotel_url', 'tên miền đã tồn tại!');
-                 return redirect()->route('mainManageHoteler')->withErrors($validator)->withInput();
-            }
-            
-
-            DB::table('hotel')
-                ->where('hotel_id', $request['id'])
-                ->update(['hotel_name' => $request['hotel_name'], 'hotel_url' => $request['hotel_url'], 'hotel_star' => $request['hotel_star'], 'expire_date' => $request['expire_date']]);
-                //return $request;
-                return redirect()->route('mainManageHoteler');
+            $messages = [
+            'id.not-in' => 'id không tồn tại!',];
 
 
-         }else{
-            $messagesResult = "fails";
-             return redirect()->route('mainManageHoteler');
-         }
-        // validator
+    $validator = Validator::make($request->all(),[
+            'id' => 'required|not-in:users',
+        ],$messages);
+        if ($validator->fails()) {
+           $messagesResult = "fails";
+           
+            $validator->errors()->add('typePost', 'updateUser');
+            $validator->errors()->add('id', $request['id']);
+            $users = DB::table('users')->where('type', '=',3)->get();
+            //return $validator->errors();
+             return redirect()->route('mainManageGovermHoteler')->withErrors($validator)->with('users',$users)->withInput();            
+        }
+        $getUsername = DB::table('users')->where('id', '<>', $request['id'])->where('username','=',$request['username']) ->first();
+        if($getUsername != null){ 
+           $messagesResult = "fails";
+
+           $validator->errors()->add('typePost', 'updateUser');
+            $validator->errors()->add('id', $request['id']);
+           $validator->errors()->add('username', 'username đã tồn tại!');
+            $users = DB::table('users')->where('type', '=',3)->get();
+             return redirect()->route('mainManageGovermHoteler')->withErrors($validator)->with('users',$users)->withInput();
+        }
+        $getUsername = DB::table('users')->where('id', '<>', $request['id'])->where('email','=',$request['email']) ->first();
+        if($getUsername != null){
+           $messagesResult = "fails";
+
+           $validator->errors()->add('typePost', 'updateUser');
+            $validator->errors()->add('id', $request['id']);
+           $validator->errors()->add('email', 'email đã tồn tại!');
+            $users = DB::table('users')->where('type', '=',3)->get();
+             return redirect()->route('mainManageGovermHoteler')->withErrors($validator)->with('users',$users)->withInput();
+        }
+
+        DB::table('users')
+            ->where('id', $request['id'])
+            ->update(['first_name' => $request['first_name'], 'last_name' => $request['last_name'], 'username' => $request['username'],'email' => $request['email'], 'country' => $request['country'], 'phone_number' => $request['phone_number'], 'dob' => $request['dob'], 'gender' => $request['gender']]);
+            //return $request;
+            $users = DB::table('users')->where('type', '=',3)->get();
+            return redirect()->route('mainManageGovermHoteler')->with('users',$users);
 
 
-         return $request;
-      }
+     }else{
+        $messagesResult = "fails";
+         $users =DB::table('users')->where('type', '=',3)->get();
+         return redirect()->route('mainManageGovermHoteler')->with('users',$users);
+     }
+    // validator
+
+
+     return $request;
+  }
 
 
 
 
-      if($request['typePost'] == "deleteHotel"){
-       $getUser = DB::table('hotel')->where('hotel_id', '=', $request['id'])->get();
-         if($getUser != null){
-            DB::table('hotel')->where('hotel_id', '=', $request['id'])->delete();
-      }
-       return redirect()->route('mainManageHoteler');
+  if($request['typePost'] == "deleteUser"){
+   $getUser = DB::table('users')->where('id', '=', $request['id'])->first();
+     if($getUser != null){
+        DB::table('users')->where('id', '=', $request['id'])->delete();
+  }
+   $users =DB::table('users')->where('type', '=',3)->get();
+   return redirect()->route('mainManageGovermHoteler')->with('users',$users);
 
-    }
+}
 
 }
 

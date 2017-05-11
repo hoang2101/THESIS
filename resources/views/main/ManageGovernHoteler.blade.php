@@ -201,7 +201,7 @@
                   <div class="x_title">
                     <h2>Danh sách Quản trị khách sạn<small></small></h2>
                     <ul class="nav navbar-right panel_toolbox">
-                      <a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-backdrop="static" data-target="#addUserMainmodal"><i class="fa fa-folder"></i> Thêm Quản trị </a>
+                      <a href="#" class="btn btn-primary btn-xs" onclick="checkHasHotels()" data-toggle="modal" data-backdrop="static" ><i class="fa fa-folder"></i> Thêm Quản trị </a>
                     </ul>
                     <div class="clearfix"></div>
                   </div>
@@ -221,28 +221,28 @@
                         </tr>
                       </thead>
                       <tbody>
-                      
+                    
                       @foreach ($users as $user)
                     
                             <tr>
-                                <td>{{$user->id}}</td>
+                                <td>{{$user->account_id}}</td>
                                 <td>{{$user->first_name}}</td>
                                 <td>{{$user->last_name}}</td>
                                 <td>{{$user->username}}</td>
                                 <td>{{$user->email}}</td>
-                                <td>0</td>
+                                <td>{{$user->hotel_id}}</td>
                                 <td>
-                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataView('{{$user->id}}','{{$user->first_name}}', '{{$user->last_name}}', '{{$user->email}}', '{{$user->phone_number}}', '{{$user->username}}', '{{$user->country}}', '{{$user->dob}}', '{{$user->gender}}') " data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
-                                    <a href="#" class="btn btn-info btn-xs"  onclick="showDataEdit('{{$user->id}}','{{$user->first_name}}', '{{$user->last_name}}', '{{$user->email}}', '{{$user->phone_number}}', '{{$user->username}}', '{{$user->country}}', '{{$user->dob}}', '{{$user->gender}}') ;" data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
+                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataView('{{$user->account_id}}','{{$user->first_name}}', '{{$user->last_name}}', '{{$user->email}}', '{{$user->phone_number}}', '{{$user->username}}', '{{$user->country}}', '{{$user->dob}}', '{{$user->gender}}') " data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
+                                    <a href="#" class="btn btn-info btn-xs"  onclick="showDataEdit('{{$user->account_id}}','{{$user->first_name}}', '{{$user->last_name}}', '{{$user->email}}', '{{$user->phone_number}}', '{{$user->username}}', '{{$user->country}}', '{{$user->dob}}', '{{$user->gender}}') ;" data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
 
                             <a data-toggle="tooltip" data-placement="top"  class="btn btn-danger btn-xs"
                                             onclick="event.preventDefault();
-                                                     document.getElementById('deleteUser{{$user->id}}').submit();"><i class="fa fa-trash-o"></i> Xóa </a>
+                                                     document.getElementById('deleteUser{{$user->account_id}}').submit();"><i class="fa fa-trash-o"></i> Xóa </a>
 
-                            <form id="deleteUser{{$user->id}}" action="{{ route('addGovermHotelerSubmit') }}" method="POST" style="display: none;">
+                            <form id="deleteUser{{$user->account_id}}" action="{{ route('addGovermHotelerSubmit') }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
                                             <input hidden id="typePosts"" name="typePost" value="deleteUser">
-                                            <input hidden id="id" name="id" value="{{$user->id}}">
+                                            <input hidden id="id" name="id" value="{{$user->account_id}}">
                                         </form>
                                 </td>
                             </tr>
@@ -287,6 +287,7 @@
                                 
                             </div>
                         </div>
+
                         <div class="form-group {{ $errors->has('username') ? ' has-error' : '' }}">
                             <div >
                                 <input id="username" type="text" class="form-control" placeholder="Username" name="username" value="{{ old('username') }}" required autofocus>
@@ -311,6 +312,20 @@
                             </div>
                         </div>
 
+                        <div class="form-group">
+                            <div >
+                            <select name="hotel_id" placeholder="khách sạn">
+                                @foreach($hotels as $hotel)
+                                    <option value="{{$hotel->hotel_id}}">{{$hotel->hotel_name}}</option>
+                                    
+                                @endforeach
+    
+   
+                            </select>
+                               
+                            </div>
+                        </div>
+                        
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <div >
                                 <input id="password" type="password" class="form-control" placeholder="Password" name="password" required>
@@ -328,7 +343,7 @@
                                 <input id="password-confirm" type="password" placeholder="Confirm Password" class="form-control" name="password_confirmation" required>
                             </div>
                         </div>
-                        <input type="submit" name="Register" class="loginmodal-submit " value="Thêm khách hàng">
+                        <input type="submit" name="Register" class="loginmodal-submit " value="Thêm Quản trị">
                        
                     </form>
           </div>
@@ -576,9 +591,23 @@
     </script>
     @endif
     @endif
+@if( !count($hotels))
+<script type="text/javascript">
+   function checkHasHotels(){
+  
+    alert("Bạn chưa có khách sạn");
+    }
+ 
+</script>
+@else
+<script type="text/javascript">
+   function checkHasHotels(){
+ $('#addUserMainmodal').modal('show'); 
 
-
-
+    
+}
+ </script>
+@endif
 
 
 <script type="text/javascript">
@@ -595,9 +624,13 @@
         
 }
 
+
+
 function openViewdialog(){
 
 }
+
+
 function openEditdialog(){
 
 }

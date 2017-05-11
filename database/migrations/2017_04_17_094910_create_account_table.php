@@ -15,18 +15,19 @@ class CreateAccountTable extends Migration
     {
         Schema::create('account', function (Blueprint $table) {
             $table->increments('account_id');
-            $table->string('first_name',20);
-            $table->string('last_name',20);
-            $table->string('email',50)->unique();
-            $table->string('phone_number',11);
-            $table->string('pay_number');
-            $table->string('country',100);
-            $table->integer('type');
-            $table->string('username',20);
-            $table->string('password',20);
-            $table->date('dob');
-            $table->integer('number_visit');
-            $table->string('gender');
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('email')->nullable();
+            $table->string('phone_number')->nullable();
+            $table->string('pay_number')->nullable();
+            $table->string('country')->nullable();
+            $table->integer('type')->nullable();
+            $table->string('username')->nullable();
+            $table->string('password')->nullable();
+            $table->date('dob')->nullable();
+            $table->integer('number_visit')->nullable();
+            $table->string('gender')->nullable();
+            $table->integer('hotel_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

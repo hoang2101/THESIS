@@ -58,6 +58,8 @@
             'csrfToken' => csrf_token(),
         ]) !!};
     </script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </head>
   <body >   
   
@@ -70,11 +72,12 @@
     <header id="header">
       <!-- BEGIN MENU -->
       <div class="menu_area">
-        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">  <div class="container">
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation"> 
+         <div class="container">
             <div class="navbar-header">
               <!-- FOR MOBILE VIEW COLLAPSED BUTTON -->
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -609,9 +612,7 @@
     <script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/svg-assets-cache.js'></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script> -->
 
-    <!-- Custom js-->
-    <script src="js/custom.js"></script>
-    <script src="js/app.js"></script>
+ 
   
 
     <!--=============================================== 

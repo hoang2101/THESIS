@@ -107,7 +107,7 @@ class SubController extends Controller
             if ($validator->fails()){
                 return redirect()->route('subHome',['subdomain' => $subdomain])->withErrors($validator)->withInput();
             }
-            $getHotel = DB::table('hotel')->where('hotel_name', '=', $subdomain)->first();
+            $getHotel = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
              // $getUsername = DB::table('users')->where('username', '=', $request['username'])->first();
             DB::table('users')->insertGetId([
              'first_name' => $request['first_name'],

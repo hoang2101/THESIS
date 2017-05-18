@@ -242,9 +242,9 @@
                                 <td>{{$user->email}}</td>
                                 @foreach ($hotels as $hotel)
                                     @if($user->hotel_id == $hotel->hotel_id)
-                                    {
+                                    
                                         <td>{{$hotel->hotel_name}}</td>
-                                    }
+                                    
                                     @endif
                                 @endforeach
                                 

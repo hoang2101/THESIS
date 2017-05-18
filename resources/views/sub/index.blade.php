@@ -77,16 +77,15 @@
               <li><a href="#service">Phòng</a></li>
               <li><a href="#project">Dịch vụ</a></li>
               <li><a href="#pricing">liên hệ</a></li>
-               @if (Auth::guest())
-                            <li><a href="#login" data-toggle="modal" data-backdrop="static" id="auth" data-target="#login-modal">Đăng nhập</a></li>
-                            <li><a href="#login" data-toggle="modal" data-backdrop="static" data-target="#register-modal">Đăng kí</a></li>
-                        @else
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->last_name }} <span class="caret"></span>
-                                </a>
+              @if (Auth::guest())
+                <li><a href="#login" data-toggle="modal" data-backdrop="static" id="auth" data-target="#login-modal">Đăng nhập</a></li>
+                 <li><a href="#login" data-toggle="modal" data-backdrop="static" data-target="#register-modal">Đăng kí</a></li>
+               @else
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                    {{ Auth::user()->last_name }} <span class=""></span></a>
 
-                                <ul class="dropdown-menu" role="menu">
+                      <ul class="dropdown-menu" role="menu">
                                     <li>
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
@@ -99,12 +98,20 @@
                                         </form>
                                     </li>
                                     <li>
+                                    @if(Auth::user()->type == 3 || Auth::user()->type == 4 )
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('manage').submit();">
                                             Manage
                                         </a>
-
+                                    @endif
+                                    @if(Auth::user()->type == 5 )
+                                        <a href="{{ route('logout') }}"
+                                            onclick="event.preventDefault();
+                                                     document.getElementById('manage').submit();">
+                                            Prolife
+                                        </a>
+                                    @endif
                                         <form id="manage" action="@if(Auth::user()->type == 3){{{ route('mainManage') }}}@endif @if(Auth::user()->type == 4){{{ route('mainManageHoteler') }}}@endif" method="get" style="display: none;">
                                             {{ csrf_field() }}
                                         </form>
@@ -306,7 +313,7 @@
         <button type="button" class="close" data-dismiss="modal" onclick="removeMessage()" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
           <h1>Đăng nhập</h1><br>
-          <form role="form" method="POST" action="">
+          <form role="form" method="POST" action="{{ route('subHomesubmit',['subdomain' =>$info['name']]) }}">
           {{csrf_field()}}
           <input hidden id="typePosts"" name="typePost" value="login">
            <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
@@ -315,7 +322,7 @@
                   <input id="username" type="text" class="form-control" name="username" placeholder="Username" value="{{ old('username') }}" required autofocus>
 
                       @if ($errors->has('username') )
-                          @if($errors->first('username') == "These credentials do not match our records.")
+                          @if($errors->first('username') == "Tài khoản hoặc mật khẩu không đúng")
                                         <span class="help-block">
                                         <strong class="messageError">{{ $errors->first('username') }}</strong>
                                     </span>
@@ -353,7 +360,7 @@
         <button type="button" class="close" data-dismiss="modal" onclick="removeMessage()" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
           <h1>Đăng kí</h1><br>
-          <form class="form-horizontal" role="form" method="POST" action="">
+          <form class="form-horizontal" role="form" method="POST" action="{{ route('subHomesubmit',['subdomain' =>$info['name']]) }}">
                         {{ csrf_field() }}
                         <input hidden id="typePosts"" name="typePost" value="register">
                         <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
@@ -372,11 +379,11 @@
                                
                                 @if ($errors->has('username'))
                                 <!-- day la text tieng viet -->
-                                  @if($errors->first('username') != "These credentials do not match our records.")
+                                  
                                     <span class="help-block">
                                         <strong class="messageError">{{ $errors->first('username') }}</strong>
                                     </span>
-                                @endif
+                                
                                 @endif
                             </div>
                         </div>

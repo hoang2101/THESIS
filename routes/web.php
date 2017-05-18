@@ -33,7 +33,7 @@ Route::get('/managegovermhoteler','MainController@manageGovermHoteler')->name('m
 Route::POST('/managegovermhoteler','MainController@addGovermHoteler')->name('addGovermHotelerSubmit');
 
 
-Route::group(['domain' => '{subdomain}'], function () {
+Route::group(['subdomain' => '{subdomain}'], function () {
     Route::get('/{subdomain}', 'SubController@index' )->name('subHome');
     Route::POST('/{subdomain}', 'SubController@account' )->name('subHomesubmit');
 });

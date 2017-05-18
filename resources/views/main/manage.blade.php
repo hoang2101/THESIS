@@ -179,8 +179,8 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                 @if(Auth::user()->image_link)
-                               <img src="img/{{Auth::user()->image_link}}" alt="">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+                                @if(Auth::user()->image_link)
+                                <img src="img/{{Auth::user()->image_link}}" alt="">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
                                 @else
                                 <img src="img/avatar_null.png" alt="">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
                                 @endif

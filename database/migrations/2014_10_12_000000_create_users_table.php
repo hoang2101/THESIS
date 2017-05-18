@@ -28,6 +28,7 @@ class CreateUsersTable extends Migration
             $table->integer('number_visit')->nullable();
             $table->string('gender')->nullable();
             $table->string('image_link')->nullable();
+            $table->integer('hotel_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

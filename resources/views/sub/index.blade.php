@@ -93,7 +93,7 @@
                                             Logout
                                         </a>
 
-                                        <form id="logout-form" action="{{ route('subHomesubmit',['subdomain' =>$info['name']]) }}" method="POST" style="display: none;">
+                                        <form id="logout-form" action="{{ route('subHomesubmit',['subdomain' =>$info['subdomain']]) }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
                                             <input hidden id="typePosts"" name="typePost" value="logout">
                                         </form>
@@ -314,7 +314,7 @@
         <button type="button" class="close" data-dismiss="modal" onclick="removeMessage()" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
           <h1>Đăng nhập</h1><br>
-          <form role="form" method="POST" action="{{ route('subHomesubmit',['subdomain' =>$info['name']]) }}">
+          <form role="form" method="POST" action="{{ route('subHomesubmit',['subdomain' =>$info['subdomain']]) }}">
           {{csrf_field()}}
           <input hidden id="typePosts"" name="typePost" value="login">
            <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
@@ -361,7 +361,7 @@
         <button type="button" class="close" data-dismiss="modal" onclick="removeMessage()" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
           <h1>Đăng kí</h1><br>
-          <form class="form-horizontal" role="form" method="POST" action="{{ route('subHomesubmit',['subdomain' =>$info['name']]) }}">
+          <form class="form-horizontal" role="form" method="POST" action="{{ route('subHomesubmit',['subdomain' =>$info['subdomain']]) }}">
                         {{ csrf_field() }}
                         <input hidden id="typePosts"" name="typePost" value="register">
                         <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
@@ -446,6 +446,30 @@
   <!-- <script src="js/owl.carousel.js"></script>
   <script  src="js/counterup.min.js"></script> -->
   <script src="http://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>
+  @if ($errors->has('username') )
+  @if($errors->first('username') == "Tài khoản hoặc mật khẩu không đúng")
+
+    <script type="text/javascript">  
+    $(document).ready(function () {
+      $('#login-modal').modal('show');
+
+}); </script>
+ @endif
+ @if($errors->first('username') != "Tài khoản hoặc mật khẩu không đúng")
+
+    <script type="text/javascript">  
+    $(document).ready(function () {
+      $('#register-modal').modal('show');
+
+}); </script>
+ @endif
+  @endif  @if ($errors->has('password'))
+      <script>  <script>  function myFunction() { 
+    document.getElementById("register-modal").showModal(); </script>
+  @endif @if ($errors->has('email'))
+      <script>  <script>  function myFunction() { 
+    document.getElementById("register-modal").showModal(); </script>
+  @endif
  <script type="text/javascript">
    
     function removeMessage() {

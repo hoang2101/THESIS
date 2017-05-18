@@ -39,7 +39,7 @@ Route::group(['subdomain' => '{subdomain}'], function () {
     Route::POST('/{subdomain}', 'SubController@account' )->name('subHomesubmit');
 });
 
-
+// loi subcontroller  phan chekc dang nhap
 
 
 

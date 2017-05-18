@@ -36,6 +36,7 @@ class SubController extends Controller
 
             $info = array(
             "name" => $hotels->hotel_name,
+            "subdomain" => $subdomain, 
             );
 
              return view('sub.index')->with('info',$info);
@@ -79,6 +80,11 @@ class SubController extends Controller
                  $errors = ['username' => 'Tài khoản hoặc mật khẩu không đúng'];
                 return redirect()->route('subHome',['subdomain' => $subdomain])->withErrors($errors)->withInput();
             }
+           $getHotel = DB::table('hotel')->where('hotel_name', '=', $subdomain)->first();
+           if($getUsername->hotel_id != $getHotel->hotel_id){
+             $errors = ['username' => 'Tài khoản hoặc mật khẩu không đúng'];
+                return redirect()->route('subHome',['subdomain' => $subdomain])->withErrors($errors)->withInput();
+           }
             if (Auth::attempt(['username' => $request['username'], 'password' => $request['password']])){
                 return redirect()->route('subHome',['subdomain' => $subdomain]);
             }else{

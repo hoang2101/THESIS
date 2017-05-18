@@ -74,6 +74,7 @@
                         <div class="menu_section">
                             <h3>System Admin</h3>
                             <ul class="nav side-menu">
+                                @if(Auth::user()->type == 1)
                                 <li><a href="{{ route('mainHome') }}"><i class="fa fa-home"></i> Home </a>
                                 </li>
                                 <li><a href="{{ route('mainManage') }}"><i class="fa fa-edit"></i> Quản lý khách hàng</a>
@@ -81,6 +82,17 @@
                                 </li>
                                 <li><a href="{{ route('mainManageHotel') }}"><i class="fa fa-desktop"></i> Quản lý hệ thống khách sạn</a></li>
                                 <li><a  class="active" href="{{ route('mainProfile') }}"><i class="fa fa-desktop"></i> Quản lý tài khoản</a></li>
+                                @endif
+                                @if(Auth::user()->type == 2)
+                                <li><a href="{{ route('mainHome') }}"><i class="fa fa-home"></i> Home </a>
+                                </li>
+                                
+                                <li><a href="{{ route('mainManageHoteler') }}"><i class="fa fa-desktop"></i> Quản lý khách sạn</a>
+                                <li><a ><i class="fa fa-user" "></i> Quản lý Quản trị khách sạn</a>
+                                    
+                                </li>
+                                <li><a class="active" href="{{ route('mainProfile') }}"><i class="fa fa-desktop"></i> Quản lý tài khoản</a></li>
+                                @endif
                            
                             </ul>
                         </div>

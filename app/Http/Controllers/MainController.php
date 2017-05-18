@@ -28,11 +28,16 @@ class MainController extends Controller
     
     public function index()
     {
+        if(Auth::user()->type !=1 && Auth::user()->type !=2)
+             Auth::guard()->logout();
         return view('main.index');
     }
 
     public function manage()
+
     {
+        if(Auth::user()->type !=1)
+             return view('sub.404');
         $users = $this->getUsersks();
         return view('main.manage')->with('users',$users);
     }
@@ -276,7 +281,7 @@ protected function validator(array $data)
                  'hotel_url' => $request['hotel_url'],
                  'expire_date' => $request['expire_date'],
                  'hotel_star' => $request['hotel_star'],
-                 'config_id' => $request['config_id'],
+                 
              ]);
          $hotels = DB::table('hotel')->get();
             //return view('main.manage')->with('users',$users)->withErrors($errors);
@@ -382,7 +387,7 @@ protected function validator(array $data)
                  'hotel_url' => $request['hotel_url'],
                  'expire_date' => $request['expire_date'],
                  'hotel_star' => $request['hotel_star'],
-                 'config_id' => $request['config_id'],
+                 
              ]);
         
          //$hotels = DB::table('hotel')->where('hotel_account', '=', Auth::user()->username)->get()->get();

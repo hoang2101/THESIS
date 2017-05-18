@@ -241,8 +241,8 @@
                                 <td>{{$hotel->expire_date}}</td>
                                 <td>0</td>
                                 <td>
-                                    <a href="#" class="btn btn-primary btn-xs" onclick="showHotelView('{{$hotel->hotel_id}}','{{$hotel->hotel_name}}', '{{$hotel->hotel_account}}', '{{$hotel->hotel_url}}', '{{$hotel->expire_date}}', '{{$hotel->config_id}}', '{{$hotel->hotel_star}}') " data-toggle="modal" data-backdrop="static" data-target="#viewHotelMainmodal "  ><i class="fa fa-folder"></i> View </a>
-                                    <a href="#" class="btn btn-info btn-xs"  onclick="showHotelEdit('{{$hotel->hotel_id}}','{{$hotel->hotel_name}}', '{{$hotel->hotel_account}}', '{{$hotel->hotel_url}}', '{{$hotel->expire_date}}' , '{{$hotel->config_id}}', '{{$hotel->hotel_star}}') ;" data-toggle="modal" data-backdrop="static" data-target="#viewHotelMainmodal"><i class="fa fa-pencil"></i> Edit </a>
+                                    <a href="#" class="btn btn-primary btn-xs" onclick="showHotelView('{{$hotel->hotel_id}}','{{$hotel->hotel_name}}', '{{$hotel->hotel_account}}', '{{$hotel->hotel_url}}', '{{$hotel->expire_date}}',  '{{$hotel->hotel_star}}') " data-toggle="modal" data-backdrop="static" data-target="#viewHotelMainmodal "  ><i class="fa fa-folder"></i> View </a>
+                                    <a href="#" class="btn btn-info btn-xs"  onclick="showHotelEdit('{{$hotel->hotel_id}}','{{$hotel->hotel_name}}', '{{$hotel->hotel_account}}', '{{$hotel->hotel_url}}', '{{$hotel->expire_date}}' ,  '{{$hotel->hotel_star}}') ;" data-toggle="modal" data-backdrop="static" data-target="#viewHotelMainmodal"><i class="fa fa-pencil"></i> Edit </a>
 
                                     <a data-toggle="tooltip" data-placement="top"  class="btn btn-danger btn-xs"
                                             onclick="event.preventDefault();
@@ -329,17 +329,7 @@
                         </div>
 
                         
-                        <div class="form-group{{ $errors->has('config_id') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="config_id" type="text" class="form-control" placeholder="Config" name="config_id" value="{{ old('config_id') }}" required>
-
-                                @if ($errors->has('config_id'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('config_id') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
+                        
                         <div class="form-group{{ $errors->has('hotel_star') ? ' has-error' : '' }}">
                             <div >
 
@@ -417,17 +407,7 @@
                         </div>
 
                         
-                        <div class="form-group{{ $errors->has('tatol') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="e_config_id" type="text" class="form-control" placeholder="Config" name="config_id" value="{{ old('config_id') }}" >
-
-                                @if ($errors->has('config_id'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('config_id') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
+                        
                         <div class="form-group{{ $errors->has('hotel_star') ? ' has-error' : '' }}">
                             <div >
                                 <input id="e_hotel_star" type="number" class="form-control" placeholder="Loại khách sạn" name="hotel_star" value="{{ old('expire_date') }}" >
@@ -613,7 +593,6 @@ function addReadHotelonly(){
     document.getElementById("e_hotel_account").removeAttribute("readonly");
     document.getElementById("e_hotel_url").removeAttribute("readonly");
     document.getElementById("e_expire_date").removeAttribute("readonly");
-    document.getElementById("e_config_id").removeAttribute("readonly");
     document.getElementById("e_hotel_star").removeAttribute("readonly");
 
     // document.getElementById("e_submit").setAttribute("type", "submit");
@@ -635,7 +614,6 @@ else(document.getElementById("typeEditView").innerHTML == "Xem")
     document.getElementById("e_hotel_account").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_hotel_url").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_expire_date").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_config_id").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_hotel_star").setAttributeNode(document.createAttribute("readonly"));
 }
    
@@ -652,13 +630,12 @@ function removeReadHotelonly(){
     document.getElementById("e_hotel_account").removeAttribute("readonly");
     document.getElementById("e_hotel_url").removeAttribute("readonly");
     document.getElementById("e_expire_date").removeAttribute("readonly");
-    document.getElementById("e_config_id").removeAttribute("readonly");
     document.getElementById("e_hotel_star").removeAttribute("readonly");
      // document.getElementById("typeEditView").setAttribute("onclick", "addReadonly())");
     
 
 }
-function showHotelView(idHotel, hotel_name, hotel_account,hotel_url,expire_date,config_id,hotel_star){
+function showHotelView(idHotel, hotel_name, hotel_account,hotel_url,expire_date,hotel_star){
       
    
     document.getElementById("typeEditView").innerHTML = "Sửa";
@@ -667,7 +644,6 @@ function showHotelView(idHotel, hotel_name, hotel_account,hotel_url,expire_date,
     document.getElementById("e_hotel_account").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_hotel_url").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_expire_date").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_config_id").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_hotel_star").setAttributeNode(document.createAttribute("readonly"));
 
     document.getElementById("idHotel").setAttribute("value", idHotel);
@@ -675,12 +651,11 @@ function showHotelView(idHotel, hotel_name, hotel_account,hotel_url,expire_date,
     document.getElementById("e_hotel_account").setAttribute("value", hotel_account); 
     document.getElementById("e_hotel_url").setAttribute("value", hotel_url); 
     document.getElementById("e_expire_date").setAttribute("value", expire_date); 
-    document.getElementById("e_config_id").setAttribute("value", config_id); 
     document.getElementById("e_hotel_star").setAttribute("value", hotel_star); 
 
 }
 
-function showHotelEdit(idHotel, hotel_name, hotel_account,hotel_url,expire_date,config_id,hotel_star){
+function showHotelEdit(idHotel, hotel_name, hotel_account,hotel_url,expire_date,hotel_star){
    
     document.getElementById("e_submit").setAttribute("type", "submit");
     document.getElementById("typeEditView").innerHTML = "Xem";
@@ -688,7 +663,6 @@ function showHotelEdit(idHotel, hotel_name, hotel_account,hotel_url,expire_date,
     document.getElementById("e_hotel_account").removeAttribute("readonly");
     document.getElementById("e_hotel_url").removeAttribute("readonly");
     document.getElementById("e_expire_date").removeAttribute("readonly");
-    document.getElementById("e_config_id").removeAttribute("readonly");
     document.getElementById("e_hotel_star").removeAttribute("readonly");
 
     document.getElementById("idHotel").setAttribute("value", idHotel);
@@ -696,7 +670,6 @@ function showHotelEdit(idHotel, hotel_name, hotel_account,hotel_url,expire_date,
     document.getElementById("e_hotel_account").setAttribute("value", hotel_account); 
     document.getElementById("e_hotel_url").setAttribute("value", hotel_url); 
     document.getElementById("e_expire_date").setAttribute("value", expire_date); 
-    document.getElementById("e_config_id").setAttribute("value", config_id); 
     document.getElementById("e_hotel_star").setAttribute("value", hotel_star); 
 
 }

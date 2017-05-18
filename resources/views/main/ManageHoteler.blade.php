@@ -44,7 +44,7 @@
             <div class="col-md-3 left_col">
                 <div class="left_col scroll-view">
                     <div class="navbar nav_title" style="border: 0;">
-                        <a href="index.html" class="site_title"><i class="fa fa-modx"></i> <span>QUẢN LÝ HỆ THỐNG</span></a>
+                        <a href="#" class="site_title"><i class="fa fa-modx"></i> <span>QUẢN LÝ HỆ THỐNG</span></a>
                     </div>
 
                     <div class="clearfix"></div>
@@ -52,7 +52,12 @@
                     <!-- menu profile quick info -->
                     <div class="profile clearfix">
                         <div class="profile_pic">
-                            <img src="img/img.jpg" alt="..." class="img-circle profile_img">
+                            @if(Auth::user()->image_link)
+                            <img src="img/{{Auth::user()->image_link}}" alt="..." class="img-circle profile_img">
+                           
+                            @else
+                            <img src="img/avatar_null.png" alt="..." class="img-circle profile_img">
+                            @endif
                         </div>
                         <div class="profile_info">
                             <span>Welcome,</span>
@@ -72,9 +77,10 @@
                                 </li>
                                 
                                 <li><a class="active"><i class="fa fa-desktop"></i> Quản lý khách sạn</a>
-                                <li><a href="{{ route('mainManageGovermHoteler') }}"><i class="fa fa-user" "></i> Quản lý Quản trị khách sạn</a>
-                                    
-                                </li>
+                                <li><a href="{{ route('mainManageGovermHoteler') }}"><i class="fa fa-user" "></i> Quản lý Quản trị khách sạn</a></li>
+                                 <li><a href="{{ route('mainProfile') }}"><i class="fa fa-user" "></i> Quản lý tài khoản</a></li>
+                                 <li><a href="{{ route('mainProfile') }}"><i class="fa fa-desktop"></i> Quản lý tài khoản</a></li>
+
                                <!--  <li><a><i class="fa fa-table"></i>zxczxc  </a>
                                     
                                 </li>
@@ -173,7 +179,11 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="img/img.jpg" alt="">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+                                @if(Auth::user()->image_link)
+                                <img src="img/{{Auth::user()->image_link}}" alt="">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+                                @else
+                                <img src="img/avatar_null.png" alt="">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+                                @endif
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">

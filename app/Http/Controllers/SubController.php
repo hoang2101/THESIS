@@ -27,7 +27,7 @@ class SubController extends Controller
          if($hotels != null){
              if($user = Auth::user())
             {
-              if(Auth::user()->type != 5){
+              if(Auth::user()->type != 5 && Auth::user()->type != 3 && Auth::user()->type != 4){
                 Auth::guard()->logout();
             }
             }
@@ -40,6 +40,31 @@ class SubController extends Controller
              return view('sub.index')->with('info',$info);
          }
        return view('sub.404');
+    }
+
+    public function account(Request $request, $subdomain){
+        if($request['typePost'=='login'])
+        {
+            if($user = Auth::user())
+            {
+               if(Auth::user()->type != 5 && Auth::user()->type != 3 && Auth::user()->type != 4){
+                Auth::guard()->logout();
+
+                // if (Auth::attempt(['username' => $request['username'], 'password' => $request['password']])) {
+                //     if(Auth::user()->type != 5 && Auth::user()->type != 3 && Auth::user()->type != 4){
+                //     Auth::guard()->logout();
+
+                //     $errors = [$this->username() => trans('auth.failed')];
+                //     return redirect('subHome')->withInput()->withErrors($errors);
+                //  }
+
+                // }
+            }
+        }}
+        if($request['typePost'=='register']){
+
+        }
+        
     }
 
     /**

@@ -20,6 +20,9 @@ Route::get('/manage','MainController@manage')->name('mainManage');
 Route::POST('/manageEdit','MainController@editUserMain')->name('editUserMainSubmit');
 Route::POST('/manage','MainController@addUserMain')->name('addUserMainSubmit');
 
+Route::get('/prolife','MainController@prolife')->name('mainProfile');
+Route::POST('/prolife','MainController@editProlife')->name('mainProfileSubmit');
+
 Route::POST('/manageMainHotel','MainController@addHotelMain')->name('addHotelMainSubmit');
 Route::get('/manageMainHotel','MainController@manageHotel')->name('mainManageHotel');
 
@@ -29,8 +32,10 @@ Route::POST('/managehoteler','MainController@addHotelHoteler')->name('addHotelHo
 Route::get('/managegovermhoteler','MainController@manageGovermHoteler')->name('mainManageGovermHoteler');
 Route::POST('/managegovermhoteler','MainController@addGovermHoteler')->name('addGovermHotelerSubmit');
 
+
 Route::group(['domain' => '{subdomain}'], function () {
     Route::get('/{subdomain}', 'SubController@index' )->name('subHome');
+    Route::POST('/{subdomain}', 'SubController@account' )->name('subHomesubmit');
 });
 
 

@@ -146,6 +146,58 @@ public function addUserMain(Request $request){
     
 }
 
+public function prolife(){
+     $users = Auth::user();
+     
+     return view('main.manageProlife')->with('users',$users);
+}
+
+public function editProlife(Request $request){
+
+    if($request['typePost'] == "updateUser"){
+
+        // $getUsername = DB::table('users')->where('id', '<>', $request['id'])->where('email','=',$request['email']) ->first();
+        // if($getUsername != null){
+        //    $messagesResult = "fails";
+
+        //    $validator->errors()->add('typePost', 'updateUser');
+        //     $validator->errors()->add('id', $request['id']);
+        //    $validator->errors()->add('email', 'email đã tồn tại!');
+        //     $users = Auth::user();
+        //      return redirect()->route('manageProlife')->withErrors($validator)->with('users',$users)->withInput();
+        // }
+
+        DB::table('users')
+            ->where('id', $request['id'])
+            ->update(['first_name' => $request['first_name'], 'last_name' => $request['last_name'], 'username' => $request['username'],'email' => $request['email'], 'country' => $request['country'], 'phone_number' => $request['phone_number'], 'dob' => $request['dob'], 'gender' => $request['gender']]);
+            //return $request;
+            // $user = DB::table('users')->where('id', '=',  Auth::user()->id)->get(); 
+            // Auth::setUser($user);
+            return redirect()->route('mainProfile');
+
+
+     
+    // validator
+
+
+     return $request;
+  }
+
+  if($request['typePost'] == "updateAvatar"){
+   
+        $imageName = Auth::user()->username.'/avatar2.'.$request->image->getClientOriginalExtension();
+        
+        $request->image->move(public_path('img/'.Auth::user()->username), $imageName);
+         DB::table('users')
+            ->where('id', Auth::user()->id)
+            ->update( ['image_link' => $imageName]);
+
+         return redirect()->route('mainProfile');
+  }
+    // $users = Auth::user();
+    // return view('main.manageProlife')->with('users',$users);
+}
+
 public function getUsersks(){
     return $users = DB::table('users')->where('type', '=',2)->get();
 }
@@ -394,7 +446,7 @@ protected function validator(array $data)
          if($getUser != null){
             DB::table('hotel')->where('hotel_id', '=', $request['id'])->delete();
       }
-       return redirect()->route('mainManageHoteler');
+      
 
     }
 

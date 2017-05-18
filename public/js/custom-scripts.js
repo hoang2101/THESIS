@@ -51,10 +51,10 @@ function toggleFull() {
     return false;
 }
 
-$('#btn_reset_pwd').click(function() {
-    $('div#profile_reset_pwd').show();
-    $('div#profile_info').hide();
-});
+// $('#btn_reset_pwd').click(function() {
+//     $('div#profile_reset_pwd').show();
+//     $('div#profile_info').hide();
+// });
 
 $('#btn_back_pro').click(function() {
     $('div#profile_reset_pwd').hide();

@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Quản lý khách hàng</title>
+    <title>Quản lý tài khoản</title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -45,7 +45,7 @@
             <div class="col-md-3 left_col">
                 <div class="left_col scroll-view">
                     <div class="navbar nav_title" style="border: 0;">
-                        <a href="index.html" class="site_title"><i class="fa fa-modx"></i> <span>QUẢN LÝ HỆ THỐNG</span></a>
+                        <a href="#" class="site_title"><i class="fa fa-modx"></i> <span>QUẢN LÝ HỆ THỐNG</span></a>
                     </div>
 
                     <div class="clearfix"></div>
@@ -53,11 +53,16 @@
                     <!-- menu profile quick info -->
                     <div class="profile clearfix">
                         <div class="profile_pic">
-                            <img src="img/img.jpg" alt="..." class="img-circle profile_img">
+                            @if(Auth::user()->image_link)
+                            <img src="img/{{Auth::user()->image_link}}" alt="..." class="img-circle profile_img">
+                           
+                            @else
+                            <img src="img/avatar_null.png" alt="..." class="img-circle profile_img">
+                            @endif
                         </div>
                         <div class="profile_info">
                             <span>Welcome,</span>
-                            <h2>Đặng Thành LUân</h2>
+                            <h2>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }} </h2>
                         </div>
                     </div>
                     <!-- /menu profile quick info -->
@@ -71,75 +76,15 @@
                             <ul class="nav side-menu">
                                 <li><a href="{{ route('mainHome') }}"><i class="fa fa-home"></i> Home </a>
                                 </li>
-                                <li><a class="active" href="{{ route('mainManage') }}"><i class="fa fa-edit"></i> Quản lý khách hàng</a>
+                                <li><a href="{{ route('mainManage') }}"><i class="fa fa-edit"></i> Quản lý khách hàng</a>
                                     
                                 </li>
-                                <li><a href="{{ route('mainManageHotel') }}"><i class="fa fa-desktop"></i> Quản lý hệ thống khách sạn</a>
-                                    
-                                </li>
-                               <!--  <li><a><i class="fa fa-table"></i>zxczxc  </a>
-                                    
-                                </li>
-                                <li><a><i class="fa fa-bar-chart-o"></i> Data Presentation <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="chartjs.html">Chart JS</a></li>
-                                        <li><a href="chartjs2.html">Chart JS2</a></li>
-                                        <li><a href="morisjs.html">Moris JS</a></li>
-                                        <li><a href="echarts.html">ECharts</a></li>
-                                        <li><a href="other_charts.html">Other Charts</a></li>
-                                    </ul>
-                                </li>
-                                <li><a><i class="fa fa-clone"></i>Layouts <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="fixed_sidebar.html">Fixed Sidebar</a></li>
-                                        <li><a href="fixed_footer.html">Fixed Footer</a></li>
-                                    </ul>
-                                </li> -->
+                                <li><a href="{{ route('mainManageHotel') }}"><i class="fa fa-desktop"></i> Quản lý hệ thống khách sạn</a></li>
+                                <li><a  class="active" href="{{ route('mainProfile') }}"><i class="fa fa-desktop"></i> Quản lý tài khoản</a></li>
+                           
                             </ul>
                         </div>
-                        <!-- <div class="menu_section">
-                            <h3>Live On</h3>
-                            <ul class="nav side-menu">
-                                <li><a><i class="fa fa-bug"></i> Additional Pages <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="e_commerce.html">E-commerce</a></li>
-                                        <li><a href="projects.html">Projects</a></li>
-                                        <li><a href="project_detail.html">Project Detail</a></li>
-                                        <li><a href="contacts.html">Contacts</a></li>
-                                        <li><a href="profile.html">Profile</a></li>
-                                    </ul>
-                                </li>
-                                <li><a><i class="fa fa-windows"></i> Extras <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="page_403.html">403 Error</a></li>
-                                        <li><a href="page_404.html">404 Error</a></li>
-                                        <li><a href="page_500.html">500 Error</a></li>
-                                        <li><a href="plain_page.html">Plain Page</a></li>
-                                        <li><a href="login.html">Login Page</a></li>
-                                        <li><a href="pricing_tables.html">Pricing Tables</a></li>
-                                    </ul>
-                                </li>
-                                <li><a><i class="fa fa-sitemap"></i> Multilevel Menu <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="#level1_1">Level One</a>
-                                            <li><a>Level One<span class="fa fa-chevron-down"></span></a>
-                                                <ul class="nav child_menu">
-                                                    <li class="sub_menu"><a href="level2.html">Level Two</a>
-                                                    </li>
-                                                    <li><a href="#level2_1">Level Two</a>
-                                                    </li>
-                                                    <li><a href="#level2_2">Level Two</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="#level1_2">Level One</a>
-                                            </li>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li><a href="javascript:void(0)"><i class="fa fa-laptop"></i> Landing Page <span class="label label-success pull-right">Coming Soon</span></a></li>
-                            </ul>
-                        </div> -->
+                        
 
                     </div>
                     <!-- /sidebar menu -->
@@ -175,7 +120,11 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="img/img.jpg" alt="">Dang Thanh Luan
+                                    @if(Auth::user()->image_link)
+                                <img src="img/{{Auth::user()->image_link}}" alt="">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+                                @else
+                                <img src="img/avatar_null.png" alt="">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+                                @endif
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
@@ -195,14 +144,194 @@
             <!-- /top navigation -->
 
             <!-- page content -->
-            <div class="right_col" role="main">
+           <!--  <div class="right_col" role="main">
 
-               
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Quản lý tài khoản<small></small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-backdrop="static" data-target="#addUserMainmodal"><i class="fa fa-folder"></i> Thêm khách hàng </a>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    
+                    
+                  
+                    
+                    
+                  </div>
+                </div>
+              </div>
 
+            </div> -->
+             <div class="right_col" role="main">
+                <div class="">
+                    <div class="page-title">
+                        <div class="title_left">
+                            <h3>Quản lý tài khoản</h3>
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <div class="x_panel">
+                                <div class="x_content">
+                                    <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
+                                        <div class="profile_img">
+                                            <div id="crop-avatar">
+                                                <!-- Current avatar -->
+                                                @if ($users->image_link==null)
+                                                <img class="img-responsive avatar-view" src="img/avatar_null.png" alt="Avatar">
+                                                @else
+                                                <img class="img-responsive avatar-view" src="img/{{$users->image_link}}" alt="Avatar">
+                                                 @endif
+                                                
+                                            </div>
+                                        </div>
+                                        <h3>{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</h3>
+                                        <form action="{{ route('mainProfileSubmit') }}" enctype="multipart/form-data" method="POST">
+                                            {{ csrf_field() }}
+                                            <input hidden id="typePost"" name="typePost" value="updateAvatar">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <input type="file" name="image" accept="image/*"/>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <button type="submit" class="btn btn-success">Thay đổi Avatar</button>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                       <!--  <form role="form" method="POST" action="{{ route('mainProfileSubmit') }}">
+                                            <input hidden id="typePost"" name="typePost" value="updateAvatar">
+                                            <input hidden id="idUser" name="id" value="{{$users->id}}">
+                                           
+                                        </form>
+
+                                        <label class="btn btn-primary btn-upload" for="inputImage" title="Upload image file">
+                                          <input type="file" class="sr-only" id="inputImage" name="file" accept="image/*">
+                                          <span class="docs-tooltip" data-toggle="tooltip" title="Import image with Blob URLs">
+                                            <span class="fa fa-upload">thay đôi Avatar</span>
+                                          </span>
+                                        </label> -->
+
+                                    </div>
+                                    <div class="col-md-9 col-sm-9 col-xs-12">
+                                        <div id="profile_info">
+                                            <div class="profile_title">
+                                                <div class="col-md-12">
+                                                     @if ($users->type==1)
+                                                     <h2><i class="fa fa-certificate"></i>   SYSTEM ADMIN</h2>
+                                                     @elseif ($users->type==2)
+                                                     <h2><i class="fa fa-certificate"></i>   CHỦ KHÁCH SẠN</h2>
+                                                     @elseif ($users->type==3)
+                                                     <h2><i class="fa fa-certificate"></i>   QUẢN LÝ KHÁCH SẠN</h2>
+                                                     @elseif ($users->type==4)
+                                                     <h2><i class="fa fa-certificate"></i>   NHÂN VIÊN</h2>
+                                                     @elseif ($users->type==4)
+                                                     <h2><i class="fa fa-certificate"></i>   NGƯỜI DÙNG</h2>
+                                                     @endif
+
+                                                </div>
+                                            </div>
+
+                                            <div class="profile_details">
+                                                <br />
+                                                <form role="form" method="POST" action="{{ route('mainProfileSubmit') }}">
+                                                 {{ csrf_field() }}
+                                                    <input hidden id="typePost"" name="typePost" value="updateUser">
+                                                    <input hidden id="idUser" name="id" value="{{$users->id}}">
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                            
+                                                            <input type="text" class="form-control has-feedback-left" readonly id="username" name="username" placeholder="Tên tài khoản" value="{{$users->username}}"> 
+                                                            
+                                                            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                            
+                                                            <input type="text" class="form-control has-feedback-left"  id="first_name" name="first_name" placeholder="Họ" value="{{$users->first_name}}">
+                                                           
+                                                            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                           
+                                                            <input type="text" class="form-control has-feedback-left"  id="last_name" name="last_name" placeholder="Tên" value="{{$users->last_name}}">
+                                                           
+                                                            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                            
+                                                            <input type="text" class="form-control has-feedback-left"  id="email" name="email" placeholder="Email" value="{{$users->email}}">
+                                                           
+                                                            <span class="fa fa-user form-control-feedback left" aria-hidden="true" ></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                            
+                                                            <input type="text" class="form-control has-feedback-left"  id="phone_number" name="phone_number" placeholder="Số điện thoại" value="{{$users->phone_number}}">
+                                                            
+                                                            <!-- <input type="text" class="form-control has-feedback-left"  id="phone_number" name="phone_number" placeholder="{{$users->phone_number}}"> -->
+                                                            
+                                                            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                           
+                                                            <input type="text" class="form-control has-feedback-left"  id="country" name="country" placeholder="Quốc gia" value="{{$users->country}}">
+                                                           
+                                                            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                           
+                                                            <input type="text" onfocus="(this.type='date')" class="form-control has-feedback-left"   id="dob" name="dob" placeholder="Ngày sinh" value="{{$users->dob}}">
+                                                           
+                                                            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                        </div>
+                                                    </div>
+                                                     <div class="row">
+                                                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                            
+                                                            <input type="text"  class="form-control has-feedback-left"  id="gender" name="gender" placeholder="Giới tính" value="{{$users->gender}}">
+                                                           
+                                                            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="row">
+                                                        
+                                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                                            <button id="btn_reset_pwd" type="submit" class="btn btn-primary"><i class="fa fa-edit m-right-xs"></i>&nbsp;Thay đổi thông tin</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- /page content -->
 <!-- modal dialog add user -->
-<div class="modal fade" id="addUserMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+<!-- <div class="modal fade" id="addUserMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
         <div class="modal-dialog">
         <div class="loginmodal-container">
         <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
@@ -225,7 +354,7 @@
                                 
                             </div>
                         </div>
-                        <div class="form-group{{ $errors->has('usermane') ? ' has-error' : '' }}">
+                        <div class="form-group {{ $errors->has('username') ? ' has-error' : '' }}">
                             <div >
                                 <input id="username" type="text" class="form-control" placeholder="Username" name="username" value="{{ old('username') }}" required autofocus>
 
@@ -314,7 +443,7 @@
                         <div class="col-md-6 col-sm-6 col-xs-12  form-group">
                         
                             <div >
-                                <input id="e_phone_number" type="number" class="form-control" placeholder="Số điện thoại" name="phone_number" value="{{ old('phone_number') }}" required>
+                                <input id="e_phone_number" type="number" class="form-control" placeholder="Số điện thoại" name="phone_number" value="{{ old('phone_number') }}" >
 
                                
                                 @if ($errors->has('email'))
@@ -338,7 +467,7 @@
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12  form-group">
                             <div >
-                                <input id="e_country" type="text" class="form-control" placeholder="Quốc qia" name="country" value="{{ old('country') }}" required>
+                                <input id="e_country" type="text" class="form-control" placeholder="Quốc qia" name="country" value="{{ old('country') }}" >
 
                                 @if ($errors->has('username'))
                                  <span class="help-block">
@@ -350,7 +479,7 @@
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12 form-group">
                             <div >
-                                <input id="e_dob" type="text" onfocus="(this.type='date')" class="form-control" placeholder="Ngày sinh" name="dob" value="{{ old('dob') }}" required>
+                                <input id="e_dob" type="text" onfocus="(this.type='date')" class="form-control" placeholder="Ngày sinh" name="dob" value="{{ old('dob') }}" >
 
                                 @if ($errors->has('dob'))
                                     <span class="help-block">
@@ -361,7 +490,7 @@
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12  form-group">
                             <div >
-                                <input id="e_gender" type="text" class="form-control" placeholder="Giới tính" name="gender" required>
+                                <input id="e_gender" type="text" class="form-control" placeholder="Giới tính" name="gender" >
 
                                  @if ($errors->has('dob'))
                                      <span class="help-block">
@@ -404,7 +533,7 @@
                 <div class="clearfix"></div>
             </footer>
             <!-- /footer content -->
-        </div>
+        </div> -->
     </div>
 
    <!-- jQuery -->

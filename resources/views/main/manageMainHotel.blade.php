@@ -52,7 +52,12 @@
                     <!-- menu profile quick info -->
                     <div class="profile clearfix">
                         <div class="profile_pic">
-                            <img src="img/img.jpg" alt="..." class="img-circle profile_img">
+                            @if(Auth::user()->image_link)
+                            <img src="img/{{Auth::user()->image_link}}" alt="..." class="img-circle profile_img">
+                           
+                            @else
+                            <img src="img/avatar_null.png" alt="..." class="img-circle profile_img">
+                            @endif
                         </div>
                         <div class="profile_info">
                             <span>Welcome,</span>
@@ -76,6 +81,7 @@
                                 <li><a class="active"><i class="fa fa-desktop"></i> Quản lý hệ thống khách sạn</a>
                                     
                                 </li>
+                                <li><a href="{{ route('mainProfile') }}"><i class="fa fa-desktop"></i> Quản lý tài khoản</a></li>
                                <!--  <li><a><i class="fa fa-table"></i>zxczxc  </a>
                                     
                                 </li>
@@ -174,7 +180,11 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                    <img src="img/img.jpg" alt="">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+                                    @if(Auth::user()->image_link)
+                                    <img src="img/{{Auth::user()->image_link}}" alt="">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+                                    @else
+                                    <img src="img/avatar_null.png" alt="">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+                                    @endif
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">

@@ -105,7 +105,7 @@
                                             Manage
                                         </a>
 
-                                        <form id="manage" action="@if(Auth::user()->type == 1){{{ route('mainManage') }}}@endif @if(Auth::user()->type == 2){{{ route('mainManageHoteler') }}}@endif" method="get" style="display: none;">
+                                        <form id="manage" action="@if(Auth::user()->type == 3){{{ route('mainManage') }}}@endif @if(Auth::user()->type == 4){{{ route('mainManageHoteler') }}}@endif" method="get" style="display: none;">
                                             {{ csrf_field() }}
                                         </form>
                                     </li>
@@ -300,7 +300,122 @@
     </div>
   </section>
 
+<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog">
+        <div class="loginmodal-container">
+        <button type="button" class="close" data-dismiss="modal" onclick="removeMessage()" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+          <h1>Đăng nhập</h1><br>
+          <form role="form" method="POST" action="">
+          {{csrf_field()}}
+          <input hidden id="typePosts"" name="typePost" value="login">
+           <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
 
+                
+                  <input id="username" type="text" class="form-control" name="username" placeholder="Username" value="{{ old('username') }}" required autofocus>
+
+                      @if ($errors->has('username') )
+                          @if($errors->first('username') == "These credentials do not match our records.")
+                                        <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('username') }}</strong>
+                                    </span>
+                                @endif
+                              @endif
+           </div>
+           <div class="form-group">
+
+            
+                <input id="password" type="password" class="form-control" name="password" placeholder="Password" required>
+
+                    
+            
+          </div>
+          <div class="form-group">
+                          
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
+                                    </label>
+                                </div>
+                            </div>
+                       
+          
+          <input type="submit" name="login" class="login loginmodal-submit" value="Login">
+          </form>
+                   <a hhref="#login" data-toggle="modal" data-backdrop="static" data-target="#register-modal">Register</a> - <a href="#">Forgot Password</a>
+          </div>
+        </div>
+      </div>
+
+<div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog">
+        <div class="loginmodal-container">
+        <button type="button" class="close" data-dismiss="modal" onclick="removeMessage()" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+          <h1>Đăng kí</h1><br>
+          <form class="form-horizontal" role="form" method="POST" action="">
+                        {{ csrf_field() }}
+                        <input hidden id="typePosts"" name="typePost" value="register">
+                        <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" required autofocus>
+                            </div>
+                        </div>
+                        <div class="form-group {{ ($errors->has('last_name') && $errors->first('username') != 'These credentials do not match our records.') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="last_name" type="text" class="form-control" placeholder="Tên" name="last_name" value="{{ old('last_name') }}" required autofocus>
+                            </div>
+                        </div>
+                        <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="username" type="text" class="form-control" placeholder="Username" name="username" value="{{ old('username') }}" required autofocus>
+                               
+                                @if ($errors->has('username'))
+                                <!-- day la text tieng viet -->
+                                  @if($errors->first('username') != "These credentials do not match our records.")
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('username') }}</strong>
+                                    </span>
+                                @endif
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="email" type="email" class="form-control" placeholder="E-Mail" name="email" value="{{ old('email') }}" required>
+
+                                @if ($errors->has('email'))
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('email') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="password" type="password" class="form-control" placeholder="Password" name="password" required>
+
+                                @if ($errors->has('password'))
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('password') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div >
+                                <input id="password-confirm" type="password" placeholder="Confirm Password" class="form-control" name="password_confirmation" required>
+                            </div>
+                        </div>
+                        <input type="submit" name="Register" class="login loginmodal-submit" value="Đăng kí">
+                       
+                    </form>
+          </div>
+        </div>
+      </div>
   <!-- Footer Section -->
   <footer class="footer">
     <div class="container inner">
@@ -323,7 +438,20 @@
   <!-- <script src="js/owl.carousel.js"></script>
   <script  src="js/counterup.min.js"></script> -->
   <script src="http://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>
- 
+ <script type="text/javascript">
+   
+    function removeMessage() {
+        $("div").removeClass("has-error");
+        $("span").removeClass("help-block");
+
+        var x = document.getElementsByClassName("messageError");
+        for (i = 0; i < x.length; i++) { 
+            x[i].innerHTML = "";
+        }
+        $("strong").removeClass("messageError");
+        // var element = document.getElementsByClassName("help-block");
+        
+}
  
   
   

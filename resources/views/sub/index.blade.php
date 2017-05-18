@@ -87,14 +87,15 @@
 
                       <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a href="{{ route('logout') }}"
+                                        <a 
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                             Logout
                                         </a>
 
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        <form id="logout-form" action="{{ route('subHomesubmit',['subdomain' =>$info['name']]) }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
+                                            <input hidden id="typePosts"" name="typePost" value="logout">
                                         </form>
                                     </li>
                                     <li>
@@ -106,7 +107,7 @@
                                         </a>
                                     @endif
                                     @if(Auth::user()->type == 5 )
-                                        <a href="{{ route('logout') }}"
+                                        <a "
                                             onclick="event.preventDefault();
                                                      document.getElementById('manage').submit();">
                                             Prolife

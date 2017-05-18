@@ -118,6 +118,10 @@ class SubController extends Controller
             return redirect()->route('subHome',['subdomain' => $subdomain]);
 
         }
+          if($request['typePost']=='logout'){
+                Auth::guard()->logout();
+                return redirect()->route('subHome',['subdomain' => $subdomain]);
+          }
         
     }
 

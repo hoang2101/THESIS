@@ -461,7 +461,7 @@ protected function validator(array $data)
 //manage goverm hoteler
 public function manageGovermHoteler(){
         $hotels =  DB::table('hotel')->where('hotel_account', '=', Auth::user()->username)->get();
-        $users = DB::table('account')->where('type', '=',3)->get();
+        $users = DB::table('users')->where('type', '=',3)->get();
        // $hotels="zxcx";
         return view('main.ManageGovernHoteler')->with('users',$users)->with('hotels',$hotels);
     }
@@ -482,7 +482,7 @@ public function manageGovermHoteler(){
             // return view('main.manage')->withErrors($validator)->with('users',$users)->withInput(Input::all());          
         }
 
-    DB::table('account')->insertGetId([
+    DB::table('users')->insertGetId([
              'first_name' => $request['first_name'],
              'last_name' => $request['last_name'],
              'email' => $request['email'],

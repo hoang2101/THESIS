@@ -80,7 +80,7 @@ class SubController extends Controller
                  $errors = ['username' => 'Tài khoản hoặc mật khẩu không đúng'];
                 return redirect()->route('subHome',['subdomain' => $subdomain])->withErrors($errors)->withInput();
             }
-           $getHotel = DB::table('hotel')->where('hotel_name', '=', $subdomain)->first();
+           $getHotel = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
            if($getUsername->hotel_id != $getHotel->hotel_id){
              $errors = ['username' => 'Tài khoản hoặc mật khẩu không đúng'];
                 return redirect()->route('subHome',['subdomain' => $subdomain])->withErrors($errors)->withInput();

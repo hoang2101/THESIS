@@ -43,7 +43,8 @@ jQuery(function($){
 	$('#slides').superslides({
       animation: 'fade',
       animation_easing: 'linear',
-      pagination: 'true'
+      pagination: 'true',
+      play: 7000
     });
 
 

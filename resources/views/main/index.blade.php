@@ -1,26 +1,11 @@
 <!DOCTYPE html>
 <html >
   <head>
-    <!--=============================================== 
-    Template Design By WpFreeware Team.
-    Author URI : http://www.wpfreeware.com/
-    ====================================================-->
-
-    <!-- Basic Page Needs
-    ================================================== -->
     <meta charset="utf-8">
-    <title>THESIS : Home</title>
-
-    <!-- Mobile Specific Metas
-    ================================================== -->
+    <title>HOMN</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <!-- Favicon -->
     <link rel="shortcut icon" type="image/icon" href="img/wpf-favicon.png"/>
-
-    <!-- CSS
-    ================================================== -->       
-    <!-- Bootstrap css file-->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- Font awesome css file-->
     <link href="css/font-awesome.min.css" rel="stylesheet">
@@ -40,28 +25,17 @@
     <link id="switcher" href="css/themes/default-theme.css" rel="stylesheet">
     <!-- Main structure css file -->
     <link href="css/style.css" rel="stylesheet">
-    <!<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
-    <link rel='stylesheet prefetch' href='https://material.angularjs.org/1.1.3/docs.css'>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Google fonts -->
     <link href='http://fonts.googleapis.com/css?family=Merriweather' rel='stylesheet' type='text/css'>   
-    <link href='http://fonts.googleapis.com/css?family=Varela' rel='stylesheet' type='text/css'>    
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
- <script>
+    <link href='http://fonts.googleapis.com/css?family=Varela' rel='stylesheet' type='text/css'>
+    <script>
         window.Laravel = {!! json_encode([
             'csrfToken' => csrf_token(),
         ]) !!};
     </script>
   </head>
   <body >   
-  
-
     <!-- SCROLL TOP BUTTON -->
     <a class="scrollToTop" href="#"></a>
     <!-- END SCROLL TOP BUTTON -->
@@ -81,10 +55,9 @@
               </button>
               <!-- LOGO -->
               <!-- TEXT BASED LOGO -->
-              <a class="navbar-brand" href="#">THESIS <span></span></a>              
+              <a class="navbar-brand" href="#">HOMN <span></span></a>              
               <!-- IMG BASED LOGO  -->
-               <!-- <a class="navbar-brand" href="index.html"><img src="img/logo.png" alt="logo"></a>  -->            
-                     
+               <!-- <a class="navbar-brand" href="index.html"><img src="img/logo.png" alt="logo"></a>  -->                
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul id="top-menu" class="nav navbar-nav navbar-right main-nav">
@@ -94,8 +67,8 @@
                 <li><a href="#pricing">Bảng giá</a></li>
                 <li><a href="#footer">Liên hệ</a></li> 
                   @if (Auth::guest())
-                            <li><a href="#login" data-toggle="modal" data-backdrop="static" id="auth" data-target="#login-modal">Đăng nhập</a></li>
-                            <li><a href="#login" data-toggle="modal" data-backdrop="static" data-target="#register-modal">Đăng kí</a></li>
+                <li><a href="#login" data-toggle="modal" data-backdrop="static" id="auth" data-target="#login-modal">Đăng nhập</a></li>
+                <li><a href="#login" data-toggle="modal" data-backdrop="static" data-target="#register-modal">Đăng kí</a></li>
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -132,131 +105,125 @@
                  
                 
 
-<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-        <div class="modal-dialog">
-        <div class="loginmodal-container">
-        <button type="button" class="close" data-dismiss="modal" onclick="removeMessage()" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-          <h1>Đăng nhập</h1><br>
-          <form role="form" method="POST" action="{{ route('login') }}">
-          {{csrf_field()}}
-           <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
+              <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+                <div class="modal-dialog">
+                <div class="loginmodal-container">
+                <button type="button" class="close" data-dismiss="modal" onclick="removeMessage()" aria-label="Close"><span aria-hidden="true">&times;</span>
+                        </button>
+                  <h1>Đăng nhập</h1><br>
+                  <form role="form" method="POST" action="{{ route('login') }}">
+                  {{csrf_field()}}
+                   <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
 
-                
-                  <input id="username" type="text" class="form-control" name="username" placeholder="Username" value="{{ old('username') }}" required autofocus>
+                        
+                          <input id="username" type="text" class="form-control" name="username" placeholder="Username" value="{{ old('username') }}" required autofocus>
 
-                      @if ($errors->has('username') )
-                          @if($errors->first('username') == "These credentials do not match our records.")
-                                        <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('username') }}</strong>
-                                    </span>
-                                @endif
-                              @endif
-           </div>
-           <div class="form-group">
-
-            
-                <input id="password" type="password" class="form-control" name="password" placeholder="Password" required>
+                              @if ($errors->has('username') )
+                                  @if($errors->first('username') == "These credentials do not match our records.")
+                                                <span class="help-block">
+                                                <strong class="messageError">{{ $errors->first('username') }}</strong>
+                                            </span>
+                                        @endif
+                                      @endif
+                   </div>
+                   <div class="form-group">
 
                     
-            
-          </div>
-          <div class="form-group">
-                          
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-                                    </label>
-                                </div>
-                            </div>
-                       
-          
-          <input type="submit" name="login" class="login loginmodal-submit" value="Login">
-          </form>
-                   <a hhref="#login" data-toggle="modal" data-backdrop="static" data-target="#register-modal">Register</a> - <a href="#">Forgot Password</a>
-          </div>
-        </div>
-      </div>
+                        <input id="password" type="password" class="form-control" name="password" placeholder="Password" required>
 
-<div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-        <div class="modal-dialog">
-        <div class="loginmodal-container">
-        <button type="button" class="close" data-dismiss="modal" onclick="removeMessage()" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-          <h1>Đăng kí</h1><br>
-          <form class="form-horizontal" role="form" method="POST" action="{{ route('register') }}">
-                        {{ csrf_field() }}
-
-                        <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" required autofocus>
-                            </div>
-                        </div>
-                        <div class="form-group {{ ($errors->has('last_name') && $errors->first('username') != 'These credentials do not match our records.') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="last_name" type="text" class="form-control" placeholder="Tên" name="last_name" value="{{ old('last_name') }}" required autofocus>
-                            </div>
-                        </div>
-                        <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="username" type="text" class="form-control" placeholder="Username" name="username" value="{{ old('username') }}" required autofocus>
+                            
+                    
+                  </div>
+                  <div class="form-group">
+                                  
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
+                                            </label>
+                                        </div>
+                                    </div>
                                
-                                @if ($errors->has('username'))
-                                <!-- day la text tieng viet -->
-                                  @if($errors->first('username') != "These credentials do not match our records.")
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('username') }}</strong>
-                                    </span>
-                                @endif
-                                @endif
-                            </div>
-                        </div>
+                  
+                  <input type="submit" name="login" class="login loginmodal-submit" value="Login">
+                  </form>
+                           <a hhref="#login" data-toggle="modal" data-backdrop="static" data-target="#register-modal">Register</a> - <a href="#">Forgot Password</a>
+                  </div>
+                </div>
+              </div>
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="email" type="email" class="form-control" placeholder="E-Mail" name="email" value="{{ old('email') }}" required>
+              <div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+                  <div class="modal-dialog">
+                  <div class="loginmodal-container">
+                  <button type="button" class="close" data-dismiss="modal" onclick="removeMessage()" aria-label="Close"><span aria-hidden="true">&times;</span>
+                          </button>
+                    <h1>Đăng kí</h1><br>
+                    <form class="form-horizontal" role="form" method="POST" action="{{ route('register') }}">
+                                  {{ csrf_field() }}
 
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
+                                  <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
+                                      <div >
+                                          <input id="first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" required autofocus>
+                                      </div>
+                                  </div>
+                                  <div class="form-group {{ ($errors->has('last_name') && $errors->first('username') != 'These credentials do not match our records.') ? ' has-error' : '' }}">
+                                      <div >
+                                          <input id="last_name" type="text" class="form-control" placeholder="Tên" name="last_name" value="{{ old('last_name') }}" required autofocus>
+                                      </div>
+                                  </div>
+                                  <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
+                                      <div >
+                                          <input id="username" type="text" class="form-control" placeholder="Username" name="username" value="{{ old('username') }}" required autofocus>
+                                         
+                                          @if ($errors->has('username'))
+                                          <!-- day la text tieng viet -->
+                                            @if($errors->first('username') != "These credentials do not match our records.")
+                                              <span class="help-block">
+                                                  <strong class="messageError">{{ $errors->first('username') }}</strong>
+                                              </span>
+                                          @endif
+                                          @endif
+                                      </div>
+                                  </div>
 
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="password" type="password" class="form-control" placeholder="Password" name="password" required>
+                                  <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                                      <div >
+                                          <input id="email" type="email" class="form-control" placeholder="E-Mail" name="email" value="{{ old('email') }}" required>
 
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
+                                          @if ($errors->has('email'))
+                                              <span class="help-block">
+                                                  <strong class="messageError">{{ $errors->first('email') }}</strong>
+                                              </span>
+                                          @endif
+                                      </div>
+                                  </div>
 
-                        <div class="form-group">
-                            <div >
-                                <input id="password-confirm" type="password" placeholder="Confirm Password" class="form-control" name="password_confirmation" required>
-                            </div>
-                        </div>
-                        <input type="submit" name="Register" class="login loginmodal-submit" value="Đăng kí">
-                       
-                    </form>
+                                  <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                                      <div >
+                                          <input id="password" type="password" class="form-control" placeholder="Password" name="password" required>
+
+                                          @if ($errors->has('password'))
+                                              <span class="help-block">
+                                                  <strong class="messageError">{{ $errors->first('password') }}</strong>
+                                              </span>
+                                          @endif
+                                      </div>
+                                  </div>
+
+                                  <div class="form-group">
+                                      <div >
+                                          <input id="password-confirm" type="password" placeholder="Confirm Password" class="form-control" name="password_confirmation" required>
+                                      </div>
+                                  </div>
+                                  <input type="submit" name="Register" class="login loginmodal-submit" value="Đăng kí">
+                                 
+                              </form>
+                    </div>
+                  </div>
+                </div>
+              </div>                    
+            </nav>  
           </div>
-        </div>
-      </div>
-
-
-
-      </div>
-                
-                      
-        </nav>  
-      </div>
       <!-- END MENU --> 
-
     </header>
     <!--=========== END HEADER SECTION ================--> 
 <!-- login -->
@@ -272,8 +239,10 @@
               <ul class="slides-container">                          
                 <li>
                   <img src="img/slider/2.jpg" alt="img">
+                 
                    <div class="slider_caption">
-                    
+                     <h2>HOMN</h2>
+                  <p>PHẦN MỀM QUẢN LÝ KHÁCH SẠN CUNG CẤP DẠNG DỊCH VỤ</p>
                   </div>
                   </li>
                 <!-- Start single slider-->
@@ -287,8 +256,8 @@
                 <li>
                   <img src="img/slider/4.jpg" alt="img">
                    <div class="slider_caption">
-                    <h2></h2>
-                    <p></p>
+                    
+          
                   </div>
                 </li>
               </ul>
@@ -353,7 +322,7 @@
                 <!--counter box-->
                 <div class="counter_box text-center fadeInDown  wow animated" data-wow-delay=".6s" style="visibility: visible; animation-delay: 0.6s; animation-name: fadeInDown;">
                     <div class="counter_number counter">1276</div>
-                    <h4 class="counter_name">tài khoản</h4>
+                    <h4 class="counter_name">Tài khoản</h4>
                 </div>
                 <!--counter box end-->
             </div>
@@ -434,85 +403,91 @@
 
     <!--=========== BEGIN pricing ================-->
    <!-- Pricing Section -->
-  <section id="pricing" class="pb80 pt80">
-    <div class="container">
-      <div class="row">
-        <div class="header-section text-center mb40 white">
+    <section id="pricing">
+      
+        <div class="row">
+
+          <div class="col-lg-12 col-sm-12">
+           <div class="container text-center bg3">
           <h2 class="meta-title-2 white">Bảng giá</h2>
-        </div>
-      </div>
-      <div class="row">
-
-        <!-- Pricing Table One -->
-        <div class="col-sm-3 col-md-3">
-          <div class="pricing-table-column pricing1">
-            <h5>BASIC</h5>
-            <div class="price-band">
-              <h2>$1000000Đ</h2>
-              <p>1 tháng</p>
-            </div>
-            <ul>
-              <li>Miển phí 1 khách sạn</li>
-              <li>Công cụ quản lý đầy đủ</li>
-              <li>Miển phí hổ trợ</li>
-            </ul>
-            <div class="button-style-1"><a href="">Đăng kí ngay</a></div>
           </div>
-        </div>
+          </div>
 
-        <!-- Pricing Table Two -->
-        <div class="col-sm-3 col-md-3">
-          <div class="pricing-table-column">
-            <h5>SILVER</h5>
-            <div class="price-band">
-              <h2>$1500000Đ</h2>
-              <p>2 month</p>
+          <div class="col-lg-12 col-sm-12">
+          <div class="container">
+          <div class="row">
+          <!-- Pricing Table One -->
+          <div class="col-sm-3 col-md-3">
+            <div class="pricing-table-column">
+              <h3>BASIC</h3>
+              
+                <h2>$100</h2>
+                <p>1 tháng</p>
+          
+               <div class="info text-left">
+                <p>Miển phí 1 khách sạn</p>
+                <p>Công cụ quản lý đầy đủ</p>
+                <p>Miển phí hổ trợ</p>
+              </div>
+              <div class="button-style-1"><a href="">Đăng kí ngay</a></div>
             </div>
-            <ul>
-              <li>Miển phí 3 khách sạn</li>
-              <li>Công cụ quản lý đầy đủ</li>
-              <li>Miển phí hổ trợ</li>
-            </ul>
-            <div class="button-style-1"><a href="">buy it now</a></div>
-          </div>  
-        </div>
+          </div>
 
-        <!-- Pricing Table Three -->
-        <div class="col-sm-3 col-md-3">
-          <div class="pricing-table-column">
-            <h5>GOOL</h5>
-            <div class="price-band">
-              <h2>$2500000Đ</h2>
-              <p>4 month</p>
-            </div>
-            <ul>
-              <li>Miển phí 6 khách sạn</li>
-              <li>Công cụ quản lý đầy đủ</li>
-              <li>Miển phí hổ trợ</li>
-            </ul>
-            <div class="button-style-1"><a href="">buy it now</a></div>
-          </div>  
-        </div>
+          <!-- Pricing Table Two -->
+          <div class="col-sm-3 col-md-3">
+            <div class="pricing-table-column">
+              <h3>SILVER</h3>
+              
+                <h2>$150</h2>
+                <p>2 month</p>
+             
+              <div class="info text-left">
+                <p>Miển phí 3 khách sạn</p>
+                <p>Công cụ quản lý đầy đủ</p>
+                <p>Miển phí hổ trợ</p>
+              </div>
+              <div class="button-style-1"><a href="">Đăng kí ngay</a></div>
+            </div>  
+          </div>
 
-        <!-- Pricing Table Four -->
-        <div class="col-sm-3 col-md-3">
-          <div class="pricing-table-column">
-            <h5>vip</h5>
-            <div class="price-band">
-              <h2>4000000Đ</h2>
-              <p>6 month</p>
+          <!-- Pricing Table Three -->
+          <div class="col-sm-3 col-md-3">
+            <div class="pricing-table-column">
+              <h3>GOLD</h3>
+              
+                <h2>$250</h2>
+                <p>4 month</p>
+             
+              <div class="info text-left">
+                <p>Miển phí 6 khách sạn</p>
+                <p>Công cụ quản lý đầy đủ</p>
+                <p>Miển phí hổ trợ</p>
+              </div>
+              <div class="button-style-1"><a href="">Đăng kí ngay</a></div>
+            </div>  
+          </div>
+
+          <!-- Pricing Table Four -->
+          <div class="col-sm-3 col-md-3">
+            <div class="pricing-table-column">
+              <h3>VIP</h3>
+              
+                <h2>$400</h2>
+                <p>6 month</p>
+             
+              <div class="info text-left">
+                <p>Miển phí 10 khách sạn</p>
+                <p>Công cụ quản lý đầy đủ</p>
+                <p>Miển phí hổ trợ</p>
+              </div>
+              <div class="button-style-1"><a href="">Đăng kí ngay</a></div>
             </div>
-            <ul>
-              <li>Miển phí 10 khách sạn</li>
-              <li>Công cụ quản lý đầy đủ</li>
-              <li>Miển phí hổ trợ</li>
-            </ul>
-            <div class="button-style-1"><a href="">buy it now</a></div>
           </div>
         </div>    
       </div>
-    </div>
-  </section>
+      </div>
+      </div>
+    </section>
    
    
     <!--=========== BEGIN FOOTER SECTION ================-->
@@ -521,7 +496,7 @@
       <div class="footer_top">
         <div class="container">
           <div class="row">
-            <div class="col-ld-3  col-md-3 col-sm-3">
+            <div class="col-lg-6  col-md-6 col-sm-12">
               <div class="single_footer_widget">
                 <h3>Liên Hệ</h3>
                 <div><strong>Email</strong>: thesis@gmail.com</div>
@@ -529,24 +504,12 @@
                 <div><strong>Địa chỉ</strong>: 227 Nguyễn Văn Cừ, Phường 4, Quận 5, Hồ Chí Minh</div>
               </div>
             </div>
-            <div class="col-ld-6 col-md-6 col-sm-6">
-              <div class="single_footer_widget">
-                <h3><center>Community</center></h3>
-                <ul class="footer_widget_nav">
-                <li><a href="#"><center>Trang chủ</center></a></li>
-                <li><a href="#aboutUs"><center>Về chúng tôi</center></a></li>
-                <li><a href="#whyUs"><center>Lý do</center></a></li>
-                <li><a href="#pricing"><center>Bảng giá</center></a></li>
-                <li><a href="#footer"><center>Liên hệ</center></a></li> 
-                </ul>
-              </div>
-            </div>
          
-            <div class="col-ld-3  col-md-3 col-sm-3">
+            <div class="col-lg-6  col-md-6 col-sm-12">
               <div class="single_footer_widget">
-                <h3>Social Links</h3>
+                <h3>Mạng xã hội</h3>
                 <ul class="footer_social">
-                  <li><a data-toggle="tooltip" data-placement="top" title="Facebook" class="soc_tooltip" href="#"><i class="fa fa-facebook"></i></a></li>
+                  <li><a data-toggle="tooltip" data-placement="top" title="Facebook" class="soc_tooltip" href="https://www.facebook.com/Money3x/"><i class="fa fa-facebook"></i></a></li>
                   <li><a data-toggle="tooltip" data-placement="top" title="Twitter" class="soc_tooltip"  href="#"><i class="fa fa-twitter"></i></a></li>
                   <li><a data-toggle="tooltip" data-placement="top" title="Google+" class="soc_tooltip"  href="#"><i class="fa fa-google-plus"></i></a></li>
                   <li><a data-toggle="tooltip" data-placement="top" title="Linkedin" class="soc_tooltip"  href="#"><i class="fa fa-linkedin"></i></a></li>
@@ -563,13 +526,7 @@
 
       <!-- End footer bottom area -->
     </footer>
-    <!--=========== END FOOTER SECTION ================--> 
-
-
-<!-- dialog -->
-
-
-  
+    <!--=========== END FOOTER SECTION ================-->
 
     <!-- Javascript Files
     ================================================== -->
@@ -643,22 +600,20 @@
     document.getElementById("register-modal").showModal(); </script>
   @endif
 
-<script type="text/javascript">
-   
-    function removeMessage() {
-        $("div").removeClass("has-error");
-        $("span").removeClass("help-block");
+      <script type="text/javascript">
+         
+          function removeMessage() {
+              $("div").removeClass("has-error");
+              $("span").removeClass("help-block");
 
-        var x = document.getElementsByClassName("messageError");
-        for (i = 0; i < x.length; i++) { 
-            x[i].innerHTML = "";
-        }
-        $("strong").removeClass("messageError");
-        // var element = document.getElementsByClassName("help-block");
-        
-}
-</script>
-
-
+              var x = document.getElementsByClassName("messageError");
+              for (i = 0; i < x.length; i++) { 
+                  x[i].innerHTML = "";
+              }
+              $("strong").removeClass("messageError");
+              // var element = document.getElementsByClassName("help-block");
+              
+      }
+      </script>
   </body>
 </html>

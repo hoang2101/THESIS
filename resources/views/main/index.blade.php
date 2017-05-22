@@ -80,7 +80,8 @@
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                            Logout
+                                            <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                            Đăng xuất
                                         </a>
 
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -91,7 +92,8 @@
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('manage').submit();">
-                                            Manage
+                                            <i class="fa fa-list" aria-hidden="true"></i>
+                                            Quản lý
                                         </a>
 
                                         <form id="manage" action="@if(Auth::user()->type == 1){{{ route('mainManage') }}}@endif @if(Auth::user()->type == 2){{{ route('mainManageHoteler') }}}@endif" method="get" style="display: none;">
@@ -116,7 +118,7 @@
                    <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
 
                         
-                          <input id="username" type="text" class="form-control" name="username" placeholder="Username" value="{{ old('username') }}" required autofocus>
+                          <input id="username" type="text" class="form-control" name="username" placeholder="Tên đăng nhập" value="{{ old('username') }}" required autofocus>
 
                               @if ($errors->has('username') )
                                   @if($errors->first('username') == "These credentials do not match our records.")
@@ -129,7 +131,7 @@
                    <div class="form-group">
 
                     
-                        <input id="password" type="password" class="form-control" name="password" placeholder="Password" required>
+                        <input id="password" type="password" class="form-control" name="password" placeholder="Mật khẩu" required>
 
                             
                     
@@ -138,85 +140,91 @@
                                   
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
+                                                <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Ghi nhớ
                                             </label>
                                         </div>
                                     </div>
                                
                   
-                  <input type="submit" name="login" class="login loginmodal-submit" value="Login">
+                  <input type="submit" name="login" class="btn btn-primary btn-lg" value="Đăng nhập">
                   </form>
-                           <a hhref="#login" data-toggle="modal" data-backdrop="static" data-target="#register-modal">Register</a> - <a href="#">Forgot Password</a>
+                           <a href="#login" data-toggle="modal" data-backdrop="static" data-target="#register-modal">Đăng kí</a> - <a href="#">Quên mật khẩu</a>
                   </div>
                 </div>
               </div>
 
               <div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
                   <div class="modal-dialog">
-                  <div class="loginmodal-container">
+                  <div class="Registermodal-content">
                   <button type="button" class="close" data-dismiss="modal" onclick="removeMessage()" aria-label="Close"><span aria-hidden="true">&times;</span>
                           </button>
                     <h1>Đăng kí</h1><br>
-                    <form class="form-horizontal" role="form" method="POST" action="{{ route('register') }}">
+                    <form role="form" method="POST" action="{{ route('register') }}">
                                   {{ csrf_field() }}
-
-                                  <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
-                                      <div >
-                                          <input id="first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" required autofocus>
-                                      </div>
-                                  </div>
-                                  <div class="form-group {{ ($errors->has('last_name') && $errors->first('username') != 'These credentials do not match our records.') ? ' has-error' : '' }}">
-                                      <div >
-                                          <input id="last_name" type="text" class="form-control" placeholder="Tên" name="last_name" value="{{ old('last_name') }}" required autofocus>
-                                      </div>
-                                  </div>
-                                  <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
-                                      <div >
-                                          <input id="username" type="text" class="form-control" placeholder="Username" name="username" value="{{ old('username') }}" required autofocus>
-                                         
-                                          @if ($errors->has('username'))
-                                          <!-- day la text tieng viet -->
-                                            @if($errors->first('username') != "These credentials do not match our records.")
-                                              <span class="help-block">
-                                                  <strong class="messageError">{{ $errors->first('username') }}</strong>
-                                              </span>
-                                          @endif
-                                          @endif
-                                      </div>
-                                  </div>
-
-                                  <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                                      <div >
-                                          <input id="email" type="email" class="form-control" placeholder="E-Mail" name="email" value="{{ old('email') }}" required>
-
-                                          @if ($errors->has('email'))
-                                              <span class="help-block">
-                                                  <strong class="messageError">{{ $errors->first('email') }}</strong>
-                                              </span>
-                                          @endif
-                                      </div>
-                                  </div>
-
-                                  <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                                      <div >
-                                          <input id="password" type="password" class="form-control" placeholder="Password" name="password" required>
-
-                                          @if ($errors->has('password'))
-                                              <span class="help-block">
-                                                  <strong class="messageError">{{ $errors->first('password') }}</strong>
-                                              </span>
-                                          @endif
-                                      </div>
-                                  </div>
-
-                                  <div class="form-group">
-                                      <div >
-                                          <input id="password-confirm" type="password" placeholder="Confirm Password" class="form-control" name="password_confirmation" required>
-                                      </div>
-                                  </div>
-                                  <input type="submit" name="Register" class="login loginmodal-submit" value="Đăng kí">
+                    <div class="row">                
+                          <div class="col-xs-6 form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
+                              
+                                  <input id="first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" required autofocus>
+                              
+                          </div>
+                          <div class="col-xs-6 form-group {{ ($errors->has('last_name') && $errors->first('username') != 'These credentials do not match our records.') ? ' has-error' : '' }}">
+                             
+                                  <input id="last_name" type="text" class="form-control" placeholder="Tên" name="last_name" value="{{ old('last_name') }}" required autofocus>
+                              
+                          </div>
+                    </div>
+                    <div class="row">   
+                          <div class="col-xs-12 form-group{{ $errors->has('username') ? ' has-error' : '' }}">
+                              
+                                  <input id="username" type="text" class="form-control" placeholder="Tên đăng nhập" name="username" value="{{ old('username') }}" required autofocus>
                                  
-                              </form>
+                                  @if ($errors->has('username'))
+                                  <!-- day la text tieng viet -->
+                                    @if($errors->first('username') != "These credentials do not match our records.")
+                                      <span class="help-block">
+                                          <strong class="messageError">{{ $errors->first('username') }}</strong>
+                                      </span>
+                                  @endif
+                                  @endif
+                              
+                          </div>
+                   </div>
+                   <div class="row">             
+                          <div class="col-xs-12 form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                             
+                                  <input id="email" type="email" class="form-control" placeholder="Email" name="email" value="{{ old('email') }}" required>
+
+                                  @if ($errors->has('email'))
+                                      <span class="help-block">
+                                          <strong class="messageError">{{ $errors->first('email') }}</strong>
+                                      </span>
+                                  @endif
+                              
+                          </div>
+                   </div>   
+                      <div class="row">      
+                          <div class="col-xs-6 form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                              <div >
+                                  <input id="password" type="password" class="form-control" placeholder="Mật khẩu" name="password" required>
+
+                                  @if ($errors->has('password'))
+                                      <span class="help-block">
+                                          <strong class="messageError">{{ $errors->first('password') }}</strong>
+                                      </span>
+                                  @endif
+                              </div>
+                          </div>
+
+                          <div class="col-xs-6 form-group">
+                              <div >
+                                  <input id="password-confirm" type="password" placeholder="Nhập lại mật khẩu" class="form-control" name="password_confirmation" required>
+                              </div>
+                          </div>
+                      <div class="col-xs-6 pull-right"> 
+                          <input type="submit" name="Register" class="btn btn-primary btn-lg pull-right" value="Đăng kí">
+                      </div>
+                      </div>   
+                      </form>
                     </div>
                   </div>
                 </div>
@@ -439,7 +447,7 @@
               <h3>SILVER</h3>
               
                 <h2>$150</h2>
-                <p>2 month</p>
+                <p>2 tháng</p>
              
               <div class="info text-left">
                 <p>Miển phí 3 khách sạn</p>
@@ -456,7 +464,7 @@
               <h3>GOLD</h3>
               
                 <h2>$250</h2>
-                <p>4 month</p>
+                <p>4 tháng</p>
              
               <div class="info text-left">
                 <p>Miển phí 6 khách sạn</p>
@@ -473,7 +481,7 @@
               <h3>VIP</h3>
               
                 <h2>$400</h2>
-                <p>6 month</p>
+                <p>6 tháng</p>
              
               <div class="info text-left">
                 <p>Miển phí 10 khách sạn</p>
@@ -500,7 +508,7 @@
               <div class="single_footer_widget">
                 <h3>Liên Hệ</h3>
                 <div><strong>Email</strong>: thesis@gmail.com</div>
-                <div><strong>điện thoại:</strong>: (+84) 163 846 0544</div>
+                <div><strong>Điện thoại:</strong>: (+84) 163 846 0544</div>
                 <div><strong>Địa chỉ</strong>: 227 Nguyễn Văn Cừ, Phường 4, Quận 5, Hồ Chí Minh</div>
               </div>
             </div>

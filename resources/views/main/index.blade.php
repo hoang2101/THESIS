@@ -175,7 +175,7 @@
                           <div class="col-xs-12 form-group{{ $errors->has('username') ? ' has-error' : '' }}">
                              <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
-                                  <input id="username" type="email" class="form-control" placeholder="Tên đăng nhập" name="username" value="{{ old('username') }}" required autofocus>
+                                  <input id="username" type="text" class="form-control" placeholder="Tên đăng nhập" name="username" value="{{ old('username') }}" required autofocus>
                             </div>
                             @if ($errors->has('username'))
                                   <!-- day la text tieng viet -->

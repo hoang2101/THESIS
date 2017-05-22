@@ -119,15 +119,14 @@
                         <div class="input-group">
                           <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
                           <input id="username" type="text" class="form-control" name="username" placeholder="Tên đăng nhập" value="{{ old('username') }}" required autofocus>
-
-                              @if ($errors->has('username') )
+                        </div>
+                         @if ($errors->has('username') )
                                   @if($errors->first('username') == "These credentials do not match our records.")
                                                 <span class="help-block">
                                                 <strong class="messageError">{{ $errors->first('username') }}</strong>
                                             </span>
                                         @endif
                                       @endif
-                        </div>
                    </div>
                    <div class="form-group">
                       <div class="input-group">
@@ -177,16 +176,15 @@
                              <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
                                   <input id="username" type="email" class="form-control" placeholder="Tên đăng nhập" name="username" value="{{ old('username') }}" required autofocus>
-                                 
-                                  @if ($errors->has('username'))
+                            </div>
+                            @if ($errors->has('username'))
                                   <!-- day la text tieng viet -->
                                     @if($errors->first('username') != "These credentials do not match our records.")
                                       <span class="help-block">
                                           <strong class="messageError">{{ $errors->first('username') }}</strong>
                                       </span>
                                   @endif
-                                  @endif
-                            </div>  
+                            @endif
                           </div>
                    </div>
                    <div class="row">             
@@ -194,20 +192,18 @@
                           <div class="input-group">
                                   <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
                                   <input id="email" type="email" class="form-control" placeholder="Email" name="email" value="{{ old('email') }}" required>
-
-                                  @if ($errors->has('email'))
-                                      <span class="help-block">
-                                          <strong class="messageError">{{ $errors->first('email') }}</strong>
-                                      </span>
-                                  @endif
-                          </div>   
+                          </div>
+                          @if ($errors->has('email'))
+                              <span class="help-block">
+                                  <strong class="messageError">{{ $errors->first('email') }}</strong>
+                              </span>
+                          @endif   
                           </div>
                    </div>   
                       <div class="row">      
                           <div class="col-xs-6 form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                               <div >
                                   <input id="password" type="password" class="form-control" placeholder="Mật khẩu" name="password" required>
-
                                   @if ($errors->has('password'))
                                       <span class="help-block">
                                           <strong class="messageError">{{ $errors->first('password') }}</strong>

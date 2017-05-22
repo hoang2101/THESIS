@@ -6,8 +6,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-<title>Hotel {{$info['name']}}</title>
-
+<title>Khách sạn {{$info['name']}}</title>
+<link rel="shortcut icon" type="image/icon" href="img/wpf-favicon.png"/>
 <!-- Bootstrap CSS -->
 <link href="css/bootstrap.min.css" rel="stylesheet">
 
@@ -20,63 +20,37 @@
 <!-- Bootsnav CSS -->
 <link href="css/bootsnav.css" rel="stylesheet">
 
-<!-- Owl stylesheet -->
-<!-- <link rel="stylesheet" href="css/owl.carousel.css">
-<link rel="stylesheet" href="css/owl.theme.css"> -->
-
-<!-- Lightbox Theme -->
-<!-- <link href="css/lightbox.css" rel="stylesheet"> -->
-
 <!-- Main css -->
 <link rel="stylesheet" href="css/style2.css">
 
-<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
 </head>
-<body>
-
-  <div class="page-loader" style="display: none;">
-    <div class="loader" style="display: none;"> 
-      <span class="dot dot_1"></span> 
-      <span class="dot dot_2"></span> 
-      <span class="dot dot_3"></span> 
-      <span class="dot dot_4"></span> 
-    </div>
-  </div>
-
+<body data-spy="scroll" data-target=".navbar" data-offset="82">
   <!-- Hero Section -->
-  <nav class="navbar navbar-default navbar-fixed white bootsnav on no-full navbar-transparent">
+  <nav class="navbar navbar-default navbar-fixed-top">
 
     <div class="container">      
         <!-- Start Header Navigation -->
         <div class="navbar-header">
-        <ul class="nav navbar-nav " data-in="fadeInDown" data-out="fadeOutUp">     
-
-              <li> <a  class="nav navbar-nav " data-in="fadeInDown" data-out="fadeOutUp" href="#">{{strtoupper($info['name'])}} <span></span></a> </li>
-              
-            </ul>
-            <!-- <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
-                <i class="fa fa-bars"></i>
-            </button>
-            <a class="navbar-brand" href="#brand">
-              <img src="img/logo/logo-white.png" class="logo logo-display" alt="">
-              <img src="img/logo/logo-black.png" class="logo logo-scrolled" alt="">
-            </a> -->
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <!-- LOGO -->
+              <!-- TEXT BASED LOGO -->
+              <a class="navbar-brand" href="#">{{strtoupper($info['name'])}}</a>        
         </div>
         <!-- End Header Navigation -->
 
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="navbar-menu">
-            <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">                  
-              <li><a href="#">Home</a></li>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">                  
+              <li class="active"><a href="#home">Tìm phòng</a></li>
               <li><a href="#about">Giới thiệu</a></li>
-              <li><a href="#service">Phòng</a></li>
-              <li><a href="#project">Dịch vụ</a></li>
-              <li><a href="#pricing">liên hệ</a></li>
+              <li><a href="#room">Phòng</a></li>
+              <li><a href="#service">Dịch vụ</a></li>
+              <li><a href="#footer">liên hệ</a></li>
               @if (Auth::guest())
                 <li><a href="#login" data-toggle="modal" data-backdrop="static" id="auth" data-target="#login-modal">Đăng nhập</a></li>
                  <li><a href="#login" data-toggle="modal" data-backdrop="static" data-target="#register-modal">Đăng kí</a></li>
@@ -124,75 +98,62 @@
         </div><!-- /.navbar-collapse -->
     </div>   
   </nav>
-
-  
-  <!-- Hero Section -->
-   <section id="home"   class="hero hero_full_screen hero_parallax parallax-window" data-stellar-background-ratio="0.5">
+  <!-- Search Section -->
+  <section id="home" class="hero hero_full_screen hero_parallax parallax-window" data-stellar-background-ratio="0.5">
     <div class="bg-overlay opacity-6">
     </div>
     <div class="hero_parallax_inner">
-      <div class="container">
-        <!--  <div class="search-row">
-          <form class="search-form horizontal container " action="#">
-            <div class="search-fields col-sx-6 col-md-3">
-              <input placeholder="Check-in" class="datepicker-fields check-in" type="text">
-              <i class="fa fa-calendar form-control-feedback"></i>
-            </div>
-            
-          </form>
-        </div>
-        <h1 class="big-slider-title" data-ix="slide-big-title" style="opacity: 1; transform: translateX(0px) translateY(0px); transition: opacity 500ms ease 0s, transform 500ms ease 0s;">Think creative</h1>
-        <h3 class="slider-sub-txt white" data-ix="slide-sub-title" style="opacity: 1; transform: translateX(0px) translateY(0px); transition: opacity 500ms ease 0s, transform 500ms ease 0s;">we are always working hard</h3>
-        <div class="slider-spc" data-ix="slide-spc" style="opacity: 1; transform: translateX(0px) translateY(200px); transition: opacity 500ms ease 0s, transform 500ms ease 0s;"> -->
-        <div class="search-row">
-          <form class="search-form horizontal container " action="#">
-         <div>
-          <div class="col-md-3">
-            <div class=" col-md-11 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
-              <div>
-                  <input id="check_in" type="text" onclick="(this.type='date')"  class="form-control" placeholder="Check-in" name="check_in" value="{{ old('check_in') }}" required autofocus>
+      <div class="container col-xs-10 col-sm-6 col-md-6 col-lg-5 pull-right bg1">
+        <form >
+            <div class="row">    
+            <div class="col-md-6 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
+              <label >Email address</label>
+              <i class="fa fa-calendar-check-o fa-fw" aria-hidden="true"></i>
+              <div class='input-group' id='datetimepicker1'>
+                  <span class="input-group-addon"><i class="fa fa fa-calendar fa-fw" aria-hidden="true"></i></span>
+                  <input  type="text"  class="form-control" placeholder="Check-in" name="check_in" required autofocus>
               </div>
             </div>
-          </div>
-          <div class="col-md-3">
-            <div class=" col-md-11 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
-              <div>
-                  <input id="check_out" type="text" onfocus="(this.type='date')" class="form-control" placeholder="Check-out" name="check_out" value="{{ old('check_out') }}" required autofocus>
-              </div>
-            </div>
-          </div>
-           <div class="col-md-3">
-            <div class=" col-md-11 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
-              <div>
-                  <select class="form-control">
-                            <option>Loại phòng</option>
-                            <option>Phòng đơn</option>
-                            <option>Phòng đôi</option>
-                            <option>Phòng vip</option>
-                          </select>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class=" col-md-11 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
-              <div>
-                  <input id="e_phone_number" type="number" class="form-control" placeholder="Số người" name="phone_number" value="{{ old('phone_number') }}" >
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <div style="text-align: center;">
-          <input type="submit" name="Register" class="btn btn-sm btn-default "  style="width:auto;  margin:0 auto; text-align:center" value="Đặt phòng">
-          
-        </div>
+         
 
           
-            
-          </form>
-        </div>
-        </div>
+            <div class=" col-md-6 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
+              <label>Email address</label>
+              <div class='input-group' id='datetimepicker1'>
+                  <span class="input-group-addon"><i class="fa fa fa-calendar fa-fw" aria-hidden="true"></i></span>
+                  <input type="text" class="form-control" placeholder="Check-out" name="check_out" required autofocus>
+              </div>
+            </div>
+          
+
+            <div class="col-sm-6 col-md-4 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
+              <div>
+                  <label>Email address</label>
+                  <input type="number" class="form-control" placeholder="Số người lớn" name="people">
+              </div>
+            </div>
+             <div class="col-sm-6 col-md-4 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
+              <div>
+                  <label>Email address</label>
+                  <input type="number" class="form-control" placeholder="Số trẻ em" name="people">
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-4 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
+              <div>
+                  <label>Email address</label>
+                  <input type="number" class="form-control" placeholder="Số phòng" name="room">
+              </div>
+            </div>
+            </div>
+            <div class="row">
+            <div class="col-md-6 pull-right">
+            <input type="submit" name="Search" class="btn btn-lg btn-primary pull-right" value="Tìm phòng">
+            </div>
+            </div>
+        </form>
+  
       </div>
+    </div>
   </section> 
   
 
@@ -213,7 +174,7 @@
   </section>
 
   <!-- Service Section -->
-  <section id="service" class="pb80 pt80 bg-grey">
+  <section id="room" class="pb80 pt80 bg-grey">
     <div class="container">
       <div class="row">
         <div class="header-section text-center mb40">
@@ -261,7 +222,7 @@
 
 
   <!-- Project Section -->
-  <section id="project" class="pt80 pb80">
+  <section id="service" class="pt80 pb80">
     <div class="container">
       <div class="row">
         <div class="com-sm-12">
@@ -425,7 +386,7 @@
         </div>
       </div>
   <!-- Footer Section -->
-  <footer class="footer">
+  <footer id="footer" class="footer">
     <div class="container inner">
       <p class="pull-left white"> <a href="#">Khách sạn {{$info['name']}}</a>.</p>
       <ul class="social pull-right">
@@ -484,8 +445,7 @@
         // var element = document.getElementsByClassName("help-block");
         
 }
- 
-  
+</script>  
   
 </body>
 </html>

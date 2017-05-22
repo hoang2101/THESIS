@@ -35,7 +35,7 @@
         ]) !!};
     </script>
   </head>
-  <body >   
+  <body data-spy="scroll" data-target=".navbar" data-offset="82">   
     <!-- SCROLL TOP BUTTON -->
     <a class="scrollToTop" href="#"></a>
     <!-- END SCROLL TOP BUTTON -->
@@ -61,7 +61,7 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
               <ul id="top-menu" class="nav navbar-nav navbar-right main-nav">
-                <li class="active"><a href="#">Trang chủ</a></li>
+                <li class="active"><a href="#slider">Trang chủ</a></li>
                 <li><a href="#aboutUs">Về chúng tôi</a></li>
                 <li><a href="#whyUs">Lý do</a></li>
                 <li><a href="#pricing">Bảng giá</a></li>

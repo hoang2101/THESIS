@@ -116,8 +116,8 @@
                   <form role="form" method="POST" action="{{ route('login') }}">
                   {{csrf_field()}}
                    <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
-
-                        
+                        <div class="input-group">
+                          <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
                           <input id="username" type="text" class="form-control" name="username" placeholder="Tên đăng nhập" value="{{ old('username') }}" required autofocus>
 
                               @if ($errors->has('username') )
@@ -127,14 +127,13 @@
                                             </span>
                                         @endif
                                       @endif
+                        </div>
                    </div>
                    <div class="form-group">
-
-                    
+                      <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
                         <input id="password" type="password" class="form-control" name="password" placeholder="Mật khẩu" required>
-
-                            
-                    
+                      </div>                              
                   </div>
                   <div class="form-group">
                                   
@@ -175,8 +174,9 @@
                     </div>
                     <div class="row">   
                           <div class="col-xs-12 form-group{{ $errors->has('username') ? ' has-error' : '' }}">
-                              
-                                  <input id="username" type="text" class="form-control" placeholder="Tên đăng nhập" name="username" value="{{ old('username') }}" required autofocus>
+                             <div class="input-group">
+                                  <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                                  <input id="username" type="email" class="form-control" placeholder="Tên đăng nhập" name="username" value="{{ old('username') }}" required autofocus>
                                  
                                   @if ($errors->has('username'))
                                   <!-- day la text tieng viet -->
@@ -186,12 +186,13 @@
                                       </span>
                                   @endif
                                   @endif
-                              
+                            </div>  
                           </div>
                    </div>
                    <div class="row">             
                           <div class="col-xs-12 form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                             
+                          <div class="input-group">
+                                  <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
                                   <input id="email" type="email" class="form-control" placeholder="Email" name="email" value="{{ old('email') }}" required>
 
                                   @if ($errors->has('email'))
@@ -199,7 +200,7 @@
                                           <strong class="messageError">{{ $errors->first('email') }}</strong>
                                       </span>
                                   @endif
-                              
+                          </div>   
                           </div>
                    </div>   
                       <div class="row">      

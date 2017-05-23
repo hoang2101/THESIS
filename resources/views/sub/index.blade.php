@@ -84,7 +84,7 @@
                                         </a>
                                     @endif
                                     @if(Auth::user()->type == 5 )
-                                        <a "
+                                        <a href="#"
                                             onclick="event.preventDefault();
                                                      document.getElementById('manage').submit();">
                                             <i class="fa fa-list" aria-hidden="true"></i>

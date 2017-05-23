@@ -393,7 +393,7 @@ button:focus {outline:0 !important;}
 .descriptive-title {
     float: left;
     margin-bottom: 75px;
-    padding: 0 150px;
+    padding: 0 10%;
     text-align: center;
     width: 100%;
 }
@@ -670,6 +670,11 @@ div[data-dimension] {
     border-radius: 50%;
     border: 3px solid #dcdcdc;
     display: inline-block;
+}
+.price-pad
+{
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 .pricing-table-column h2 {
     padding-top: 24px;

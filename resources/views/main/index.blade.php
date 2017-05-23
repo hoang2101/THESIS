@@ -422,7 +422,7 @@
           <div class="container">
           <div class="row">
           <!-- Pricing Table One -->
-          <div class="col-sm-3 col-md-3">
+          <div class="price-pad col-sm-3 col-md-3">
             <div class="pricing-table-column">
               <h3>BASIC</h3>
               
@@ -439,7 +439,7 @@
           </div>
 
           <!-- Pricing Table Two -->
-          <div class="col-sm-3 col-md-3">
+          <div class="price-pad col-sm-3 col-md-3">
             <div class="pricing-table-column">
               <h3>SILVER</h3>
               
@@ -456,7 +456,7 @@
           </div>
 
           <!-- Pricing Table Three -->
-          <div class="col-sm-3 col-md-3">
+          <div class="price-pad col-sm-3 col-md-3">
             <div class="pricing-table-column">
               <h3>GOLD</h3>
               
@@ -473,7 +473,7 @@
           </div>
 
           <!-- Pricing Table Four -->
-          <div class="col-sm-3 col-md-3">
+          <div class="price-pad col-sm-3 col-md-3">
             <div class="pricing-table-column">
               <h3>VIP</h3>
               

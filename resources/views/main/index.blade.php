@@ -112,7 +112,7 @@
                 <div class="loginmodal-container">
                 <button type="button" class="close" data-dismiss="modal" onclick="removeMessage()" aria-label="Close"><span aria-hidden="true">&times;</span>
                         </button>
-                  <h1>Đăng nhập</h1><br>
+                  <h1>ĐĂNG NHẬP</h1><br>
                   <form role="form" method="POST" action="{{ route('login') }}">
                   {{csrf_field()}}
                    <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
@@ -156,7 +156,7 @@
                   <div class="Registermodal-content">
                   <button type="button" class="close" data-dismiss="modal" onclick="removeMessage()" aria-label="Close"><span aria-hidden="true">&times;</span>
                           </button>
-                    <h1>Đăng kí</h1><br>
+                    <h1>ĐĂNG KÍ</h1><br>
                     <form role="form" method="POST" action="{{ route('register') }}">
                                   {{ csrf_field() }}
                       <div class="row">                

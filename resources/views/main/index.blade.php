@@ -159,47 +159,47 @@
                     <h1>Đăng kí</h1><br>
                     <form role="form" method="POST" action="{{ route('register') }}">
                                   {{ csrf_field() }}
-                    <div class="row">                
-                          <div class="col-xs-6 form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
-                              
-                                  <input id="first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" required autofocus>
-                              
-                          </div>
-                          <div class="col-xs-6 form-group {{ ($errors->has('last_name') && $errors->first('username') != 'These credentials do not match our records.') ? ' has-error' : '' }}">
-                             
-                                  <input id="last_name" type="text" class="form-control" placeholder="Tên" name="last_name" value="{{ old('last_name') }}" required autofocus>
-                              
-                          </div>
-                    </div>
-                    <div class="row">   
-                          <div class="col-xs-12 form-group{{ $errors->has('username') ? ' has-error' : '' }}">
-                             <div class="input-group">
-                                  <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
-                                  <input id="username" type="text" class="form-control" placeholder="Tên đăng nhập" name="username" value="{{ old('username') }}" required autofocus>
+                      <div class="row">                
+                            <div class="col-xs-6 form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
+                                
+                                    <input id="first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" required autofocus>
+                                
                             </div>
-                            @if ($errors->has('username'))
-                                  <!-- day la text tieng viet -->
-                                    @if($errors->first('username') != "These credentials do not match our records.")
-                                      <span class="help-block">
-                                          <strong class="messageError">{{ $errors->first('username') }}</strong>
-                                      </span>
-                                  @endif
-                            @endif
-                          </div>
-                   </div>
-                   <div class="row">             
-                          <div class="col-xs-12 form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                          <div class="input-group">
-                                  <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
-                                  <input id="email" type="email" class="form-control" placeholder="Email" name="email" value="{{ old('email') }}" required>
-                          </div>
-                          @if ($errors->has('email'))
-                              <span class="help-block">
-                                  <strong class="messageError">{{ $errors->first('email') }}</strong>
-                              </span>
-                          @endif   
-                          </div>
-                   </div>   
+                            <div class="col-xs-6 form-group {{ ($errors->has('last_name') && $errors->first('username') != 'These credentials do not match our records.') ? ' has-error' : '' }}">
+                               
+                                    <input id="last_name" type="text" class="form-control" placeholder="Tên" name="last_name" value="{{ old('last_name') }}" required autofocus>
+                                
+                            </div>
+                      </div>
+                      <div class="row">   
+                            <div class="col-xs-12 form-group{{ $errors->has('username') ? ' has-error' : '' }}">
+                               <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                                    <input id="username" type="text" class="form-control" placeholder="Tên đăng nhập" name="username" value="{{ old('username') }}" required autofocus>
+                              </div>
+                              @if ($errors->has('username'))
+                                    <!-- day la text tieng viet -->
+                                      @if($errors->first('username') != "These credentials do not match our records.")
+                                        <span class="help-block">
+                                            <strong class="messageError">{{ $errors->first('username') }}</strong>
+                                        </span>
+                                    @endif
+                              @endif
+                            </div>
+                     </div>
+                     <div class="row">             
+                            <div class="col-xs-12 form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                            <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+                                    <input id="email" type="email" class="form-control" placeholder="Email" name="email" value="{{ old('email') }}" required>
+                            </div>
+                            @if ($errors->has('email'))
+                                <span class="help-block">
+                                    <strong class="messageError">{{ $errors->first('email') }}</strong>
+                                </span>
+                            @endif   
+                            </div>
+                     </div>   
                       <div class="row">      
                           <div class="col-xs-6 form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                               <div >
@@ -217,11 +217,11 @@
                                   <input id="password-confirm" type="password" placeholder="Nhập lại mật khẩu" class="form-control" name="password_confirmation" required>
                               </div>
                           </div>
-                      <div class="col-xs-6 pull-right"> 
-                          <input type="submit" name="Register" class="btn btn-primary btn-lg pull-right" value="Đăng kí">
-                      </div>
+                          <div class="col-xs-6 pull-right"> 
+                              <input type="submit" name="Register" class="btn btn-primary btn-lg pull-right" value="Đăng kí">
+                          </div>
                       </div>   
-                      </form>
+                    </form>
                     </div>
                   </div>
                 </div>

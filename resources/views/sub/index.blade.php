@@ -19,7 +19,7 @@
 
 <!-- Bootsnav CSS -->
 <link href="css/bootsnav.css" rel="stylesheet">
-
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <!-- Main css -->
 <link rel="stylesheet" href="css/style2.css">
 
@@ -61,9 +61,10 @@
 
                       <ul class="dropdown-menu" role="menu">
                                     <li>
-                                        <a 
+                                        <a href="#"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
+                                            <i class="fa fa-sign-out" aria-hidden="true"></i>
                                             Logout
                                         </a>
 
@@ -77,14 +78,17 @@
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('manage').submit();">
-                                            Manage
+                                  
+                                            <i class="fa fa-list" aria-hidden="true"></i>
+                                            Quản lý
                                         </a>
                                     @endif
                                     @if(Auth::user()->type == 5 )
                                         <a "
                                             onclick="event.preventDefault();
                                                      document.getElementById('manage').submit();">
-                                            Prolife
+                                            <i class="fa fa-list" aria-hidden="true"></i>
+                                            Thông tin cá nhân
                                         </a>
                                     @endif
                                         <form id="manage" action="@if(Auth::user()->type == 3){{{ route('mainManage') }}}@endif @if(Auth::user()->type == 4){{{ route('mainManageHoteler') }}}@endif" method="get" style="display: none;">
@@ -106,42 +110,42 @@
       <div class="container col-xs-10 col-sm-6 col-md-6 col-lg-5 pull-right bg1">
         <form >
             <div class="row">    
-            <div class="col-md-6 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
-              <label >Email address</label>
-              <i class="fa fa-calendar-check-o fa-fw" aria-hidden="true"></i>
-              <div class='input-group' id='datetimepicker1'>
+            <div class="col-md-6 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}" >
+              <label >Ngày đến</label>
+              
+              <div class='input-group' >
                   <span class="input-group-addon"><i class="fa fa fa-calendar fa-fw" aria-hidden="true"></i></span>
-                  <input  type="text"  class="form-control" placeholder="Check-in" name="check_in" required autofocus>
+                  <input id='datepicker' type="text"  class="form-control" placeholder="Check-in" name="check_in">
               </div>
             </div>
          
 
           
             <div class=" col-md-6 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
-              <label>Email address</label>
-              <div class='input-group' id='datetimepicker1'>
+              <label>Ngày đi</label>
+              <div class='input-group' >
                   <span class="input-group-addon"><i class="fa fa fa-calendar fa-fw" aria-hidden="true"></i></span>
-                  <input type="text" class="form-control" placeholder="Check-out" name="check_out" required autofocus>
+                  <input id='datepicker2' type="text" class="form-control" placeholder="Check-out" name="check_out">
               </div>
             </div>
           
 
             <div class="col-sm-6 col-md-4 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
               <div>
-                  <label>Email address</label>
-                  <input type="number" class="form-control" placeholder="Số người lớn" name="people">
+                  <label>Số người lớn</label>
+                  <input type="number" class="form-control" name="people">
               </div>
             </div>
              <div class="col-sm-6 col-md-4 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
               <div>
-                  <label>Email address</label>
-                  <input type="number" class="form-control" placeholder="Số trẻ em" name="people">
+                  <label>Số trẻ em</label>
+                  <input type="number" class="form-control" name="kid">
               </div>
             </div>
             <div class="col-sm-6 col-md-4 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
               <div>
-                  <label>Email address</label>
-                  <input type="number" class="form-control" placeholder="Số phòng" name="room">
+                  <label>Số phòng</label>
+                  <input type="number" class="form-control"  name="room">
               </div>
             </div>
             </div>
@@ -269,8 +273,8 @@
     </div>
   </section>
 
-<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-        <div class="modal-dialog">
+  <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog">
         <div class="loginmodal-container">
         <button type="button" class="close" data-dismiss="modal" onclick="removeMessage()" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
@@ -279,112 +283,116 @@
           {{csrf_field()}}
           <input hidden id="typePosts"" name="typePost" value="login">
            <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
-
-                
-                  <input id="username" type="text" class="form-control" name="username" placeholder="Username" value="{{ old('username') }}" required autofocus>
-
-                      @if ($errors->has('username') )
-                          @if($errors->first('username') == "Tài khoản hoặc mật khẩu không đúng")
-                                        <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('username') }}</strong>
-                                    </span>
-                                @endif
-                              @endif
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                <input id="username" type="text" class="form-control" name="username" placeholder="Username" value="{{ old('username') }}" required autofocus>
+              </div>
+              @if ($errors->has('username') )
+              @if($errors->first('username') == "Tài khoản hoặc mật khẩu không đúng")
+                            <span class="help-block">
+                            <strong class="messageError">{{ $errors->first('username') }}</strong>
+                        </span>
+                    @endif
+                  @endif
            </div>
            <div class="form-group">
-
-            
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
                 <input id="password" type="password" class="form-control" name="password" placeholder="Password" required>
-
-                    
-            
+              </div>
           </div>
           <div class="form-group">
                           
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-                                    </label>
-                                </div>
-                            </div>
+              <div class="checkbox">
+                      <label>
+                          <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
+                      </label>
+                  </div>
+              </div>
                        
           
-          <input type="submit" name="login" class="login loginmodal-submit" value="Login">
+          <input type="submit" name="login" class="btn btn-primary btn-lg" value="Login">
           </form>
                    <a hhref="#login" data-toggle="modal" data-backdrop="static" data-target="#register-modal">Register</a> - <a href="#">Forgot Password</a>
           </div>
-        </div>
-      </div>
+    </div>
+  </div>
 
-<div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-        <div class="modal-dialog">
-        <div class="loginmodal-container">
+  <div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-dialog">
+      <div class="Registermodal-content">
         <button type="button" class="close" data-dismiss="modal" onclick="removeMessage()" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
           <h1>Đăng kí</h1><br>
-          <form class="form-horizontal" role="form" method="POST" action="{{ route('subHomesubmit',['subdomain' =>$info['subdomain']]) }}">
-                        {{ csrf_field() }}
-                        <input hidden id="typePosts"" name="typePost" value="register">
-                        <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" required autofocus>
-                            </div>
-                        </div>
-                        <div class="form-group {{ ($errors->has('last_name') && $errors->first('username') != 'These credentials do not match our records.') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="last_name" type="text" class="form-control" placeholder="Tên" name="last_name" value="{{ old('last_name') }}" required autofocus>
-                            </div>
-                        </div>
-                        <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="username" type="text" class="form-control" placeholder="Username" name="username" value="{{ old('username') }}" required autofocus>
-                               
-                                @if ($errors->has('username'))
-                                <!-- day la text tieng viet -->
-                                  
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('username') }}</strong>
-                                    </span>
-                                
-                                @endif
-                            </div>
-                        </div>
+          <form role="form" method="POST" action="{{ route('subHomesubmit',['subdomain' =>$info['subdomain']]) }}">
+              {{ csrf_field() }}
+              <div class="row">
+                <div class="col-xs-6 form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
+                    <div >
+                        <input id="first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" required autofocus>
+                    </div>
+                </div>
+                <div class="col-xs-6 form-group {{ ($errors->has('last_name') && $errors->first('username') != 'These credentials do not match our records.') ? ' has-error' : '' }}">
+                    <div >
+                        <input id="last_name" type="text" class="form-control" placeholder="Tên" name="last_name" value="{{ old('last_name') }}" required autofocus>
+                    </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 form-group{{ $errors->has('username') ? ' has-error' : '' }}">
+                     <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                        <input id="username" type="text" class="form-control" placeholder="Username" name="username" required autofocus> 
+                    </div>           
+                    @if ($errors->has('username'))
+                    <!-- day la text tieng viet -->
+                      
+                        <span class="help-block">
+                            <strong class="messageError">{{ $errors->first('username') }}</strong>
+                        </span>
+                    
+                    @endif
+                </div>
+              </div>
+              <div class="row"> 
+                <div class="col-xs-12 form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                     <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+                        <input id="email" type="email" class="form-control" placeholder="E-Mail" name="email" required>
+                    </div>
+                     @if ($errors->has('email'))
+                            <span class="help-block">
+                                <strong class="messageError">{{ $errors->first('email') }}</strong>
+                            </span>
+                        @endif
+                </div>
+              </div>
+              <div class="row"> 
+                <div class="col-xs-6 form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                    <div >
+                        <input id="password" type="password" class="form-control" placeholder="Mật khẩu" name="password" required>
+                        @if ($errors->has('password'))
+                            <span class="help-block">
+                                <strong class="messageError">{{ $errors->first('password') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                </div>
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="email" type="email" class="form-control" placeholder="E-Mail" name="email" value="{{ old('email') }}" required>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="password" type="password" class="form-control" placeholder="Password" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div >
-                                <input id="password-confirm" type="password" placeholder="Confirm Password" class="form-control" name="password_confirmation" required>
-                            </div>
-                        </div>
-                        <input type="submit" name="Register" class="login loginmodal-submit" value="Đăng kí">
-                       
-                    </form>
-          </div>
-        </div>
+                <div class="col-xs-6 form-group">
+                    <div >
+                        <input id="password-confirm" type="password" placeholder="Nhập lại mật khẩu" class="form-control" name="password_confirmation" required>
+                    </div>
+                </div>
+              
+                <div class="col-xs-6 pull-right"> 
+                    <input type="submit" name="Register" class="btn btn-primary btn-lg pull-right" value="Đăng kí">
+                </div>
+              </div>
+          </form>
       </div>
+    </div>
+  </div>
   <!-- Footer Section -->
   <footer id="footer" class="footer">
     <div class="container inner">
@@ -404,6 +412,8 @@
   <script  src="js/jquery.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <script src="js/bootsnav.js"></script>
+  
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <!-- <script src="js/owl.carousel.js"></script>
   <script  src="js/counterup.min.js"></script> -->
   <script src="http://cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>
@@ -431,7 +441,7 @@
       <script>  <script>  function myFunction() { 
     document.getElementById("register-modal").showModal(); </script>
   @endif
- <script type="text/javascript">
+<script type="text/javascript">
    
     function removeMessage() {
         $("div").removeClass("has-error");
@@ -445,7 +455,17 @@
         // var element = document.getElementsByClassName("help-block");
         
 }
-</script>  
+</script>
+<script>
+  $( function() {
+    $( "#datepicker" ).datepicker();
+  } );
+</script>
+<script>
+  $( function() {
+    $( "#datepicker2" ).datepicker();
+  } );
+</script>
   
 </body>
 </html>

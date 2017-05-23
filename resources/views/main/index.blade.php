@@ -365,7 +365,7 @@
                       <span class="fa fa-desktop"></span>
                     </div>
                     <h3>RESPONSIVE GRID</h3>
-                    <p>Phần mềm được thiết kế để có thể hiển thị tương thích trên mọi kích thước hiển thị của trình duyệt</p>
+                    <p class="text-left">Phần mềm được thiết kế để có thể hiển thị tương thích trên mọi kích thước hiển thị của trình duyệt</p>
                   </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3">
@@ -374,7 +374,7 @@
                       <span class="fa fa-users"></span>
                     </div>
                     <h3>Quản lý khách sạn từ xa</h3>
-                    <p>Với công nghệ hiện đại cho phép quản lý, chủ khách sạn có thể truy cập vào phần mềm từ bất kỳ đâu chỉ bằng trình duyệt Web. Các nhà quản lý khách sạn có thể kiểm tra, theo dõi, báo cáo </p>
+                    <p class="text-left">Với công nghệ hiện đại cho phép quản lý, chủ khách sạn có thể truy cập vào phần mềm từ bất kỳ đâu chỉ bằng trình duyệt Web. Các nhà quản lý khách sạn có thể kiểm tra, theo dõi, báo cáo </p>
                   </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3">
@@ -383,7 +383,7 @@
                       <span class="fa fa-flask"></span>
                     </div>
                     <h3>Đa thiết bị và điều hành</h3>
-                    <p>Với nền tảng phần mềm dạng dịch vụ có thể chạy trên nhiều thiết bị với các hệ điều hành khác nhau như Windows, Mac OS, Linux… chỉ với trình duyệt Web mà không cần cài đăt.</p>
+                    <p class="text-left">Với nền tảng phần mềm dạng dịch vụ có thể chạy trên nhiều thiết bị với các hệ điều hành khác nhau như Windows, Mac OS, Linux… chỉ với trình duyệt Web mà không cần cài đăt.</p>
                   </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3">
@@ -392,7 +392,7 @@
                       <span class="fa fa-support"></span>
                     </div>
                     <h3>Hổ trợ online</h3>
-                    <p>Hệ thống hổ trợ online 24/7, khi bạn gặp vấn vần bất cứ vấn đề gì có thể liên hệ với chúng tôi để được tư vấn thông qua điện thoại, email, chức năng hổ trợ khách hàng của hệ thống</p>
+                    <p class="text-left">Hệ thống hổ trợ online 24/7, khi bạn gặp vấn vần bất cứ vấn đề gì có thể liên hệ với chúng tôi để được tư vấn thông qua điện thoại, email, chức năng hổ trợ khách hàng của hệ thống</p>
                   </div>
                 </div>
               </div>
@@ -528,7 +528,16 @@
       <!-- End footer top area -->
 
       <!-- Start footer bottom area -->
-
+      <div class="footer_bottom">
+      <div class="container">
+          <div class="row">
+          <div class="col-sm-12">
+          <div class="single_footer_widget">
+          <p>COPYRIGHT © 2017 HOANG & LUAN. <span style="color:#E0E0E0">ALL RIGHTS RESERVED</span></p>
+          </div>
+          </div>
+          </div>
+      </div>
       <!-- End footer bottom area -->
     </footer>
     <!--=========== END FOOTER SECTION ================-->

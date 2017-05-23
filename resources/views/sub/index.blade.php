@@ -326,6 +326,7 @@
           <h1>Đăng kí</h1><br>
           <form role="form" method="POST" action="{{ route('subHomesubmit',['subdomain' =>$info['subdomain']]) }}">
               {{ csrf_field() }}
+              <input hidden id="typePosts"" name="typePost" value="register">
               <div class="row">
                 <div class="col-xs-6 form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
                     <div >

@@ -18,11 +18,13 @@ class CreateHotelTable extends Migration
             $table->string('hotel_name')->nullable();
             $table->string('hotel_address')->nullable();
             $table->string('hotel_star')->nullable();
-            $table->string('hotel_account')->nullable();
+            $table->string('account_id')->nullable();
             $table->string('hotel_url')->nullable();
             $table->integer('config_id')->nullable();
-             $table->date('expire_date')->nullable();
-            $table->timestamps();
+            $table->date('expire_date')->nullable();
+            $table->integer('total_booking')->nullable();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
         });
     }
 

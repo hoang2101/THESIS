@@ -10,6 +10,7 @@ use App\Hotel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
+use Carbon\Carbon;
 
 class MainController extends Controller
 {
@@ -192,7 +193,7 @@ public function editProlife(Request $request){
    
         $imageName = Auth::user()->username.'/avatar2.'.$request->image->getClientOriginalExtension();
         
-        $request->image->move(public_path('img/'.Auth::user()->username), $imageName);
+        $request->image->move(public_path('img/User/'.Auth::user()->username), $imageName);
          DB::table('users')
             ->where('id', Auth::user()->id)
             ->update( ['image_link' => $imageName]);
@@ -258,13 +259,13 @@ protected function validator(array $data)
       if($request['typePost'] == "addHotel"){
     
         $messages = ['hotel_url.unique' => 'Tên miền đã tồn tại',
-                    'hotel_account.exists' => 'Tài khoản không tồn tại',];
+                    'account_id.exists' => 'Tài khoản không tồn tại',];
         
 
 
         $validator = Validator::make($request->all(),[
                 'hotel_url' => 'required|unique:hotel',
-                'hotel_account' => 'required|exists:users,username',
+                'account_id' => 'required|exists:users,username',
 
             ],$messages);
         if ($validator->fails()) {
@@ -275,14 +276,37 @@ protected function validator(array $data)
                 $hotels = DB::table('hotel')->get();
                  return redirect()->route('mainManageHotel')->withErrors($validator)->with('hotels',$hotels)->withInput();            
             }
+            $getUser = DB::table('users')->where('username', '=',$request['account_id'])->first();
+            $date = null;
+            $total_cost = null;
+            if($request['expire_date'] == 1){
+                $date = Carbon::now()->addMonths(1);
+                $total_cost = 100 + $getUser->total_cost;
+            }
+            if($request['expire_date'] == 2){
+                $date = Carbon::now()->addMonths(2);
+                $total_cost = 150 + $getUser->total_cost;
+            }
+            if($request['expire_date'] == 3){
+                $date = Carbon::now()->addMonths(4);
+                 $total_cost = 250 + $getUser->total_cost;
+            }
+            if($request['expire_date'] == 4){
+                $date = Carbon::now()->addMonths(6);
+                 $total_cost = 400 + $getUser->total_cost;
+            }
         DB::table('hotel')->insertGetId([
                  'hotel_name' => $request['hotel_name'],
-                 'hotel_account' => $request['hotel_account'],
+                 'account_id' => $request['account_id'],
                  'hotel_url' => $request['hotel_url'],
-                 'expire_date' => $request['expire_date'],
+                 'expire_date' => $date,
                  'hotel_star' => $request['hotel_star'],
                  
              ]);
+        DB::table('users')
+                ->where('id', $getUser->id)
+                ->update(['total_cost' => $total_cost]);
+
          $hotels = DB::table('hotel')->get();
             //return view('main.manage')->with('users',$users)->withErrors($errors);
             return redirect()->route('mainManageHotel')->with('hotels',$hotels);
@@ -292,14 +316,14 @@ protected function validator(array $data)
 
       if($request['typePost'] == "updateHotel"){
 
-         $getUser = DB::table('hotel')->where('hotel_id', '=', $request['id'])->get();
-         if($getUser != null){
+         $getHotel = DB::table('hotel')->where('hotel_id', '=', $request['id'])->first();
+         if($getHotel != null){
 
-                $messages = ['hotel_account.exists' => 'Tài khoản không tồn tại',];
+                $messages = ['account_id.exists' => 'Tài khoản không tồn tại',];
 
 
         $validator = Validator::make($request->all(),[
-                'hotel_account' => 'required|exists:users,username',
+                'account_id' => 'required|exists:users,username',
             ],$messages);
             if ($validator->fails()) {
               // $messagesResult = "fails";
@@ -317,11 +341,38 @@ protected function validator(array $data)
                $validator->errors()->add('hotel_url', 'tên miền đã tồn tại!');
                  return redirect()->route('mainManageHotel')->withErrors($validator)->withInput();
             }
-            
+
+            $getUser = DB::table('users')->where('username', '=',$request['account_id'])->first();
+            $date = $getHotel->expire_date;
+            $total_Cost = null;
+             if($request['expire_date'] == 0){
+                $date = Carbon::createFromFormat('Y-m-d', $date)->addMonths(0);
+                $total_Cost = $getUser->total_cost;
+            }
+            if($request['expire_date'] == 1){
+                $date = Carbon::createFromFormat('Y-m-d', $date)->addMonths(1);
+                $total_Cost = 100 + $getUser->total_cost;
+            }
+            if($request['expire_date'] == 2){
+                $date = Carbon::createFromFormat('Y-m-d', $date)->addMonths(2);
+                $total_Cost = 150 + $getUser->total_cost;
+            }
+            if($request['expire_date'] == 3){
+                $date = Carbon::createFromFormat('Y-m-d', $date)->addMonths(4);
+                 $total_Cost = 250 + $getUser->total_cost;
+            }
+            if($request['expire_date'] == 4){
+                $date = Carbon::createFromFormat('Y-m-d', $date)->addMonths(6);
+                $total_Cost = 400 + $getUser->total_cost;
+            }
 
             DB::table('hotel')
                 ->where('hotel_id', $request['id'])
-                ->update(['hotel_name' => $request['hotel_name'], 'hotel_url' => $request['hotel_url'], 'hotel_account' => $request['hotel_account'],'hotel_star' => $request['hotel_star'], 'expire_date' => $request['expire_date']]);
+                ->update(['hotel_name' => $request['hotel_name'], 'hotel_url' => $request['hotel_url'], 'account_id' => $request['account_id'],'hotel_star' => $request['hotel_star'], 'expire_date' => $date]);
+
+             DB::table('users')
+                ->where('id',  $getUser->id)
+                ->update(['total_cost' => $total_Cost]);
                 //return $request;
                 return redirect()->route('mainManageHotel');
 
@@ -357,7 +408,8 @@ protected function validator(array $data)
 // Manage hoteler
 
     public function manageHoteler(){
-       $hotels = DB::table('hotel')->where('hotel_account', '=', Auth::user()->username)->get();
+
+       $hotels = DB::table('hotel')->where('account_id', '=', Auth::user()->username)->get();
        // $hotels="zxcx";
         return view('main.manageHoteler')->with('hotels',$hotels);
     }
@@ -365,7 +417,8 @@ protected function validator(array $data)
     public function addHotelHoteler(Request $request){
 
         if($request['typePost'] == "addHotel"){
-    
+
+        
         $messages = ['hotel_url.unique' => 'Tên miền đã tồn tại',];
         
 
@@ -379,18 +432,40 @@ protected function validator(array $data)
                
                 $validator->errors()->add('typePost', 'addHotel');
                 $validator->errors()->add('id', $request['id']);
-                 return redirect()->route('mainManageHoteler')->withErrors($validator)->withInput();            
+                return redirect()->route('mainManageHoteler')->withErrors($validator)->withInput();            
+            }
+            $date = null;
+            $total_cost = null;
+            if($request['expire_date'] == 1){
+                $date = Carbon::now()->addMonths(1);
+                $total_cost = 100 + Auth::User()->total_cost;
+            }
+            if($request['expire_date'] == 2){
+                $date = Carbon::now()->addMonths(2);
+                $total_cost = 150 + Auth::User()->total_cost;
+            }
+            if($request['expire_date'] == 3){
+                $date = Carbon::now()->addMonths(4);
+                 $total_cost = 250 + Auth::User()->total_cost;
+            }
+            if($request['expire_date'] == 4){
+                $date = Carbon::now()->addMonths(6);
+                 $total_cost = 400 + Auth::User()->total_cost;
             }
         DB::table('hotel')->insertGetId([
                  'hotel_name' => $request['hotel_name'],
-                 'hotel_account' => Auth::user()->username,
+                 'account_id' => Auth::user()->username,
                  'hotel_url' => $request['hotel_url'],
-                 'expire_date' => $request['expire_date'],
+                 'expire_date' => $date,
                  'hotel_star' => $request['hotel_star'],
                  
+                 
              ]);
+        DB::table('users')
+                ->where('id', Auth::User()->id)
+                ->update(['total_cost' => $total_cost]);
         
-         //$hotels = DB::table('hotel')->where('hotel_account', '=', Auth::user()->username)->get()->get();
+         //$hotels = DB::table('hotel')->where('account_id', '=', Auth::user()->username)->get()->get();
             //return view('main.manage')->with('users',$users)->withErrors($errors);
             return redirect()->route('mainManageHoteler');
       }
@@ -399,13 +474,13 @@ protected function validator(array $data)
 
       if($request['typePost'] == "updateHotel"){
 
-         $getUser = DB::table('hotel')->where('hotel_id', '=', $request['id'])->get();
-         if($getUser != null){
+         $getHotel = DB::table('hotel')->where('hotel_id', '=', $request['id'])->first();
+         if($getHotel != null){
 
-                $messages = ['hotel_account.required' => 'tên miền không được để trống',];
+            $messages = ['account_id.required' => 'tên miền không được để trống',];
 
 
-        $validator = Validator::make($request->all(),[
+            $validator = Validator::make($request->all(),[
                 'hotel_url' => 'required',
             ],$messages);
             if ($validator->fails()) {
@@ -424,11 +499,37 @@ protected function validator(array $data)
                $validator->errors()->add('hotel_url', 'tên miền đã tồn tại!');
                  return redirect()->route('mainManageHoteler')->withErrors($validator)->withInput();
             }
-            
+            $getUser = Auth::User();
+            $date = $getHotel->expire_date;
+            $total_Cost = null;
+             if($request['expire_date'] == 0){
+                $date = Carbon::createFromFormat('Y-m-d', $date)->addMonths(0);
+                $total_Cost = Auth::User()->total_cost;
+            }
+            if($request['expire_date'] == 1){
+                $date = Carbon::createFromFormat('Y-m-d', $date)->addMonths(1);
+                $total_Cost = 100 + Auth::User()->total_cost;
+            }
+            if($request['expire_date'] == 2){
+                $date = Carbon::createFromFormat('Y-m-d', $date)->addMonths(2);
+                $total_Cost = 150 + Auth::User()->total_cost;
+            }
+            if($request['expire_date'] == 3){
+                $date = Carbon::createFromFormat('Y-m-d', $date)->addMonths(4);
+                 $total_Cost = 250 + Auth::User()->total_cost;
+            }
+            if($request['expire_date'] == 4){
+                $date = Carbon::createFromFormat('Y-m-d', $date)->addMonths(6);
+                $total_Cost = 400 + Auth::User()->total_cost;
+            }
 
             DB::table('hotel')
                 ->where('hotel_id', $request['id'])
-                ->update(['hotel_name' => $request['hotel_name'], 'hotel_url' => $request['hotel_url'], 'hotel_star' => $request['hotel_star'], 'expire_date' => $request['expire_date']]);
+                ->update(['hotel_name' => $request['hotel_name'], 'hotel_url' => $request['hotel_url'], 'hotel_star' => $request['hotel_star'], 'expire_date' => $date]);
+
+             DB::table('users')
+                ->where('id', Auth::User()->id)
+                ->update(['total_cost' => $total_Cost]);
                 //return $request;
                 return redirect()->route('mainManageHoteler');
 
@@ -460,8 +561,8 @@ protected function validator(array $data)
 
 //manage goverm hoteler
 public function manageGovermHoteler(){
-        $hotels =  DB::table('hotel')->where('hotel_account', '=', Auth::user()->username)->get();
-        $users = DB::table('users')->where('type', '=',3)->get();
+        $hotels =  DB::table('hotel')->where('account_id', '=', Auth::user()->username)->get();
+        $users = DB::table('account')->where('type', '=',3)->get();
        // $hotels="zxcx";
         return view('main.ManageGovernHoteler')->with('users',$users)->with('hotels',$hotels);
     }
@@ -470,7 +571,23 @@ public function manageGovermHoteler(){
 
         if($request['typePost'] == "addUser"){
     // validator
-    $validator = $this->validator($request->all());
+          
+    
+   $messages = [
+        'typePost'=>"typePost = addUser",
+        'username.unique' => 'Tài khoản đả tồn tại!',
+        'email.unique' => 'Email đả tồn tại!',
+        'password.confirmed' => 'password không giống!',
+    ];
+
+
+    $validator = Validator::make($request->all(),[
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:account',
+            'email' => 'required|string|email|max:255|unique:account',
+            'password' => 'required|string|min:6|confirmed',
+        ],$messages);
         if ($validator->fails()) {
            $messagesResult = "fails";
 
@@ -482,7 +599,7 @@ public function manageGovermHoteler(){
             // return view('main.manage')->withErrors($validator)->with('users',$users)->withInput(Input::all());          
         }
 
-    DB::table('users')->insertGetId([
+    DB::table('account')->insertGetId([
              'first_name' => $request['first_name'],
              'last_name' => $request['last_name'],
              'email' => $request['email'],
@@ -499,7 +616,7 @@ public function manageGovermHoteler(){
 
   if($request['typePost'] == "updateUser"){
 
-     $getUser = DB::table('users')->where('id', '=', $request['id'])->get();
+     $getUser = DB::table('account')->where('id', '=', $request['id'])->get();
      if($getUser != null){
 
             $messages = [
@@ -507,7 +624,7 @@ public function manageGovermHoteler(){
 
 
     $validator = Validator::make($request->all(),[
-            'id' => 'required|not-in:users',
+            'id' => 'required|not-in:account',
         ],$messages);
         if ($validator->fails()) {
            $messagesResult = "fails";
@@ -517,7 +634,7 @@ public function manageGovermHoteler(){
             //return $validator->errors();
              return redirect()->route('mainManageGovermHoteler')->withErrors($validator)->withInput();            
         }
-        $getUsername = DB::table('users')->where('id', '<>', $request['id'])->where('username','=',$request['username']) ->first();
+        $getUsername = DB::table('account')->where('id', '<>', $request['id'])->where('username','=',$request['username']) ->first();
         if($getUsername != null){ 
            $messagesResult = "fails";
 
@@ -526,7 +643,7 @@ public function manageGovermHoteler(){
            $validator->errors()->add('username', 'username đã tồn tại!');
              return redirect()->route('mainManageGovermHoteler')->withErrors($validator)->withInput();
         }
-        $getUsername = DB::table('users')->where('id', '<>', $request['id'])->where('email','=',$request['email']) ->first();
+        $getUsername = DB::table('account')->where('id', '<>', $request['id'])->where('email','=',$request['email']) ->first();
         if($getUsername != null){
            $messagesResult = "fails";
 
@@ -536,7 +653,7 @@ public function manageGovermHoteler(){
              return redirect()->route('mainManageGovermHoteler')->withErrors($validator)->withInput();
         }
 
-        DB::table('users')
+        DB::table('account')
             ->where('id', $request['id'])
             ->update(['first_name' => $request['first_name'], 'last_name' => $request['last_name'], 'username' => $request['username'],'email' => $request['email'], 'country' => $request['country'], 'phone_number' => $request['phone_number'], 'dob' => $request['dob'], 'gender' => $request['gender']]);
             //return $request;
@@ -557,9 +674,9 @@ public function manageGovermHoteler(){
 
 
   if($request['typePost'] == "deleteUser"){
-   $getUser = DB::table('users')->where('id', '=', $request['id'])->first();
+   $getUser = DB::table('account')->where('id', '=', $request['id'])->first();
      if($getUser != null){
-        DB::table('users')->where('id', '=', $request['id'])->delete();
+        DB::table('account')->where('id', '=', $request['id'])->delete();
   }
    return redirect()->route('mainManageGovermHoteler');
 

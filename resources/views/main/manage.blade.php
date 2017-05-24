@@ -54,7 +54,7 @@
                     <div class="profile clearfix">
                         <div class="profile_pic">
                             @if(Auth::user()->image_link)
-                            <img src="img/{{Auth::user()->image_link}}" alt="..." class="img-circle profile_img">
+                            <img src="img/User/{{Auth::user()->image_link}}" alt="..." class="img-circle profile_img">
                            
                             @else
                             <img src="img/avatar_null.png" alt="..." class="img-circle profile_img">
@@ -180,7 +180,7 @@
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                 @if(Auth::user()->image_link)
-                                <img src="img/{{Auth::user()->image_link}}" alt="">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+                                <img src="img/User/{{Auth::user()->image_link}}" alt="">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
                                 @else
                                 <img src="img/avatar_null.png" alt="">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
                                 @endif
@@ -241,7 +241,7 @@
                                 <td>{{$user->last_name}}</td>
                                 <td>{{$user->username}}</td>
                                 <td>{{$user->email}}</td>
-                                <td>0</td>
+                                <td>{{$user->total_cost}}</td>
                                 <td>
                                     <a href="#" class="btn btn-primary btn-xs" onclick="showDataView('{{$user->id}}','{{$user->first_name}}', '{{$user->last_name}}', '{{$user->email}}', '{{$user->phone_number}}', '{{$user->username}}', '{{$user->country}}', '{{$user->dob}}', '{{$user->gender}}') " data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
                                     <a href="#" class="btn btn-info btn-xs"  onclick="showDataEdit('{{$user->id}}','{{$user->first_name}}', '{{$user->last_name}}', '{{$user->email}}', '{{$user->phone_number}}', '{{$user->username}}', '{{$user->country}}', '{{$user->dob}}', '{{$user->gender}}') ;" data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal"><i class="fa fa-pencil"></i>Sửa</a>

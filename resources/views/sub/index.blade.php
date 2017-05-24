@@ -51,13 +51,20 @@
               <li><a href="#room">Phòng</a></li>
               <li><a href="#service">Dịch vụ</a></li>
               <li><a href="#footer">liên hệ</a></li>
-              @if (Auth::guest())
+              @if (!Auth::guard('account')->check())
                 <li><a href="#login" data-toggle="modal" data-backdrop="static" id="auth" data-target="#login-modal">Đăng nhập</a></li>
                  <li><a href="#login" data-toggle="modal" data-backdrop="static" data-target="#register-modal">Đăng kí</a></li>
                @else
                   <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->last_name }} <span class=""></span></a>
+                   <a href="#" class="user-profile dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                @if(Auth::guard('account')->user()->image_link != null)
+                                <img src="img/User/{{Auth::guard('account')->user()->image_link}}" alt="">{{ Auth::guard('account')->user()->first_name }} {{Auth::guard('account')->user()->last_name }}
+                                @else
+                                <img src="img/avatar_null.png" alt="">{{ Auth::guard('account')->user()->first_name }} {{ Auth::guard('account')->user()->last_name }}
+                                @endif
+                                    <span class=" fa fa-angle-down"></span>
+                                </a>
+                  
 
                       <ul class="dropdown-menu" role="menu">
                                     <li>
@@ -74,7 +81,7 @@
                                         </form>
                                     </li>
                                     <li>
-                                    @if(Auth::user()->type == 3 || Auth::user()->type == 4 )
+                                    @if(Auth::guard('account')->user()->type == 3 || Auth::guard('account')->user()->type == 4 )
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('manage').submit();">
@@ -83,7 +90,7 @@
                                             Quản lý
                                         </a>
                                     @endif
-                                    @if(Auth::user()->type == 5 )
+                                    @if(Auth::guard('account')->user()->type == 5 )
                                         <a href="#"
                                             onclick="event.preventDefault();
                                                      document.getElementById('manage').submit();">
@@ -91,7 +98,7 @@
                                             Thông tin cá nhân
                                         </a>
                                     @endif
-                                        <form id="manage" action="@if(Auth::user()->type == 3){{{ route('mainManage') }}}@endif @if(Auth::user()->type == 4){{{ route('mainManageHoteler') }}}@endif" method="get" style="display: none;">
+                                        <form id="manage" action="@if(Auth::guard('account')->user()->type == 3){{{ route('subManage',['subdomain' =>$info['subdomain']]) }}}@endif @if(Auth::guard('account')->user()->type == 4){{{ route('mainManageHoteler',['subdomain' =>$info['subdomain']]) }}}@endif @if(Auth::guard('account')->user()->type == 5){{{ route('subProfile',['subdomain' =>$info['subdomain']]) }}}@endif" method="get" style="display: none;">
                                             {{ csrf_field() }}
                                         </form>
                                     </li>

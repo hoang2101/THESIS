@@ -13,16 +13,17 @@ class CreatePayServiceTable extends Migration
      */
     public function up()
     {
-        Schema::create('pay_service', function (Blueprint $table) {
-            $table->increments('pay_service_id');
-            $table->integer('booked_id')->nullable();
+        Schema::create('book_service', function (Blueprint $table) {
+            $table->increments('book_service_id');
+            $table->integer('booking_id')->nullable();
             $table->integer('cost')->nullable();
             $table->integer('quantity')->nullable();
             $table->integer('service_id')->nullable();
             $table->integer('discount')->nullable();
             $table->integer('total')->nullable();
             
-            $table->timestamps();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
         });
     }
 
@@ -33,6 +34,6 @@ class CreatePayServiceTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pay_service');
+        Schema::dropIfExists('book_service');
     }
 }

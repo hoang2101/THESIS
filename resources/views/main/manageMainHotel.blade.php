@@ -53,7 +53,7 @@
                     <div class="profile clearfix">
                         <div class="profile_pic">
                             @if(Auth::user()->image_link)
-                            <img src="img/{{Auth::user()->image_link}}" alt="..." class="img-circle profile_img">
+                            <img src="img/User/{{Auth::user()->image_link}}" alt="..." class="img-circle profile_img">
                            
                             @else
                             <img src="img/avatar_null.png" alt="..." class="img-circle profile_img">
@@ -181,7 +181,7 @@
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                     @if(Auth::user()->image_link)
-                                    <img src="img/{{Auth::user()->image_link}}" alt="">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+                                    <img src="img/User/{{Auth::user()->image_link}}" alt="">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
                                     @else
                                     <img src="img/avatar_null.png" alt="">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
                                     @endif
@@ -236,13 +236,13 @@
                             <tr>
                                 <td>{{$hotel->hotel_id}}</td>
                                 <td>{{$hotel->hotel_name}}</td>
-                                <td>{{$hotel->hotel_account}}</td>
+                                <td>{{$hotel->account_id}}</td>
                                 <td>{{$hotel->hotel_url}}</td>
                                 <td>{{$hotel->expire_date}}</td>
                                 <td>0</td>
                                 <td>
-                                    <a href="#" class="btn btn-primary btn-xs" onclick="showHotelView('{{$hotel->hotel_id}}','{{$hotel->hotel_name}}', '{{$hotel->hotel_account}}', '{{$hotel->hotel_url}}', '{{$hotel->expire_date}}',  '{{$hotel->hotel_star}}') " data-toggle="modal" data-backdrop="static" data-target="#viewHotelMainmodal "  ><i class="fa fa-folder"></i> View </a>
-                                    <a href="#" class="btn btn-info btn-xs"  onclick="showHotelEdit('{{$hotel->hotel_id}}','{{$hotel->hotel_name}}', '{{$hotel->hotel_account}}', '{{$hotel->hotel_url}}', '{{$hotel->expire_date}}' ,  '{{$hotel->hotel_star}}') ;" data-toggle="modal" data-backdrop="static" data-target="#viewHotelMainmodal"><i class="fa fa-pencil"></i> Edit </a>
+                                    <a href="#" class="btn btn-primary btn-xs" onclick="showHotelView('{{$hotel->hotel_id}}','{{$hotel->hotel_name}}', '{{$hotel->account_id}}', '{{$hotel->hotel_url}}', '{{$hotel->expire_date}}',  '{{$hotel->hotel_star}}') " data-toggle="modal" data-backdrop="static" data-target="#viewHotelMainmodal "  ><i class="fa fa-folder"></i> View </a>
+                                    <a href="#" class="btn btn-info btn-xs"  onclick="showHotelEdit('{{$hotel->hotel_id}}','{{$hotel->hotel_name}}', '{{$hotel->account_id}}', '{{$hotel->hotel_url}}', '{{$hotel->expire_date}}' ,  '{{$hotel->hotel_star}}') ;" data-toggle="modal" data-backdrop="static" data-target="#viewHotelMainmodal"><i class="fa fa-pencil"></i> Edit </a>
 
                                     <a data-toggle="tooltip" data-placement="top"  class="btn btn-danger btn-xs"
                                             onclick="event.preventDefault();
@@ -293,13 +293,13 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group{{ $errors->has('hotel_account') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('account_id') ? ' has-error' : '' }}">
                             <div >
-                                <input id="hotel_account" type="text" class="form-control" placeholder="Username" name="hotel_account" value="{{ old('hotel_account') }}" required autofocus>
+                                <input id="account_id" type="text" class="form-control" placeholder="Username" name="account_id" value="{{ old('account_id') }}" required autofocus>
 
-                                @if ($errors->has('hotel_account'))
+                                @if ($errors->has('account_id'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('hotel_account') }}</strong>
+                                        <strong>{{ $errors->first('account_id') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -316,15 +316,16 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                         <div class="form-group">
                             <div >
-                                <input id="expire_date" type="text" onfocus="(this.type='date')" class="form-control" placeholder="Ngày hết hạn" name="expire_date" value="{{ old('email') }}" required>
-
-                                @if ($errors->has('expire_date'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('expire_date') }}</strong>
-                                    </span>
-                                @endif
+                            <select id="expire_date" name="expire_date" placeholder="Gói" required>
+                                    <option value="" disabled selected>Chọn gói khách sạn</option>
+                                    <option value="1">BASIC - 1 tháng</option>
+                                    <option value="2">SILVER - 2 tháng</option>
+                                    <option value="3">GOLD - 4 tháng</option>
+                                    <option value="4">VIP - 6 tháng</option>
+                            </select>
+                               
                             </div>
                         </div>
 
@@ -371,13 +372,13 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group{{ $errors->has('hotel_account') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('account_id') ? ' has-error' : '' }}">
                             <div >
-                                <input id="e_hotel_account" type="text" class="form-control" placeholder="Username" name="hotel_account" value="{{ old('hotel_account') }}" required autofocus>
+                                <input id="e_account_id" type="text" class="form-control" placeholder="Username" name="account_id" value="{{ old('account_id') }}" required autofocus>
 
-                                @if ($errors->has('hotel_account'))
+                                @if ($errors->has('account_id'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('hotel_account') }}</strong>
+                                        <strong>{{ $errors->first('account_id') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -394,15 +395,18 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('expire_date') ? ' has-error' : '' }}">
+                        <div class="form-group">
                             <div >
-                                <input id="e_expire_date" type="date" class="form-control" placeholder="Ngày hết hạn" name="expire_date" value="{{ old('expire_date') }}" >
+                            <input  id="e_expire_date1" type="date" class="" placeholder="Ngày hết hạn" name="expire_date" value="{{ old('expire_date') }}" >
+                            <select  id="e_expire_date2" name="expire_date" placeholder="Gói">
 
-                                @if ($errors->has('expire_date'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('expire_date') }}</strong>
-                                    </span>
-                                @endif
+                                    <option value="0"  selected>Mua thêm</option>
+                                    <option value="1">BASIC - 1 tháng</option>
+                                    <option value="2">SILVER - 2 tháng</option>
+                                    <option value="3">GOLD - 4 tháng</option>
+                                    <option value="4">VIP - 6 tháng</option>
+                            </select>
+                               
                             </div>
                         </div>
 
@@ -516,7 +520,7 @@
     $(document).ready(function () {
       $('#addHotelMainmodal').modal('show');
     }); </script>
-    @endif  @if ($errors->has('hotel_account'))
+    @endif  @if ($errors->has('account_id'))
       <<script type="text/javascript">  
     $(document).ready(function () {
       $('#addHotelMainmodal').modal('show');
@@ -529,7 +533,7 @@
     $(document).ready(function () {
       $('#viewHotelMainmodal').modal('show');
     }); </script>
-    @endif  @if ($errors->has('hotel_account'))
+    @endif  @if ($errors->has('account_id'))
      <script type="text/javascript">  
     $(document).ready(function () {
       $('#viewHotelMainmodal').modal('show');
@@ -590,9 +594,10 @@ function addReadHotelonly(){
     document.getElementById("e_submit").setAttribute("type", "submit");
     document.getElementById("typeEditView").innerHTML = "Xem";
     document.getElementById("e_hotel_name").removeAttribute("readonly");
-    document.getElementById("e_hotel_account").removeAttribute("readonly");
+    document.getElementById("e_account_id").removeAttribute("readonly");
     document.getElementById("e_hotel_url").removeAttribute("readonly");
-    document.getElementById("e_expire_date").removeAttribute("readonly");
+   document.getElementById("e_expire_date1").setAttributeNode(document.createAttribute("hidden"));
+    document.getElementById("e_expire_date2").removeAttribute("hidden");
     document.getElementById("e_hotel_star").removeAttribute("readonly");
 
     // document.getElementById("e_submit").setAttribute("type", "submit");
@@ -611,9 +616,10 @@ else(document.getElementById("typeEditView").innerHTML == "Xem")
      document.getElementById("typeEditView").innerHTML = "Sửa";
     document.getElementById("e_submit").setAttribute("type", "hidden");
     document.getElementById("e_hotel_name").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_hotel_account").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_account_id").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_hotel_url").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_expire_date").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_expire_date1").removeAttribute("hidden");
+    document.getElementById("e_expire_date2").setAttributeNode(document.createAttribute("hidden"));
     document.getElementById("e_hotel_star").setAttributeNode(document.createAttribute("readonly"));
 }
    
@@ -627,7 +633,7 @@ function removeReadHotelonly(){
     document.getElementById("e_submit").setAttribute("type", "submit");
     document.getElementById("typeEditView").innerHTML = "Xem";
     document.getElementById("e_hotel_name").removeAttribute("readonly");
-    document.getElementById("e_hotel_account").removeAttribute("readonly");
+    document.getElementById("e_account_id").removeAttribute("readonly");
     document.getElementById("e_hotel_url").removeAttribute("readonly");
     document.getElementById("e_expire_date").removeAttribute("readonly");
     document.getElementById("e_hotel_star").removeAttribute("readonly");
@@ -635,41 +641,43 @@ function removeReadHotelonly(){
     
 
 }
-function showHotelView(idHotel, hotel_name, hotel_account,hotel_url,expire_date,hotel_star){
+function showHotelView(idHotel, hotel_name, account_id,hotel_url,expire_date,hotel_star){
       
    
     document.getElementById("typeEditView").innerHTML = "Sửa";
     document.getElementById("e_submit").setAttribute("type", "hidden");
     document.getElementById("e_hotel_name").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_hotel_account").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_account_id").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_hotel_url").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_expire_date").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_expire_date1").removeAttribute("hidden");
+    document.getElementById("e_expire_date2").setAttributeNode(document.createAttribute("hidden"));
     document.getElementById("e_hotel_star").setAttributeNode(document.createAttribute("readonly"));
 
     document.getElementById("idHotel").setAttribute("value", idHotel);
     document.getElementById("e_hotel_name").setAttribute("value", hotel_name);
-    document.getElementById("e_hotel_account").setAttribute("value", hotel_account); 
+    document.getElementById("e_account_id").setAttribute("value", account_id); 
     document.getElementById("e_hotel_url").setAttribute("value", hotel_url); 
-    document.getElementById("e_expire_date").setAttribute("value", expire_date); 
+    document.getElementById("e_expire_date1").setAttribute("value", expire_date); 
     document.getElementById("e_hotel_star").setAttribute("value", hotel_star); 
 
 }
 
-function showHotelEdit(idHotel, hotel_name, hotel_account,hotel_url,expire_date,hotel_star){
+function showHotelEdit(idHotel, hotel_name, account_id,hotel_url,expire_date,hotel_star){
    
     document.getElementById("e_submit").setAttribute("type", "submit");
     document.getElementById("typeEditView").innerHTML = "Xem";
     document.getElementById("e_hotel_name").removeAttribute("readonly");
-    document.getElementById("e_hotel_account").removeAttribute("readonly");
+    document.getElementById("e_account_id").removeAttribute("readonly");
     document.getElementById("e_hotel_url").removeAttribute("readonly");
-    document.getElementById("e_expire_date").removeAttribute("readonly");
+    document.getElementById("e_expire_date1").setAttributeNode(document.createAttribute("hidden"));
+    document.getElementById("e_expire_date2").removeAttribute("hidden");
     document.getElementById("e_hotel_star").removeAttribute("readonly");
 
     document.getElementById("idHotel").setAttribute("value", idHotel);
     document.getElementById("e_hotel_name").setAttribute("value", hotel_name);
-    document.getElementById("e_hotel_account").setAttribute("value", hotel_account); 
+    document.getElementById("e_account_id").setAttribute("value", account_id); 
     document.getElementById("e_hotel_url").setAttribute("value", hotel_url); 
-    document.getElementById("e_expire_date").setAttribute("value", expire_date); 
+    document.getElementById("e_expire_date1").setAttribute("value", expire_date); 
     document.getElementById("e_hotel_star").setAttribute("value", hotel_star); 
 
 }

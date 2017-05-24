@@ -42,12 +42,16 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'account' => [
+            'driver' => 'session',
+            'provider' => 'account',
+        ],
 
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
         ],
-        'accout_api' => [
+        'account_api' => [
             'driver' => 'token',
             'provider' => 'account',
         ],
@@ -75,15 +79,15 @@ return [
             'driver' => 'eloquent',
             'model' => App\User::class,
         ],
-        'account' => [
-            'driver' => 'eloquent',
-            'model' => App\Account::class,
-        ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
+        // 'account' => [
+        //     'driver' => 'eloquent',
+        //     'model' => App\Account::class,
         // ],
+
+        'account' => [
+            'driver' => 'database',
+            'table' => 'account',
+        ],
     ],
 
     /*

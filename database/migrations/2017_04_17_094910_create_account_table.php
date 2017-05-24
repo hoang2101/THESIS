@@ -14,7 +14,7 @@ class CreateAccountTable extends Migration
     public function up()
     {
         Schema::create('account', function (Blueprint $table) {
-            $table->increments('account_id');
+            $table->increments('id');
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->string('email')->nullable();
@@ -27,9 +27,12 @@ class CreateAccountTable extends Migration
             $table->date('dob')->nullable();
             $table->integer('number_visit')->nullable();
             $table->string('gender')->nullable();
+            $table->string('image_link')->nullable();
             $table->integer('hotel_id')->nullable();
+            $table->integer('total_cost')->nullable();
             $table->rememberToken();
-            $table->timestamps();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
         });
     }
 

@@ -53,7 +53,7 @@
                     <div class="profile clearfix">
                         <div class="profile_pic">
                             @if(Auth::user()->image_link)
-                            <img src="img/{{Auth::user()->image_link}}" alt="..." class="img-circle profile_img">
+                            <img src="img/User/{{Auth::user()->image_link}}" alt="..." class="img-circle profile_img">
                            
                             @else
                             <img src="img/avatar_null.png" alt="..." class="img-circle profile_img">
@@ -180,7 +180,7 @@
                             <li class="">
                                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                 @if(Auth::user()->image_link)
-                                <img src="img/{{Auth::user()->image_link}}" alt="">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+                                <img src="img/User/{{Auth::user()->image_link}}" alt="">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
                                 @else
                                 <img src="img/avatar_null.png" alt="">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
                                 @endif
@@ -303,15 +303,27 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                        <!-- <div class="form-group">
                             <div >
-                                <input id="expire_date" type="text" onfocus="(this.type='date')" class="form-control" placeholder="Ngày hết hạn" name="expire_date" value="{{ old('email') }}" required>
+                                <input id="expire_date" type="text" onfocus="(this.type='date')" class="form-control" placeholder="Gói" name="expire_date" value="{{ old('email') }}" required>
 
                                 @if ($errors->has('expire_date'))
                                     <span class="help-block">
                                         <strong class="messageError">{{ $errors->first('expire_date') }}</strong>
                                     </span>
                                 @endif
+                            </div>
+                        </div> -->
+                        <div class="form-group">
+                            <div >
+                            <select id="expire_date" name="expire_date" placeholder="Gói" required>
+                                    <option value="" disabled selected>Chọn gói khách sạn</option>
+                                    <option value="1">BASIC - 1 tháng</option>
+                                    <option value="2">SILVER - 2 tháng</option>
+                                    <option value="3">GOLD - 4 tháng</option>
+                                    <option value="4">VIP - 6 tháng</option>
+                            </select>
+                               
                             </div>
                         </div>
 
@@ -320,7 +332,7 @@
                         <div class="form-group{{ $errors->has('hotel_star') ? ' has-error' : '' }}">
                             <div >
 
-                                <input id="hotel_star" type="number" class="form-control" placeholder="Loại khách sạn" name="hotel_star" value="{{ old('e_hotel_star') }}" required>
+                                <input id="hotel_star" type="number" min="1" max="5" class="form-control" placeholder="Loại khách sạn" name="hotel_star" value="{{ old('e_hotel_star') }}" required>
                                 @if ($errors->has('e_hotel_star'))
                                     <span class="help-block">
                                         <strong class="messageError">{{ $errors->first('e_hotel_star') }}</strong>
@@ -370,10 +382,23 @@
                                 @endif
                             </div>
                         </div>
-
-                        <div class="form-group{{ $errors->has('expire_date') ? ' has-error' : '' }}">
+                        <div class="form-group">
                             <div >
-                                <input id="e_expire_date" type="date" class="form-control" placeholder="Ngày hết hạn" name="expire_date" value="{{ old('expire_date') }}" >
+                            <input  id="e_expire_date1" type="date" class="" placeholder="Ngày hết hạn" name="expire_date" value="{{ old('expire_date') }}" >
+                            <select  id="e_expire_date2" name="expire_date" placeholder="Gói">
+
+                                    <option value="0"  selected>Mua thêm</option>
+                                    <option value="1">BASIC - 1 tháng</option>
+                                    <option value="2">SILVER - 2 tháng</option>
+                                    <option value="3">GOLD - 4 tháng</option>
+                                    <option value="4">VIP - 6 tháng</option>
+                            </select>
+                               
+                            </div>
+                        </div>
+                        <!-- <div class=" disable form-group{{ $errors->has('expire_date') ? ' has-error' : '' }}">
+                            <div >
+                                
 
                                 @if ($errors->has('expire_date'))
                                     <span class="help-block">
@@ -381,13 +406,13 @@
                                     </span>
                                 @endif
                             </div>
-                        </div>
+                        </div>  -->
 
                         
                         
                         <div class="form-group{{ $errors->has('hotel_star') ? ' has-error' : '' }}">
                             <div >
-                                <input id="e_hotel_star" type="number" class="form-control" placeholder="Loại khách sạn" name="hotel_star" value="{{ old('expire_date') }}" >
+                                <input id="e_hotel_star" type="number" min="1" max="5" class="form-control" placeholder="Loại khách sạn" name="hotel_star" value="{{ old('hotel_star') }}" >
 
                                 @if ($errors->has('tatol'))
                                     <span class="help-block">
@@ -558,7 +583,8 @@ function addReadHotelonly(){
     document.getElementById("typeEditView").innerHTML = "Xem";
     document.getElementById("e_hotel_name").removeAttribute("readonly");
     document.getElementById("e_hotel_url").removeAttribute("readonly");
-    document.getElementById("e_expire_date").removeAttribute("readonly");
+    document.getElementById("e_expire_date1").setAttributeNode(document.createAttribute("hidden"));
+    document.getElementById("e_expire_date2").removeAttribute("hidden");
     document.getElementById("e_hotel_star").removeAttribute("readonly");
 
     // document.getElementById("e_submit").setAttribute("type", "submit");
@@ -578,7 +604,8 @@ else(document.getElementById("typeEditView").innerHTML == "Xem")
     document.getElementById("e_submit").setAttribute("type", "hidden");
     document.getElementById("e_hotel_name").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_hotel_url").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_expire_date").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_expire_date1").removeAttribute("hidden");
+    document.getElementById("e_expire_date2").setAttributeNode(document.createAttribute("hidden"));
     document.getElementById("e_hotel_star").setAttributeNode(document.createAttribute("readonly"));
 }
    
@@ -606,13 +633,15 @@ function showHotelView(idHotel, hotel_name,hotel_url,expire_date,hotel_star){
     document.getElementById("e_submit").setAttribute("type", "hidden");
     document.getElementById("e_hotel_name").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_hotel_url").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_expire_date").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_expire_date1").removeAttribute("hidden");
+    document.getElementById("e_expire_date2").setAttributeNode(document.createAttribute("hidden"));
     document.getElementById("e_hotel_star").setAttributeNode(document.createAttribute("readonly"));
+
 
     document.getElementById("idHotel").setAttribute("value", idHotel);
     document.getElementById("e_hotel_name").setAttribute("value", hotel_name); 
     document.getElementById("e_hotel_url").setAttribute("value", hotel_url); 
-    document.getElementById("e_expire_date").setAttribute("value", expire_date); 
+    document.getElementById("e_expire_date1").setAttribute("value", expire_date); 
     document.getElementById("e_hotel_star").setAttribute("value", hotel_star); 
 
 }
@@ -623,13 +652,14 @@ function showHotelEdit(idHotel, hotel_name,hotel_url,expire_date,hotel_star){
     document.getElementById("typeEditView").innerHTML = "Xem";
     document.getElementById("e_hotel_name").removeAttribute("readonly");
     document.getElementById("e_hotel_url").removeAttribute("readonly");
-    document.getElementById("e_expire_date").removeAttribute("readonly");
+    document.getElementById("e_expire_date1").setAttributeNode(document.createAttribute("hidden"));
+    document.getElementById("e_expire_date2").removeAttribute("hidden");
     document.getElementById("e_hotel_star").removeAttribute("readonly");
 
     document.getElementById("idHotel").setAttribute("value", idHotel);
     document.getElementById("e_hotel_name").setAttribute("value", hotel_name); 
     document.getElementById("e_hotel_url").setAttribute("value", hotel_url); 
-    document.getElementById("e_expire_date").setAttribute("value", expire_date); 
+    document.getElementById("e_expire_date1").setAttribute("value", expire_date); 
     document.getElementById("e_hotel_star").setAttribute("value", hotel_star); 
 
 }

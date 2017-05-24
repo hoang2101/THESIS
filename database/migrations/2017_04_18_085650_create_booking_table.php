@@ -18,20 +18,22 @@ class CreateBookingTable extends Migration
             $table->integer('room_id')->nullable();
             $table->date('date_from')->nullable();
             $table->date('date_to')->nullable();
-            $table->string('first_name',20)->nullable();
-            $table->string('last_name',20)->nullable();
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
             $table->smallInteger('number_people')->nullable();
             $table->string('contry')->nullable();
             $table->string('email')->nullable();
             $table->string('phone_number',11)->nullable();
             $table->string('passport')->nullable();
-            $table->enum('gender',['male','female'])->nullable();
+            $table->string('gender')->nullable();
             $table->date('dob')->nullable();
-            $table->integer('account')->nullable();
+            $table->integer('account_id')->nullable();
             $table->integer('type_booking')->nullable();
             $table->date('booked_date')->nullable();
-            
-            $table->timestamps();
+            $table->date('date_checkin')->nullable();
+            $table->date('date_checkout')->nullable();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
         });
     }
 

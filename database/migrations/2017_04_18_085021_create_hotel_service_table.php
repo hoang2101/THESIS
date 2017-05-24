@@ -13,15 +13,16 @@ class CreateHotelServiceTable extends Migration
      */
     public function up()
     {
-        Schema::create('hotel_service', function (Blueprint $table) {
+        Schema::create('service', function (Blueprint $table) {
              $table->increments('service_id');
             $table->string('service_name')->nullable();
-            $table->integer('service_cost')->nullable();
+            $table->integer('cost')->nullable();
             $table->integer('hotel_id')->nullable();
-            $table->string('service_description')->nullable();
+            $table->string('description')->nullable();
             $table->integer('discount')->nullable();
             
-            $table->timestamps();
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
         });
     }
 
@@ -32,6 +33,6 @@ class CreateHotelServiceTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('hotel_service');
+        Schema::dropIfExists('service');
     }
 }

@@ -546,7 +546,7 @@ public function configManage($subdomain){
 
 }
 public function configManageSubmit(Request $request,  $subdomain){
-
+    return $$request;
 }
     public function create()
     {

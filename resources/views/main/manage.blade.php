@@ -80,7 +80,7 @@
                                     
                                 </li>
                                 <li><a href="{{ route('mainManageHotel') }}"><i class="fa fa-desktop"></i> Quản lý hệ thống khách sạn</a></li>
-                                <li><a href="{{ route('mainProfile') }}"><i class="fa fa-desktop"></i> Quản lý tài khoản</a></li>
+                                <li><a href="{{ route('mainProfile') }}"><i class="fa fa-user"></i> Quản lý tài khoản</a></li>
                                <!--  <li><a><i class="fa fa-table"></i>zxczxc  </a>
                                     
                                 </li>
@@ -189,7 +189,7 @@
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                    <li><a href="profile.html"> Hồ sơ</a></li>
+                                    <li><a href="{{ route('mainProfile') }}"> Hồ sơ</a></li>
                                     <li><a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();"><i class="fa fa-sign-out pull-right"></i> Đăng xuất</a></li>

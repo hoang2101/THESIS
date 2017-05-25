@@ -607,11 +607,17 @@
 }); </script>
  @endif
   @endif  @if ($errors->has('password'))
-      <script>  <script>  function myFunction() { 
-    document.getElementById("register-modal").showModal(); </script>
+        <script type="text/javascript">  
+    $(document).ready(function () {
+      $('#register-modal').modal('show');
+
+}); </script>
   @endif @if ($errors->has('email'))
-      <script>  <script>  function myFunction() { 
-    document.getElementById("register-modal").showModal(); </script>
+     <script type="text/javascript">  
+    $(document).ready(function () {
+      $('#register-modal').modal('show');
+
+}); </script>
   @endif
 
       <script type="text/javascript">

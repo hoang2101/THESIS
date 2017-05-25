@@ -187,7 +187,7 @@
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
-                                    <li><a href="profile.html"> Hồ sơ</a></li>
+                                    <li><a href="{{ route('mainProfile') }}"> Hồ sơ</a></li>
                                     <li><a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();"><i class="fa fa-sign-out pull-right"></i> Đăng xuất</a></li>
@@ -224,6 +224,7 @@
                           <th white-space:pre-line" id="cel5">Tên khách sạn</th>
                           <th id="cel10">Tên miền</th>
                           <th id="cel10">Ngày hết hạn</th>
+                          <th id="cel5">Tổng số phòng</th>
                           <th id="cel5">Tổng booking</th>
                           <th class="nosort"  id="cel5">Manage</th>
                         </tr>
@@ -236,10 +237,11 @@
                                 <td>{{$hotel->hotel_name}}</td>
                                 <td>{{$hotel->hotel_url}}</td>
                                 <td>{{$hotel->expire_date}}</td>
+                                <td>{{$hotel->total_room}}</td>
                                 <td>0</td>
                                 <td>
-                                    <a href="#" class="btn btn-primary btn-xs" onclick="showHotelView('{{$hotel->hotel_id}}','{{$hotel->hotel_name}}', '{{$hotel->hotel_url}}', '{{$hotel->expire_date}}', '{{$hotel->hotel_star}}') " data-toggle="modal" data-backdrop="static" data-target="#viewHotelMainmodal "  ><i class="fa fa-folder"></i> View </a>
-                                    <a href="#" class="btn btn-info btn-xs"  onclick="showHotelEdit('{{$hotel->hotel_id}}','{{$hotel->hotel_name}}', '{{$hotel->hotel_url}}', '{{$hotel->expire_date}}' , '{{$hotel->hotel_star}}') ;" data-toggle="modal" data-backdrop="static" data-target="#viewHotelMainmodal"><i class="fa fa-pencil"></i> Edit </a>
+                                    <a href="#" class="btn btn-primary btn-xs" onclick="showHotelView('{{$hotel->hotel_id}}','{{$hotel->hotel_name}}', '{{$hotel->hotel_url}}', '{{$hotel->expire_date}}', '{{$hotel->total_room}}') " data-toggle="modal" data-backdrop="static" data-target="#viewHotelMainmodal "  ><i class="fa fa-folder"></i> View </a>
+                                    <a href="#" class="btn btn-info btn-xs"  onclick="showHotelEdit('{{$hotel->hotel_id}}','{{$hotel->hotel_name}}', '{{$hotel->hotel_url}}', '{{$hotel->expire_date}}' , '{{$hotel->total_room}}') ;" data-toggle="modal" data-backdrop="static" data-target="#viewHotelMainmodal"><i class="fa fa-pencil"></i> Edit </a>
 
                                     <a data-toggle="tooltip" data-placement="top"  class="btn btn-danger btn-xs"
                                             onclick="event.preventDefault();
@@ -329,18 +331,21 @@
 
                         
                         
-                        <div class="form-group{{ $errors->has('hotel_star') ? ' has-error' : '' }}">
+                         <div class="form-group{{ $errors->has('total_room') ? ' has-error' : '' }}">
                             <div >
-
-                                <input id="hotel_star" type="number" min="1" max="5" class="form-control" placeholder="Loại khách sạn" name="hotel_star" value="{{ old('e_hotel_star') }}" required>
-                                @if ($errors->has('e_hotel_star'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('e_hotel_star') }}</strong>
-                                    </span>
-                                @endif
+                                
+                                 <select id="total_room" name="total_room" placeholder="Gói" required>
+                                    <option value="" disabled selected>Chọn Số phòng</option>
+                                    <option value="10">10 phòng</option>
+                                    <option value="20">20 phòng</option>
+                                    <option value="50">50 phòng</option>
+                                    <option value="100">100 phòng</option>
+                                    <option value="200">200 phòng</option>
+                                    <option value="500">500 phòng</option>
+                                </select>
                             </div>
-                            
                         </div>
+
                         
                         <input type="submit" name="Register" class=" loginmodal-submit" value="Thêm khách sạn">
                        
@@ -384,7 +389,7 @@
                         </div>
                         <div class="form-group">
                             <div >
-                            <input  id="e_expire_date1" type="date" class="" placeholder="Ngày hết hạn" name="expire_date" value="{{ old('expire_date') }}" >
+                            <input readonly id="e_expire_date1" type="date" class="" placeholder="Ngày hết hạn" name="expire_date2" value="{{ old('expire_date') }}" >
                             <select  id="e_expire_date2" name="expire_date" placeholder="Gói">
 
                                     <option value="0"  selected>Mua thêm</option>
@@ -410,20 +415,23 @@
 
                         
                         
-                        <div class="form-group{{ $errors->has('hotel_star') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('total_room') ? ' has-error' : '' }}">
                             <div >
-                                <input id="e_hotel_star" type="number" min="1" max="5" class="form-control" placeholder="Loại khách sạn" name="hotel_star" value="{{ old('hotel_star') }}" >
-
-                                @if ($errors->has('tatol'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('tatol') }}</strong>
-                                    </span>
-                                @endif
+                                <input readonly  id="e_total_room1" type="text" class="" placeholder="Tổng số phòng" name="total_room" value="{{ old('total_room') }}" >
+                                 <select id="e_total_room2" name="total_room" placeholder="Gói" required>
+                                    <option value="" disabled selected>Chọn Số phòng</option>
+                                    <option value="10">10 phòng</option>
+                                    <option value="20">20 phòng</option>
+                                    <option value="50">50 phòng</option>
+                                    <option value="100">100 phòng</option>
+                                    <option value="200">200 phòng</option>
+                                    <option value="500">500 phòng</option>
+                                </select>
                             </div>
                         </div>
 
                         <div class="col-md-6 col-sm-6 col-xs-12  form-group>">
-                            <input id="e_submit" type="submit" name="Register" class="loginmodal-submit" value="Chỉnh sửa khách hàng">
+                            <input id="e_submit" type="submit" name="Register" class="btn btn-info btn-xs pull-left" value="OK">
                         </div>
                          <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <a   class="btn btn-danger btn-xs pull-right" onclick="deleteHotel()"><i class="fa fa-trash-o"></i> Delete </a>
@@ -530,17 +538,14 @@
     @endif
 
 
-@if( ! empty($messagesResult))
-    @if ($messagesResult=="fails")
-      <script type="text/javascript">  
-      window.alert("Thất bại");
-    </script>
-    @endif @if ($messagesResult=="successful")
+@if(!empty($messagesResult))
+   
      <script type="text/javascript">  
-      alert("thành công");
+     alert("abc");
+      alert("{{$messagesResult}}");
     </script>
-    @endif
-    @endif
+    
+@endif
 
 
 
@@ -585,7 +590,8 @@ function addReadHotelonly(){
     document.getElementById("e_hotel_url").removeAttribute("readonly");
     document.getElementById("e_expire_date1").setAttributeNode(document.createAttribute("hidden"));
     document.getElementById("e_expire_date2").removeAttribute("hidden");
-    document.getElementById("e_hotel_star").removeAttribute("readonly");
+    document.getElementById("e_total_room1").setAttributeNode(document.createAttribute("hidden"));
+    document.getElementById("e_total_room2").removeAttribute("hidden");
 
     // document.getElementById("e_submit").setAttribute("type", "submit");
     // document.getElementById("e_first_name").removeAttribute("readonly");
@@ -606,7 +612,8 @@ else(document.getElementById("typeEditView").innerHTML == "Xem")
     document.getElementById("e_hotel_url").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_expire_date1").removeAttribute("hidden");
     document.getElementById("e_expire_date2").setAttributeNode(document.createAttribute("hidden"));
-    document.getElementById("e_hotel_star").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_total_room1").removeAttribute("hidden");
+    document.getElementById("e_total_room2").setAttributeNode(document.createAttribute("hidden"));
 }
    
 
@@ -621,12 +628,12 @@ function removeReadHotelonly(){
     document.getElementById("e_hotel_name").removeAttribute("readonly");
     document.getElementById("e_hotel_url").removeAttribute("readonly");
     document.getElementById("e_expire_date").removeAttribute("readonly");
-    document.getElementById("e_hotel_star").removeAttribute("readonly");
+    document.getElementById("e_total_room").removeAttribute("readonly");
      // document.getElementById("typeEditView").setAttribute("onclick", "addReadonly())");
     
 
 }
-function showHotelView(idHotel, hotel_name,hotel_url,expire_date,hotel_star){
+function showHotelView(idHotel, hotel_name,hotel_url,expire_date,total_room){
       
    
     document.getElementById("typeEditView").innerHTML = "Sửa";
@@ -635,18 +642,19 @@ function showHotelView(idHotel, hotel_name,hotel_url,expire_date,hotel_star){
     document.getElementById("e_hotel_url").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_expire_date1").removeAttribute("hidden");
     document.getElementById("e_expire_date2").setAttributeNode(document.createAttribute("hidden"));
-    document.getElementById("e_hotel_star").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_total_room1").removeAttribute("hidden");
+    document.getElementById("e_total_room2").setAttributeNode(document.createAttribute("hidden"));
 
 
     document.getElementById("idHotel").setAttribute("value", idHotel);
     document.getElementById("e_hotel_name").setAttribute("value", hotel_name); 
     document.getElementById("e_hotel_url").setAttribute("value", hotel_url); 
     document.getElementById("e_expire_date1").setAttribute("value", expire_date); 
-    document.getElementById("e_hotel_star").setAttribute("value", hotel_star); 
+    document.getElementById("e_total_room1").setAttribute("value", total_room);
 
 }
 
-function showHotelEdit(idHotel, hotel_name,hotel_url,expire_date,hotel_star){
+function showHotelEdit(idHotel, hotel_name,hotel_url,expire_date,total_room){
    
     document.getElementById("e_submit").setAttribute("type", "submit");
     document.getElementById("typeEditView").innerHTML = "Xem";
@@ -654,18 +662,27 @@ function showHotelEdit(idHotel, hotel_name,hotel_url,expire_date,hotel_star){
     document.getElementById("e_hotel_url").removeAttribute("readonly");
     document.getElementById("e_expire_date1").setAttributeNode(document.createAttribute("hidden"));
     document.getElementById("e_expire_date2").removeAttribute("hidden");
-    document.getElementById("e_hotel_star").removeAttribute("readonly");
+    document.getElementById("e_total_room1").setAttributeNode(document.createAttribute("hidden"));
+    document.getElementById("e_total_room2").removeAttribute("hidden");
 
     document.getElementById("idHotel").setAttribute("value", idHotel);
     document.getElementById("e_hotel_name").setAttribute("value", hotel_name); 
     document.getElementById("e_hotel_url").setAttribute("value", hotel_url); 
     document.getElementById("e_expire_date1").setAttribute("value", expire_date); 
-    document.getElementById("e_hotel_star").setAttribute("value", hotel_star); 
+    document.getElementById("e_total_room1").setAttribute("value", total_room); 
 
 }
 </script>
     
-</script>
+
+   @if (session('messagesResult'))
+   <script type="text/javascript">  
+      alert(" {{ session('messagesResult') }}");
+    </script>
+   
+    @endif
+    
+
 </body>
 
 </html>

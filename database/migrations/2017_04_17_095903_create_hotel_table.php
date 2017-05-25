@@ -23,6 +23,7 @@ class CreateHotelTable extends Migration
             $table->integer('config_id')->nullable();
             $table->date('expire_date')->nullable();
             $table->integer('total_booking')->nullable();
+            $table->integer('total_room')->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
         });

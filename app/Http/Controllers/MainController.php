@@ -248,8 +248,9 @@ protected function validator(array $data)
     ];
 }
     public function manageHotel(){
+        $usersHotel = DB::table('users')->where('type','=','2' )->get();
         $hotels = DB::table('hotel')->get();
-        return view('main.manageMainHotel')->with('hotels',$hotels);
+        return view('main.manageMainHotel')->with('hotels',$hotels)->with('usersHotel', $usersHotel);
     }
 
 // controller manage hotel
@@ -301,7 +302,7 @@ protected function validator(array $data)
                  'hotel_url' => $request['hotel_url'],
                  'expire_date' => $date,
                  'hotel_star' => $request['hotel_star'],
-                 
+                 'total_room' => $request['total_room'],
              ]);
         DB::table('users')
                 ->where('id', $getUser->id)
@@ -368,7 +369,7 @@ protected function validator(array $data)
 
             DB::table('hotel')
                 ->where('hotel_id', $request['id'])
-                ->update(['hotel_name' => $request['hotel_name'], 'hotel_url' => $request['hotel_url'], 'account_id' => $request['account_id'],'hotel_star' => $request['hotel_star'], 'expire_date' => $date]);
+                ->update(['hotel_name' => $request['hotel_name'], 'hotel_url' => $request['hotel_url'], 'account_id' => $request['account_id'],'hotel_star' => $request['hotel_star'], 'expire_date' => $date,'total_room' => $request['total_room']]);
 
              DB::table('users')
                 ->where('id',  $getUser->id)
@@ -379,7 +380,7 @@ protected function validator(array $data)
 
          }else{
             $messagesResult = "fails";
-             return redirect()->route('mainManageHotel')->with('users',$users);
+             return redirect()->route('mainManageHotel');
          }
         // validator
 
@@ -393,9 +394,13 @@ protected function validator(array $data)
       if($request['typePost'] == "deleteHotel"){
        $getUser = DB::table('hotel')->where('hotel_id', '=', $request['id'])->get();
          if($getUser != null){
-            DB::table('hotel')->where('hotel_id', '=', $request['id'])->delete();
+           DB::table('account')->where('hotel_id', '=', $request['id'])->delete();
+                DB::table('hotel')->where('hotel_id', '=', $request['id'])->delete();
+                 $messagesResult = 'Xóa thành công' ;
+                return redirect()->route('mainManageHoteler')->with('messagesResult', $messagesResult);
       }
-       return redirect()->route('mainManageHotel');
+      $messagesResult = 'Xóa thất bại' ;
+      return redirect()->route('mainManageHoteler')->with('messagesResult', $messagesResult);
 
     }
      
@@ -411,6 +416,7 @@ protected function validator(array $data)
 
        $hotels = DB::table('hotel')->where('account_id', '=', Auth::user()->username)->get();
        // $hotels="zxcx";
+        
         return view('main.manageHoteler')->with('hotels',$hotels);
     }
 
@@ -531,6 +537,7 @@ protected function validator(array $data)
                 ->where('id', Auth::User()->id)
                 ->update(['total_cost' => $total_Cost]);
                 //return $request;
+                
                 return redirect()->route('mainManageHoteler');
 
 
@@ -547,12 +554,17 @@ protected function validator(array $data)
 
 
 
-      if($request['typePost'] == "deleteHotel"){
-       $getUser = DB::table('hotel')->where('hotel_id', '=', $request['id'])->get();
-         if($getUser != null){
-            DB::table('hotel')->where('hotel_id', '=', $request['id'])->delete();
-      }
-      
+        if($request['typePost'] == "deleteHotel"){
+           $getUser = DB::table('hotel')->where('hotel_id', '=', $request['id'])->get();
+             if($getUser != null){
+                DB::table('account')->where('hotel_id', '=', $request['id'])->delete();
+                DB::table('hotel')->where('hotel_id', '=', $request['id'])->delete();
+                 $messagesResult = 'Xóa thành công' ;
+                return redirect()->route('mainManageHoteler')->with('messagesResult', $messagesResult);
+        }
+            $messagesResult = "Xóa thất bại";
+            return redirect()->route('mainManageHoteler')->with('messagesResult', $messagesResult);
+          
 
     }
 
@@ -562,7 +574,7 @@ protected function validator(array $data)
 //manage goverm hoteler
 public function manageGovermHoteler(){
         $hotels =  DB::table('hotel')->where('account_id', '=', Auth::user()->username)->get();
-        $users = DB::table('account')->where('type', '=',3)->get();
+        $users = DB::table('account')->where('type', '=',3)->where('mn_user', '=',Auth::User()->id)->get();
        // $hotels="zxcx";
         return view('main.ManageGovernHoteler')->with('users',$users)->with('hotels',$hotels);
     }
@@ -607,6 +619,7 @@ public function manageGovermHoteler(){
              'password' => bcrypt($request['password']),
              'type' => 3,
              'hotel_id' => $request['hotel_id'],
+             'mn_user' => Auth::User()->id,
          ]);
         //return view('main.manage')->with('users',$users)->withErrors($errors);
         return redirect()->route('mainManageGovermHoteler');
@@ -677,6 +690,7 @@ public function manageGovermHoteler(){
    $getUser = DB::table('account')->where('id', '=', $request['id'])->first();
      if($getUser != null){
         DB::table('account')->where('id', '=', $request['id'])->delete();
+
   }
    return redirect()->route('mainManageGovermHoteler');
 

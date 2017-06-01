@@ -7,6 +7,12 @@ $(document).ready(function() {
            'aTargets': 'nosort'
         }]
     });
+    var table = $('#responsive2').DataTable({
+       'aoColumnDefs': [{
+           'bSortable': false,
+           'aTargets': 'nosort'
+        }]
+    });
 })
 
 function cancelFullScreen(el) {

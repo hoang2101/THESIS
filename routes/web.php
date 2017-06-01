@@ -51,6 +51,12 @@ Route::group(['subdomain' => '{subdomain}'], function () {
     Route::get('/{subdomain}/config', 'SubController@configManage' )->name('subConfig');
     Route::POST('/{subdomain}/config', 'SubController@configManageSubmit' )->name('subConfigSubmit');
 
+     Route::get('/{subdomain}/bookmanage', 'SubController@bookManage' )->name('subBookManage');
+    Route::POST('/{subdomain}/bookmanage', 'SubController@bookManageSubmit' )->name('subBookManageSubmit');
+
+    Route::get('/{subdomain}/roommanage', 'SubController@roomManage' )->name('subRoomManage');
+    Route::POST('/{subdomain}/roommanage', 'SubController@roomManageSubmit' )->name('subRoomManageSubmit');
+
 
 });
 

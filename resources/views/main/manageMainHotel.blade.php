@@ -298,7 +298,7 @@
                         
                         <div class="form-group">
                             <div >
-                            <select name="account_id" placeholder="khách sạn">
+                            <select name="account_id" placeholder="khách sạn" required>
                             <option value="" disabled selected>Chọn Khách hàng</option>
                                 @foreach($usersHotel as $userHotel)
                                     <option value="{{$userHotel->username}}">{{$userHotel->username}}</option>
@@ -384,7 +384,7 @@
                                 <input readonly id="e_account_id1" type="text"  placeholder="Username" name="account_id2" value="{{ old('account_id') }}" >
 
                               
-                                <select id="e_account_id2"  name="account_id" placeholder="khách sạn">
+                                <select id="e_account_id2"  name="account_id" placeholder="khách sạn" required>
                                     <option value="" disabled selected>Chọn Khách hàng</option>
                                         @foreach($usersHotel as $userHotel)
                                             <option value="{{$userHotel->username}}">{{$userHotel->username}}</option>

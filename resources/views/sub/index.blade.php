@@ -98,7 +98,7 @@
                                             Thông tin cá nhân
                                         </a>
                                     @endif
-                                        <form id="manage" action="@if(Auth::guard('account')->user()->type == 3){{{ route('subManage',['subdomain' =>$info['subdomain']]) }}}@endif @if(Auth::guard('account')->user()->type == 4){{{ route('mainManageHoteler',['subdomain' =>$info['subdomain']]) }}}@endif @if(Auth::guard('account')->user()->type == 5){{{ route('subProfile',['subdomain' =>$info['subdomain']]) }}}@endif" method="get" style="display: none;">
+                                        <form id="manage" action="@if(Auth::guard('account')->user()->type == 3){{{ route('subManage',['subdomain' =>$info['subdomain']]) }}}@endif @if(Auth::guard('account')->user()->type == 4){{{ route('subManage',['subdomain' =>$info['subdomain']]) }}}@endif @if(Auth::guard('account')->user()->type == 5){{{ route('subProfile',['subdomain' =>$info['subdomain']]) }}}@endif" method="get" style="display: none;">
                                             {{ csrf_field() }}
                                         </form>
                                     </li>

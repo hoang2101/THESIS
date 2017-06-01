@@ -67,17 +67,17 @@
                     <!-- sidebar menu -->
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                         <div class="menu_section">
-                       
+                        @if(Auth::guard('account')->user()->type == 3)
                             <h3>Quản trị</h3>
                             <ul class="nav side-menu">
                                 <li><a href="{{ route('subHome',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-home"></i> Home </a>
                                 </li>
                                 
-                                <li><a href="{{ route('subManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-desktop"></i> Quản lý khách hàng</a>
-                                <li><a  href="{{ route('subStaffManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-desktop"></i> Quản lý Nhân viên</a>
-                                <li><a  href="{{ route('subRoomManage',['subConfig' =>$info['subdomain']]) }}"><i class="fa fa-university"></i> Quản lý phòng</a>
-                                <li><a  href="{{ route('subProfile',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Quản lý Tài khoản</a>
-                                 <li><a class="active" href="{{ route('subConfig',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-cogs"></i> Cài ĐẶt Web</a>
+                                <li><a class="active" href="{{ route('subManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Quản lý khách hàng</a>
+                                 <li><a  href="{{ route('subStaffManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Quản lý Nhân viên</a>
+                                 <li><a  href="{{ route('subRoomManage',['subConfig' =>$info['subdomain']]) }}"><i class="fa fa-university"></i> Quản lý phòng</a>
+                                 <li><a  href="{{ route('subProfile',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Quản lý Tài khoản</a>
+                                 <li><a  href="{{ route('subProfile',['subConfig' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Cài ĐẶt Web</a>
                                 <!-- <li><a class="active"><i class="fa fa-user" "></i> Quản lý Quản trị khách sạn</a>
                                     
                                 </li>
@@ -101,8 +101,20 @@
                                     </ul>
                                 </li> -->
                             </ul>
-                       
-                        
+                        @elseif(Auth::guard('account')->user()->type == 4)
+                            <h3>Nhân viên</h3>
+                            <ul class="nav side-menu">
+                               <li><a href="{{ route('subHome',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-home"></i> Home </a>
+                                </li>
+                                
+                                <li><a  class="active" href="{{ route('subManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-desktop"></i> Quản lý khách hàng</a>
+                                <li><a   href="{{ route('subBookManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-desktop"></i> Quản lý đặt phòng</a>
+                                <li><a   href="{{ route('subBookManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-desktop"></i> Quản lý đặt phòng</a>
+                                <li><a  href="{{ route('subProfile',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Quản lý Tài khoản</a>
+
+                               
+                            </ul>
+                        @endif
                            
                         </div>
                         <!-- <div class="menu_section">
@@ -212,85 +224,64 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Cài Đặt Web<small></small></h2>
+                    <h2>Danh sách Khách hàng<small></small></h2>
                     <ul class="nav navbar-right panel_toolbox">
-                      
+                      <a href="#" class="btn btn-primary btn-xs" data-target="#addCheckinMainmodal" data-toggle="modal" data-backdrop="static" ><i class="fa fa-folder"></i> Checkin </a>
                     </ul>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
                     
                     
-            <form role="form" method="POST" action="{{ route('subConfigSubmit',['subdomain' =>$info['subdomain']]) }}">
-           {{ csrf_field() }}
-           <input hidden id="typePost"" name="typePost" value="updateUser">
-           <input hidden id="idUser" name="id" value="{{Auth::guard('account')->user()->id}}">
-           <div class="row">
-            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                    <table id="responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                      <thead>
+                        <tr>
+                          <th id="cel1">ID</th>
+                          <th white-space:pre-line" id="cel5">Họ Tên</th>
+                          <th id="cel5">phòng</th>
+                          <th id="cel10">Ngày đến</th>
+                          <th id="cel10">Ngày đi</th>
+                          <th id="cel10">Số người</th>
+                          <th id="cel10">Quốc gia</th>
+                          <th class="nosort"  id="cel5">Quản lý</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                    
+                      @foreach ($checkins as $checkin)
+                    
+                            <tr>
+                                <td>{{$checkin->booking_id}}</td>
+                                <td>{{$checkin->first_name.' '.$checkin->last_name}}</td>
+                                <td>{{$checkin->room_number}}</td>
+                                <td>{{$checkin->date_from}}</td>
+                                <td>{{$checkin->date_to}}</td>
+                                <td>{{$checkin->number_people}}</td>
+                                <td>{{$checkin->country}}</td>
+                                <td>
+                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataView('{{$checkin->booking_id}}','{{$user->room_number}}', '{{$user->date_checkin}}', '{{$user->date_checkout}}', '{{$user->first_name}}', '{{$user->last_name}}', '{{$user->number_people}}', '{{$user->contry}}', '{{$user->email}}', '{{$user->phone_number}}', '{{$user->passport}}', '{{$user->gender}}', '{{$user->dob}}', '{{$user->booked_date}}', '{{$user->account_id}}') " data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
+                                    <a href="#" class="btn btn-info btn-xs"  onclick="showDataEdit('{{$checkin->booking_id}}','{{$user->room_number}}', '{{$user->date_checkin}}', '{{$user->date_checkout}}', '{{$user->first_name}}', '{{$user->last_name}}', '{{$user->number_people}}', '{{$user->contry}}', '{{$user->email}}', '{{$user->phone_number}}', '{{$user->passport}}', '{{$user->gender}}', '{{$user->dob}}', '{{$user->booked_date}}', '{{$user->account_id}}') ;" data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
 
-              <input type="text" class="form-control has-feedback-left" readonly id="username" name="username" placeholder="Tên Khách sạn" value="{{$info['name']}}"> 
+                            <a data-toggle="tooltip" data-placement="top"  class="btn btn-danger btn-xs"
+                                            onclick="event.preventDefault();
+                                                     document.getElementById('deleteUser{{$checkin->booking_id}}').submit();"><i class="fa fa-trash-o"></i> Xóa </a>
 
-              <span class="fa fa-home form-control-feedback left" aria-hidden="true"></span>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                            <form id="deleteUser{{$checkin->booking_id}}" action="{{ route('subManageSubmit',['subdomain' =>$info['subdomain']]) }}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                            <input hidden id="typePosts"" name="typePost" value="deleteCheckin">
+                                            <input hidden id="id" name="id" value="{{$checkin->booking_id}}">
+                                        </form>
+                                </td>
+                            </tr>
+                        @endforeach
+                       
 
-     
-              <input type="color" class="form-control has-feedback-left"  id="first_name" name="first_name" placeholder="Tông màu khách sạn" value="@if( ! empty($config)){{ $config->color}}@endif">
-
-              <span class="fa fa-yelp form-control-feedback left" aria-hidden="true"></span>
-            </div>
-          </div>
-          <!-- <div class="row">
-            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-
-              <input type="text" onfocus="(this.type='file')" name="image_bg" accept="image/*" class="form-control has-feedback-left"  id="image_bg" placeholder="Background" value="@if( ! empty($config)){{$config->background_link}}@endif">
-
-              <span class="fa fa-file-photo-o form-control-feedback left" aria-hidden="true"></span>
-            </div>
-          </div> -->
-
-            <div class="row">
-                <div class="col-md-12">
-                <div class="profile_img">
-                    <div id="crop-avatar">
-                        <!-- Current avatar -->
-                        <div class="col-md-3">
-                            <img class="img-responsive avatar-view" src="" id="blah" alt="Avatar">
-                            <input type="file" id="imgInp" name="image" accept="image/*"/>
-                        </div>
-                        <div class="col-md-3">
-                            <img class="img-responsive avatar-view" src="" id="blah2" alt="Avatar">
-                            <input type="file" id="imgInp2" name="image" accept="image/*"/>
-                        </div>
-
-                    </div>
-                </div>
-                   
-                </div>
-                <div class="col-md-12">
-                     
-                </div>
-            </div>
-            
-         <!--  <div class="row">
-            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-
-      <input type="text" onfocus="(this.type='file')" name="image_bn" accept="image/*"  class="form-control has-feedback-left"  id="image_bn" name="email" placeholder="Banner quản cáo" value="@if( ! empty($config)){{$config->banner_link}}@endif">
-
-              <span class="fa fa-file-photo-o form-control-feedback left" aria-hidden="true" ></span>
-            </div>
-          </div> -->
-          
-
-          <div class="row">
-
-            <div class="col-md-6 col-sm-6 col-xs-12">
-              <button id="btn_reset_pwd" type="submit" class="btn btn-primary"><i class="fa fa-edit m-right-xs"></i>&nbsp;Thay đổi thông tin</button>
-            </div>
-          </div>
-        </form>
+                        
+                      
+                        
+                       
+                      </tbody>
+                    </table>
                     
                     
                   </div>
@@ -300,7 +291,138 @@
             </div>
             <!-- /page content -->
 <!-- modal dialog add user -->
+<div class="modal fade" id="addCheckinMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog">
+        <div class="Registermodal-content">
+        <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+          <h1>Xem chi tiết khách hàng</h1><br>
+          <form class="form-horizontal" role="form" method="POST" action="{{ route('subManageSubmit', ['subdomain' =>$info['subdomain']]) }}">
+                        {{ csrf_field() }}
+                
+                        <input hidden id="typePost"" name="typePost" value="addbooking">
+                        <input hidden id="idUser" name="id" value="">
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="e_first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" required autofocus>
 
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="e_last_name" type="text" class="form-control" placeholder="Tên" name="last_name" value="{{ old('last_name') }}" required autofocus>
+
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="e_email" type="email" class="form-control" placeholder="E-Mail" name="email" value="{{ old('email') }}" required autofocus>
+                          
+                                @if ($errors->has('email'))
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('email') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group">
+                        
+                            <div >
+                                <input id="e_phone_number" type="number" class="form-control" placeholder="Số điện thoại" name="phone_number" value="{{ old('phone_number') }}" >
+
+                               
+                                @if ($errors->has('email'))
+                                     <span class="help-block">
+                                      <br>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group {{ $errors->has('username') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="e_username" type="text" class="form-control" placeholder="Tên tài khoản" name="username" value="{{ old('username') }}" required>
+
+                                @if ($errors->has('username'))
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('username') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group">
+                            <div >
+                                <input id="e_country" type="text" class="form-control" placeholder="Quốc qia" name="country" value="{{ old('country') }}" >
+
+                                @if ($errors->has('username'))
+                                 <span class="help-block">
+                                      <br>
+                                    </span>
+                                    
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
+                            <div >
+                                <input id="e_dob" type="text" onfocus="(this.type='date')" class="form-control" placeholder="Ngày sinh" name="dob" value="{{ old('dob') }}" >
+
+                                @if ($errors->has('dob'))
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('dob') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group">
+                            <div >
+                                <input id="e_gender" type="text" class="form-control" placeholder="Giới tính" name="gender" >
+
+                                 @if ($errors->has('dob'))
+                                     <span class="help-block">
+                                      <br>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                            <input id="e_submit" type="submit" name="Register" class="btn btn-info btn-xs pull-left" value="OK">
+                        </div>
+                         <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                            <!-- <a data-toggle="tooltip" data-placement="top"  class="pull-right btn btn-primary btn-xs" href="{{ route('addUserMainSubmit') }}"
+                                            onclick="event.preventDefault();
+                                                     document.getElementById('edit-form').submit();"><i class="fa fa-folder"></i> View  </a> -->
+                            <a   class="btn btn-danger btn-xs pull-right" onclick="deleteusers()"><i class="fa fa-trash-o"></i> Xóa </a>
+
+                            
+                            <a href="#" id="typeEditView" class="btn btn-info btn-xs pull-right" onclick="addReadonly()"><i class="fa fa-pencil"></i>Sửa</a>
+                                   
+                        </div>
+                        
+                        
+                    </form>
+                    <!-- <a href="{{ route('editUserMainSubmit') }}" class="btn btn-primary btn-xs" data-toggle="tooltip" data-backdrop="static" data-target="#viewUserMainmodal""><i class="fa fa-folder"></i> View </a> -->
+                    
+          </div>
+        </div>
+      </div>
+      <!-- form post--> 
+      
+                        
+      
+      </form>
+            <!-- footer content -->
+            <footer>
+                <div class="pull-right">
+                    ©2017 All Rights Reserved. Privacy and Terms
+                </div>
+                <div class="clearfix"></div>
+            </footer>
+            <!-- /footer content -->
+        </div>
+    </div>
 
    <!-- jQuery -->
     <script src="{!! asset('vendors/jquery/dist/jquery.min.js') !!}"></script>
@@ -360,27 +482,6 @@
     <script src="{!! asset('vendors/pdfmake/build/vfs_fonts.js') !!}"></script>
     <!-- My Cutom Scripts -->
     <script src="{!! asset('js/custom-scripts.js') !!}"></script>
-<script type="text/javascript">  
-    function readURL(input) {
-
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            $('#blah').attr('src', e.target.result);
-        }
-
-        reader.readAsDataURL(input.files[0]);
-    }
-}
-
-$("#imgInp").change(function(){
-    readURL(this);
-});
-
-</script>
-
-
     @if($errors->first('typePost')=="addUser")
       @if ($errors->has('username') )
     <script type="text/javascript">  

@@ -331,7 +331,7 @@
 
                         <div class="form-group">
                             <div >
-                            <select name="hotel_id" placeholder="khách sạn">
+                            <select name="hotel_id" placeholder="khách sạn" required>
                             <option value="" disabled selected>Chọn Khách sạn</option>
                                 @foreach($hotels as $hotel)
                                     <option value="{{$hotel->hotel_id}}">{{$hotel->hotel_name}}</option>
@@ -374,7 +374,7 @@
         <div class="Registermodal-content">
         <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-          <h1>Xem chi tiết khách hàng</h1><br>
+          <h1>Xem chi tiết Quản trị</h1><br>
           <form class="form-horizontal" role="form" method="POST" action="{{ route('addGovermHotelerSubmit') }}">
                         {{ csrf_field() }}
                 
@@ -466,7 +466,7 @@
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <input id="e_submit" type="submit" name="Register" class="btn btn-info btn-xs pull-left" value="OK>
+                            <input id="e_submit" type="submit" name="Register" class="btn btn-info btn-xs pull-left" value="OK">
                         </div>
                          <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <!-- <a data-toggle="tooltip" data-placement="top"  class="pull-right btn btn-primary btn-xs" href="{{ route('addUserMainSubmit') }}"

@@ -548,6 +548,210 @@ public function configManage($subdomain){
 public function configManageSubmit(Request $request,  $subdomain){
     return $$request;
 }
+
+public function bookManage($subdomain){
+        $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+        $checkins = DB::table('booking')->join('room', 'booking.room_id', '=', 'room.room_id')->select('booking.*', 'room.room_number')->orderBy('booking_id', 'desc')->get();
+        $checkouts = DB::table('checkout')->orderBy('checkout_id', 'desc')->get();
+        
+        // $users = DB::table('account')->where([['hotel_id', '=', $hotels->hotel_id],['type', '=', 4],])->get();
+        if($hotels != null){
+             
+            if(Auth::guard('account')->Check()){
+
+                if(Auth::guard('account')->user()->hotel_id != $hotels->hotel_id ){
+                    Auth::guard('account')->logout();
+                }
+            }
+            if(!Auth::guard('account')->Check()){
+                return redirect()->route('subHome',['subdomain' => $subdomain]);
+            }
+            if(Auth::guard('account')->user()->type != 4){
+                return view('sub.404');
+            }
+
+            $info = array(
+            "name" => $hotels->hotel_name,
+            "subdomain" => $subdomain, 
+            );
+            return view('sub.bookManage')->with('checkins',$checkins)->with('checkouts', $checkouts)->with('info',$info);
+            // if(Auth::guard('account')->user()->type == 4 || Auth::guard('account')->user()->type == 3){
+            //     return view('sub.mainManageProlife')->with('users',$users)->with('info',$info);
+            // }
+            
+            
+         }
+       return view('sub.404');
+}
+
+public function bookManageSubmit(Request $request,  $subdomain){
+    return $$request;
+}
+
+public function roomManage($subdomain){
+        $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+        $rooms = DB::table('room')->where('room.hotel_id', '=', $hotels->hotel_id)->join('type_room', 'room.room_type_id', '=', 'type_room.type_room_id')->select('room.*', 'type_room.type_name')->orderBy('room_number', 'asc')->get();
+        $type_rooms =  DB::table('type_room')->where('hotel_id', '=', $hotels->hotel_id)->get();
+       
+        // $users = DB::table('account')->where([['hotel_id', '=', $hotels->hotel_id],['type', '=', 4],])->get();
+        if($hotels != null){
+             
+            if(Auth::guard('account')->Check()){
+
+                if(Auth::guard('account')->user()->hotel_id != $hotels->hotel_id ){
+                    Auth::guard('account')->logout();
+                }
+            }
+            if(!Auth::guard('account')->Check()){
+                return redirect()->route('subHome',['subdomain' => $subdomain]);
+            }
+            if(Auth::guard('account')->user()->type != 3){
+                return view('sub.404');
+            }
+
+            $info = array(
+            "name" => $hotels->hotel_name,
+            "subdomain" => $subdomain, 
+            );
+            return view('sub.roomManage')->with('rooms',$rooms)->with('info',$info)->with('type_rooms', $type_rooms);
+            // if(Auth::guard('account')->user()->type == 4 || Auth::guard('account')->user()->type == 3){
+            //     return view('sub.mainManageProlife')->with('users',$users)->with('info',$info);
+            // }
+            
+            
+         }
+       return view('sub.404');
+}
+
+public function roomManageSubmit(Request $request,  $subdomain){
+    $messages = [];
+
+
+    $validator = Validator::make($request->all(),[],$messages);
+     $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+    if($request['typePost'] == "addTypeRoom"){
+       $type_rooms =  DB::table('type_room')->where('hotel_id', '=', $hotels->hotel_id)->get();
+       foreach ($type_rooms as $type_room ) {
+           if($type_room->type_name == $request['type_name'])
+           {
+            $validator->errors()->add('typePost', 'addTypeRoom');
+            $validator->errors()->add('type_name', 'Tên loại phòng đã tồn tại');
+             return redirect()->route('subRoomManage',['subdomain' => $subdomain])->withErrors($validator)->withInput();
+           }
+
+       }
+     DB::table('type_room')->insertGetId([
+             'type_name' => $request['type_name'],
+             'cost' => $request['cost'],
+             'description' => $request['description'],
+             'hotel_id' => $hotels->hotel_id,
+         ]);
+     return redirect()->route('subRoomManage',['subdomain' => $subdomain]);
+    }
+    if($request['typePost'] == "updateTypeRoom"){
+        $type_rooms =  DB::table('type_room')->where('hotel_id', '=', $hotels->hotel_id)->get();
+       foreach ($type_rooms as $type_room ) {
+           if($type_room->type_name == $request['type_name'] && $type_room->type_room_id != $request['id'])
+           {
+            $validator->errors()->add('typePost', 'updateTypeRoom');
+            $validator->errors()->add('type_name', 'Tên loại phòng đã tồn tại');
+             return redirect()->route('subRoomManage',['subdomain' => $subdomain])->withErrors($validator)->withInput();
+           }
+           
+       }
+       DB::table('type_room')->where('type_room_id', $request['id'])
+        ->update(['type_name' => $request['type_name'], 'cost' => $request['cost'], 'description' => $request['description']]);
+        return redirect()->route('subRoomManage',['subdomain' => $subdomain]);
+    }
+    if($request['typePost'] == "deleteTypeRoom"){
+    DB::table('type_room')->where('type_room_id', $request['id'])->delete();
+     return redirect()->route('subRoomManage',['subdomain' => $subdomain]);
+    }
+
+
+
+    /* roôm */
+    if($request['typePost'] == "add1Room"){
+       
+        $rooms = DB::table('room')->where('room.hotel_id', '=', $hotels->hotel_id)->join('type_room', 'room.room_type_id', '=', 'type_room.type_room_id')->select('room.*', 'type_room.type_name')->get();
+        foreach ($rooms as $room ) {
+           if($room->room_floor == $request['room_floor'] && $room->room_number == $request['room_number'])
+           {
+            $validator->errors()->add('typePost', 'add1Room');
+            $validator->errors()->add('room_number', 'Đã tồn tại phòng '.$request['room_number'] .'tại tầng '.$request['room_floor'] );
+             return redirect()->route('subRoomManage',['subdomain' => $subdomain])->withErrors($validator)->withInput();
+           }
+       }
+       DB::table('room')->insertGetId([
+             'room_floor' => $request['room_floor'],
+             'room_number' => $request['room_number'],
+             'room_type_id' => $request['type_room'],
+             'hotel_id' => $hotels->hotel_id,
+         ]);
+     return redirect()->route('subRoomManage',['subdomain' => $subdomain]);
+
+    }
+
+
+    if($request['typePost'] == "addnRoom"){
+        $rooms = DB::table('room')->where('room.hotel_id', '=', $hotels->hotel_id)->join('type_room', 'room.room_type_id', '=', 'type_room.type_room_id')->select('room.*', 'type_room.type_name')->get();
+        if( $request['room_from'] >= $request['room_to'])
+        {
+            $validator->errors()->add('typePost', 'addnRoom');
+            $validator->errors()->add('room_from', 'Số phòng bắt đầu không được lớn hơn hoặc bằng số phòng cuối!' );
+            return redirect()->route('subRoomManage',['subdomain' => $subdomain])->withErrors($validator)->withInput();
+        }
+        for($i = $request['room_from']; $i <= $request['room_to']; $i++)
+        {
+            foreach ($rooms as $room ) {
+               if($room->room_floor == $request['room_floor'] && $room->room_number == $i)
+               {
+                $validator->errors()->add('typePost', 'addnRoom');
+                $validator->errors()->add('room_from', 'Đã tồn tại phòng '.$request['room_number'] .'tại tầng '.$request['room_floor'] );
+                 return redirect()->route('subRoomManage',['subdomain' => $subdomain])->withErrors($validator)->withInput();
+               }
+            }    
+        }
+        for($i = $request['room_from']; $i <= $request['room_to']; $i++)
+        {
+            DB::table('room')->insertGetId([
+             'room_floor' => $request['room_floor'],
+             'room_number' => $i,
+             'room_type_id' => $request['type_room'],
+             'hotel_id' => $hotels->hotel_id,
+         ]);
+        }
+         return redirect()->route('subRoomManage',['subdomain' => $subdomain]);
+        
+        
+    }
+
+
+    if($request['typePost'] == "updateRoom"){
+        $rooms = DB::table('room')->where('room.hotel_id', '=', $hotels->hotel_id)->join('type_room', 'room.room_type_id', '=', 'type_room.type_room_id')->select('room.*', 'type_room.type_name')->get();
+        foreach ($rooms as $room ) {
+           if($room->room_floor == $request['room_floor'] && $room->room_number == $request['room_number'] && $room->room_id != $request['id'])
+           {
+            $validator->errors()->add('typePost', 'add1Room');
+            $validator->errors()->add('room_number', 'Đã tồn tại phòng '.$request['room_number'] .'tại tầng '.$request['room_floor'] );
+             return redirect()->route('subRoomManage',['subdomain' => $subdomain])->withErrors($validator)->withInput();
+           }
+       }
+        DB::table('room')->where('room_id', $request['id'])
+        ->update(['room_floor' => $request['room_floor'], 'room_number' => $request['room_number'], 'room_type_id' => $request['type_room']]);
+        return redirect()->route('subRoomManage',['subdomain' => $subdomain]);
+    }
+
+
+    if($request['typePost'] == "deleteRoom"){
+        $rooms = DB::table('room')->where('room.hotel_id', '=', $hotels->hotel_id)->join('type_room', 'room.room_type_id', '=', 'type_room.type_room_id')->select('room.*', 'type_room.type_name')->get();
+        DB::table('room')->where('room_id', $request['id'])->delete();
+         return redirect()->route('subRoomManage',['subdomain' => $subdomain]);
+        
+    }
+}
+
+
     public function create()
     {
         //

@@ -450,7 +450,7 @@
                             <!-- <a data-toggle="tooltip" data-placement="top"  class="pull-right btn btn-primary btn-xs" href="{{ route('addUserMainSubmit') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('edit-form').submit();"><i class="fa fa-folder"></i> View  </a> -->
-                            <a   class="btn btn-danger btn-xs pull-right" onclick="removeMessage()"><i class="fa fa-trash-o"></i> Xóa </a>
+                            <a   class="btn btn-danger btn-xs pull-right" onclick="deleteusers()"><i class="fa fa-trash-o"></i> Xóa </a>
 
                             
                             <a href="#" id="typeEditView" class="btn btn-info btn-xs pull-right" onclick="addReadonly()"><i class="fa fa-pencil"></i>Sửa</a>

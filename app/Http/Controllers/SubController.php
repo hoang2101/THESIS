@@ -553,6 +553,8 @@ public function bookManage($subdomain){
         $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
         $checkins = DB::table('booking')->join('room', 'booking.room_id', '=', 'room.room_id')->select('booking.*', 'room.room_number')->orderBy('booking_id', 'desc')->get();
         $checkouts = DB::table('checkout')->orderBy('checkout_id', 'desc')->get();
+        $rooms = $rooms = DB::table('room')->where('room.hotel_id', '=', $hotels->hotel_id)->orderBy('room_number', 'asc')->get();
+        $type_rooms =  DB::table('type_room')->where('hotel_id', '=', $hotels->hotel_id)->get();
         
         // $users = DB::table('account')->where([['hotel_id', '=', $hotels->hotel_id],['type', '=', 4],])->get();
         if($hotels != null){
@@ -574,7 +576,7 @@ public function bookManage($subdomain){
             "name" => $hotels->hotel_name,
             "subdomain" => $subdomain, 
             );
-            return view('sub.bookManage')->with('checkins',$checkins)->with('checkouts', $checkouts)->with('info',$info);
+            return view('sub.bookManage')->with('checkins',$checkins)->with('checkouts', $checkouts)->with('info',$info)->with('type_rooms', $type_rooms)->with('rooms',$rooms);
             // if(Auth::guard('account')->user()->type == 4 || Auth::guard('account')->user()->type == 3){
             //     return view('sub.mainManageProlife')->with('users',$users)->with('info',$info);
             // }
@@ -585,7 +587,58 @@ public function bookManage($subdomain){
 }
 
 public function bookManageSubmit(Request $request,  $subdomain){
-    return $$request;
+    $messages = [];
+    $validator = Validator::make($request->all(),[],$messages);
+     $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+    if($request['typePost'] == "addbooking"){
+        if(strtotime($request['date_checkin']) > strtotime($request['date_checkout'])){ 
+            $validator->errors()->add('typePost', 'addbooking');
+            $validator->errors()->add('date_checkin', 'Ngày checkin không thể lớn hơn ngày checkout');
+             return redirect()->route('subBookManage',['subdomain' => $subdomain])->withErrors($validator)->withInput();
+        }
+        DB::table('booking')->insertGetId([
+             'first_name' => $request['first_name'],
+             'last_name' => $request['last_name'],
+             'date_checkin' => $request['date_checkin'],
+             'date_checkout' => $request['date_checkout'],
+             'number_people' => $request['number_people'],
+             'contry' => $request['country'],
+             'room_id' => $request['room'],
+             'account_id' =>Auth::guard('account')->user()->id,
+         ]);
+
+        $rooms = DB::table('room')->where('room_id', '=', $request['room'])->update(['is_booked' => 1]);
+        return redirect()->route('subBookManage',['subdomain' => $subdomain]);
+    }
+     if($request['typePost'] == "updateBooking"){
+         if(strtotime($request['date_checkin']) > strtotime($request['date_checkout'])){ 
+            $validator->errors()->add('typePost', 'addbooking');
+            $validator->errors()->add('date_checkin', 'Ngày checkin không thể lớn hơn ngày checkout');
+             return redirect()->route('subBookManage',['subdomain' => $subdomain])->withErrors($validator)->withInput();
+        }
+        // if(DB::table('booking')->where('booking_id', $request['id'])->first()->room_id == $request['room'])
+
+            if(DB::table('booking')->where('booking_id', $request['id'])->first()->room_id != $request['room']){
+                $booked =  DB::table('booking')->where('booking_id', '=', $request['id'])-> first();
+                DB::table('room')->where('room_id', '=', $booked->room_id)->update(['is_booked' => 0]);
+                DB::table('room')->where('room_id', '=', $request['room'])->update(['is_booked' => 1]);
+            }
+
+        DB::table('booking')
+            ->where('booking_id', $request['id'])
+            ->update(['first_name' => $request['first_name'], 'last_name' => $request['last_name'], 'date_checkin' => $request['date_checkin'],'date_checkout' => $request['date_checkout'], 'number_people' => $request['number_people'], 'contry' => $request['country'], 'room_id' => $request['room'],'account_id' =>Auth::guard('account')->user()->id]);
+            $rooms = DB::table('room')->where('room_id', '=', $request['room'])->update(['is_booked' => 1]);
+            return redirect()->route('subBookManage',['subdomain' => $subdomain]);
+        
+     }
+     if($request['typePost'] == "deleteBooking"){
+        $booked =  DB::table('booking')->where('booking_id', '=', $request['id'])-> first();
+        DB::table('booking')->where('booking_id', '=', $request['id'])->delete();
+        DB::table('room')->where('room_id', '=', $booked->room_id)->update(['is_booked' => 0]);
+         return redirect()->route('subBookManage',['subdomain' => $subdomain]);
+     }
+    
+
 }
 
 public function roomManage($subdomain){

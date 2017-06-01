@@ -107,9 +107,9 @@
                                <li><a href="{{ route('subHome',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-home"></i> Home </a>
                                 </li>
                                 
-                                <li><a  class="active" href="{{ route('subManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-desktop"></i> Quản lý khách hàng</a>
-                                <li><a   href="{{ route('subBookManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-desktop"></i> Quản lý đặt phòng</a>
-                                <li><a   href="{{ route('subBookManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-desktop"></i> Quản lý đặt phòng</a>
+                                <li><a href="{{ route('subManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-desktop"></i> Quản lý khách hàng</a>
+                                <li><a   class="active"  href="{{ route('subBookManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-desktop"></i> Quản lý đặt phòng</a>
+                              
                                 <li><a  href="{{ route('subProfile',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Quản lý Tài khoản</a>
 
                                
@@ -254,21 +254,21 @@
                                 <td>{{$checkin->booking_id}}</td>
                                 <td>{{$checkin->first_name.' '.$checkin->last_name}}</td>
                                 <td>{{$checkin->room_number}}</td>
-                                <td>{{$checkin->date_from}}</td>
-                                <td>{{$checkin->date_to}}</td>
+                                <td>{{$checkin->date_checkin}}</td>
+                                <td>{{$checkin->date_checkout}}</td>
                                 <td>{{$checkin->number_people}}</td>
-                                <td>{{$checkin->country}}</td>
+                                <td>{{$checkin->contry}}</td>
                                 <td>
-                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataView('{{$checkin->booking_id}}','{{$user->room_number}}', '{{$user->date_checkin}}', '{{$user->date_checkout}}', '{{$user->first_name}}', '{{$user->last_name}}', '{{$user->number_people}}', '{{$user->contry}}', '{{$user->email}}', '{{$user->phone_number}}', '{{$user->passport}}', '{{$user->gender}}', '{{$user->dob}}', '{{$user->booked_date}}', '{{$user->account_id}}') " data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
-                                    <a href="#" class="btn btn-info btn-xs"  onclick="showDataEdit('{{$checkin->booking_id}}','{{$user->room_number}}', '{{$user->date_checkin}}', '{{$user->date_checkout}}', '{{$user->first_name}}', '{{$user->last_name}}', '{{$user->number_people}}', '{{$user->contry}}', '{{$user->email}}', '{{$user->phone_number}}', '{{$user->passport}}', '{{$user->gender}}', '{{$user->dob}}', '{{$user->booked_date}}', '{{$user->account_id}}') ;" data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
+                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataView('{{$checkin->booking_id}}','{{$checkin->room_number}}', '{{$checkin->date_checkin}}', '{{$checkin->date_checkout}}', '{{$checkin->first_name}}', '{{$checkin->last_name}}', '{{$checkin->number_people}}', '{{$checkin->contry}}') " data-toggle="modal" data-backdrop="static" data-target="#viewCheckinMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
+                                    <a href="#" class="btn btn-info btn-xs"  onclick="showDataEdit('{{$checkin->booking_id}}','{{$checkin->room_number}}', '{{$checkin->date_checkin}}', '{{$checkin->date_checkout}}', '{{$checkin->first_name}}', '{{$checkin->last_name}}', '{{$checkin->number_people}}', '{{$checkin->contry}}') ;" data-toggle="modal" data-backdrop="static" data-target="#editCheckinMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
 
                             <a data-toggle="tooltip" data-placement="top"  class="btn btn-danger btn-xs"
                                             onclick="event.preventDefault();
-                                                     document.getElementById('deleteUser{{$checkin->booking_id}}').submit();"><i class="fa fa-trash-o"></i> Xóa </a>
+                                                     document.getElementById('deleteBook{{$checkin->booking_id}}').submit();"><i class="fa fa-trash-o"></i> Xóa </a>
 
-                            <form id="deleteUser{{$checkin->booking_id}}" action="{{ route('subManageSubmit',['subdomain' =>$info['subdomain']]) }}" method="POST" style="display: none;">
+                            <form id="deleteBook{{$checkin->booking_id}}" action="{{ route('subBookManage',['subdomain' =>$info['subdomain']]) }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
-                                            <input hidden id="typePosts"" name="typePost" value="deleteCheckin">
+                                            <input hidden id="typePosts"" name="typePost" value="deleteBooking">
                                             <input hidden id="id" name="id" value="{{$checkin->booking_id}}">
                                         </form>
                                 </td>
@@ -296,108 +296,358 @@
         <div class="Registermodal-content">
         <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-          <h1>Xem chi tiết khách hàng</h1><br>
-          <form class="form-horizontal" role="form" method="POST" action="{{ route('subManageSubmit', ['subdomain' =>$info['subdomain']]) }}">
+          <h1>Booking</h1><br>
+          <form class="form-horizontal" role="form" method="POST" action="{{ route('subBookManageSubmit', ['subdomain' =>$info['subdomain']]) }}">
                         {{ csrf_field() }}
                 
                         <input hidden id="typePost"" name="typePost" value="addbooking">
-                        <input hidden id="idUser" name="id" value="">
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="e_first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" required autofocus>
-
-                                
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="e_last_name" type="text" class="form-control" placeholder="Tên" name="last_name" value="{{ old('last_name') }}" required autofocus>
-
-                                
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="e_email" type="email" class="form-control" placeholder="E-Mail" name="email" value="{{ old('email') }}" required autofocus>
-                          
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group">
+                         <div class="col-md-6 col-sm-6 col-xs-12  form-group">
                         
                             <div >
-                                <input id="e_phone_number" type="number" class="form-control" placeholder="Số điện thoại" name="phone_number" value="{{ old('phone_number') }}" >
-
-                               
-                                @if ($errors->has('email'))
-                                     <span class="help-block">
-                                      <br>
-                                    </span>
-                                @endif
+                                <input id="first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" >
                             </div>
                         </div>
 
                         <div class="col-md-6 col-sm-6 col-xs-12  form-group {{ $errors->has('username') ? ' has-error' : '' }}">
                             <div >
-                                <input id="e_username" type="text" class="form-control" placeholder="Tên tài khoản" name="username" value="{{ old('username') }}" required>
-
-                                @if ($errors->has('username'))
+                                <input id="last_name" type="text" class="form-control" placeholder="Tên" name="last_name" value="{{ old('last_name') }}" required>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12  form-group">
+                            <div>
+                                @if ($errors->has('first_name'))
                                     <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('username') }}</strong>
+                                        <strong class="messageError">{{ $errors->first('first_name') }}</strong>
+                                    </span>
+                                @elseif ($errors->has('last_name'))
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('last_name') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
+                        
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('date_checkin') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="date_checkin" type="text" onfocus="(this.type='date')" class="" placeholder="Ngày checkin" name="date_checkin" value="{{ old('date_checkin') }}" required >
+
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('date_checkout') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="date_checkout" type="text"  onfocus="(this.type='date')" class="" placeholder="Ngày checkout" name="date_checkout" value="{{ old('date_checkout') }}" required >
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12  form-group {{ $errors->has('date_checkin') ? ' has-error' : '' }} {{ $errors->has('date_checkout') ? ' has-error' : '' }}">
+                            <div>
+                                @if ($errors->has('date_checkin'))
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('date_checkin') }}</strong>
+                                    </span>
+                                @elseif ($errors->has('date_checkout'))
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('date_checkout') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class=" col-md-6 col-sm-6 col-xs-12 form-group">
+                            <div >
+                            <select id="add_type_room" onchange="changetyperoom()" name="type_room" placeholder="Loại phòng" required>
+                                    <option value="" disabled selected>Chọn loại phòng</option>
+                                   @foreach ($type_rooms as $type_room)
+                                   <option value="{{$type_room->type_room_id}}"  >{{$type_room->type_name}}</option>
+                                   @endforeach
+                            </select>
+                               
+                            </div>
+                        </div>
+                        <div class=" col-md-6 col-sm-6 col-xs-12 form-group">
+                            <div >
+                            <select id="add_room_input"  name="room" placeholder="Số Phòng" required>
+                                    <option value="" disabled selected>Chọn  phòng</option>
+                                    
+                            </select>
+                               
+                            </div>
+                        </div>
+
+                        
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group {{ $errors->has('number_people') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="number_people" type="number" min="1" class="form-control" placeholder="Số người" name="number_people" value="{{ old('number_people') }}" required>
+
+                               
+                            </div>
+                        </div>
+                        
+                       
+                        
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group">
+                            <div >
+                                <input id="country" type="text" class="form-control" placeholder="Quốc qia" name="country" value="{{ old('country') }}" >
+
+                                
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="col-md-12 col-sm-12 col-xs-12  form-group">
+                            <div>
+                                @if ($errors->has('number_people'))
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('number_people') }}</strong>
+                                    </span>
+                                @elseif ($errors->has('country'))
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('country') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+
+                       
+                        <div col-xs-6 pull-right>
+                             <input id="e_submit" type="submit" name="Register" class="btn btn-primary btn-lg pull-right" value="BOOKING">
+                        </div>
+                           
+                        
+                         
+                        
+                    </form>
+                    <!-- <a href="{{ route('editUserMainSubmit') }}" class="btn btn-primary btn-xs" data-toggle="tooltip" data-backdrop="static" data-target="#viewUserMainmodal""><i class="fa fa-folder"></i> View </a> -->
+                    
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="viewCheckinMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog">
+        <div class="Registermodal-content">
+        <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+          <h1>Booking</h1><br>
+          <form class="form-horizontal" role="form" method="POST" action="{{ route('subBookManageSubmit', ['subdomain' =>$info['subdomain']]) }}">
+                        {{ csrf_field() }}
+                
+                        <input hidden id="typePost"" name="typePost" value="deleteBooking">
+                        <input hidden id="v_idPost"" name="id" value="">
+
+                         <div class="col-md-6 col-sm-6 col-xs-12  form-group">
+                        
+                            <div >
+                                <input id="v_first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" >
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group {{ $errors->has('username') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="v_last_name" type="text" class="form-control" placeholder="Tên" name="last_name" value="{{ old('last_name') }}" required>
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('date_checkin') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="v_date_checkin" type="text" onfocus="(this.type='date')" class="" placeholder="Ngày checkin" name="date_checkin" value="{{ old('date_checkin') }}" required >
+
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('date_checkout') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="v_date_checkout" type="text"  onfocus="(this.type='date')" class="" placeholder="Ngày checkout" name="date_checkout" value="{{ old('date_checkout') }}" required >
+                            </div>
+                        </div>
+                       
+                       
+                        <div class=" col-md-6 col-sm-6 col-xs-12 form-group">
+                            <div >
+                            <input readonly id="v_room" type="text" class="" placeholder="Ngày hết hạn" name="" value="{{ old('room') }}" >
+                            
+                               
+                            </div>
+                        </div>
+
+                        
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group {{ $errors->has('number_people') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="v_number_people" type="number" min="1" class="form-control" placeholder="Số người" name="number_people" value="{{ old('number_people') }}" required>
+
+                               
+                            </div>
+                        </div>
+                        
+                       
+                        
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group">
+                            <div >
+                                <input id="v_country" type="text" class="form-control" placeholder="Quốc qia" name="country" value="{{ old('country') }}" >
+
+                                
+                            </div>
+                        </div>
+                       
+                        
+                        
+                        
+                        
+
+
+                       
+                        
+                         <div class="col-md-12 col-sm-12 col-xs-12  form-group " ;">
+                            
+                            <a   class="btn btn-danger btn-xs pull-right" onclick="deleteBooking()"><i class="fa fa-trash-o"></i> Xóa </a>
+
+                            
+                            <a href="#" id="typeEditView" class="btn btn-info btn-xs pull-right" onclick="openeditmodal()"><i class="fa fa-pencil"></i>Sửa</a>
+                                   
+                        </div>
+                        
+                        
+                    </form>
+                    <!-- <a href="{{ route('editUserMainSubmit') }}" class="btn btn-primary btn-xs" data-toggle="tooltip" data-backdrop="static" data-target="#viewUserMainmodal""><i class="fa fa-folder"></i> View </a> -->
+                    
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="editCheckinMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog">
+        <div class="Registermodal-content">
+        <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+          <h1>Booking</h1><br>
+          <form class="form-horizontal" role="form" method="POST" action="{{ route('subBookManageSubmit', ['subdomain' =>$info['subdomain']]) }}">
+                        {{ csrf_field() }}
+                
+                        <input hidden id="typePost"" name="typePost" value="updateBooking">
+                        <input hidden id="e_idPost"" name="id" value="">
+
+                         <div class="col-md-6 col-sm-6 col-xs-12  form-group">
+                        
+                            <div >
+                                <input id="e_first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" >
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group {{ $errors->has('username') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="e_last_name" type="text" class="form-control" placeholder="Tên" name="last_name" value="{{ old('last_name') }}" required>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12  form-group">
+                            <div>
+                                @if ($errors->has('first_name'))
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('first_name') }}</strong>
+                                    </span>
+                                @elseif ($errors->has('last_name'))
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('last_name') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('date_checkin') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="e_date_checkin" type="text" onfocus="(this.type='date')" class="" placeholder="Ngày checkin" name="date_checkin" value="{{ old('date_checkin') }}" required >
+
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('date_checkout') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="e_date_checkout" type="text"  onfocus="(this.type='date')" class="" placeholder="Ngày checkout" name="date_checkout" value="{{ old('date_checkout') }}" required >
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12  form-group {{ $errors->has('date_checkin') ? ' has-error' : '' }} {{ $errors->has('date_checkout') ? ' has-error' : '' }}">
+                            <div>
+                                @if ($errors->has('date_checkin'))
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('date_checkin') }}</strong>
+                                    </span>
+                                @elseif ($errors->has('date_checkout'))
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('date_checkout') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class=" col-md-6 col-sm-6 col-xs-12 form-group">
+                            <div >
+                           
+                            <select id="e_add_type_room" onchange="changetyperoom2()" name="type_room" placeholder="Loại phòng" required>
+                                    <option value="" disabled selected>Chọn loại phòng</option>
+                                   @foreach ($type_rooms as $type_room)
+                                   <option value="{{$type_room->type_room_id}}"  >{{$type_room->type_name}}</option>
+                                   @endforeach
+                            </select>
+                               
+                            </div>
+                        </div>
+                        <div class=" col-md-6 col-sm-6 col-xs-12 form-group">
+                            <div >
+                           
+                            <select id="e_room"  name="room" placeholder="Số Phòng" required>
+                                    <option value="" disabled selected>Chọn  phòng</option>
+                                    
+                            </select>
+                               
+                            </div>
+                        </div>
+
+                        
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group {{ $errors->has('number_people') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="e_number_people" type="number" min="1" class="form-control" placeholder="Số người" name="number_people" value="{{ old('number_people') }}" required>
+
+                               
+                            </div>
+                        </div>
+                        
+                       
+                        
                         <div class="col-md-6 col-sm-6 col-xs-12  form-group">
                             <div >
                                 <input id="e_country" type="text" class="form-control" placeholder="Quốc qia" name="country" value="{{ old('country') }}" >
 
-                                @if ($errors->has('username'))
-                                 <span class="help-block">
-                                      <br>
-                                    </span>
-                                    
-                                @endif
+                                
                             </div>
                         </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                            <div >
-                                <input id="e_dob" type="text" onfocus="(this.type='date')" class="form-control" placeholder="Ngày sinh" name="dob" value="{{ old('dob') }}" >
-
-                                @if ($errors->has('dob'))
+                        
+                        
+                        <div class="col-md-12 col-sm-12 col-xs-12  form-group">
+                            <div>
+                                @if ($errors->has('number_people'))
                                     <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('dob') }}</strong>
+                                        <strong class="messageError">{{ $errors->first('number_people') }}</strong>
+                                    </span>
+                                @elseif ($errors->has('country'))
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('country') }}</strong>
                                     </span>
                                 @endif
                             </div>
                         </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group">
-                            <div >
-                                <input id="e_gender" type="text" class="form-control" placeholder="Giới tính" name="gender" >
 
-                                 @if ($errors->has('dob'))
-                                     <span class="help-block">
-                                      <br>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+
+                       
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group">
                             <input id="e_submit" type="submit" name="Register" class="btn btn-info btn-xs pull-left" value="OK">
                         </div>
-                         <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <!-- <a data-toggle="tooltip" data-placement="top"  class="pull-right btn btn-primary btn-xs" href="{{ route('addUserMainSubmit') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('edit-form').submit();"><i class="fa fa-folder"></i> View  </a> -->
-                            <a   class="btn btn-danger btn-xs pull-right" onclick="deleteusers()"><i class="fa fa-trash-o"></i> Xóa </a>
+                         <div class="col-md-6 col-sm-6 col-xs-12  form-group">
+                            
+                            <a   class="btn btn-danger btn-xs pull-right" onclick="deleteBooking()"><i class="fa fa-trash-o"></i> Xóa </a>
 
                             
-                            <a href="#" id="typeEditView" class="btn btn-info btn-xs pull-right" onclick="addReadonly()"><i class="fa fa-pencil"></i>Sửa</a>
+                            <a href="#" id="typeEditView" class="btn btn-info btn-xs pull-right" onclick="openviewmodal()"><i class="fa fa-pencil"></i>Xem</a>
                                    
                         </div>
                         
@@ -410,9 +660,14 @@
       </div>
       <!-- form post--> 
       
-                        
+           
+       <form id="deletedata" action="{{ route('subBookManageSubmit', ['subdomain' =>$info['subdomain']]) }}" method="POST" style="display: none;">
+             {{ csrf_field() }}
+            <input hidden id="typePost"" name="typePost" value="deleteBooking">
+            <input hidden id="d_idPost"" name="id" value="">
+        </form>             
       
-      </form>
+     
             <!-- footer content -->
             <footer>
                 <div class="pull-right">
@@ -547,9 +802,90 @@
         // var element = document.getElementsByClassName("help-block");
         
 }
+function deleteBooking(){
 
+    event.preventDefault();
+    document.getElementById('deletedata').submit();
+}
+function openviewmodal(){
+ $('#editCheckinMainmodal').modal('hide');
+  $('#viewCheckinMainmodal').modal('show');
+}
 
+function openeditmodal(){
+ $('#editCheckinMainmodal').modal('show');
+  $('#viewCheckinMainmodal').modal('hide');
+}
+function changetyperoom(){
+    var x = document.getElementById("add_type_room").value;
+    // if(x != "")
+    {
+       
+       var object = {!! json_encode($rooms->toArray()) !!};
+$('.addroomclass').remove();
+       for(i = 0; i < object.length ; i++)
+       {
+        if(object[i].room_type_id == x && object[i].is_booked != 1){
+            // <option value="" disabled selected>Chọn số phòng</option>
 
+            var para = document.createElement("option");
+            para.setAttribute("value", object[i].room_id);
+            para.setAttribute("class", "addroomclass");
+            var node = document.createTextNode(object[i].room_number);
+            para.appendChild(node);
+            var element = document.getElementById("add_room_input");
+            element.appendChild(para);
+        }
+        // alert(object[i].room_number);
+       }
+        
+    }
+
+}
+
+function changetyperoom2(){
+    var x = document.getElementById("e_add_type_room").value;
+    // if(x != "")
+    {
+
+       var object = {!! json_encode($rooms->toArray()) !!};
+
+       $('.addroomclass').remove();
+       for(i = 0; i < object.length ; i++)
+       {
+        if(object[i].room_type_id == x && object[i].is_booked != 1){
+            // <option value="" disabled selected>Chọn số phòng</option>
+
+            var para = document.createElement("option");
+            para.setAttribute("value", object[i].room_id);
+            para.setAttribute("class", "addroomclass");
+            var node = document.createTextNode(object[i].room_number);
+            para.appendChild(node);
+            var element = document.getElementById("e_room");
+            element.appendChild(para);
+        }
+        // alert(object[i].room_number);
+       }
+        
+    }
+
+}
+
+function changeroom(){
+    var x = document.getElementById("add_room_input").value;
+
+     for(i = 0; i < x ; i++)
+    {
+            var para = document.createElement("option");
+            para.setAttribute("value", object[i].room_id);
+            
+            var node = document.createTextNode(object[i].room_number);
+            para.appendChild(node);
+            var element = document.getElementById("add_room_input");
+            element.appendChild(para);
+
+    }
+}
 function openViewdialog(){
 
 }
@@ -564,49 +900,49 @@ function deleteusers(){
     l.click();
 
 }
-function addReadonly(){
+// function addReadonly(){
 
-    if(document.getElementById("typeEditView").innerHTML == "Sửa")
-    {
-    document.getElementById("e_submit").setAttribute("type", "submit");
-    document.getElementById("typeEditView").innerHTML = "Xem";
-    document.getElementById("e_first_name").removeAttribute("readonly");
-    document.getElementById("e_last_name").removeAttribute("readonly");
-    document.getElementById("e_email").removeAttribute("readonly");
-    document.getElementById("e_phone_number").removeAttribute("readonly");
-    document.getElementById("e_username").removeAttribute("readonly");
-    document.getElementById("e_country").removeAttribute("readonly");
-    document.getElementById("e_dob").removeAttribute("readonly");
-    document.getElementById("e_gender").removeAttribute("readonly");
+//     if(document.getElementById("typeEditView").innerHTML == "Sửa")
+//     {
+//     document.getElementById("e_submit").setAttribute("type", "submit");
+//     document.getElementById("typeEditView").innerHTML = "Xem";
+//     document.getElementById("e_first_name").setAttribute("value", first_name);
+//     document.getElementById("e_last_name").setAttribute("value", last_name); 
+//     document.getElementById("e_room1").setAttributeNode(document.createAttribute("hidden"));
+//     document.getElementById("e_room2").removeAttribute("hidden");
+//     document.getElementById("e_date_checkin").setAttribute("value", date_checkin); 
+//     document.getElementById("e_date_checkout").setAttribute("value", date_checkout);
+//     document.getElementById("e_country").setAttribute("value", contry); 
+//     document.getElementById("e_number_people").setAttribute("value",number_people); 
 
-    // document.getElementById("e_submit").setAttribute("type", "submit");
-    // document.getElementById("e_first_name").removeAttribute("readonly");
-    // document.getElementById("e_last_name").removeAttribute("readonly");
-    // document.getElementById("e_email").removeAttribute("readonly");
-    // document.getElementById("e_phone_number").removeAttribute("readonly");
-    // document.getElementById("e_username").removeAttribute("readonly");
-    // document.getElementById("e_country").removeAttribute("readonly");
-    // document.getElementById("e_dob").removeAttribute("readonly");
-    // document.getElementById("e_gender").removeAttribute("readonly");
-    return;    
-}
-else(document.getElementById("typeEditView").innerHTML == "Xem")
-{
-    document.getElementById("typeEditView").innerHTML = "Sửa";
-    document.getElementById("e_submit").setAttribute("type", "hidden");
+//     // document.getElementById("e_submit").setAttribute("type", "submit");
+//     // document.getElementById("e_first_name").removeAttribute("readonly");
+//     // document.getElementById("e_last_name").removeAttribute("readonly");
+//     // document.getElementById("e_email").removeAttribute("readonly");
+//     // document.getElementById("e_phone_number").removeAttribute("readonly");
+//     // document.getElementById("e_username").removeAttribute("readonly");
+//     // document.getElementById("e_country").removeAttribute("readonly");
+//     // document.getElementById("e_dob").removeAttribute("readonly");
+//     // document.getElementById("e_gender").removeAttribute("readonly");
+//     return;    
+// }
+// else(document.getElementById("typeEditView").innerHTML == "Xem")
+// {
+//     document.getElementById("typeEditView").innerHTML = "Sửa";
+//     document.getElementById("e_submit").setAttribute("type", "hidden");
 
-    document.getElementById("e_first_name").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_last_name").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_email").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_phone_number").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_username").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_country").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_dob").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_gender").setAttributeNode(document.createAttribute("readonly"));
-}
+//     document.getElementById("e_first_name").setAttributeNode(document.createAttribute("readonly"));
+//     document.getElementById("e_last_name").setAttributeNode(document.createAttribute("readonly"));
+//     document.getElementById("e_room1").removeAttribute("hidden");
+//     document.getElementById("e_room2").setAttributeNode(document.createAttribute("hidden"));
+//     document.getElementById("e_date_checkin").setAttributeNode(document.createAttribute("readonly"));
+//     document.getElementById("e_date_checkout").setAttributeNode(document.createAttribute("readonly"));
+//     document.getElementById("e_country").setAttributeNode(document.createAttribute("readonly"));
+//     document.getElementById("e_number_people").setAttributeNode(document.createAttribute("readonly"));
+// }
    
 
-}
+// }
 
 function removeReadonly(){
     
@@ -626,54 +962,74 @@ function removeReadonly(){
     
 
 }
-function showDataView(idUser, first_name, last_name,email,phone_number,username,country,dob,gender){
+
+function showDataView(booking_id, room_number, date_checkin,date_checkout,first_name,last_name,number_people,contry){
       
    
-    document.getElementById("typeEditView").innerHTML = "Sửa";
-    document.getElementById("e_submit").setAttribute("type", "hidden");
-    document.getElementById("e_first_name").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_last_name").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_email").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_phone_number").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_username").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_country").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_dob").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_gender").setAttributeNode(document.createAttribute("readonly")); 
+    // document.getElementById("typeEditView").innerHTML = "Sửa";
+    // document.getElementById("e_submit").setAttribute("type", "hidden");
+    // document.getElementById("e_first_name").setAttributeNode(document.createAttribute("readonly"));
+    // document.getElementById("e_last_name").setAttributeNode(document.createAttribute("readonly"));
+    // document.getElementById("e_room1").removeAttribute("hidden");
+    // document.getElementById("e_room2").setAttributeNode(document.createAttribute("hidden"));
+    // document.getElementById("e_add_type_room").setAttributeNode(document.createAttribute("hidden"));
 
-    document.getElementById("idUser").setAttribute("value", idUser);
+    
+    // document.getElementById("e_date_checkin").setAttributeNode(document.createAttribute("readonly"));
+    // document.getElementById("e_date_checkout").setAttributeNode(document.createAttribute("readonly"));
+    // document.getElementById("e_country").setAttributeNode(document.createAttribute("readonly"));
+    // document.getElementById("e_number_people").setAttributeNode(document.createAttribute("readonly"));
+
+    document.getElementById("v_idPost").setAttribute("value", booking_id);
+    document.getElementById("v_first_name").setAttribute("value", first_name);
+    document.getElementById("v_last_name").setAttribute("value", last_name); 
+    document.getElementById("v_room").setAttribute("value", room_number); 
+    document.getElementById("v_date_checkin").setAttribute("value", date_checkin); 
+    document.getElementById("v_date_checkout").setAttribute("value", date_checkout);
+    document.getElementById("v_country").setAttribute("value", contry); 
+    document.getElementById("v_number_people").setAttribute("value",number_people); 
+
+     document.getElementById("e_idPost").setAttribute("value", booking_id);
     document.getElementById("e_first_name").setAttribute("value", first_name);
     document.getElementById("e_last_name").setAttribute("value", last_name); 
-    document.getElementById("e_email").setAttribute("value", email); 
-    document.getElementById("e_phone_number").setAttribute("value", phone_number); 
-    document.getElementById("e_username").setAttribute("value", username);
-    document.getElementById("e_country").setAttribute("value", country); 
-    document.getElementById("e_dob").setAttribute("value",dob); 
-    document.getElementById("e_gender").setAttribute("value", gender);
+    document.getElementById("e_room").setAttribute("value", room_number); 
+    document.getElementById("e_add_type_room").setAttribute("value", room_number); 
+
+    
+    document.getElementById("e_date_checkin").setAttribute("value", date_checkin); 
+    document.getElementById("e_date_checkout").setAttribute("value", date_checkout);
+    document.getElementById("e_country").setAttribute("value", contry); 
+    document.getElementById("e_number_people").setAttribute("value",number_people); 
+    document.getElementById("d_idPost").setAttribute("value", booking_id);
+
 
 }
 
-function showDataEdit(idUser, first_name, last_name,email,phone_number,username,country,dob,gender){
+function showDataEdit(booking_id, room_number, date_checkin,date_checkout,first_name,last_name,number_people,contry){
    
-    document.getElementById("e_submit").setAttribute("type", "submit");
-    document.getElementById("typeEditView").innerHTML = "Xem";
-    document.getElementById("e_first_name").removeAttribute("readonly");
-    document.getElementById("e_last_name").removeAttribute("readonly");
-    document.getElementById("e_email").removeAttribute("readonly");
-    document.getElementById("e_phone_number").removeAttribute("readonly");
-    document.getElementById("e_username").removeAttribute("readonly");
-    document.getElementById("e_country").removeAttribute("readonly");
-    document.getElementById("e_dob").removeAttribute("readonly");
-    document.getElementById("e_gender").removeAttribute("readonly");
+     document.getElementById("v_idPost").setAttribute("value", booking_id);
+    document.getElementById("v_first_name").setAttribute("value", first_name);
+    document.getElementById("v_last_name").setAttribute("value", last_name); 
+    document.getElementById("v_room").setAttribute("value", room_number); 
+    document.getElementById("v_date_checkin").setAttribute("value", date_checkin); 
+    document.getElementById("v_date_checkout").setAttribute("value", date_checkout);
+    document.getElementById("v_country").setAttribute("value", contry); 
+    document.getElementById("v_number_people").setAttribute("value",number_people); 
 
-    document.getElementById("idUser").setAttribute("value", idUser);
+
+    document.getElementById("e_idPost").setAttribute("value", booking_id);
     document.getElementById("e_first_name").setAttribute("value", first_name);
     document.getElementById("e_last_name").setAttribute("value", last_name); 
-    document.getElementById("e_email").setAttribute("value", email); 
-    document.getElementById("e_phone_number").setAttribute("value", phone_number); 
-    document.getElementById("e_username").setAttribute("value", username);
-    document.getElementById("e_country").setAttribute("value", country); 
-    document.getElementById("e_dob").setAttribute("value",dob); 
-    document.getElementById("e_gender").setAttribute("value", gender);
+    document.getElementById("e_room").setAttribute("value", room_number); 
+    document.getElementById("e_add_type_room").setAttribute("value", room_number); 
+
+    
+    document.getElementById("e_date_checkin").setAttribute("value", date_checkin); 
+    document.getElementById("e_date_checkout").setAttribute("value", date_checkout);
+    document.getElementById("e_country").setAttribute("value", contry); 
+    document.getElementById("e_number_people").setAttribute("value",number_people); 
+    document.getElementById("d_idPost").setAttribute("value", booking_id);
+
 
 }
 </script>

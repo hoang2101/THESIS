@@ -30,14 +30,35 @@ Route::get('/hotelmanage','MainController@manageHotel')->name('mainManageHotel')
 Route::get('/managehoteler','MainController@manageHoteler')->name('mainManageHoteler');
 Route::POST('/managehoteler','MainController@addHotelHoteler')->name('addHotelHotelerSubmit');
 
+Route::get('/pay','MainController@paypal')->name('paypal');
+Route::POST('/pay','MainController@paypalSubmit')->name('paypalSubmit');
+
+Route::GET('/payresult','MainController@getDone')->name('paypaldone');
+Route::GET('/payresult2','MainController@getCancel')->name('paypalcancel');
+
+
 Route::get('/mhotelmanage','MainController@manageGovermHoteler')->name('mainManageGovermHoteler');
 Route::POST('/mhotelmanage','MainController@addGovermHoteler')->name('addGovermHotelerSubmit');
+
+
 
 
 
 Route::group(['subdomain' => '{subdomain}'], function () {
     Route::get('/{subdomain}', 'SubController@index' )->name('subHome');
     Route::POST('/{subdomain}', 'SubController@account' )->name('subHomesubmit');
+
+     Route::get('/{subdomain}/booking/roomresult', 'SubController@roomResult' )->name('roomResult');
+     Route::POST('/{subdomain}/booking/roomresult', 'SubController@editRoomResult' )->name('subRoomResultsubmit');
+     Route::get('/{subdomain}/booking/payment', 'SubController@payment' )->name('subPayment');
+     Route::get('/{subdomain}/congra', 'SubController@congra' )->name('subCongra');
+     Route::get('/{subdomain}/pay','SubController@paypal')->name('subpaypal');
+     Route::POST('/{subdomain}/pay','SubController@paypalSubmit')->name('subpaypalSubmit');
+     Route::GET('/{subdomain}/payresult','SubController@getDone')->name('subpaypaldone');
+     Route::GET('/{subdomain}/payresult2','SubController@getCancel')->name('subpaypalcancel');
+
+
+    
 
     Route::get('/{subdomain}/profile', 'SubController@prolife' )->name('subProfile');
     Route::POST('/{subdomain}/profile', 'SubController@editProlife' )->name('subProfilesubmit');
@@ -56,6 +77,9 @@ Route::group(['subdomain' => '{subdomain}'], function () {
 
     Route::get('/{subdomain}/roommanage', 'SubController@roomManage' )->name('subRoomManage');
     Route::POST('/{subdomain}/roommanage', 'SubController@roomManageSubmit' )->name('subRoomManageSubmit');
+
+    Route::get('/{subdomain}/report', 'SubController@reportManage' )->name('subReportManage');
+    Route::POST('/{subdomain}/report', 'SubController@reportManageSubmit' )->name('subReportManageSubmit');
 
 
 });

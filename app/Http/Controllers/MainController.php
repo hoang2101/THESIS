@@ -7,18 +7,47 @@ use Illuminate\Support\Facades\Input;
 use DB;
 use App\User;
 use App\Hotel;
+use URL;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
 use Carbon\Carbon;
+use Session;
+use PayPal\Rest\ApiContext;
+use PayPal\Auth\OAuthTokenCredential;
+use PayPal\Api\Amount;
+use PayPal\Api\Details;
+use PayPal\Api\Item;
+use PayPal\Api\ItemList;
+use PayPal\Api\Payer;
+use PayPal\Api\Payment;
+use PayPal\Api\PaymentCard;
+use PayPal\Api\RedirectUrls;
+use PayPal\Api\ExecutePayment;
+use PayPal\Api\PaymentExecution;
+use PayPal\Api\Transaction;
+use PayPal\Api\FundingInstrument;
+
+ 
 
 class MainController extends Controller
 {
+     private $_api_context ;
+     public $_namePay ;
+     public $_amountPay = null;
+     public $_addressPay = null;
+     public $_resultPay = null;
+     public $_actionPay = null;
+     public $_data = null;
 
-    
     public function __construct()
     {
         $this->middleware('auth');
+        $paypal_conf = Config('paypal');
+        $this->_api_context = new ApiContext(new OAuthTokenCredential($paypal_conf['client_id'], $paypal_conf['secret']));
+        $this->_api_context->setConfig($paypal_conf['settings']);
+        $this->_namePay = "zxc";
+       
     }
 
     /**
@@ -26,7 +55,278 @@ class MainController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function test(){
+        return view('main.test');
+    }
+
+    public function testsubmit(){
+         $info = array(
+            "name" => "Goi Basis",
+            "amount" =>"10"
+            
+            );
+         
+
+       
+    }
+    public function acctionPay(){
+        if($namePay == null){
+           return null;
+
+
+        }
+        if($this->_actionPay == "addHotel"){
+            dd("addhotel");
+        }
+        if($this->_actionPay == "updataHotel"){
+            dd("update hotel");
+        }
+    }
+
+    public function paypal(){
+        
+        //dd($this->_namePay);
+       $dataPay =  \Session::get('dataPay');
+       // dd($dataPay);
+         $info = array(
+            "name" => $dataPay['namePay'],
+            "amount" => $dataPay['amountPay']
+            );
+        return view('main.pay')->with('info', $info);
+    }
+ function convertCurrency($amount, $from, $to, $amountt){
+    $url  = "https://www.google.com/finance/converter?a=".$amount."&from=VND&to=JPY";
     
+    $data = file_get_contents($url);
+    preg_match("/<span class=bld>(.*)<\/span>/",$data, $converted);
+    $converted = preg_replace("/[^0-9.]/", "", $converted[1]);
+
+
+    $url  = "https://www.google.com/finance/converter?a=".$converted."&from=JPY&to=USD";
+    
+    $data = file_get_contents($url);
+    preg_match("/<span class=bld>(.*)<\/span>/",$data, $converted);
+    $converted = preg_replace("/[^0-9.]/", "", $converted[1]);
+
+    $amountt = round($converted, 3);
+    return round($converted, 3);
+  }
+    public function paypalSubmit(Request $request){
+
+        
+
+        $amountt = null;
+        $amountt = $this->convertCurrency($request['amount'],"VND", 'USD', $amountt);
+        
+        // $url  = "https://www.google.com/finance/converter?a=$amount&from=$from&to=$to";
+        $resultpayf = array(
+            "msg" => "Thanh toán thất bại",
+            );
+
+        $resultpayt = array(
+            "msg" => "Thanh toán thành công",
+            );
+        if($request['typePost'] == "paypal"){
+
+       $payer = new Payer();
+         $payer->setPaymentMethod('paypal');
+        $item_1 = new Item();
+        $item_1->setName($request['name']) /** item name **/
+            ->setCurrency('USD')
+            ->setQuantity(1)
+            ->setPrice($amountt); /** unit price **/
+        $item_list = new ItemList();
+        $item_list->setItems(array($item_1));
+        $amount = new Amount();
+        $amount->setCurrency('USD')
+            ->setTotal($amountt);
+        $transaction = new Transaction();
+        $transaction->setAmount($amount)
+            ->setItemList($item_list)
+            ->setDescription('Thanh Toán');
+        $redirect_urls = new RedirectUrls();
+        $redirect_urls->setReturnUrl(route('paypaldone')) /** Specify return URL **/
+            ->setCancelUrl(route('paypalcancel'));
+        $payment = new Payment();
+        $payment->setIntent('Sale')
+            ->setPayer($payer)
+            ->setRedirectUrls($redirect_urls)
+            ->setTransactions(array($transaction));
+            /** dd($payment->create($this->_api_context));exit; **/
+         try {
+                    $payment->create($this->_api_context);
+                } catch (\PayPal\Exception\PPConnectionException $ex) {
+                    if (\Config::get('app.debug')) {
+                       
+                       \Session::flash('messagesResult','hết thời hạn kết nối');
+
+                        
+                        return Redirect::route('mainManageHoteler')->with('message', $resultpay);
+                        /** echo "Exception: " . $ex->getMessage() . PHP_EOL; **/
+                        /** $err_data = json_decode($ex->getData(), true); **/
+                        /** exit; **/
+                    } else {
+                       \Session::flash('messagesResult','có lỗi trong quá trình thanh toán vui lòng thanh toán lại');
+                        
+                        return Redirect::route('mainManageHoteler');
+                        /** die('Some error occur, sorry for inconvenient'); **/
+                    }
+                }
+                foreach($payment->getLinks() as $link) {
+                    if($link->getRel() == 'approval_url') {
+                        $redirect_url = $link->getHref();
+                        break;
+                    }
+                }
+                /** add payment ID to session **/
+                
+                \Session::flash('paypal_payment_id', $payment->getId());
+                if(isset($redirect_url)) {
+                    /** redirect to paypal **/
+                    return Redirect::away($redirect_url);
+                }
+                 \Session::flash('messagesResult','có lỗi trong quá trình thanh toán vui lòng thanh toán lại');
+                
+                return Redirect::route('mainManageHoteler');
+
+               
+        }
+        else{
+           
+        $amountt = null;
+        $amountt = $this->convertCurrency($request['amount'],"VND", 'USD', $amountt);
+        
+        // $url  = "https://www.google.com/finance/converter?a=$amount&from=$from&to=$to";
+        $resultpayf = array(
+            "msg" => "Thanh toán thất bại",
+            );
+
+        $resultpayt = array(
+            "msg" => "Thanh toán thành công",
+            );
+
+
+
+            $card = new PaymentCard();
+            $card->setType($request['typecredit'])
+            ->setNumber($request['numberCredit'])
+            ->setExpireMonth($request['month'])
+            ->setExpireYear($request['year'])
+            ->setCvv2($request['ccv'])
+            ->setFirstName($request['first_name'])
+            ->setBillingCountry("US")
+            ->setLastName($request['last_name']);
+
+            $fi = new FundingInstrument();
+            $fi->setPaymentCard($card);
+            $payer = new Payer();
+            $payer->setPaymentMethod("credit_card")
+                ->setFundingInstruments(array($fi));
+                // $payer = new Payer();
+                // $payer->setPaymentMethod('paypal');
+                $item_1 = new Item();
+                $item_1->setName($request['name']) /** item name **/
+                    ->setCurrency('USD')
+                    ->setQuantity(1)
+                    ->setPrice($amountt); /** unit price **/
+                $item_list = new ItemList();
+                $item_list->setItems(array($item_1));
+                $amount = new Amount();
+                $amount->setCurrency('USD')
+                    ->setTotal($amountt);
+                $transaction = new Transaction();
+                $transaction->setAmount($amount)
+                    ->setItemList($item_list)
+                    ->setDescription('Thanh Toán');
+                $redirect_urls = new RedirectUrls();
+
+                $redirect_urls->setReturnUrl(route('paypaldone')) /** Specify return URL **/
+                    ->setCancelUrl(route('paypalcancel'));
+                $payment = new Payment();
+                $payment->setIntent('Sale')
+                    ->setPayer($payer)
+                    ->setRedirectUrls($redirect_urls)
+                    ->setTransactions(array($transaction));
+                   
+                    /** dd($payment->create($this->_api_context));exit; **/
+                try {
+                    $payment->create($this->_api_context);
+                } catch (\PayPal\Exception\PPConnectionException $ex) {
+                    if (\Config::get('app.debug')) {
+                       
+                       \Session::flash('messagesResult','hết thời hạn kết nối');
+
+                        
+                        return Redirect::route('mainManageHoteler')->with('message', $resultpay);
+                        /** echo "Exception: " . $ex->getMessage() . PHP_EOL; **/
+                        /** $err_data = json_decode($ex->getData(), true); **/
+                        /** exit; **/
+                    } else {
+                       \Session::flash('messagesResult','có lỗi trong quá trình thanh toán vui lòng thanh toán lại');
+                        
+                        return Redirect::route('mainManageHoteler');
+                        /** die('Some error occur, sorry for inconvenient'); **/
+                    }
+                }
+                foreach($payment->getLinks() as $link) {
+                    if($link->getRel() == 'approval_url') {
+                        $redirect_url = $link->getHref();
+                        break;
+                    }
+                }
+                /** add payment ID to session **/
+                \Session::flash('paypal_payment_id', $payment->getId());
+                if(isset($redirect_url)) {
+                    /** redirect to paypal **/
+                    return Redirect::away($redirect_url);
+                }
+                 \Session::flash('messagesResult','có lỗi trong quá trình thanh toán vui lòng thanh toán lại');
+                return Redirect::route('mainManageHoteler');
+            }
+    }
+
+
+public function getDone(Request $request)
+{
+    $id = $request->get('paymentId');
+    $token = $request->get('token');
+    $payer_id = $request->get('PayerID');
+    
+    $payment = Payment::get($id, $this->_api_context);
+
+    $paymentExecution = new PaymentExecution();
+
+    $paymentExecution->setPayerId($payer_id);
+    $executePayment = $payment->execute($paymentExecution, $this->_api_context);
+
+    // Clear the shopping cart, write to database, send notifications, etc.
+
+    // Thank the user for the purchase
+    $dataPay =  \Session::get('dataPay');
+    DB::table('hotel')->insertGetId([
+                 'hotel_name' => $dataPay['hotel_name'],
+                 'account_id' => Auth::user()->username,
+                 'hotel_url' => $dataPay['hotel_url'],
+                 'expire_date' => $dataPay['expire_date'],
+                 'total_room' => $dataPay['total_room'],
+             ]);
+        DB::table('users')
+                ->where('id', Auth::User()->id)
+                ->update(['total_cost' => $dataPay['total_cost']]);
+
+    \Session::forget('dataPay');
+    \Session::flash('messagesResult','Thanh toán thành công');
+                return Redirect::route('mainManageHoteler');
+}
+
+public function getCancel()
+{
+    // Curse and humiliate the user for cancelling this most sacred payment (yours)
+                 \Session::flash('messagesResult','có lỗi trong quá trình thanh toán vui lòng thanh toán lại');
+   
+                return Redirect::route('mainManageHoteler');
+}
+
     public function index()
     {
         if(Auth::user()->type !=1 && Auth::user()->type !=2)
@@ -442,34 +742,60 @@ protected function validator(array $data)
             }
             $date = null;
             $total_cost = null;
+            $amountPay = 1000000 ;
+            $namePay = "Gói BASIS";
             if($request['expire_date'] == 1){
                 $date = Carbon::now()->addMonths(1);
-                $total_cost = 100 + Auth::User()->total_cost;
+                $total_cost = 1000000 + Auth::User()->total_cost;
+                $amountPay = 1000000;
+                $namePay = "Gói BASIS";
             }
             if($request['expire_date'] == 2){
                 $date = Carbon::now()->addMonths(2);
-                $total_cost = 150 + Auth::User()->total_cost;
+                $total_cost = 150000 + Auth::User()->total_cost;
+                $amountPay = 150000;
+                $namePay = "Gói SILVER";
             }
             if($request['expire_date'] == 3){
                 $date = Carbon::now()->addMonths(4);
-                 $total_cost = 250 + Auth::User()->total_cost;
+                 $total_cost = 250000 + Auth::User()->total_cost;
+                 $amountPay = 250000;
+                 $namePay = "Gói GOLD";
             }
             if($request['expire_date'] == 4){
                 $date = Carbon::now()->addMonths(6);
-                 $total_cost = 400 + Auth::User()->total_cost;
+                 $total_cost = 400000 + Auth::User()->total_cost;
+                 $amountPay = 400000;
+                 $namePay = "Gói VIP";
             }
-        DB::table('hotel')->insertGetId([
+             $dataPay = array(
+                    'namePay' => $namePay,
+                    'amountPay' => $amountPay,
                  'hotel_name' => $request['hotel_name'],
                  'account_id' => Auth::user()->username,
                  'hotel_url' => $request['hotel_url'],
                  'expire_date' => $date,
-                 'hotel_star' => $request['hotel_star'],
-                 
-                 
-             ]);
-        DB::table('users')
-                ->where('id', Auth::User()->id)
-                ->update(['total_cost' => $total_cost]);
+                 'total_room' => $request['total_room'],
+                 'total_cost' => $total_cost,
+            );
+
+            \Session::put("dataPay",$dataPay);
+            
+
+           
+            return  redirect()->route('paypal');
+
+
+        // DB::table('hotel')->insertGetId([
+        //          'hotel_name' => $request['hotel_name'],
+        //          'account_id' => Auth::user()->username,
+        //          'hotel_url' => $request['hotel_url'],
+        //          'expire_date' => $date,
+        //          'total_room' => $request['total_room'],
+        //      ]);
+        // DB::table('users')
+        //         ->where('id', Auth::User()->id)
+        //         ->update(['total_cost' => $total_cost]);
         
          //$hotels = DB::table('hotel')->where('account_id', '=', Auth::user()->username)->get()->get();
             //return view('main.manage')->with('users',$users)->withErrors($errors);

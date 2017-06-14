@@ -24,6 +24,12 @@ class CreateHotelTable extends Migration
             $table->date('expire_date')->nullable();
             $table->integer('total_booking')->nullable();
             $table->integer('total_room')->nullable();
+            $table->integer('hour_clean')->nullable();
+            $table->integer('minute_clean')->nullable();
+            $table->integer('number_dateSheets')->nullable();
+            $table->integer('dateSheetsFrom')->nullable();
+            $table->integer('dateSheetsTo')->nullable();
+            $table->boolean('is_kid')->default(1);
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
         });

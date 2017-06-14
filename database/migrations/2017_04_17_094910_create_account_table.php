@@ -31,6 +31,7 @@ class CreateAccountTable extends Migration
             $table->integer('hotel_id')->nullable();
             $table->integer('mn_user')->nullable();
             $table->integer('total_cost')->nullable();
+            $table->integer('Salary')->nullable();
             $table->rememberToken();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));

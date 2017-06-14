@@ -15,12 +15,13 @@ class CreateInvoiceTable extends Migration
     {
         Schema::create('invoice', function (Blueprint $table) {
             $table->increments('invoice_id');
-            $table->integer('booking_id');
-            $table->integer('cost');
-            $table->string('bank_id');
-            $table->date('date');
-            $table->string('name');
-            $table->date('exp_date');
+            $table->integer('booking_id')->nullable();
+            $table->integer('cost')->nullable();
+            $table->string('bank_id')->nullable();
+            $table->date('date')->nullable();
+            $table->string('name')->nullable();
+            $table->date('exp_date')->nullable();
+            $table->String("type")->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
         });

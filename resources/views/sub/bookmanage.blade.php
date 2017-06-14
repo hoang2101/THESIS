@@ -171,14 +171,8 @@
                         </a>
                         
 
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                        <a data-toggle="tooltip" data-placement="top" title="Sign out" href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-                        </a>
+                                       
+                        
                     </div>
                     <!-- /menu footer buttons -->
                 </div>
@@ -204,12 +198,18 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
                                     <li><a href="{{ route('subProfile',['subdomain' =>$info['subdomain']]) }}"> Hồ sơ</a></li>
-                                    <li><a href="{{ route('logout') }}"
+                                   <li><a href="#"
                                             onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();"><i class="fa fa-sign-out pull-right"></i> Đăng xuất</a></li>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                                     document.getElementById('logout-form').submit();">
+                                            <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                            Logout
+                                        </a>
+
+                                        <form id="logout-form" action="{{ route('subHomesubmit',['subdomain' =>$info['subdomain']]) }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
+                                            <input hidden id="typePosts"" name="typePost" value="logout">
                                         </form>
+                        </li>
                                 </ul>
                             </li>
                         </ul>
@@ -226,7 +226,7 @@
                   <div class="x_title">
                     <h2>Danh sách Khách hàng<small></small></h2>
                     <ul class="nav navbar-right panel_toolbox">
-                      <a href="#" class="btn btn-primary btn-xs" data-target="#addCheckinMainmodal" data-toggle="modal" data-backdrop="static" ><i class="fa fa-folder"></i> Checkin </a>
+                      <a href="#" class="btn btn-primary btn-xs" data-target="#addCheckinMainmodal" data-toggle="modal" data-backdrop="static" ><i class="fa fa-folder"></i> Đặt phòng </a>
                     </ul>
                     <div class="clearfix"></div>
                   </div>
@@ -253,14 +253,14 @@
                             <tr>
                                 <td>{{$checkin->booking_id}}</td>
                                 <td>{{$checkin->first_name.' '.$checkin->last_name}}</td>
-                                <td>{{$checkin->room_number}}</td>
-                                <td>{{$checkin->date_checkin}}</td>
-                                <td>{{$checkin->date_checkout}}</td>
+                                <td>{{$checkin->room_id}}</td>
+                                <td>{{$checkin->date_from}}</td>
+                                <td>{{$checkin->date_to}}</td>
                                 <td>{{$checkin->number_people}}</td>
                                 <td>{{$checkin->contry}}</td>
                                 <td>
-                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataView('{{$checkin->booking_id}}','{{$checkin->room_number}}', '{{$checkin->date_checkin}}', '{{$checkin->date_checkout}}', '{{$checkin->first_name}}', '{{$checkin->last_name}}', '{{$checkin->number_people}}', '{{$checkin->contry}}') " data-toggle="modal" data-backdrop="static" data-target="#viewCheckinMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
-                                    <a href="#" class="btn btn-info btn-xs"  onclick="showDataEdit('{{$checkin->booking_id}}','{{$checkin->room_number}}', '{{$checkin->date_checkin}}', '{{$checkin->date_checkout}}', '{{$checkin->first_name}}', '{{$checkin->last_name}}', '{{$checkin->number_people}}', '{{$checkin->contry}}') ;" data-toggle="modal" data-backdrop="static" data-target="#editCheckinMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
+                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataView('{{$checkin->booking_id}}','{{$checkin->room_id}}', '{{$checkin->date_from}}', '{{$checkin->date_to}}', '{{$checkin->first_name}}', '{{$checkin->last_name}}', '{{$checkin->number_people}}', '{{$checkin->contry}}', '{{$checkin->username}}') " data-toggle="modal" data-backdrop="static" data-target="#viewCheckinMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
+                                    <a href="#" class="btn btn-info btn-xs"  onclick="showDataEdit('{{$checkin->booking_id}}','{{$checkin->room_id}}', '{{$checkin->date_from}}', '{{$checkin->date_to}}', '{{$checkin->first_name}}', '{{$checkin->last_name}}', '{{$checkin->number_people}}', '{{$checkin->contry}}', '{{$checkin->username}}') ;" data-toggle="modal" data-backdrop="static" data-target="#editCheckinMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
 
                             <a data-toggle="tooltip" data-placement="top"  class="btn btn-danger btn-xs"
                                             onclick="event.preventDefault();
@@ -271,6 +271,28 @@
                                             <input hidden id="typePosts"" name="typePost" value="deleteBooking">
                                             <input hidden id="id" name="id" value="{{$checkin->booking_id}}">
                                         </form>
+                            @if($checkin->date_checkin == null)
+                            <a data-toggle="tooltip" data-placement="top"  class="btn btn-info btn-xs"
+                                            onclick="event.preventDefault();
+                                                     document.getElementById('checkinBook{{$checkin->booking_id}}').submit();"><i class="fa-check-square"></i> Checkin </a>
+
+                            <form id="checkinBook{{$checkin->booking_id}}" action="{{ route('subBookManage',['subdomain' =>$info['subdomain']]) }}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                            <input hidden id="typePosts"" name="typePost" value="checkinBook">
+                                            <input hidden id="id" name="id" value="{{$checkin->booking_id}}">
+                                        </form>
+                            @endif
+                            @if($checkin->date_checkin != null && $checkin->date_checkout == null)
+                            <a data-toggle="tooltip" data-placement="top"  class="btn btn-info btn-xs"
+                                            onclick="event.preventDefault();
+                                                     document.getElementById('checkoutBook{{$checkin->booking_id}}').submit();"><i class="fa-check-square"></i> Checkout </a>
+
+                            <form id="checkoutBook{{$checkin->booking_id}}" action="{{ route('subBookManage',['subdomain' =>$info['subdomain']]) }}" method="POST" style="display: none;">
+                                            {{ csrf_field() }}
+                                            <input hidden id="typePosts"" name="typePost" value="checkoutBook">
+                                            <input hidden id="id" name="id" value="{{$checkin->booking_id}}">
+                                        </form>
+                            @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -364,10 +386,18 @@
                                
                             </div>
                         </div>
-                        <div class=" col-md-6 col-sm-6 col-xs-12 form-group">
+                        <div class=" col-md-3 col-sm-3 col-xs-6 form-group">
                             <div >
-                            <select id="add_room_input"  name="room" placeholder="Số Phòng" required>
-                                    <option value="" disabled selected>Chọn  phòng</option>
+                            <input id="addroom" type="text" readonly  placeholder="Phòng" name="room" value="{{ old('room') }}" required >
+                               
+                            </div>
+                        </div>
+                        
+                        <div class=" col-md-3 col-sm-3 col-xs-6 form-group">
+                            <div >
+                            <select id="add_room_input"  name="froom" onchange="changeaddroom(this)" placeholder="Số Phòng" >
+                                    <option value="-1" disabled selected>Chọn  phòng</option>
+                                    <option value="" >clear</option>
                                     
                             </select>
                                
@@ -387,7 +417,11 @@
                         
                         <div class="col-md-6 col-sm-6 col-xs-12  form-group">
                             <div >
-                                <input id="country" type="text" class="form-control" placeholder="Quốc qia" name="country" value="{{ old('country') }}" >
+                               
+                                <select id="country"  name="country" class="mySelectCountry" placeholder="Country" required>
+                                    <option value="" disabled selected>Chọn  Quốc gia</option>
+                                    
+                                </select>
 
                                 
                             </div>
@@ -439,7 +473,9 @@
                          <div class="col-md-6 col-sm-6 col-xs-12  form-group">
                         
                             <div >
+
                                 <input id="v_first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" >
+
                             </div>
                         </div>
 
@@ -467,13 +503,18 @@
                        
                         <div class=" col-md-6 col-sm-6 col-xs-12 form-group">
                             <div >
-                            <input readonly id="v_room" type="text" class="" placeholder="Ngày hết hạn" name="" value="{{ old('room') }}" >
+                            <input readonly id="v_room" type="text" class="" placeholder="Phòng" name="" value="{{ old('room') }}" >
                             
                                
                             </div>
                         </div>
-
-                        
+                        <div class=" col-md-6 col-sm-6 col-xs-12 form-group">
+                            <div >
+                            <input readonly id="v_username" type="text" class="" placeholder="Người thực hiện" name="" value="{{ old('username') }}" >
+                            
+                               
+                            </div>
+                        </div>
                         <div class="col-md-6 col-sm-6 col-xs-12  form-group {{ $errors->has('number_people') ? ' has-error' : '' }}">
                             <div >
                                 <input id="v_number_people" type="number" min="1" class="form-control" placeholder="Số người" name="number_people" value="{{ old('number_people') }}" required>
@@ -491,15 +532,7 @@
                                 
                             </div>
                         </div>
-                       
-                        
-                        
-                        
-                        
-
-
-                       
-                        
+   
                          <div class="col-md-12 col-sm-12 col-xs-12  form-group " ;">
                             
                             <a   class="btn btn-danger btn-xs pull-right" onclick="deleteBooking()"><i class="fa fa-trash-o"></i> Xóa </a>
@@ -583,7 +616,7 @@
                         <div class=" col-md-6 col-sm-6 col-xs-12 form-group">
                             <div >
                            
-                            <select id="e_add_type_room" onchange="changetyperoom2()" name="type_room" placeholder="Loại phòng" required>
+                            <select id="e_add_type_room" onchange="changetyperoom2()" name="type_room" placeholder="Loại phòng" >
                                     <option value="" disabled selected>Chọn loại phòng</option>
                                    @foreach ($type_rooms as $type_room)
                                    <option value="{{$type_room->type_room_id}}"  >{{$type_room->type_name}}</option>
@@ -592,12 +625,28 @@
                                
                             </div>
                         </div>
-                        <div class=" col-md-6 col-sm-6 col-xs-12 form-group">
+                        <div class=" col-md-3 col-sm-3 col-xs-6 form-group">
+                            <div >
+                            <input id="e_addroom" type="text" readonly  placeholder="Phòng" name="room" value="{{ old('room') }}" required >
+                               
+                            </div>
+                        </div>
+                     <!--    div class=" col-md-3 col-sm-3 col-xs-6 form-group">
+                            <div >
+                            <select id="add_room_input"  name="froom" onchange="changeaddroom(this)" placeholder="Số Phòng" >
+                                    <option value="-1" disabled selected>Chọn  phòng</option>
+                                    <option value="" >clear</option>
+                                    
+                            </select>
+                               
+                            </div>
+                        </div> -->
+                        <div class=" col-md-3 col-sm-3 col-xs-6 form-group">
                             <div >
                            
-                            <select id="e_room"  name="room" placeholder="Số Phòng" required>
+                            <select id="e_room"  name="froom" onchange="changeaddroom2(this)" placeholder="Số Phòng" >
                                     <option value="" disabled selected>Chọn  phòng</option>
-                                    
+                                    <option value="" >clear</option>
                             </select>
                                
                             </div>
@@ -737,41 +786,22 @@
     <script src="{!! asset('vendors/pdfmake/build/vfs_fonts.js') !!}"></script>
     <!-- My Cutom Scripts -->
     <script src="{!! asset('js/custom-scripts.js') !!}"></script>
-    @if($errors->first('typePost')=="addUser")
-      @if ($errors->has('username') )
-    <script type="text/javascript">  
-    $(document).ready(function () {
-      $('#addUserMainmodal').modal('show');
-    }); </script>
-    @endif  @if ($errors->has('password'))
-      <<script type="text/javascript">  
-    $(document).ready(function () {
-      $('#addUserMainmodal').modal('show');
-    }); </script>
-    @endif @if ($errors->has('email'))
+    <script src="{!! asset('js/getlistCountry.js') !!}"></script>
+   @if($errors->first('typePost')=="addbooking")
+     
       <script type="text/javascript">  
     $(document).ready(function () {
-      $('#addUserMainmodal').modal('show');
+      $('#addCheckinMainmodal').modal('show');
     }); </script>
+    
     @endif
-    @endif
-    @if($errors->first('typePost') =="updateUser"))
-      @if ($errors->has('username') )
-    <script type="text/javascript">  
-    $(document).ready(function () {
-      $('#viewUserMainmodal').modal('show');
-    }); </script>
-    @endif  @if ($errors->has('password'))
-     <script type="text/javascript">  
-    $(document).ready(function () {
-      $('#viewUserMainmodal').modal('show');
-    }); </script>
-    @endif @if ($errors->has('email'))
+     @if($errors->first('typePost')=="updateBooking")
+     
       <script type="text/javascript">  
     $(document).ready(function () {
-      $('#viewUserMainmodal').modal('show');
+      $('#editCheckinMainmodal').modal('show');
     }); </script>
-    @endif
+    
     @endif
 
 
@@ -870,14 +900,43 @@ function changetyperoom2(){
     }
 
 }
+function changeaddroom2(sel){
+ var x = sel.options[sel.selectedIndex].text;
+ 
+ if(x =="clear"){
+    document.getElementById("e_addroom").value = "";
+    changetyperoom2();
+    return null;
+ }
+  var y = document.getElementById("e_addroom").value;
 
+  var z = x+ " " + y;
+  document.getElementById("e_addroom").value = z;
+  sel.remove(sel.selectedIndex);
+  document.getElementById("e_room").selectedIndex = "0";
+}
+function changeaddroom(sel){
+ var x = sel.options[sel.selectedIndex].text;
+ 
+ if(x =="clear"){
+    document.getElementById("addroom").value = "";
+    changetyperoom();
+    return null;
+ }
+  var y = document.getElementById("addroom").value;
+
+  var z = x+ " " + y;
+  document.getElementById("addroom").value = z;
+  sel.remove(sel.selectedIndex);
+  document.getElementById("add_room_input").selectedIndex = "0";
+}
 function changeroom(){
     var x = document.getElementById("add_room_input").value;
 
      for(i = 0; i < x ; i++)
     {
             var para = document.createElement("option");
-            para.setAttribute("value", object[i].room_id);
+            para.setAttribute("value", object[i].room_number);
             
             var node = document.createTextNode(object[i].room_number);
             para.appendChild(node);
@@ -963,7 +1022,7 @@ function removeReadonly(){
 
 }
 
-function showDataView(booking_id, room_number, date_checkin,date_checkout,first_name,last_name,number_people,contry){
+function showDataView(booking_id, room_number, date_checkin,date_checkout,first_name,last_name,number_people,contry,username){
       
    
     // document.getElementById("typeEditView").innerHTML = "Sửa";
@@ -988,6 +1047,9 @@ function showDataView(booking_id, room_number, date_checkin,date_checkout,first_
     document.getElementById("v_date_checkout").setAttribute("value", date_checkout);
     document.getElementById("v_country").setAttribute("value", contry); 
     document.getElementById("v_number_people").setAttribute("value",number_people); 
+    document.getElementById("v_username").setAttribute("value",username); 
+
+    
 
      document.getElementById("e_idPost").setAttribute("value", booking_id);
     document.getElementById("e_first_name").setAttribute("value", first_name);
@@ -1005,7 +1067,7 @@ function showDataView(booking_id, room_number, date_checkin,date_checkout,first_
 
 }
 
-function showDataEdit(booking_id, room_number, date_checkin,date_checkout,first_name,last_name,number_people,contry){
+function showDataEdit(booking_id, room_number, date_checkin,date_checkout,first_name,last_name,number_people,contry,username){
    
      document.getElementById("v_idPost").setAttribute("value", booking_id);
     document.getElementById("v_first_name").setAttribute("value", first_name);
@@ -1015,6 +1077,8 @@ function showDataEdit(booking_id, room_number, date_checkin,date_checkout,first_
     document.getElementById("v_date_checkout").setAttribute("value", date_checkout);
     document.getElementById("v_country").setAttribute("value", contry); 
     document.getElementById("v_number_people").setAttribute("value",number_people); 
+    document.getElementById("v_username").setAttribute("value",username); 
+   
 
 
     document.getElementById("e_idPost").setAttribute("value", booking_id);

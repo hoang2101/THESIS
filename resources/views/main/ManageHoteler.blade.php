@@ -215,7 +215,8 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    
+                   
+
                     
                     <table id="responsiveHotel" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                       <thead>
@@ -347,7 +348,7 @@
                         </div>
 
                         
-                        <input type="submit" name="Register" class=" loginmodal-submit" value="Thêm khách sạn">
+                        <input type="submit" name="Register" id="addhotelsubmit" class=" loginmodal-submit" value="Thêm khách sạn">
                        
                     </form>
           </div>
@@ -514,9 +515,26 @@
     <script src="vendors/jszip/dist/jszip.min.js"></script>
     <script src="vendors/pdfmake/build/pdfmake.min.js"></script>
     <script src="vendors/pdfmake/build/vfs_fonts.js"></script>
+    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
     <!-- My Cutom Scripts -->
     <script src="js/custom-scripts.js"></script>
+<script>
+        paypal.Button.render({
 
+            env: 'production', // Or 'sandbox',
+
+            commit: true, // Show a 'Pay Now' button
+
+            payment: function() {
+                // Set up the payment here
+            },
+
+            onAuthorize: function(data, actions) {
+                // Execute the payment here
+           }
+
+        }, '#addhotelsubmit');
+    </script>
    
     <!-- //gets table -->
 <script src="js/custom-scripts.js"></script>

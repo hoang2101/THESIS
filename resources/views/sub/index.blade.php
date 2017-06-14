@@ -115,44 +115,63 @@
     </div>
     <div class="hero_parallax_inner">
       <div class="container col-xs-10 col-sm-6 col-md-6 col-lg-5 pull-right bg1">
-        <form >
+        <form  role="form" method="POST" action="{{ route('subHomesubmit',['subdomain' =>$info['subdomain']]) }}">
+        {{ csrf_field() }}
+              <input hidden id="typePosts"" name="typePost" value="searchRoom">
             <div class="row">    
-            <div class="col-md-6 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}" >
+            <div class="col-md-6 form-group{{ $errors->has('check_in') ? ' has-error' : '' }}" >
               <label >Ngày đến</label>
               
               <div class='input-group' >
                   <span class="input-group-addon"><i class="fa fa fa-calendar fa-fw" aria-hidden="true"></i></span>
-                  <input id='datepicker' type="text"  class="form-control" placeholder="Check-in" name="check_in">
+                  <input id='datepickern' type="date"  class="form-control" placeholder="Check-in" name="check_in" required>
               </div>
             </div>
          
 
           
-            <div class=" col-md-6 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
+            <div class=" col-md-6 form-group{{ $errors->has('check_out') ? ' has-error' : '' }}">
               <label>Ngày đi</label>
               <div class='input-group' >
                   <span class="input-group-addon"><i class="fa fa fa-calendar fa-fw" aria-hidden="true"></i></span>
-                  <input id='datepicker2' type="text" class="form-control" placeholder="Check-out" name="check_out">
+                  <input id='datepicker2n' type="date" class="form-control" placeholder="Check-out" name="check_out" required>
               </div>
             </div>
           
+             <div class="col-sm-6 col-md-6 form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
+              <div>
+                  <label>Họ</label>
+                  <input type="text" class="form-control" name="first_name" min="0" required>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-6 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
+              <div>
+                  <label>Tên</label>
+                  <input type="text" class="form-control"  name="last_name" required>
+              </div>
+            </div>
 
-            <div class="col-sm-6 col-md-4 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
+            <div class="col-sm-4 col-md-4 form-group{{ $errors->has('people') ? ' has-error' : '' }}">
               <div>
-                  <label>Số người lớn</label>
-                  <input type="number" class="form-control" name="people">
+                  <label>Số người</label>
+                  <input type="number" class="form-control" name="people" min="1" required>
               </div>
             </div>
-             <div class="col-sm-6 col-md-4 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
-              <div>
-                  <label>Số trẻ em</label>
-                  <input type="number" class="form-control" name="kid">
-              </div>
-            </div>
-            <div class="col-sm-6 col-md-4 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
+            <div class="col-sm-4 col-md-4 form-group{{ $errors->has('room') ? ' has-error' : '' }}">
               <div>
                   <label>Số phòng</label>
-                  <input type="number" class="form-control"  name="room">
+                  <input type="number" class="form-control" name="room" min="1" required>
+              </div>
+            </div>
+            
+            <div class="col-sm-4 col-md-4 form-group{{ $errors->has('Country') ? ' has-error' : '' }}">
+              <div>
+                  <label>Quốc gia</label>
+              
+                                <select id="country"  name="country" class="form-control mySelectCountry" placeholder="Country" required>
+                                    <option value="" disabled selected>Chọn  Quốc gia</option>
+                                    
+                                </select>
               </div>
             </div>
             </div>
@@ -420,6 +439,7 @@
   <script  src="js/jquery.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <script src="js/bootsnav.js"></script>
+  <script src="{!! asset('js/getlistCountry.js') !!}"></script>
   
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <!-- <script src="js/owl.carousel.js"></script>
@@ -466,14 +486,26 @@
 </script>
 <script>
   $( function() {
-    $( "#datepicker" ).datepicker();
+    $( "#datepicker" ).datepicker({
+      format: 'yyyy/mm/dd'
+    });
+
   } );
 </script>
 <script>
   $( function() {
-    $( "#datepicker2" ).datepicker();
+    $( "#datepicker2" ).datepicker({
+      format: 'yyyy/mm/dd'
+    });
   } );
 </script>
-  
+@if (session('messagesResult'))
+   <script type="text/javascript">  
+      alert(" {{ session('messagesResult') }}");
+    </script>
+   
+    @endif
+
+   
 </body>
 </html>

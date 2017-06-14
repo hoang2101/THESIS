@@ -21,7 +21,7 @@ class CreatePayServiceTable extends Migration
             $table->integer('service_id')->nullable();
             $table->integer('discount')->nullable();
             $table->integer('total')->nullable();
-            
+            $table->integer('account_id')->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
         });

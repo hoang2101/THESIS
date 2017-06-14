@@ -12,6 +12,21 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 
+use PayPal\Rest\ApiContext;
+use PayPal\Auth\OAuthTokenCredential;
+use PayPal\Api\Amount;
+use PayPal\Api\Details;
+use PayPal\Api\Item;
+use PayPal\Api\ItemList;
+use PayPal\Api\Payer;
+use PayPal\Api\Payment;
+use PayPal\Api\PaymentCard;
+use PayPal\Api\RedirectUrls;
+use PayPal\Api\ExecutePayment;
+use PayPal\Api\PaymentExecution;
+use PayPal\Api\Transaction;
+use PayPal\Api\FundingInstrument;
+
 class SubController extends Controller
 {
     /**
@@ -24,6 +39,336 @@ class SubController extends Controller
     // {
     //     $this->middleware('auth:account');
     // }
+
+    private $_api_context;
+
+    public function __construct()
+    {
+        
+        $paypal_conf = Config('paypal');
+        $this->_api_context = new ApiContext(new OAuthTokenCredential($paypal_conf['client_id'], $paypal_conf['secret']));
+        $this->_api_context->setConfig($paypal_conf['settings']);
+       
+    }
+
+    public function paypal($subdomain){
+        $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+     $users = Auth::guard('account')->user();
+      if($hotels != null){
+             
+
+
+            $info = array(
+            "name" => $hotels->hotel_name,
+            "subdomain" => $subdomain, 
+            );
+             $namepay =  \Session::get('namepay');
+                $amount =  \Session::get('amount');
+
+       // dd($dataPay);
+         $infopay = array(
+            "name" => $namepay,
+            "amount" => $amount,
+            );
+        return view('sub.pay')->with('info', $info)->with('infopay',$infopay )->with('users',$users);
+            
+         }
+       return view('sub.404');
+
+        
+        //dd($this->_namePay);
+      
+    }
+ function convertCurrency($amount, $from, $to, $amountt){
+    $url  = "https://www.google.com/finance/converter?a=".$amount."&from=VND&to=JPY";
+    
+    $data = file_get_contents($url);
+    preg_match("/<span class=bld>(.*)<\/span>/",$data, $converted);
+    $converted = preg_replace("/[^0-9.]/", "", $converted[1]);
+
+
+    $url  = "https://www.google.com/finance/converter?a=".$converted."&from=JPY&to=USD";
+    
+    $data = file_get_contents($url);
+    preg_match("/<span class=bld>(.*)<\/span>/",$data, $converted);
+    $converted = preg_replace("/[^0-9.]/", "", $converted[1]);
+
+    $amountt = round($converted, 3);
+    return round($converted, 3);
+  }
+    public function paypalSubmit(Request $request, $subdomain){
+
+        
+
+        $amountt = null;
+        $amountt = $this->convertCurrency($request['amount'],"VND", 'USD', $amountt);
+        
+        // $url  = "https://www.google.com/finance/converter?a=$amount&from=$from&to=$to";
+        $resultpayf = array(
+            "msg" => "Thanh toán thất bại",
+            );
+
+        $resultpayt = array(
+            "msg" => "Thanh toán thành công",
+            );
+        if($request['typePost'] == "paypal"){
+
+       $payer = new Payer();
+         $payer->setPaymentMethod('paypal');
+        $item_1 = new Item();
+        $item_1->setName($request['name']) /** item name **/
+            ->setCurrency('USD')
+            ->setQuantity(1)
+            ->setPrice($amountt); /** unit price **/
+        $item_list = new ItemList();
+        $item_list->setItems(array($item_1));
+        $amount = new Amount();
+        $amount->setCurrency('USD')
+            ->setTotal($amountt);
+        $transaction = new Transaction();
+        $transaction->setAmount($amount)
+            ->setItemList($item_list)
+            ->setDescription('Thanh Toán');
+        $redirect_urls = new RedirectUrls();
+        $redirect_urls->setReturnUrl(route('subpaypaldone',['subdomain' => $subdomain])) /** Specify return URL **/
+            ->setCancelUrl(route('subpaypalcancel',['subdomain' => $subdomain]));
+        $payment = new Payment();
+        $payment->setIntent('Sale')
+            ->setPayer($payer)
+            ->setRedirectUrls($redirect_urls)
+            ->setTransactions(array($transaction));
+            /** dd($payment->create($this->_api_context));exit; **/
+         try {
+                    $payment->create($this->_api_context);
+                } catch (\PayPal\Exception\PPConnectionException $ex) {
+                    if (\Config::get('app.debug')) {
+                       
+                       \Session::flash('messagesResult','hết thời hạn kết nối');
+
+                        
+                        return Redirect::route('subCongra',['subdomain' => $subdomain]);
+                        /** echo "Exception: " . $ex->getMessage() . PHP_EOL; **/
+                        /** $err_data = json_decode($ex->getData(), true); **/
+                        /** exit; **/
+                    } else {
+                       \Session::flash('messagesResult','có lỗi trong quá trình thanh toán vui lòng thanh toán lại');
+                        
+                        return Redirect::route('subCongra',['subdomain' => $subdomain]);
+                        /** die('Some error occur, sorry for inconvenient'); **/
+                    }
+                }
+                foreach($payment->getLinks() as $link) {
+                    if($link->getRel() == 'approval_url') {
+                        $redirect_url = $link->getHref();
+                        break;
+                    }
+                }
+                /** add payment ID to session **/
+                
+                \Session::flash('paypal_payment_id', $payment->getId());
+                if(isset($redirect_url)) {
+                    /** redirect to paypal **/
+                    return Redirect::away($redirect_url);
+                }
+                 \Session::flash('messagesResult','có lỗi trong quá trình thanh toán vui lòng thanh toán lại');
+                
+                return Redirect::route('subCongra',['subdomain' => $subdomain]);
+
+               
+        }
+        else{
+           
+        $amountt = null;
+        $amountt = $this->convertCurrency($request['amount'],"VND", 'USD', $amountt);
+        
+        // $url  = "https://www.google.com/finance/converter?a=$amount&from=$from&to=$to";
+        $resultpayf = array(
+            "msg" => "Thanh toán thất bại",
+            );
+
+        $resultpayt = array(
+            "msg" => "Thanh toán thành công",
+            );
+
+
+
+            $card = new PaymentCard();
+            $card->setType($request['typecredit'])
+            ->setNumber($request['numberCredit'])
+            ->setExpireMonth($request['month'])
+            ->setExpireYear($request['year'])
+            ->setCvv2($request['ccv'])
+            ->setFirstName($request['first_name'])
+            ->setBillingCountry("US")
+            ->setLastName($request['last_name']);
+
+            $fi = new FundingInstrument();
+            $fi->setPaymentCard($card);
+            $payer = new Payer();
+            $payer->setPaymentMethod("credit_card")
+                ->setFundingInstruments(array($fi));
+                // $payer = new Payer();
+                // $payer->setPaymentMethod('paypal');
+                $item_1 = new Item();
+                $item_1->setName($request['name']) /** item name **/
+                    ->setCurrency('USD')
+                    ->setQuantity(1)
+                    ->setPrice($amountt); /** unit price **/
+                $item_list = new ItemList();
+                $item_list->setItems(array($item_1));
+                $amount = new Amount();
+                $amount->setCurrency('USD')
+                    ->setTotal($amountt);
+                $transaction = new Transaction();
+                $transaction->setAmount($amount)
+                    ->setItemList($item_list)
+                    ->setDescription('Thanh Toán');
+                $redirect_urls = new RedirectUrls();
+
+                $redirect_urls->setReturnUrl(route('subpaypaldone',['subdomain' => $subdomain])) /** Specify return URL **/
+                    ->setCancelUrl(route('subpaypalcancel',['subdomain' => $subdomain]));
+                $payment = new Payment();
+                $payment->setIntent('Sale')
+                    ->setPayer($payer)
+                    ->setRedirectUrls($redirect_urls)
+                    ->setTransactions(array($transaction));
+                   
+                    /** dd($payment->create($this->_api_context));exit; **/
+                try {
+                    $payment->create($this->_api_context);
+                } catch (\PayPal\Exception\PPConnectionException $ex) {
+                    if (\Config::get('app.debug')) {
+                       
+                       \Session::flash('messagesResult','hết thời hạn kết nối');
+
+                        
+                        return Redirect::route('subpaypal',['subdomain' => $subdomain])->with('message', $resultpay);
+                        /** echo "Exception: " . $ex->getMessage() . PHP_EOL; **/
+                        /** $err_data = json_decode($ex->getData(), true); **/
+                        /** exit; **/
+                    } else {
+                       \Session::flash('messagesResult','có lỗi trong quá trình thanh toán vui lòng thanh toán lại');
+                        
+                        return Redirect::route('subpaypal',['subdomain' => $subdomain]);
+                        /** die('Some error occur, sorry for inconvenient'); **/
+                    }
+                }
+                foreach($payment->getLinks() as $link) {
+                    if($link->getRel() == 'approval_url') {
+                        $redirect_url = $link->getHref();
+                        break;
+                    }
+                }
+                /** add payment ID to session **/
+                \Session::flash('paypal_payment_id', $payment->getId());
+                if(isset($redirect_url)) {
+                    /** redirect to paypal **/
+                    return Redirect::away($redirect_url);
+                }
+                 \Session::flash('messagesResult','có lỗi trong quá trình thanh toán vui lòng thanh toán lại');
+                return Redirect::route('subpaypal',['subdomain' => $subdomain]);
+            }
+    }
+
+
+public function getDone(Request $request)
+{
+     $subdomain = \Session::get("subdomain");
+     $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+    $id = $request->get('paymentId');
+    $token = $request->get('token');
+    $payer_id = $request->get('PayerID');
+    
+    $payment = Payment::get($id, $this->_api_context);
+
+    $paymentExecution = new PaymentExecution();
+
+    $paymentExecution->setPayerId($payer_id);
+    $executePayment = $payment->execute($paymentExecution, $this->_api_context);
+
+    // Clear the shopping cart, write to database, send notifications, etc.
+
+    // Thank the user for the purchase
+   
+
+            $nroom =  \Session::get("nroom");
+            $checkin =  \Session::get("checkin");
+            $checkout=  \Session::get("checkout");
+            $people = \Session::get("people");
+            $first_name = \Session::get("first_name");
+            $last_name =\Session::get("last_name");
+            $country = \Session::get("country");
+           
+            $resulttype_room = \Session::get("resulttype_room");
+DB::table('booking')->insertGetId([
+             'first_name' => $first_name,
+             'last_name' => $last_name,
+             'date_from' => $checkin,
+             'date_to' => $checkout,
+             'number_people' => $people,
+             'contry' => $country,
+             'hotel_id' => $hotels->hotel_id,
+         ]);
+
+$book = DB::table('booking')->latest()->first();
+
+$roombook = null;
+$rooms = DB::table('room')->where('hotel_id', '=', $hotels->hotel_id)->where('room_type_id', '=', $resulttype_room)->get();
+for($i = 0; $i < $nroom; $i++){
+    foreach ($rooms as $key => $room) {
+        if($room->is_booked == 0){
+            DB::table('room')->where('room_id', '=', $room->room_id)->update(['is_booked' => 1, 'booked_id' => $book->booking_id]);
+            $roombook = $room->room_number + " ";
+        }
+    }
+}
+DB::table('booking')->where('booking_id', '=', $book->booking_id)->update(['room_id' => $roombook]);
+
+
+
+
+    
+    \Session::forget("nroom");
+    \Session::forget("checkin");
+    \Session::forget("checkout");
+    \Session::forget("people");
+    \Session::forget("first_name");
+    \Session::forget("last_name");
+    \Session::forget("country");
+    \Session::forget("subdomain");
+    \Session::flash('messagesResult','Thanh toán thành công');
+    \Session::flash('idbooking',$book->booking_id);
+
+                return Redirect::route('subCongra',['subdomain' => $subdomain]);
+}
+
+public function getCancel()
+{
+    // Curse and humiliate the user for cancelling this most sacred payment (yours)
+                 \Session::flash('messagesResult','có lỗi trong quá trình thanh toán vui lòng thanh toán lại');
+   
+                return Redirect::route('subpaypal',['subdomain' => $subdomain]);
+}
+public function congra($subdomain){
+    $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+    if($hotels != null){
+            $users = Auth::guard('account')->user();
+            
+
+
+
+           
+            $info = array(
+                    "name" => $hotels->hotel_name,
+                    "subdomain" => $subdomain, 
+                    );
+           
+            return view('sub.congra')->with('users',$users)->with('info',$info);
+        
+         }
+       return view('sub.404');
+
+}
     public function checkAuthAccount(){
         
 
@@ -55,12 +400,8 @@ class SubController extends Controller
     }
 
     public function account(Request $request, $subdomain){
-       
         if($request['typePost']=='login')
         {
-             
-            
-
             $getUsername = DB::table('account')->where('username', '=', $request['username'])->first();
 
             if($getUsername == null){
@@ -123,6 +464,172 @@ class SubController extends Controller
                 Auth::guard('account')->logout();
                 return redirect()->route('subHome',['subdomain' => $subdomain]);
           }
+
+
+////////////////////////search rooom
+          if($request['typePost']=='searchRoom'){
+
+            // /echo "Today is " . date("Y/m/d") . "<br>";
+            // dd("Today is " . date("Y/m/d  H:i:s"));
+            $checkin = $request['check_in'];
+            $checkout = $request['check_out'];
+            $people = $request['people'];
+            $nroom = $request['room'];
+            $today =  date('Y-m-d');
+            $first_name = $request['first_name'];
+            $last_name = $request['last_name'];
+            $country = $request['country'];
+
+            $messages = [];
+            $validator = Validator::make($request->all(),[],$messages);
+            $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+            $info = array(
+            "name" => $hotels->hotel_name,
+            "subdomain" => $subdomain, 
+            );
+            if(strtotime($checkin) > strtotime($checkout)){ 
+                $validator->errors()->add('typePost', 'searchRoom');
+                $validator->errors()->add('checkin', 'Ngày checkin không thể lớn hơn ngày checkout');
+                 return redirect()->route('subHome',['subdomain' => $subdomain])->withErrors($validator)->withInput();
+            }
+
+            if(strtotime($checkin) < $today){ 
+                $validator->errors()->add('typePost', 'searchRoom');
+                $validator->errors()->add('checkin', 'Ngày checkin không thể không thể nhỏ hơn hôm nay');
+                 return redirect()->route('subHome',['subdomain' => $subdomain])->withErrors($validator)->withInput();
+            }
+            if($nroom > ($people)){ 
+                $validator->errors()->add('typePost', 'searchRoom');
+                $validator->errors()->add('people', 'Số phòng không được lớn hơn số người');
+                 return redirect()->route('subHome',['subdomain' => $subdomain])->withErrors($validator)->withInput();
+            }
+
+            $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+            $rooms = DB::table('room')->leftJoin('booking', 'booking.booking_id', '=', 'room.booked_id')->where('room.hotel_id', '=', $hotels->hotel_id)->select('room.*', 'booking.date_from','booking.date_to')->get();
+            foreach ($rooms as $room) {
+                if($room->date_to != null){
+                    if(strtotime($room->date_to) < strtotime($checkin)){
+                        $room->is_booked = 0;
+
+                    }
+                }
+            }
+
+           
+            $type_rooms =  DB::table('type_room')->where('hotel_id', '=', $hotels->hotel_id)->get();
+
+            if(count($rooms) < $nroom){
+                \Session::flash('messagesResult','Khách sạn không còn đủ phòng yêu cầu, xin nhập vào số phòng nhỏ hơn');
+                    return  redirect()->route('subHome',['subdomain' => $subdomain]);
+            }
+            
+                $maxpeople = 1;
+                foreach ($type_rooms as $type_room) {
+                    if($maxpeople < $type_room->number_people)
+                        $maxpeople = $type_room->number_people;
+                }
+                if($maxpeople * $nroom < $people){
+                    
+                    \Session::flash('messagesResult',"Hiện tại khách sạn không đủ điều kiện để đáp ứng " .$people ." người trong ".$nroom .".");
+                    return  redirect()->route('subHome',['subdomain' => $subdomain]);
+                }
+
+                $peopleEachRoom = ((int) ($people/$nroom));
+                
+                if($people%$nroom > 0)
+                {
+                    $peopleEachRoom++;
+                }
+                
+                
+                $resultroom = array();
+                $resultcost = array();
+                $resulttype_room =array();
+
+                
+
+                for($i = 0; $i<count($type_rooms); $i++){
+                    for($j = $i; $j<count($type_rooms); $j++){
+                        if($type_rooms[$i]->number_people < $type_rooms[$j]->number_people ){
+                            $temp = $type_rooms[$i];
+                            $type_rooms[$i] = $type_rooms[$j];
+                            $type_rooms[$j] = $temp;
+                        }
+
+
+                    }
+                }
+                $roomsfortypes = null;
+                foreach ($type_rooms as $type_room) {
+                    // dd($type_room);
+                   $roomsfortypes[] = DB::table('room')->where('room_type_id', '=', $type_room->type_room_id)->get();
+
+                }
+
+                for( $i = 0; $i< count($roomsfortypes); $i++){
+                    if($peopleEachRoom <= $type_rooms[$i]->number_people  && count($roomsfortypes[$i]) >= $nroom) {
+                        array_push($resultroom,"Có ".$nroom ." phòng loại " .$type_rooms[$i]->type_name." giá " .$type_rooms[$i]->cost*$nroom);
+                        
+                        array_push($resulttype_room,$type_rooms[$i]->type_room_id);
+                    
+                    }
+                }
+
+                if(count($resultroom) < 1){
+                    \Session::flash('messagesResult','không có kết quả nào phù hợp');
+                    return  redirect()->route('subHome',['subdomain' => $subdomain]);
+                }
+                
+                // dd($resultroom);
+                // // dd($type_rooms);
+                // $temppeople = $people;
+                // $peoplefortyperoom = null;
+                // for($i = 0; $i<count($type_rooms); $i++){
+                //     $peoplefortyperoom[$i] = round($temppeople/$type_rooms[$i]->number_people);
+                //     if($peoplefortyperoom[$i] == 0){
+                //         $peoplefortyperoom[$i] = $temppeople;
+                //         $temppeople  = 0;
+                //         break;
+                //     }
+                //     $temppeople = $temppeople - round($temppeople/$type_rooms[$i]->number_people)*$type_rooms[$i]->number_people;
+
+                //     $peoplefortyperoom[$i] = $peoplefortyperoom[$i]*$type_rooms[$i]->number_people;
+                // }
+
+                // // foreach ($type_rooms as $type_room) {
+                // //     $peoplefortyperoom[] = round($temppeople/$type_room->number_people);
+                // //     if($peoplefortyperoom[] == 0){
+                // //         $peoplefortyperoom[] = $temppeople;
+                // //         $temppeople  = 0;
+                // //         break;
+                // //     }
+                // //     $temppeople = $temppeople - round($temppeople/$type_room->number_people)*$type_room->number_people;
+
+                // //     $peoplefortyperoom[] = $peoplefortyperoom[]*$type_room->number_people;
+                    
+                // // }
+                // dd($peoplefortyperoom);
+                \Session::put("nroom",$nroom);
+                \Session::put("checkin",$checkin);
+                \Session::put("checkout",$checkout);
+                \Session::put("people",$people);
+                \Session::put("first_name",$first_name);
+                \Session::put("last_name",$last_name);
+                \Session::put("country",$country);
+                \Session::put("subdomain",$subdomain);
+
+
+                \Session::put("resultroom",collect($resultroom)) ;
+                \Session::put("resulttype_room",collect($resulttype_room)) ;
+
+                return  redirect()->route('roomResult',['subdomain' => $subdomain]);
+
+                
+            
+
+
+
+          }
         
     }
 
@@ -131,6 +638,54 @@ class SubController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+public function roomResult($subdomain){
+
+    $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+     $users = Auth::guard('account')->user();
+      if($hotels != null){
+             
+
+
+            $info = array(
+            "name" => $hotels->hotel_name,
+            "subdomain" => $subdomain, 
+            );
+            return view('sub.roomresult')->with('users',$users)->with('info',$info);
+            
+         }
+       return view('sub.404');
+
+}
+
+public function editRoomResult(Request $request, $subdomain){
+    $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+    if($hotels != null){
+            $users = Auth::guard('account')->user();
+            $id = $request['id'];
+            $nroom = \Session::get("nroom");
+           $resultroom = \Session::get('resultroom');
+           $resulttype_room = \Session::get("resulttype_room") ;
+
+           $type_room = DB::table('type_room')->where('type_room_id', '=', $resulttype_room[$id])->first();
+
+
+            
+            \Session::put("namepay","Thanh toán phòng khách sạn" );
+            \Session::put("amount",$nroom *$type_room->cost);
+            
+           
+             return redirect()->route('subpaypal',['subdomain' => $subdomain]);
+        
+         }
+       return view('sub.404');
+   
+}
+
+
+public function payment($subdomain){
+
+}
+
 
     public function prolife($subdomain){
         
@@ -546,16 +1101,15 @@ public function configManage($subdomain){
 
 }
 public function configManageSubmit(Request $request,  $subdomain){
-    return $$request;
+    return $request;
 }
 
 public function bookManage($subdomain){
         $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
-        $checkins = DB::table('booking')->join('room', 'booking.room_id', '=', 'room.room_id')->select('booking.*', 'room.room_number')->orderBy('booking_id', 'desc')->get();
+        $checkins = DB::table('booking')->join('account','account.id','=','booking.account_id')->where('booking.hotel_id','=',$hotels->hotel_id)->select('booking.*', 'account.username')->orderBy('booking_id', 'desc')->get();
         $checkouts = DB::table('checkout')->orderBy('checkout_id', 'desc')->get();
         $rooms = $rooms = DB::table('room')->where('room.hotel_id', '=', $hotels->hotel_id)->orderBy('room_number', 'asc')->get();
         $type_rooms =  DB::table('type_room')->where('hotel_id', '=', $hotels->hotel_id)->get();
-        
         // $users = DB::table('account')->where([['hotel_id', '=', $hotels->hotel_id],['type', '=', 4],])->get();
         if($hotels != null){
              
@@ -596,46 +1150,98 @@ public function bookManageSubmit(Request $request,  $subdomain){
             $validator->errors()->add('date_checkin', 'Ngày checkin không thể lớn hơn ngày checkout');
              return redirect()->route('subBookManage',['subdomain' => $subdomain])->withErrors($validator)->withInput();
         }
+       $addrooms =  explode(' ', $request['room']);
+       
         DB::table('booking')->insertGetId([
              'first_name' => $request['first_name'],
              'last_name' => $request['last_name'],
-             'date_checkin' => $request['date_checkin'],
-             'date_checkout' => $request['date_checkout'],
+             'date_from' => $request['date_checkin'],
+             'date_to' => $request['date_checkout'],
              'number_people' => $request['number_people'],
              'contry' => $request['country'],
              'room_id' => $request['room'],
              'account_id' =>Auth::guard('account')->user()->id,
+             'hotel_id' => $hotels->hotel_id,
          ]);
+        $bookings = DB::table('booking')->where('hotel_id', '=', $hotels->hotel_id)->latest()->first();
+        foreach ($addrooms as $addroom) {
+            
+            DB::table('room')->where('room_number', '=', $addroom)->update(['is_booked' => 1,'booked_id' => $bookings->booking_id]);
 
-        $rooms = DB::table('room')->where('room_id', '=', $request['room'])->update(['is_booked' => 1]);
+        }
+        
         return redirect()->route('subBookManage',['subdomain' => $subdomain]);
     }
      if($request['typePost'] == "updateBooking"){
+        $addrooms =  explode(' ', $request['room']);
+        
+        $findrooms =  explode(' ', DB::table('booking')->where('booking_id', $request['id'])->first()->room_id);
+       
          if(strtotime($request['date_checkin']) > strtotime($request['date_checkout'])){ 
-            $validator->errors()->add('typePost', 'addbooking');
+            $validator->errors()->add('typePost', 'updateBooking');
             $validator->errors()->add('date_checkin', 'Ngày checkin không thể lớn hơn ngày checkout');
              return redirect()->route('subBookManage',['subdomain' => $subdomain])->withErrors($validator)->withInput();
         }
         // if(DB::table('booking')->where('booking_id', $request['id'])->first()->room_id == $request['room'])
 
-            if(DB::table('booking')->where('booking_id', $request['id'])->first()->room_id != $request['room']){
-                $booked =  DB::table('booking')->where('booking_id', '=', $request['id'])-> first();
-                DB::table('room')->where('room_id', '=', $booked->room_id)->update(['is_booked' => 0]);
-                DB::table('room')->where('room_id', '=', $request['room'])->update(['is_booked' => 1]);
+            
+        
+
+            // if(DB::table('booking')->where('booking_id', $request['id'])->first()->room_id != $request['room']){
+            //     $booked =  DB::table('booking')->where('booking_id', '=', $request['id'])-> first();
+            //     DB::table('room')->where('room_id', '=', $booked->room_id)->update(['is_booked' => 0]);
+            //     DB::table('room')->where('room_id', '=', $request['room'])->update(['is_booked' => 1]);
+            // }
+        if($request['room'] == "" || $request['room'] == null){
+            DB::table('booking')
+            ->where('booking_id', $request['id'])
+            ->update(['first_name' => $request['first_name'], 'last_name' => $request['last_name'], 'date_from' => $request['date_checkin'],'date_to' => $request['date_checkout'], 'number_people' => $request['number_people'], 'contry' => $request['country'],'account_id' =>Auth::guard('account')->user()->id]);
+        }else{
+            foreach ($findrooms as $findroom) {
+            DB::table('room')->where('room_number', '=', $findroom)->update(['is_booked' => 0]);
+            }
+            foreach ($addrooms as $addroom) {
+                DB::table('room')->where('room_number', '=', $addroom)->update(['is_booked' => 1]);
             }
 
-        DB::table('booking')
+            DB::table('booking')
             ->where('booking_id', $request['id'])
-            ->update(['first_name' => $request['first_name'], 'last_name' => $request['last_name'], 'date_checkin' => $request['date_checkin'],'date_checkout' => $request['date_checkout'], 'number_people' => $request['number_people'], 'contry' => $request['country'], 'room_id' => $request['room'],'account_id' =>Auth::guard('account')->user()->id]);
-            $rooms = DB::table('room')->where('room_id', '=', $request['room'])->update(['is_booked' => 1]);
+            ->update(['first_name' => $request['first_name'], 'last_name' => $request['last_name'], 'date_from' => $request['date_checkin'],'date_to' => $request['date_checkout'], 'number_people' => $request['number_people'], 'contry' => $request['country'], 'room_id' => $request['room'],'account_id' =>Auth::guard('account')->user()->id]);
+        }
+        
+            
             return redirect()->route('subBookManage',['subdomain' => $subdomain]);
         
      }
      if($request['typePost'] == "deleteBooking"){
         $booked =  DB::table('booking')->where('booking_id', '=', $request['id'])-> first();
+        $findrooms =explode(" ", $booked->room_id);
         DB::table('booking')->where('booking_id', '=', $request['id'])->delete();
-        DB::table('room')->where('room_id', '=', $booked->room_id)->update(['is_booked' => 0]);
+        foreach ($findrooms as $findroom) {
+            DB::table('room')->where('room_number', '=', $findroom)->update(['is_booked' => 0]);
+        }
+       
          return redirect()->route('subBookManage',['subdomain' => $subdomain]);
+     }
+     if($request['typePost'] == "checkinBook"){
+        DB::table('booking')
+            ->where('booking_id', $request['id'])
+            ->update([ 'date_checkin' => date("Y/m/d")]);
+            return redirect()->route('subBookManage',['subdomain' => $subdomain]);
+     }
+
+     if($request['typePost'] == "checkoutBook"){
+        DB::table('booking')
+            ->where('booking_id', $request['id'])
+            ->update([ 'date_checkout' => date("Y/m/d")]);
+            $booked =  DB::table('booking')->where('booking_id', '=', $request['id'])-> first();
+             $findrooms =explode(" ", $booked->room_id);
+        
+            foreach ($findrooms as $findroom) {
+                DB::table('room')->where('room_number', '=', $findroom)->update(['is_booked' => 0]);
+            }
+            return redirect()->route('subBookManage',['subdomain' => $subdomain]);
+
      }
     
 
@@ -698,6 +1304,7 @@ public function roomManageSubmit(Request $request,  $subdomain){
              'cost' => $request['cost'],
              'description' => $request['description'],
              'hotel_id' => $hotels->hotel_id,
+             'number_people' => $request['number_people'],
          ]);
      return redirect()->route('subRoomManage',['subdomain' => $subdomain]);
     }
@@ -713,7 +1320,7 @@ public function roomManageSubmit(Request $request,  $subdomain){
            
        }
        DB::table('type_room')->where('type_room_id', $request['id'])
-        ->update(['type_name' => $request['type_name'], 'cost' => $request['cost'], 'description' => $request['description']]);
+        ->update(['type_name' => $request['type_name'], 'cost' => $request['cost'], 'description' => $request['description'],'number_people' => $request['number_people']]);
         return redirect()->route('subRoomManage',['subdomain' => $subdomain]);
     }
     if($request['typePost'] == "deleteTypeRoom"){
@@ -728,10 +1335,10 @@ public function roomManageSubmit(Request $request,  $subdomain){
        
         $rooms = DB::table('room')->where('room.hotel_id', '=', $hotels->hotel_id)->join('type_room', 'room.room_type_id', '=', 'type_room.type_room_id')->select('room.*', 'type_room.type_name')->get();
         foreach ($rooms as $room ) {
-           if($room->room_floor == $request['room_floor'] && $room->room_number == $request['room_number'])
+           if( $room->room_number == $request['room_number'])
            {
             $validator->errors()->add('typePost', 'add1Room');
-            $validator->errors()->add('room_number', 'Đã tồn tại phòng '.$request['room_number'] .'tại tầng '.$request['room_floor'] );
+            $validator->errors()->add('room_number', 'Đã tồn tại phòng '.$request['room_number'] );
              return redirect()->route('subRoomManage',['subdomain' => $subdomain])->withErrors($validator)->withInput();
            }
        }
@@ -757,10 +1364,10 @@ public function roomManageSubmit(Request $request,  $subdomain){
         for($i = $request['room_from']; $i <= $request['room_to']; $i++)
         {
             foreach ($rooms as $room ) {
-               if($room->room_floor == $request['room_floor'] && $room->room_number == $i)
+               if($room->room_number == $i)
                {
                 $validator->errors()->add('typePost', 'addnRoom');
-                $validator->errors()->add('room_from', 'Đã tồn tại phòng '.$request['room_number'] .'tại tầng '.$request['room_floor'] );
+                $validator->errors()->add('room_from', 'Đã tồn tại phòng '.$request['room_number'] );
                  return redirect()->route('subRoomManage',['subdomain' => $subdomain])->withErrors($validator)->withInput();
                }
             }    
@@ -781,6 +1388,11 @@ public function roomManageSubmit(Request $request,  $subdomain){
 
 
     if($request['typePost'] == "updateRoom"){
+        // dd($request);
+        $is_clean = 1;
+        if(empty($request['is_clean'])){
+            $is_clean = 0;
+        }
         $rooms = DB::table('room')->where('room.hotel_id', '=', $hotels->hotel_id)->join('type_room', 'room.room_type_id', '=', 'type_room.type_room_id')->select('room.*', 'type_room.type_name')->get();
         foreach ($rooms as $room ) {
            if($room->room_floor == $request['room_floor'] && $room->room_number == $request['room_number'] && $room->room_id != $request['id'])
@@ -791,7 +1403,7 @@ public function roomManageSubmit(Request $request,  $subdomain){
            }
        }
         DB::table('room')->where('room_id', $request['id'])
-        ->update(['room_floor' => $request['room_floor'], 'room_number' => $request['room_number'], 'room_type_id' => $request['type_room']]);
+        ->update(['room_floor' => $request['room_floor'], 'room_number' => $request['room_number'], 'room_type_id' => $request['type_room'],'is_clean' => $is_clean]);
         return redirect()->route('subRoomManage',['subdomain' => $subdomain]);
     }
 
@@ -804,7 +1416,114 @@ public function roomManageSubmit(Request $request,  $subdomain){
     }
 }
 
+public function reportManage( $subdomain){
 
+        $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+        $rooms = DB::table('room')->where('room.hotel_id', '=', $hotels->hotel_id)->join('type_room', 'room.room_type_id', '=', 'type_room.type_room_id')->select('room.*', 'type_room.type_name')->orderBy('room_number', 'asc')->get();
+        
+       
+        // $users = DB::table('account')->where([['hotel_id', '=', $hotels->hotel_id],['type', '=', 4],])->get();
+        if($hotels != null){
+             
+            if(Auth::guard('account')->Check()){
+
+                if(Auth::guard('account')->user()->hotel_id != $hotels->hotel_id ){
+                    Auth::guard('account')->logout();
+                }
+            }
+            if(!Auth::guard('account')->Check()){
+                return redirect()->route('subHome',['subdomain' => $subdomain]);
+            }
+            if(Auth::guard('account')->user()->type != 3){
+                return view('sub.404');
+            }
+
+            $i = 1;
+        $first_day_this_month = date('Y-m-$i'); // hard-coded '01' for first day date("Y/m/d")
+
+        $last_day_this_month  = date('Y-m-t');
+        for($i = 1; $i <=  date('t'); $i++)
+        {
+            // add the date to the dates array
+            $listDay[] = date('Y') . "-" . date('m') . "-" . str_pad($i, 2, '0', STR_PAD_LEFT);
+        }
+
+        $listCostRoom = null;
+        for($i = 1; $i <=  date('t'); $i++)
+        {
+            $invoicesrooms = DB::table('invoice')->where('hotel_id','=',$hotels->hotel_id)->where('date','=',$listDay[$i - 1])->where('type','=','room')->get();
+            $totalroom = 0;
+            foreach ($invoicesrooms as $invoicesroom) {
+                 $totalroom += $invoicesroom->cost;
+            }
+
+            $listCostRoom[] =   $totalroom;
+        }
+
+        $listCostService = null;
+        for($i = 1; $i <=  date('t'); $i++)
+        {
+            $invoicesservices = DB::table('invoice')->where('hotel_id','=',$hotels->hotel_id)->where('date','=',$listDay[$i - 1])->where('type','=','service')->get();
+            $totalservice = 0;
+            foreach ($invoicesservices as $invoicesservices) {
+                 $totalservice += $invoicesservices->cost;
+            }
+
+            $listCostService[] =   $totalservice;
+        }
+
+        $listCostSpend = null;
+        for($i = 1; $i <=  date('t'); $i++)
+        {
+            $spends = DB::table('spends')->where('hotel_id','=',$hotels->hotel_id)->where('date','=',$listDay[$i - 1])->get();
+            $totalspend = 0;
+            foreach ($spends as $spend) {
+                 $totalspend += $spend->cost;
+            }
+
+            $listCostSpend[] =   $totalspend;
+        }
+        //return $listCostSpend;
+        // retủn list cost room, service, date, spend
+        $totalEmpBook = null;
+        $totalEmpService = null;
+        $employees = DB::table('account')->where('hotel_id','=',$hotels->hotel_id)->where('type','=', 4)->get();
+        foreach ($employees as $employee) {
+                
+                 $totalEmpBook[] =count(DB::table('booking')->where('account_id','=',$employee->id)->get());
+                 $totalEmpService[] =count(DB::table('book_service')->where('account_id','=',$employee->id)->get());
+
+            }
+       // return $totalEmpService;
+
+
+
+        
+        //return $first_day_this_month ." +" .$last_day_this_month;
+        $invoices = DB::table('invoice')->whereBetween('date',[$first_day_this_month, $last_day_this_month] )->get();
+        $type_rooms =  DB::table('type_room')->where('hotel_id', '=', $hotels->hotel_id)->get();
+
+
+            $info = array(
+            "name" => $hotels->hotel_name,
+            "subdomain" => $subdomain, 
+            "first_day" => $first_day,
+            "last_day" => $last_day
+            );
+            return view('sub.report')->with('info',$info)->with('listDay', $listDay)->with('listCostRoom', $listCostRoom)->with('listCostService', $listCostService)->with('listCostService', $listCostService)->with('listCostSpend',$listCostSpend)->with('employees',$employees)->with('totalEmpBook',$totalEmpBook)->with('totalEmpService',$totalEmpService);
+            // if(Auth::guard('account')->user()->type == 4 || Auth::guard('account')->user()->type == 3){
+            //     return view('sub.mainManageProlife')->with('users',$users)->with('info',$info);
+            // }
+            
+            
+         }
+       return view('sub.404');
+
+}
+
+public function reportManageSubmit(Request $request,  $subdomain){
+
+}
     public function create()
     {
         //

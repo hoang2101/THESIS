@@ -171,14 +171,7 @@
                         </a>
                         
 
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                        <a data-toggle="tooltip" data-placement="top" title="Sign out" href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-                        </a>
+                                       
                     </div>
                     <!-- /menu footer buttons -->
                 </div>
@@ -204,12 +197,18 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
                                     <li><a href="{{ route('subProfile',['subdomain' =>$info['subdomain']]) }}"> Hồ sơ</a></li>
-                                    <li><a href="{{ route('logout') }}"
+                                   <li><a href="#"
                                             onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();"><i class="fa fa-sign-out pull-right"></i> Đăng xuất</a></li>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                                     document.getElementById('logout-form').submit();">
+                                            <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                            Logout
+                                        </a>
+
+                                        <form id="logout-form" action="{{ route('subHomesubmit',['subdomain' =>$info['subdomain']]) }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
+                                            <input hidden id="typePosts"" name="typePost" value="logout">
                                         </form>
+                        </li>
                                 </ul>
                             </li>
                         </ul>
@@ -241,6 +240,7 @@
                           <th white-space:pre-line" id="cel5">Tầng</th>
                           <th id="cel5">Số phòng</th>
                           <th id="cel10">Loại phòng</th>
+                          <th id="cel10">Phòng sạch</th>
                           <th id="cel10">Đã đặt phòng</th>
                           <th class="nosort"  id="cel5">Quản lý</th>
                         </tr>
@@ -254,10 +254,11 @@
                                 <td>{{$room->room_floor}}</td>
                                 <td>{{$room->room_number}}</td>
                                 <td>{{$room->type_name}}</td>
+                                <td><input disabled type="checkbox" name="vehicle" value="Car" @if($room->is_clean == 1)checked @endif></td>
                                 <td style="width:10%"><input disabled type="checkbox" name="vehicle" value="Car" @if($room->is_booked == 1)checked @endif></td>
                                 <td style="width:10%">
-                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataView('{{$room->room_id}}','{{$room->room_floor}}', '{{$room->room_number}}', '{{$room->type_name}}') " data-toggle="modal" data-backdrop="static" data-target="#viewRoomMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
-                                    <a href="#" class="btn btn-info btn-xs"  onclick="showDataEdit('{{$room->room_id}}','{{$room->room_floor}}', '{{$room->room_number}}', '{{$room->type_name}}') ;" data-toggle="modal" data-backdrop="static" data-target="#viewRoomMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
+                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataView('{{$room->room_id}}','{{$room->room_floor}}', '{{$room->room_number}}', '{{$room->type_name}}','{{$room->is_clean}}') " data-toggle="modal" data-backdrop="static" data-target="#viewRoomMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
+                                    <a href="#" class="btn btn-info btn-xs"  onclick="showDataEdit('{{$room->room_id}}','{{$room->room_floor}}', '{{$room->room_number}}', '{{$room->type_name}}','{{$room->is_clean}}') ;" data-toggle="modal" data-backdrop="static" data-target="#viewRoomMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
                             @if($room->is_booked == 0 )
                             <a  data-toggle="tooltip" data-placement="top"  class="btn btn-danger btn-xs"
                                             onclick="event.preventDefault();
@@ -305,6 +306,7 @@
                           <th id="cel1">ID</th>
                           <th white-space:pre-line" id="cel5">Tên</th>
                           <th id="cel5">Giá</th>
+                          <th id="cel5" >Số người lớn</th>
                           <th id="cel10">mô tả</th>
                           <th class="nosort"  id="cel5">Quản lý</th>
                         </tr>
@@ -317,10 +319,11 @@
                                 <td style="width:5%">{{$type_room->type_room_id}}</td>
                                 <td style="width:15%">{{$type_room->type_name}}</td>
                                 <td style="width:10%">{{$type_room->cost}}</td>
+                                <td style="width:10%">{{$type_room->number_people}}</td>
                                 <td>{{$type_room->description}}</td>
                                 <td style="width:10%">
-                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataTypeRoomView('{{$type_room->type_room_id}}','{{$type_room->type_name}}', '{{$type_room->cost}}', '{{$type_room->description}}') " data-toggle="modal" data-backdrop="static" data-target="#viewTypeRoomMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
-                                    <a href="#" class="btn btn-info btn-xs"  onclick="showDataTypeRoomEdit('{{$type_room->type_room_id}}','{{$type_room->type_name}}', '{{$type_room->cost}}', '{{$type_room->description}}') ;" data-toggle="modal" data-backdrop="static" data-target="#viewTypeRoomMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
+                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataTypeRoomView('{{$type_room->type_room_id}}','{{$type_room->type_name}}', '{{$type_room->cost}}', '{{$type_room->number_people}}','{{$type_room->description}}') " data-toggle="modal" data-backdrop="static" data-target="#viewTypeRoomMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
+                                    <a href="#" class="btn btn-info btn-xs"  onclick="showDataTypeRoomEdit('{{$type_room->type_room_id}}','{{$type_room->type_name}}', '{{$type_room->cost}}','{{$type_room->number_people}}', '{{$type_room->description}}')" data-toggle="modal" data-backdrop="static" data-target="#viewTypeRoomMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
 
                             <a data-toggle="tooltip" data-placement="top"  class="btn btn-danger btn-xs"
                                             onclick="event.preventDefault();
@@ -442,6 +445,7 @@
                                 
                             </div>
                         </div>
+
                        
                        <div class="form-group">
                             <div >
@@ -505,10 +509,15 @@
                                 @foreach($type_rooms as $type_room)
                                     <option value="{{$type_room->type_room_id}}">{{$type_room->type_name}}</option>
                                 @endforeach
-    
-   
                             </select>
                                
+                            </div>
+                        </div>
+                        <div class="form-group{{ $errors->has('room_number') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="e_r_is_clean" type="checkbox" name="is_clean" value="" >Phòng sạch</input>
+
+                                
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('password') ? ' has-error' : '' }}">
@@ -545,7 +554,7 @@
           <form class="form-horizontal" role="form" method="POST" action="{{ route('subRoomManageSubmit',['subdomain' =>$info['subdomain']]) }}">
                         {{ csrf_field() }}
                         <input hidden id="addtypePost"" name="typePost" value="addTypeRoom">
-                        <div class="form-group{{ $errors->has('room_from') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('type_name') ? ' has-error' : '' }}">
                             <div >
                                 <input id="tr_type_name" type="text" class="form-control" placeholder="Tên loại phòng" name="type_name" value="{{old('type_name') }}" required autofocus >
                                 @if ($errors->has('type_name'))
@@ -556,7 +565,7 @@
                                 
                             </div>
                         </div>
-                        <div class="form-group{{ $errors->has('room_from') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('cost') ? ' has-error' : '' }}">
                             <div >
                                 <input id="tr_cost" type="number" class="form-control" placeholder="Giá phòng" name="cost" value="{{old('cost') }}" required autofocus >
                                  @if ($errors->has('cost'))
@@ -567,7 +576,20 @@
                                 
                             </div>
                         </div>
-                        <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('number_people') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="tr_number_people" type="number" min="1" class="form-control" placeholder="Số người lớn" name="number_people" value="{{old('number_people') }}" required autofocus >
+                                 @if ($errors->has('number_people'))
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('number_people') }}</strong>
+                                    </span>
+                                @endif
+                                
+                            </div>
+                        </div>
+
+                        
+                        <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
                             <div >
                                 <input id="tr_description" type="text" class="form-control" placeholder="Mô tả" name="description" value="{{old('description') }}" required autofocus >
                                  @if ($errors->has('description'))
@@ -619,6 +641,19 @@
                                 
                             </div>
                         </div>
+                        <div class="form-group{{ $errors->has('number_people') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="e_tr_number_people" type="number"  class="form-control" placeholder="Số người lớn" name="number_people" value="{{old('number_people') }}" required autofocus >
+                                 @if ($errors->has('number_people'))
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('number_people') }}</strong>
+                                    </span>
+                                @endif
+                                
+                            </div>
+                        </div>
+                        
+
                         <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
                             <div >
                                 <input id="e_tr_description" type="Text " class="form-control" placeholder="Mô tả" name="description" value="{{old('description') }}" required autofocus >
@@ -735,6 +770,7 @@
     <script src="{!! asset('vendors/pdfmake/build/vfs_fonts.js') !!}"></script>
     <!-- My Cutom Scripts -->
     <script src="{!! asset('js/custom-scripts.js') !!}"></script>
+    
     @if($errors->first('typePost')=="add1Room")
      
       <script type="text/javascript">  
@@ -828,6 +864,7 @@
 $('#responsive2').DataTable( {
     responsive: true
 } );
+
     function removeMessage() {
         $("div").removeClass("has-error");
         $("span").removeClass("help-block");
@@ -874,8 +911,12 @@ function addReadonly(){
     document.getElementById("typeEditView").innerHTML = "Xem";
     document.getElementById("e_r_room_floor").removeAttribute("readonly");
     document.getElementById("e_r_room_number").removeAttribute("readonly");
+    document.getElementById("e_r_is_clean").removeAttribute("disabled");
+
     document.getElementById("e_r_type_room1").setAttributeNode(document.createAttribute("hidden"));
     document.getElementById("e_r_type_room2").removeAttribute("hidden");
+
+
 
 
     return;    
@@ -887,9 +928,11 @@ else(document.getElementById("typeEditView").innerHTML == "Xem")
 
     document.getElementById("e_r_room_floor").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_r_room_number").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_r_is_clean").setAttributeNode(document.createAttribute("disabled"));
+
     document.getElementById("e_r_type_room1").removeAttribute("hidden");
     document.getElementById("e_r_type_room2").setAttributeNode(document.createAttribute("hidden"));
-   
+    
 
 }
 }
@@ -903,6 +946,8 @@ function addReadonly2(){
     document.getElementById("e_tr_type_name").removeAttribute("readonly");
     document.getElementById("e_tr_cost").removeAttribute("readonly");
     document.getElementById("e_tr_description").removeAttribute("readonly");
+    document.getElementById("e_tr_number_people").removeAttribute("readonly");
+    
 
     return;    
 }
@@ -914,6 +959,7 @@ else(document.getElementById("typeroomEditView").innerHTML == "Xem")
     document.getElementById("e_tr_type_name").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_tr_cost").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_tr_description").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_tr_number_people").setAttributeNode(document.createAttribute("readonly"));
    
 
 }
@@ -937,70 +983,87 @@ function removeReadonly(){
     
 
 }
-function showDataView(idRoom, room_floor, room_number,type_room){
+function showDataView(idRoom, room_floor, room_number,type_room,is_clean){
       
    
     document.getElementById("typeEditView").innerHTML = "Sửa";
     document.getElementById("e_submit").setAttribute("type", "hidden");
     document.getElementById("e_r_room_floor").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_r_room_number").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_r_is_clean").setAttributeNode(document.createAttribute("disabled"));
     document.getElementById("e_r_type_room1").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_r_type_room1").removeAttribute("hidden");
     document.getElementById("e_r_type_room2").setAttributeNode(document.createAttribute("hidden"));
 
+    if(is_clean == 1){
+    document.getElementById("e_r_is_clean").setAttributeNode(document.createAttribute("checked"));
+
+    }
     document.getElementById("idRoom").setAttribute("value", idRoom);
     document.getElementById("e_r_room_floor").setAttribute("value", room_floor);
     document.getElementById("e_r_room_number").setAttribute("value", room_number); 
     document.getElementById("e_r_type_room1").setAttribute("value", type_room); 
+    document.getElementById("e_r_is_clean").setAttribute("value", is_clean); 
     document.getElementById("iddeleteRoom").setAttribute("value", idRoom); 
 
 
 }
 
-function showDataEdit(idRoom, room_floor, room_number,type_room){
+function showDataEdit(idRoom, room_floor, room_number,type_room, is_clean){
    
     document.getElementById("e_submit").setAttribute("type", "submit");
     document.getElementById("typeEditView").innerHTML = "Xem";
     document.getElementById("e_r_room_floor").removeAttribute("readonly");
     document.getElementById("e_r_room_number").removeAttribute("readonly");
+    document.getElementById("e_r_is_clean").removeAttribute("disabled");
     document.getElementById("e_r_type_room1").setAttributeNode(document.createAttribute("hidden"));
     document.getElementById("e_r_type_room2").removeAttribute("hidden");
 
+    if(is_clean == 1){
+    document.getElementById("e_r_is_clean").setAttributeNode(document.createAttribute("checked"));
+
+    }
     document.getElementById("idRoom").setAttribute("value", idRoom);
     document.getElementById("e_r_room_floor").setAttribute("value", room_floor);
     document.getElementById("e_r_room_number").setAttribute("value", room_number); 
+    document.getElementById("e_r_is_clean").setAttribute("value", is_clean); 
     document.getElementById("e_r_type_room1").setAttribute("value", type_room);
     document.getElementById("iddeleteRoom").setAttribute("value", idRoom); 
 
 
 }
-function showDataTypeRoomView(idTypeRoom, type_name, cost,description){
+function showDataTypeRoomView(idTypeRoom, type_name, cost,number_people,description){
     document.getElementById("typeroomEditView").innerHTML = "Sửa";
     document.getElementById("e_tr_submit").setAttribute("type", "hidden");
     document.getElementById("e_tr_type_name").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_tr_cost").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_tr_description").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_tr_number_people").setAttributeNode(document.createAttribute("readonly"));
+    
 
     document.getElementById("idTypeRoom").setAttribute("value", idTypeRoom);
     document.getElementById("e_tr_type_name").setAttribute("value", type_name);
    document.getElementById("e_tr_cost").setAttribute("value", cost); 
     document.getElementById("e_tr_description").setAttribute("value", description);
+    document.getElementById("e_tr_number_people").setAttribute("value", number_people);
+
 
 }
 
-function showDataTypeRoomEdit(idTypeRoom, type_name, cost,description){
+function showDataTypeRoomEdit(idTypeRoom, type_name,cost,number_people, description){
    
     document.getElementById("e_tr_submit").setAttribute("type", "submit");
     document.getElementById("typeroomEditView").innerHTML = "Xem";
     document.getElementById("e_tr_type_name").removeAttribute("readonly");
     document.getElementById("e_tr_cost").removeAttribute("readonly");
     document.getElementById("e_tr_description").removeAttribute("readonly");
+    document.getElementById("e_tr_number_people").removeAttribute("readonly");
 
     document.getElementById("idTypeRoom").setAttribute("value", idTypeRoom);
     document.getElementById("e_tr_type_name").setAttribute("value", type_name);
     document.getElementById("e_tr_cost").setAttribute("value", cost); 
     document.getElementById("e_tr_description").setAttribute("value", description); 
-}
+    document.getElementById("e_tr_number_people").setAttribute("value", number_people); 
 </script>
 </body>
 

@@ -15,11 +15,11 @@ class CreateWebConfigTable extends Migration
     {
         Schema::create('web_config', function (Blueprint $table) {
             $table->increments('config_id');
-            $table->string('banner_link');
-            $table->string('color');
-            $table->string('background_link');
-            $table->string('background_color');
-            $table->integer('author');
+            $table->string('banner_link')->nullable();
+            $table->string('color')->nullable();
+            $table->string('background_link')->nullable();
+            $table->string('background_color')->nullable();
+            $table->integer('author')->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
         });

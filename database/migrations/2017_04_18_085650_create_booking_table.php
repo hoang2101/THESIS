@@ -15,7 +15,8 @@ class CreateBookingTable extends Migration
     {
         Schema::create('booking', function (Blueprint $table) {
              $table->increments('booking_id');
-            $table->integer('room_id')->nullable();
+             $table->integer('hotel_id')->nullable();
+            $table->string('room_id')->nullable();
             $table->date('date_from')->nullable();
             $table->date('date_to')->nullable();
             $table->string('first_name')->nullable();
@@ -32,6 +33,7 @@ class CreateBookingTable extends Migration
             $table->date('booked_date')->nullable();
             $table->date('date_checkin')->nullable();
             $table->date('date_checkout')->nullable();
+            $table->boolean('is_checkin')->default('0');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
         });

@@ -159,14 +159,8 @@
                         </a>
                         
 
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                        <a data-toggle="tooltip" data-placement="top" title="Sign out" href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-                        </a>
+                                     
+                        
                     </div>
                     <!-- /menu footer buttons -->
                 </div>
@@ -192,12 +186,18 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-usermenu pull-right">
                                     <li><a href="{{ route('subProfile',['subdomain' =>$info['subdomain']]) }}"> Hồ sơ</a></li>
-                                    <li><a href="{{ route('logout') }}"
+                                   <li><a href="#"
                                             onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();"><i class="fa fa-sign-out pull-right"></i> Đăng xuất</a></li>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                                     document.getElementById('logout-form').submit();">
+                                            <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                            Logout
+                                        </a>
+
+                                        <form id="logout-form" action="{{ route('subHomesubmit',['subdomain' =>$info['subdomain']]) }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
+                                            <input hidden id="typePosts"" name="typePost" value="logout">
                                         </form>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>

@@ -14,12 +14,13 @@ class CreateRoomTable extends Migration
     public function up()
     {
         Schema::create('room', function (Blueprint $table) {
-           $table->increments('room_id');
+            $table->increments('room_id');
             $table->integer('hotel_id')->nullable();
             $table->integer('room_floor')->nullable();
             $table->integer('room_number')->nullable();
             $table->integer('room_type_id')->nullable();
             $table->boolean('is_booked')->default('0');
+            $table->boolean('is_clean')->->default('1');
             $table->integer('booked_id')->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));

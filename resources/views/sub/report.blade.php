@@ -28,7 +28,7 @@
    
 
     <!-- Custom Theme Style -->
-    <link rel="stylesheet" type="text/css" href="{!! asset('css/style_namage.css') !!}"></link>
+    
     <link href="{!! asset('css/custom.min.css') !!}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{!! asset('css/custommanage.css') !!}"> 
 
@@ -73,11 +73,12 @@
                                 <li><a href="{{ route('subHome',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-home"></i> Home </a>
                                 </li>
                                 
-                                <li><a class="active" href="{{ route('subManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Quản lý khách hàng</a>
+                                <li><a  href="{{ route('subManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Quản lý khách hàng</a>
                                  <li><a  href="{{ route('subStaffManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Quản lý Nhân viên</a>
                                  <li><a  href="{{ route('subRoomManage',['subConfig' =>$info['subdomain']]) }}"><i class="fa fa-university"></i> Quản lý phòng</a>
                                  <li><a  href="{{ route('subProfile',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Quản lý Tài khoản</a>
-                                 <li><a  href="{{ route('subConfig',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Cài ĐẶt Web</a>
+                                 <li><a  href="{{ route('subConfig',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-cog"></i> Cài Đặt Web</a>
+                                 <li><a  class="active" href="{{ route('subReportManage',['subReportManage' =>$info['subdomain']]) }}"><i class="fa fa-cog"></i> Thống kê</a>
                                  
                                  
                                 <!-- <li><a class="active"><i class="fa fa-user" "></i> Quản lý Quản trị khách sạn</a>
@@ -225,54 +226,104 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Danh sách Khách hàng<small></small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <a href="#" class="btn btn-primary btn-xs" data-target="#addUserMainmodal" data-toggle="modal" data-backdrop="static" ><i class="fa fa-folder"></i> Thêm Khách Hàng </a>
-                    </ul>
+                    <h2>Thống kê<small></small></h2>
+                    
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
                     
-                    
-                    <table id="responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                   <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                    <label class="control-label col-md-12 col-sm-12 col-xs-12" for="first-name">Chọn khoảng thời gian 
+                                            </label>
+                    <form id="demo-form2" method="POST" action="{{ route('subReportManageSubmit',['subdomain' =>$info['subdomain']])}}" data-parsley-validate class="form-inline form-label-left">
+                    {{ csrf_field() }}
+                    Hiển thị từ
+                                <div class="form-group {{ $errors->has('date_from') ? ' has-error' : '' }}">
+                                <div class=" col-md-3 col-sm-3 col-xs-9">
+                                 
+                                <input type="text" id="date_from" onfocus="this.type='date'" name="date_from" required="required" value="{{$info['first_day']}}" >
+                               
+                                </div>
+                                </div>
+                                Đến
+                                <div class="form-group">
+                                        
+                                
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                    <input type="text" id="date_from" name="date_to" required="required" value="{{$info['last_day']}}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                        
+                                
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="submit" class="btn"  name="submit"  value="Hiển thị">
+                                </div>
+                                </div>
+                       
+
+                    </form>
+                        <div class="ln_solid"></div>
+                      <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#tab_content1" id="home-tab" role="tab" data-toggle="tab" aria-expanded="true">Doanh thu</a>
+                        </li>
+                        <li role="presentation" class=""><a href="#tab_content2" role="tab" id="profile-tab" data-toggle="tab" aria-expanded="false">Nhân viên</a>
+                        </li>
+                        <li role="presentation" class=""><a href="#tab_content3" role="tab" id="profile-tab2" data-toggle="tab" aria-expanded="false">Thanh Toán</a>
+                        </li>
+                      </ul>
+                      <div id="myTabContent" class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="x_panel">
+                                         <div class="x_title">
+                                        <h2>Biểu đồ</h2>
+                                        <ul class="nav navbar-right panel_toolbox">
+                                          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                          </li>
+                                          
+                                          <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                          </li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                      </div>
+                                      <div class="x_content">
+
+                                        <div id="chart" style="height:350px;"></div>
+                                        <canvas id="myChart"></canvas>
+                                      </div>
+                                    </div>
+                                  </div>
+
+
+                          <table id="responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                       <thead>
                         <tr>
-                          <th id="cel1">ID</th>
-                          <th white-space:pre-line" id="cel5">Họ</th>
-                          <th id="cel5">Tên</th>
-                          <th id="cel10">Username</th>
-                          <th id="cel10">E-mail</th>
-                          <th id="cel10">Tổng booking</th>
-                          <th class="nosort"  id="cel5">Quản lý</th>
+                          <th id="cel1">STT</th>
+                          <th id="cel1">Ngày</th>
+                          <th white-space:pre-line" id="cel5">Tiền phòng</th>
+                          <th id="cel5">Tiền dịch vụ</th>
+                          <th id="cel10">Tiền chi</th>
+                          <th id="cel10">Tổng</th>
                         </tr>
                       </thead>
                       <tbody>
                     
-                      @foreach ($users as $user)
+                      @foreach ($listDay as $key=>$Day)
                     
                             <tr>
-                                <td>{{$user->id}}</td>
-                                <td>{{$user->first_name}}</td>
-                                <td>{{$user->last_name}}</td>
-                                <td>{{$user->username}}</td>
-                                <td>{{$user->email}}</td>
+                                <td style="width=5%">{{$key +1}}</td>
+                                <td>{{$Day}}</td>
                                 
-                                <td>0</td>
-                                
-                                <td>
-                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataView('{{$user->id}}','{{$user->first_name}}', '{{$user->last_name}}', '{{$user->email}}', '{{$user->phone_number}}', '{{$user->username}}', '{{$user->country}}', '{{$user->dob}}', '{{$user->gender}}') " data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
-                                    <a href="#" class="btn btn-info btn-xs"  onclick="showDataEdit('{{$user->id}}','{{$user->first_name}}', '{{$user->last_name}}', '{{$user->email}}', '{{$user->phone_number}}', '{{$user->username}}', '{{$user->country}}', '{{$user->dob}}', '{{$user->gender}}') ;" data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
-
-                            <a data-toggle="tooltip" data-placement="top"  class="btn btn-danger btn-xs"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('deleteUser{{$user->id}}').submit();"><i class="fa fa-trash-o"></i> Xóa </a>
-
-                            <form id="deleteUser{{$user->id}}" action="{{ route('subManageSubmit',['subdomain' =>$info['subdomain']]) }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                            <input hidden id="typePosts"" name="typePost" value="deleteUser">
-                                            <input hidden id="id" name="id" value="{{$user->id}}">
-                                        </form>
-                                </td>
+                                <td>{{$listCostRoom[$key]}}</td>
+                                <td>{{$listCostService[$key]}}</td>
+                                <td>{{$listCostSpend[$key]}}</td>
+                                @if($listCostRoom[$key] + $listCostService[$key] - $listCostSpend[$key] < 0)
+                                <td class="bg-danger text-white">{{$listCostRoom[$key] + $listCostService[$key] - $listCostSpend[$key]}}</td>
+                                @else
+                                <td class="">{{$listCostRoom[$key] + $listCostService[$key] - $listCostSpend[$key]}}</td>
+                                @endif
                             </tr>
                         @endforeach
                        
@@ -283,7 +334,87 @@
                        
                       </tbody>
                     </table>
+                         
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+                          
+
+
+                          <table id="responsive2" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                      <thead>
+                        <tr>
+                          <th id="cel1">STT</th>
+                          <th id="cel1">Nhân viên</th>
+                          <th white-space:pre-line" id="cel5">Tổng book</th>
+                          <th id="cel5">Tổng dịch vụ</th>
+                          <th id="cel10">Tổng</th>
+                        </tr>
+                      </thead>
+                      <tbody>
                     
+                      @foreach ($employees as $key=>$employee)
+                    
+                            <tr>
+                                <td style="width=5%">{{$key +1}}</td>
+                                <td>{{$employee->first_name}} {{$employee->last_name}}</td>
+                                
+                                <td>{{$totalEmpBook[$key]}}</td>
+                                <td>{{$totalEmpService[$key]}}</td>
+                               
+                                <td class="">{{$totalEmpBook[$key] + $totalEmpService[$key]}}</td>
+                               
+                            </tr>
+                        @endforeach
+                       
+
+                        
+                      
+                        
+                       
+                      </tbody>
+                    </table>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
+                          
+
+
+                          <table id="responsive3" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                      <thead>
+                        <tr>
+                          <th id="cel1">STT</th>
+                          <th id="cel1">Ngày</th>
+                          <th id="cel1">Paypal</th>
+                          <th white-space:pre-line" id="cel5">Credit card</th>
+                          <th id="cel5">Phòng</th>
+                          <th id="cel10">Dịch vụ</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                    
+                      @foreach ($listDay as $key=>$Day)
+                    
+                            <tr>
+                                <td style="width=5%">{{$key +1}}</td>
+                                <td>{{$Day}}</td>
+                                
+                                <td>{{$invoicespayal[$key]}}</td>
+                                <td>{{$invoicescard[$key]}}</td>
+                                <td>{{$invoicesroom[$key]}}</td>
+                                <td class="">{{$invoicesservice[$key]}}</td>
+                             
+                            </tr>
+                        @endforeach
+                       
+
+                        
+                      
+                        
+                       
+                      </tbody>
+                    </table>
+                        </div>
+                      </div>
+                    </div>
                     
                   </div>
                 </div>
@@ -518,6 +649,9 @@
     <script src="{!! asset('vendors/iCheck/icheck.min.js') !!}"></script>
     <!-- Skycons -->
     <script src="{!! asset('vendors/skycons/skycons.js') !!}"></script>
+
+    
+    
     <!-- Flot -->
     <script src="{!! asset('vendors/Flot/jquery.flot.js') !!}"></script>
     <script src="{!! asset('vendors/Flot/jquery.flot.pie.js') !!}"></script>
@@ -540,6 +674,7 @@
 
     <!-- Custom Theme Scripts -->
     <script src="{!! asset('js/custom.min.js') !!}"></script>
+    <script src="{!! asset('js/echarts-all-english-v2.js') !!}"></script>
     <!-- Datatables -->
     <script src="{!! asset('vendors/datatables.net/js/jquery.dataTables.min.js') !!}"></script>
     <script src="{!! asset('vendors/datatables.net-bs/js/dataTables.bootstrap.min.js') !!}"></script>
@@ -753,6 +888,171 @@ function showDataEdit(idUser, first_name, last_name,email,phone_number,username,
 
 }
 </script>
+<script type="text/javascript">
+   
+   var day = {!! json_encode($listDay) !!};
+   var room = {!! json_encode($listCostRoom) !!};
+   var service = {!! json_encode($listCostService) !!};
+   var spend = {!! json_encode($listCostSpend) !!};
+
+   var tong = {!! json_encode($tong) !!};
+    var chart = document.getElementById('chart');
+    var myChart = echarts.init(chart);
+           
+           
+
+    option = {
+    title : {
+        text: 'Biểu đồ',
+        subtext: 'Biểu đồ doanh thu'
+    },
+    
+    legend: {
+        data:['Tiền phòng','tiền dịch vụ','tiền chi', 'tổng']
+    },
+    toolbox: {
+        show : true,
+        feature : {
+            mark : {show: true},
+            dataView : {show: true, readOnly: false},
+            magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+            restore : {show: true},
+            saveAsImage : {show: true}
+        }
+    },
+    calculable : true,
+    xAxis : [
+        {
+            type : 'category',
+            boundaryGap : false,
+            data : day
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : [
+        {
+            name:'Tiền phòng',
+            type:'line',
+            smooth:true,
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data: room
+        },
+        {
+            name:'tiền dịch vụ',
+            type:'line',
+            smooth:true,
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data: service
+        },
+        {
+            name:'tiền chi',
+            type:'line',
+            smooth:true,
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data: spend
+        },
+        {
+            name:'tổng',
+            type:'line',
+            smooth:true,
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data: tong
+        }
+    ]
+};
+ myChart.setOption(option);
+
+
+</script>
+
+<script type="text/javascript">
+   
+   var day = {!! json_encode($listDay) !!};
+   var room = {!! json_encode($listCostRoom) !!};
+   var service = {!! json_encode($listCostService) !!};
+   var spend = {!! json_encode($listCostSpend) !!};
+
+   var tong = {!! json_encode($tong) !!};
+    var chart2 = document.getElementById('chart2');
+    var myChart2 = echarts.init(chart2);
+           
+           
+
+    option2 = {
+    title : {
+        text: 'Biểu đồ',
+        subtext: 'Biểu đồ doanh thu'
+    },
+    
+    legend: {
+        data:['Tiền phòng','tiền dịch vụ','tiền chi', 'tổng']
+    },
+    toolbox: {
+        show : true,
+        feature : {
+            mark : {show: true},
+            dataView : {show: true, readOnly: false},
+            magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+            restore : {show: true},
+            saveAsImage : {show: true}
+        }
+    },
+    calculable : true,
+    xAxis : [
+        {
+            type : 'category',
+            boundaryGap : false,
+            data : day
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : [
+        {
+            name:'Tiền phòng',
+            type:'line',
+            smooth:true,
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data: room
+        },
+        {
+            name:'tiền dịch vụ',
+            type:'line',
+            smooth:true,
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data: service
+        },
+        {
+            name:'tiền chi',
+            type:'line',
+            smooth:true,
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data: spend
+        },
+        {
+            name:'tổng',
+            type:'line',
+            smooth:true,
+            itemStyle: {normal: {areaStyle: {type: 'default'}}},
+            data: tong
+        }
+    ]
+};
+ myChart2.setOption(option2);
+</script>
+
+@if(Session('errorsday'))
+<script type="text/javascript">
+    alert("{{Session('errorsday')}}");
+</script>
+@endif
 </body>
 
 </html>

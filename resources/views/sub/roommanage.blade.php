@@ -78,6 +78,7 @@
                                  <li><a  href="{{ route('subRoomManage',['subConfig' =>$info['subdomain']]) }}"><i class="fa fa-university"></i> Quản lý phòng</a>
                                  <li><a  href="{{ route('subProfile',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Quản lý Tài khoản</a>
                                  <li><a  href="{{ route('subProfile',['subConfig' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Cài ĐẶt Web</a>
+                                 <li><a  href="{{ route('subReportManage',['subReportManage' =>$info['subdomain']]) }}"><i class="fa fa-cog"></i> Thống kê</a>
                                 <!-- <li><a class="active"><i class="fa fa-user" "></i> Quản lý Quản trị khách sạn</a>
                                     
                                 </li>
@@ -257,7 +258,7 @@
                                 <td><input disabled type="checkbox" name="vehicle" value="Car" @if($room->is_clean == 1)checked @endif></td>
                                 <td style="width:10%"><input disabled type="checkbox" name="vehicle" value="Car" @if($room->is_booked == 1)checked @endif></td>
                                 <td style="width:10%">
-                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataView('{{$room->room_id}}','{{$room->room_floor}}', '{{$room->room_number}}', '{{$room->type_name}}','{{$room->is_clean}}') " data-toggle="modal" data-backdrop="static" data-target="#viewRoomMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
+                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataView('{{$room->room_id}}','{{$room->room_floor}}', '{{$room->room_number}}', '{{$room->type_name}}','{{$room->is_clean}}');" data-toggle="modal" data-backdrop="static" data-target="#viewRoomMainmodal"><i class="fa fa-folder"></i>Xem</a>
                                     <a href="#" class="btn btn-info btn-xs"  onclick="showDataEdit('{{$room->room_id}}','{{$room->room_floor}}', '{{$room->room_number}}', '{{$room->type_name}}','{{$room->is_clean}}') ;" data-toggle="modal" data-backdrop="static" data-target="#viewRoomMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
                             @if($room->is_booked == 0 )
                             <a  data-toggle="tooltip" data-placement="top"  class="btn btn-danger btn-xs"
@@ -322,7 +323,7 @@
                                 <td style="width:10%">{{$type_room->number_people}}</td>
                                 <td>{{$type_room->description}}</td>
                                 <td style="width:10%">
-                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataTypeRoomView('{{$type_room->type_room_id}}','{{$type_room->type_name}}', '{{$type_room->cost}}', '{{$type_room->number_people}}','{{$type_room->description}}') " data-toggle="modal" data-backdrop="static" data-target="#viewTypeRoomMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
+                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataTypeRoomView('{{$type_room->type_room_id}}','{{$type_room->type_name}}', '{{$type_room->cost}}', '{{$type_room->number_people}}','{{$type_room->description}}');" data-toggle="modal" data-backdrop="static" data-target="#viewTypeRoomMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
                                     <a href="#" class="btn btn-info btn-xs"  onclick="showDataTypeRoomEdit('{{$type_room->type_room_id}}','{{$type_room->type_name}}', '{{$type_room->cost}}','{{$type_room->number_people}}', '{{$type_room->description}}')" data-toggle="modal" data-backdrop="static" data-target="#viewTypeRoomMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
 
                             <a data-toggle="tooltip" data-placement="top"  class="btn btn-danger btn-xs"
@@ -861,9 +862,7 @@
 @endif
 <script type="text/javascript">
 
-$('#responsive2').DataTable( {
-    responsive: true
-} );
+
 
     function removeMessage() {
         $("div").removeClass("has-error");
@@ -880,14 +879,6 @@ $('#responsive2').DataTable( {
 
 
 
-function openViewdialog(){
-
-}
-
-
-function openEditdialog(){
-
-}
 
 function deleteroom(){
     document.getElementById("typePost").setAttribute("value", "deleteRoom");
@@ -1063,7 +1054,8 @@ function showDataTypeRoomEdit(idTypeRoom, type_name,cost,number_people, descript
     document.getElementById("e_tr_type_name").setAttribute("value", type_name);
     document.getElementById("e_tr_cost").setAttribute("value", cost); 
     document.getElementById("e_tr_description").setAttribute("value", description); 
-    document.getElementById("e_tr_number_people").setAttribute("value", number_people); 
+    document.getElementById("e_tr_number_people").setAttribute("value", number_people);
+    } 
 </script>
 </body>
 

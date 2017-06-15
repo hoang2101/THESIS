@@ -30,8 +30,8 @@ Route::get('/hotelmanage','MainController@manageHotel')->name('mainManageHotel')
 Route::get('/managehoteler','MainController@manageHoteler')->name('mainManageHoteler');
 Route::POST('/managehoteler','MainController@addHotelHoteler')->name('addHotelHotelerSubmit');
 
-Route::get('/pay','MainController@paypal')->name('paypal');
-Route::POST('/pay','MainController@paypalSubmit')->name('paypalSubmit');
+Route::get('/payment','MainController@paypal')->name('paypal');
+Route::POST('/payment','MainController@paypalSubmit')->name('paypalSubmit');
 
 Route::GET('/payresult','MainController@getDone')->name('paypaldone');
 Route::GET('/payresult2','MainController@getCancel')->name('paypalcancel');
@@ -52,8 +52,8 @@ Route::group(['subdomain' => '{subdomain}'], function () {
      Route::POST('/{subdomain}/booking/roomresult', 'SubController@editRoomResult' )->name('subRoomResultsubmit');
      Route::get('/{subdomain}/booking/payment', 'SubController@payment' )->name('subPayment');
      Route::get('/{subdomain}/congra', 'SubController@congra' )->name('subCongra');
-     Route::get('/{subdomain}/pay','SubController@paypal')->name('subpaypal');
-     Route::POST('/{subdomain}/pay','SubController@paypalSubmit')->name('subpaypalSubmit');
+     Route::get('/{subdomain}/payment','SubController@paypal')->name('subpaypal');
+     Route::POST('/{subdomain}/payment','SubController@paypalSubmit')->name('subpaypalSubmit');
      Route::GET('/{subdomain}/payresult','SubController@getDone')->name('subpaypaldone');
      Route::GET('/{subdomain}/payresult2','SubController@getCancel')->name('subpaypalcancel');
 

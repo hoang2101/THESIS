@@ -13,6 +13,12 @@ $(document).ready(function() {
            'aTargets': 'nosort'
         }]
     });
+    var table = $('#responsive3').DataTable({
+       'aoColumnDefs': [{
+           'bSortable': false,
+           'aTargets': 'nosort'
+        }]
+    });
 })
 
 function cancelFullScreen(el) {

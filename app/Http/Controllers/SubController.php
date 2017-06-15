@@ -26,6 +26,9 @@ use PayPal\Api\ExecutePayment;
 use PayPal\Api\PaymentExecution;
 use PayPal\Api\Transaction;
 use PayPal\Api\FundingInstrument;
+ use DatePeriod; 
+  use DateTime; 
+  use DateInterval;
 
 class SubController extends Controller
 {
@@ -64,7 +67,7 @@ class SubController extends Controller
             );
              $namepay =  \Session::get('namepay');
                 $amount =  \Session::get('amount');
-
+                \Session::put('cost', $amount);
        // dd($dataPay);
          $infopay = array(
             "name" => $namepay,
@@ -112,7 +115,7 @@ class SubController extends Controller
             "msg" => "Thanh toán thành công",
             );
         if($request['typePost'] == "paypal"){
-
+        \Session::put('type',"Paypal");
        $payer = new Payer();
          $payer->setPaymentMethod('paypal');
         $item_1 = new Item();
@@ -177,7 +180,7 @@ class SubController extends Controller
                
         }
         else{
-           
+        \Session::put('type',"Credit card");
         $amountt = null;
         $amountt = $this->convertCurrency($request['amount'],"VND", 'USD', $amountt);
         
@@ -273,8 +276,8 @@ class SubController extends Controller
 
 public function getDone(Request $request)
 {
-     $subdomain = \Session::get("subdomain");
-     $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+    $subdomain = \Session::get("subdomain");
+    $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
     $id = $request->get('paymentId');
     $token = $request->get('token');
     $payer_id = $request->get('PayerID');
@@ -298,8 +301,11 @@ public function getDone(Request $request)
             $first_name = \Session::get("first_name");
             $last_name =\Session::get("last_name");
             $country = \Session::get("country");
-           
+            $cost =  \Session::get("cost");
+            $type =  \Session::get("type");
             $resulttype_room = \Session::get("resulttype_room");
+
+          
 DB::table('booking')->insertGetId([
              'first_name' => $first_name,
              'last_name' => $last_name,
@@ -312,16 +318,29 @@ DB::table('booking')->insertGetId([
 
 $book = DB::table('booking')->latest()->first();
 
-$roombook = null;
+$roombook = "";
 $rooms = DB::table('room')->where('hotel_id', '=', $hotels->hotel_id)->where('room_type_id', '=', $resulttype_room)->get();
+
+DB::table('invoice')->insertGetId([
+         'booking_id' => $book->booking_id,
+         'cost' => $cost,
+         'type' => "room",
+         'date' => date('Y-m-d'),
+         'name' => $type,
+         'hotel_id' => $hotels->hotel_id,
+         ]);  
+
 for($i = 0; $i < $nroom; $i++){
     foreach ($rooms as $key => $room) {
         if($room->is_booked == 0){
             DB::table('room')->where('room_id', '=', $room->room_id)->update(['is_booked' => 1, 'booked_id' => $book->booking_id]);
-            $roombook = $room->room_number + " ";
+            $roombook =$roombook .((string)($room->room_number) ." ");
+           
+            break;
         }
     }
 }
+
 DB::table('booking')->where('booking_id', '=', $book->booking_id)->update(['room_id' => $roombook]);
 
 
@@ -336,6 +355,8 @@ DB::table('booking')->where('booking_id', '=', $book->booking_id)->update(['room
     \Session::forget("last_name");
     \Session::forget("country");
     \Session::forget("subdomain");
+    \Session::forget("cost");
+    \Session::forget("type");
     \Session::flash('messagesResult','Thanh toán thành công');
     \Session::flash('idbooking',$book->booking_id);
 
@@ -665,7 +686,7 @@ public function editRoomResult(Request $request, $subdomain){
             $nroom = \Session::get("nroom");
            $resultroom = \Session::get('resultroom');
            $resulttype_room = \Session::get("resulttype_room") ;
-
+           \Session::put("resulttype_room", $resulttype_room[$id]) ;
            $type_room = DB::table('type_room')->where('type_room_id', '=', $resulttype_room[$id])->first();
 
 
@@ -1106,7 +1127,7 @@ public function configManageSubmit(Request $request,  $subdomain){
 
 public function bookManage($subdomain){
         $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
-        $checkins = DB::table('booking')->join('account','account.id','=','booking.account_id')->where('booking.hotel_id','=',$hotels->hotel_id)->select('booking.*', 'account.username')->orderBy('booking_id', 'desc')->get();
+        $checkins = DB::table('booking')->leftJoin('account','account.id','=','booking.account_id')->where('booking.hotel_id','=',$hotels->hotel_id)->select('booking.*', 'account.username')->orderBy('booking_id', 'desc')->get();
         $checkouts = DB::table('checkout')->orderBy('checkout_id', 'desc')->get();
         $rooms = $rooms = DB::table('room')->where('room.hotel_id', '=', $hotels->hotel_id)->orderBy('room_number', 'asc')->get();
         $type_rooms =  DB::table('type_room')->where('hotel_id', '=', $hotels->hotel_id)->get();
@@ -1238,7 +1259,7 @@ public function bookManageSubmit(Request $request,  $subdomain){
              $findrooms =explode(" ", $booked->room_id);
         
             foreach ($findrooms as $findroom) {
-                DB::table('room')->where('room_number', '=', $findroom)->update(['is_booked' => 0]);
+                DB::table('room')->where('room_number', '=', $findroom)->update(['is_booked' => 0,'is_clean' => 1]);
             }
             return redirect()->route('subBookManage',['subdomain' => $subdomain]);
 
@@ -1439,9 +1460,15 @@ public function reportManage( $subdomain){
             }
 
             $i = 1;
-        $first_day_this_month = date('Y-m-$i'); // hard-coded '01' for first day date("Y/m/d")
-
+        $first_day_this_month = date('Y-m-01'); // hard-coded '01' for first day date("Y/m/d")
+        
         $last_day_this_month  = date('Y-m-t');
+        $info = array(
+            "name" => $hotels->hotel_name,
+            "subdomain" => $subdomain, 
+            "first_day" => $first_day_this_month,
+            "last_day" => $last_day_this_month,
+            );
         for($i = 1; $i <=  date('t'); $i++)
         {
             // add the date to the dates array
@@ -1498,19 +1525,33 @@ public function reportManage( $subdomain){
 
 
 
-        
+       
         //return $first_day_this_month ." +" .$last_day_this_month;
         $invoices = DB::table('invoice')->whereBetween('date',[$first_day_this_month, $last_day_this_month] )->get();
+        $invoicespayal = null;
+        $invoicescard = null;
+        $invoicesroom = null;
+        $invoicesservice = null;
+        foreach ($listDay as $key => $Day) {
+            $invoicespayal[] = count(DB::table('invoice')->where('date','=',$Day)->where('name','=', 'Paypal')->get());
+            $invoicescard[] = count(DB::table('invoice')->where('date','=',$Day)->where('name','=', 'Credit card')->get());
+            $invoicesroom[] = count(DB::table('invoice')->where('date','=',$Day)->where('type','=', 'service')->get());
+            $invoicesservice[] = count(DB::table('invoice')->where('date','=',$Day)->where('name','=', 'room')->get());
+        }
         $type_rooms =  DB::table('type_room')->where('hotel_id', '=', $hotels->hotel_id)->get();
+        $tong = null;
+        foreach ($listCostRoom as $key => $room) {
+            $tong[] = $room + $listCostService[$key] - $listCostSpend[$key];
+        }
+        $tongEmp = null;
+        $employeesname = null;
+        foreach ($employees as $key => $employee) {
+            $tongEmp[] = $totalEmpBook[$key] + $totalEmpService[$key];
+            $employeesname[] = $employee->first_name.$employee->last_name;
+        }
 
-
-            $info = array(
-            "name" => $hotels->hotel_name,
-            "subdomain" => $subdomain, 
-            "first_day" => $first_day,
-            "last_day" => $last_day
-            );
-            return view('sub.report')->with('info',$info)->with('listDay', $listDay)->with('listCostRoom', $listCostRoom)->with('listCostService', $listCostService)->with('listCostService', $listCostService)->with('listCostSpend',$listCostSpend)->with('employees',$employees)->with('totalEmpBook',$totalEmpBook)->with('totalEmpService',$totalEmpService);
+            
+            return view('sub.report')->with('info',$info)->with('listDay', $listDay)->with('listCostRoom', $listCostRoom)->with('listCostService', $listCostService)->with('listCostSpend',$listCostSpend)->with('employees',$employees)->with('employeesname',$employeesname)->with('totalEmpBook',$totalEmpBook)->with('totalEmpService',$totalEmpService)->with('tong',$tong)->with('tongEmp',$tongEmp)->with('invoicespayal',$invoicespayal)->with('invoicescard',$invoicescard)->with('invoicesroom',$invoicesroom)->with('invoicesservice',$invoicesservice);
             // if(Auth::guard('account')->user()->type == 4 || Auth::guard('account')->user()->type == 3){
             //     return view('sub.mainManageProlife')->with('users',$users)->with('info',$info);
             // }
@@ -1522,7 +1563,136 @@ public function reportManage( $subdomain){
 }
 
 public function reportManageSubmit(Request $request,  $subdomain){
+            
+            
+            if(strtotime($request['date_from']) >= strtotime($request['date_to'])){ 
+                    \Session::flash('errorsday',"Ngày bắt đâu phải nhỏ hơn ngày kết thúc");
+                 return redirect()->route('subReportManage',['subdomain' => $subdomain]);
+            }
+ $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+        $rooms = DB::table('room')->where('room.hotel_id', '=', $hotels->hotel_id)->join('type_room', 'room.room_type_id', '=', 'type_room.type_room_id')->select('room.*', 'type_room.type_name')->orderBy('room_number', 'asc')->get();
 
+    $period = new DatePeriod(
+     new DateTime($request['date_from']),
+     new DateInterval('P1D'),
+     new DateTime($request['date_to'])
+);
+    $listDay = null;
+    foreach($period as $dt){
+       $listDay[] = $dt->format("Y-m-d");
+    }
+   
+       
+        // $users = DB::table('account')->where([['hotel_id', '=', $hotels->hotel_id],['type', '=', 4],])->get();
+        if($hotels != null){
+             
+            if(Auth::guard('account')->Check()){
+
+                if(Auth::guard('account')->user()->hotel_id != $hotels->hotel_id ){
+                    Auth::guard('account')->logout();
+                }
+            }
+            if(!Auth::guard('account')->Check()){
+                return redirect()->route('subHome',['subdomain' => $subdomain]);
+            }
+            if(Auth::guard('account')->user()->type != 3){
+                return view('sub.404');
+            }
+
+            $i = 1;
+        $first_day_this_month = $request['date_from']; // hard-coded '01' for first day date("Y/m/d")
+        
+        $last_day_this_month  = $request['date_to'];
+        $info = array(
+            "name" => $hotels->hotel_name,
+            "subdomain" => $subdomain, 
+            "first_day" => $first_day_this_month,
+            "last_day" => $last_day_this_month,
+            );
+       
+        $listCostRoom = null;
+        foreach ($listDay as $key => $day) {
+             $invoicesrooms = DB::table('invoice')->where('hotel_id','=',$hotels->hotel_id)->where('date','=',$day)->where('type','=','room')->get();
+            $totalroom = 0;
+            foreach ($invoicesrooms as $invoicesroom) {
+                 $totalroom += $invoicesroom->cost;
+            }
+
+            $listCostRoom[] =   $totalroom;
+        }
+
+        $listCostService = null;
+        foreach ($listDay as $key => $day)
+        {
+            $invoicesservices = DB::table('invoice')->where('hotel_id','=',$hotels->hotel_id)->where('date','=',$day)->where('type','=','service')->get();
+            $totalservice = 0;
+            foreach ($invoicesservices as $invoicesservices) {
+                 $totalservice += $invoicesservices->cost;
+            }
+
+            $listCostService[] =   $totalservice;
+        }
+
+        $listCostSpend = null;
+        foreach ($listDay as $key => $day)
+        {
+            $spends = DB::table('spends')->where('hotel_id','=',$hotels->hotel_id)->where('date','=',$day)->get();
+            $totalspend = 0;
+            foreach ($spends as $spend) {
+                 $totalspend += $spend->cost;
+            }
+
+            $listCostSpend[] =   $totalspend;
+        }
+        //return $listCostSpend;
+        // retủn list cost room, service, date, spend
+        $totalEmpBook = null;
+        $totalEmpService = null;
+        $employees = DB::table('account')->where('hotel_id','=',$hotels->hotel_id)->where('type','=', 4)->get();
+        foreach ($employees as $employee) {
+                
+                 $totalEmpBook[] =count(DB::table('booking')->where('account_id','=',$employee->id)->get());
+                 $totalEmpService[] =count(DB::table('book_service')->where('account_id','=',$employee->id)->get());
+
+            }
+       // return $totalEmpService;
+
+
+
+       
+        //return $first_day_this_month ." +" .$last_day_this_month;
+        $invoices = DB::table('invoice')->whereBetween('date',[$first_day_this_month, $last_day_this_month] )->get();
+        $invoicespayal = null;
+        $invoicescard = null;
+        $invoicesroom = null;
+        $invoicesservice = null;
+        foreach ($listDay as $key => $Day) {
+            $invoicespayal[] = count(DB::table('invoice')->where('date','=',$Day)->where('name','=', 'Paypal')->get());
+            $invoicescard[] = count(DB::table('invoice')->where('date','=',$Day)->where('name','=', 'Credit card')->get());
+            $invoicesroom[] = count(DB::table('invoice')->where('date','=',$Day)->where('type','=', 'service')->get());
+            $invoicesservice[] = count(DB::table('invoice')->where('date','=',$Day)->where('name','=', 'room')->get());
+        }
+        $type_rooms =  DB::table('type_room')->where('hotel_id', '=', $hotels->hotel_id)->get();
+        $tong = null;
+        foreach ($listCostRoom as $key => $room) {
+            $tong[] = $room + $listCostService[$key] - $listCostSpend[$key];
+        }
+        $tongEmp = null;
+        $employeesname = null;
+        foreach ($employees as $key => $employee) {
+            $tongEmp[] = $totalEmpBook[$key] + $totalEmpService[$key];
+            $employeesname[] = $employee->first_name.$employee->last_name;
+        }
+
+            
+            return view('sub.report')->with('info',$info)->with('listDay', $listDay)->with('listCostRoom', $listCostRoom)->with('listCostService', $listCostService)->with('listCostSpend',$listCostSpend)->with('employees',$employees)->with('employeesname',$employeesname)->with('totalEmpBook',$totalEmpBook)->with('totalEmpService',$totalEmpService)->with('tong',$tong)->with('tongEmp',$tongEmp)->with('invoicespayal',$invoicespayal)->with('invoicescard',$invoicescard)->with('invoicesroom',$invoicesroom)->with('invoicesservice',$invoicesservice);
+            // if(Auth::guard('account')->user()->type == 4 || Auth::guard('account')->user()->type == 3){
+            //     return view('sub.mainManageProlife')->with('users',$users)->with('info',$info);
+            // }
+            
+            
+         }
+       return view('sub.404');
 }
     public function create()
     {

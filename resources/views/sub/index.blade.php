@@ -119,12 +119,13 @@
         {{ csrf_field() }}
               <input hidden id="typePosts"" name="typePost" value="searchRoom">
             <div class="row">    
-            <div class="col-md-6 form-group{{ $errors->has('check_in') ? ' has-error' : '' }}" >
+            <div class="col-md-6 form-group {{ $errors->has('check_in') ? ' has-error' : '' }}" >
               <label >Ngày đến</label>
               
               <div class='input-group' >
                   <span class="input-group-addon"><i class="fa fa fa-calendar fa-fw" aria-hidden="true"></i></span>
-                  <input id='datepickern' type="date"  class="form-control" placeholder="Check-in" name="check_in" required>
+                  <input id='datepickern' type="date"  class="form-control" placeholder="Check-in" value="{{ old('check_in') }}" name="check_in" required>
+
               </div>
             </div>
          
@@ -134,36 +135,42 @@
               <label>Ngày đi</label>
               <div class='input-group' >
                   <span class="input-group-addon"><i class="fa fa fa-calendar fa-fw" aria-hidden="true"></i></span>
-                  <input id='datepicker2n' type="date" class="form-control" placeholder="Check-out" name="check_out" required>
+                  <input id='datepicker2n' type="date" class="form-control" placeholder="Check-out" name="check_out" value="{{ old('check_out') }}" required>
               </div>
             </div>
-          
+            <div class=" col-md-12 form-group{{ $errors->has('check_in') ? ' has-error' : '' }}">
+                      @if ($errors->has('check_in'))
+                              <span class="help-block has-error">
+                                    <strong class="messageError">{{ $errors->first('check_in') }}</strong>
+                                </span>
+                                  @endif
+                                  </div>
              <div class="col-sm-6 col-md-6 form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
               <div>
                   <label>Họ</label>
-                  <input type="text" class="form-control" name="first_name" min="0" required>
+                  <input type="text" class="form-control" name="first_name" value="{{ old('first_name') }}" min="0" required>
               </div>
             </div>
             <div class="col-sm-6 col-md-6 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
               <div>
                   <label>Tên</label>
-                  <input type="text" class="form-control"  name="last_name" required>
+                  <input type="text" class="form-control"  name="last_name" value="{{ old('last_name') }}" required>
               </div>
             </div>
 
-            <div class="col-sm-4 col-md-4 form-group{{ $errors->has('people') ? ' has-error' : '' }}">
+            <div class="col-sm-4 col-md-4 form-group {{ $errors->has('people') ? ' has-error' : '' }}">
               <div>
                   <label>Số người</label>
-                  <input type="number" class="form-control" name="people" min="1" required>
+                  <input type="number" class="form-control" name="people" min="1" value="{{ old('people') }}" required>
               </div>
             </div>
             <div class="col-sm-4 col-md-4 form-group{{ $errors->has('room') ? ' has-error' : '' }}">
               <div>
                   <label>Số phòng</label>
-                  <input type="number" class="form-control" name="room" min="1" required>
+                  <input type="number" class="form-control" name="room" min="1" value="{{ old('room') }}" required>
               </div>
             </div>
-            
+           
             <div class="col-sm-4 col-md-4 form-group{{ $errors->has('Country') ? ' has-error' : '' }}">
               <div>
                   <label>Quốc gia</label>
@@ -174,6 +181,13 @@
                                 </select>
               </div>
             </div>
+             <div class=" col-md-12 form-group{{ $errors->has('check_in') ? ' has-error' : '' }}">
+                      @if ($errors->has('people'))
+                              <span class="help-block has-error">
+                                    <strong class="messageError">{{ $errors->first('people') }}</strong>
+                                </span>
+                                  @endif
+                                  </div>
             </div>
             <div class="row">
             <div class="col-md-6 pull-right">

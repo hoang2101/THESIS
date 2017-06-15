@@ -220,7 +220,130 @@
 
             <!-- page content -->
             <div class="right_col" role="main">
+<!-- <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Danh sách Khách hàng<small></small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <a href="#" class="btn btn-primary btn-xs" data-target="#addCheckinMainmodal" data-toggle="modal" data-backdrop="static" ><i class="fa fa-folder"></i> Đặt phòng </a>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    
+                    <form id="demo-form2" method="POST" action="{{ route('subReportManageSubmit',['subdomain' =>$info['subdomain']])}}" data-parsley-validate class="form-inline form-label-left">
+                    {{ csrf_field() }}
+                    
+                                <div class="col-md-2 col-sm-2 col-xs-12  form-group{{ $errors->has('date_checkin') ? ' has-error' : '' }}">
+                                <div >
+                                
+                               <label>Hiẻn thì từ</label>
 
+                                </div>
+                                </div>
+                                <div class="col-md-3 col-sm-3 col-xs-12  form-group{{ $errors->has('date_checkin') ? ' has-error' : '' }}">
+                                <div >
+                                
+                                <input id="date_checkin" type="date"  class="" placeholder="Ngày checkin" name="date_checkin" value="{{ old('date_checkin') }}" required >
+
+                                
+                                </div>
+                            </div>
+                            <div class="col-md-1 col-sm-1 col-xs-12" style="!important"  form-group{{ $errors->has('date_checkin') ? ' has-error' : '' }}">
+                                <div >
+                                
+                               <label>  Đến</label>
+
+                                </div>
+                                </div>
+                              
+                                <div class="col-md-3 col-sm-3 col-xs-12  form-group{{ $errors->has('date_checkin') ? ' has-error' : '' }}">
+                                <div >
+                                
+                                <input id="date_checkin" type="date"  class="" placeholder="Ngày checkin" name="date_checkin" value="{{ old('date_checkin') }}" required >
+
+                                
+                                </div>
+                            </div>
+                                <div class="form-group">
+                                        
+                                
+                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input type="submit" class="btn"  name="submit"  value="Hiển thị">
+                                </div>
+                                </div>
+                       
+
+                    </form>
+                    <table id="responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                      <thead>
+                        <tr>
+                          <th id="cel5"></th>
+                            <th id="cel5">1</th>
+                          <th id="cel10">2</th>
+                          <th id="cel10">3</th>
+                          <th id="cel10">4</th>
+                          <th id="cel10">5</th>
+                          <th id="cel10">4</th>
+                          <th id="cel10">7</th>
+                          <th id="cel10">8</th>
+                          <th id="cel10">9</th>
+                          <th id="cel10">10</th>
+                          <th id="cel10">11</th>
+                          <th id="cel10">12</th>
+                          <th id="cel10">13</th>
+                          <th id="cel10">14</th>
+                          <th id="cel10">15</th>
+                          <th id="cel10">5</th>
+                          <th id="cel10">5</th>
+                          <th id="cel10">5</th>
+                          <th id="cel10">5</th>
+                          <th id="cel10">5</th>
+                          <th id="cel10">5</th>
+                          <th id="cel10">5</th>
+                          <th id="cel10">5</th>
+                          <th id="cel10">5</th>
+                          <th id="cel10">5</th>
+                          <th id="cel10">5</th>
+                          <th id="cel10">5</th>
+                          <th id="cel10">5</th>
+                          <th id="cel10">5</th>
+                          <th id="cel10">5</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                    
+                      @foreach ($checkins as $checkin)
+                    
+                            <tr>
+                                <td>{{$checkin->booking_id}}</td>
+                                <td>{{$checkin->first_name.' '.$checkin->last_name}}</td>
+                                <td>{{$checkin->room_id}}</td>
+                                <td>{{$checkin->date_from}}</td>
+                                <td>{{$checkin->date_to}}</td>
+                                <td>{{$checkin->number_people}}</td>
+                                <td>{{$checkin->contry}}</td>
+                                <td>
+                                   
+                                </td>
+                            </tr>
+                        @endforeach
+                       
+
+                        
+                      
+                        
+                       
+                      </tbody>
+                    </table>
+                    
+                    
+                  </div>
+                </div>
+              </div>
+ -->
+
+              <!-- rooômmnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn-->
                 <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">

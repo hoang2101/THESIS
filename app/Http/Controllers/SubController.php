@@ -510,13 +510,13 @@ public function congra($subdomain){
             );
             if(strtotime($checkin) > strtotime($checkout)){ 
                 $validator->errors()->add('typePost', 'searchRoom');
-                $validator->errors()->add('checkin', 'Ngày checkin không thể lớn hơn ngày checkout');
+                $validator->errors()->add('check_in', 'Ngày checkin không thể lớn hơn ngày checkout');
                  return redirect()->route('subHome',['subdomain' => $subdomain])->withErrors($validator)->withInput();
             }
 
             if(strtotime($checkin) < $today){ 
                 $validator->errors()->add('typePost', 'searchRoom');
-                $validator->errors()->add('checkin', 'Ngày checkin không thể không thể nhỏ hơn hôm nay');
+                $validator->errors()->add('check_in', 'Ngày checkin không thể không thể nhỏ hơn hôm nay');
                  return redirect()->route('subHome',['subdomain' => $subdomain])->withErrors($validator)->withInput();
             }
             if($nroom > ($people)){ 

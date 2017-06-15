@@ -110,8 +110,9 @@
                       
                                     <span class=" fa fa-angle-down"></span> 
                     </a>
+                    @if(Auth::guard('account')->check()) {
                     <ul class="dropdown-menu dropdown-user">
-                       @if(Auth::guard('account')->check()) {
+                       
                         <li><a href="{{ route('subConfig',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user fa-fw"></i> User Profile</a>
                         </li>
                         
@@ -129,8 +130,9 @@
                                             <input hidden id="typePosts"" name="typePost" value="logout">
                                         </form>
                         </li>
-                        @endif
+                      
                     </ul>
+                      @endif
                     <!-- /.dropdown-user -->
                 </li>
                 <!-- /.dropdown -->

@@ -231,7 +231,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                      @foreach ($hotels as $hotel)
+                      @foreach ($hotels as $key => $hotel)
                       
                             <tr>
                                 <td>{{$hotel->hotel_id}}</td>
@@ -239,7 +239,7 @@
                                 <td>{{$hotel->hotel_url}}</td>
                                 <td>{{$hotel->expire_date}}</td>
                                 <td>{{$hotel->total_room}}</td>
-                                <td>0</td>
+                                <td>{{$totalbook[$key]}}</td>
                                 <td>
                                     <a href="#" class="btn btn-primary btn-xs" onclick="showHotelView('{{$hotel->hotel_id}}','{{$hotel->hotel_name}}', '{{$hotel->hotel_url}}', '{{$hotel->expire_date}}', '{{$hotel->total_room}}') " data-toggle="modal" data-backdrop="static" data-target="#viewHotelMainmodal "  ><i class="fa fa-folder"></i> View </a>
                                     <a href="#" class="btn btn-info btn-xs"  onclick="showHotelEdit('{{$hotel->hotel_id}}','{{$hotel->hotel_name}}', '{{$hotel->hotel_url}}', '{{$hotel->expire_date}}' , '{{$hotel->total_room}}') ;" data-toggle="modal" data-backdrop="static" data-target="#viewHotelMainmodal"><i class="fa fa-pencil"></i> Edit </a>

@@ -711,9 +711,9 @@ protected function validator(array $data)
 
        $hotels = DB::table('hotel')->where('account_id', '=', Auth::user()->username)->get();
        // $hotels="zxcx";
-       $totalbook = 0;
+       $totalbook = null;
        foreach ($hotels as $key => $hotel) {
-         $totalbook +=count(DB::table('booking')->where('hotel_id', '=', $hotel->hotel_id)->get());
+         $totalbook[] =count(DB::table('booking')->where('hotel_id', '=', $hotel->hotel_id)->get());
        }
        
        

@@ -237,41 +237,93 @@ class SubController extends Controller
                     ->setTransactions(array($transaction));
                    
                     /** dd($payment->create($this->_api_context));exit; **/
-                try {
-                    $payment->create($this->_api_context);
-                } catch (\PayPal\Exception\PPConnectionException $ex) {
-                    if (\Config::get('app.debug')) {
-                       
-                       \Session::flash('messagesResult','hết thời hạn kết nối');
 
-                        
-                        return Redirect::route('subpaypal',['subdomain' => $subdomain])->with('message', $resultpay);
-                        /** echo "Exception: " . $ex->getMessage() . PHP_EOL; **/
-                        /** $err_data = json_decode($ex->getData(), true); **/
-                        /** exit; **/
-                    } else {
+                     try {
+                    $payment->create($this->_api_context);
+                } catch (\PayPal\Exception\PayPalConnectionException  $ex) {
+                    
                        \Session::flash('messagesResult','có lỗi trong quá trình thanh toán vui lòng thanh toán lại');
                         
-                        return Redirect::route('subpaypal',['subdomain' => $subdomain]);
+                       return Redirect::route('subpaypal',['subdomain' => $subdomain]);
                         /** die('Some error occur, sorry for inconvenient'); **/
-                    }
+                    
                 }
-                foreach($payment->getLinks() as $link) {
-                    if($link->getRel() == 'approval_url') {
-                        $redirect_url = $link->getHref();
-                        break;
-                    }
-                }
+               
                 /** add payment ID to session **/
-                \Session::flash('paypal_payment_id', $payment->getId());
-                if(isset($redirect_url)) {
-                    /** redirect to paypal **/
-                    return Redirect::away($redirect_url);
-                }
-                 \Session::flash('messagesResult','có lỗi trong quá trình thanh toán vui lòng thanh toán lại');
-                return Redirect::route('subpaypal',['subdomain' => $subdomain]);
+            // $subdomain = \Session::get("subdomain");
+            $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+                $nroom =  \Session::get("nroom");
+            $checkin =  \Session::get("checkin");
+            $checkout=  \Session::get("checkout");
+            $people = \Session::get("people");
+            $first_name = \Session::get("first_name");
+            $last_name =\Session::get("last_name");
+            $country = \Session::get("country");
+            $cost =  \Session::get("cost");
+            $type =  \Session::get("type");
+            $resulttype_room = \Session::get("resulttype_room");
+
+          
+DB::table('booking')->insertGetId([
+             'first_name' => $first_name,
+             'last_name' => $last_name,
+             'date_from' => $checkin,
+             'date_to' => $checkout,
+             'number_people' => $people,
+             'contry' => $country,
+             'hotel_id' => $hotels->hotel_id,
+         ]);
+
+$book = DB::table('booking')->latest()->first();
+
+$roombook = "";
+$rooms = DB::table('room')->where('hotel_id', '=', $hotels->hotel_id)->where('room_type_id', '=', $resulttype_room)->get();
+
+DB::table('invoice')->insertGetId([
+         'booking_id' => $book->booking_id,
+         'cost' => $cost,
+         'type' => "room",
+         'date' => date('Y-m-d'),
+         'name' => $type,
+         'hotel_id' => $hotels->hotel_id,
+         ]);  
+
+for($i = 0; $i < $nroom; $i++){
+    foreach ($rooms as $key => $room) {
+        if($room->is_booked == 0){
+            DB::table('room')->where('room_id', '=', $room->room_id)->update(['is_booked' => 1, 'booked_id' => $book->booking_id]);
+            $roombook =$roombook .((string)($room->room_number) ." ");
+           
+            break;
+        }
+    }
+}
+
+DB::table('booking')->where('booking_id', '=', $book->booking_id)->update(['room_id' => $roombook]);
+
+
+
+
+    
+    \Session::forget("nroom");
+    \Session::forget("checkin");
+    \Session::forget("checkout");
+    \Session::forget("people");
+    \Session::forget("first_name");
+    \Session::forget("last_name");
+    \Session::forget("country");
+    \Session::forget("subdomain");
+    \Session::forget("cost");
+    \Session::forget("type");
+    \Session::flash('messagesResult','Thanh toán thành công');
+    \Session::flash('idbooking',$book->booking_id);
+
+                return Redirect::route('subCongra',['subdomain' => $subdomain]);
             }
     }
+
+
+                
 
 
 public function getDone(Request $request)
@@ -489,7 +541,13 @@ public function congra($subdomain){
 
 ////////////////////////search rooom
           if($request['typePost']=='searchRoom'){
-
+            if(Auth::guard('account')->check()){
+                if(Auth::guard('account')->user()->type == 3 || Auth::guard('account')->user()->type == 4){
+                \Session::flash('messagesResult','Bạn không có quyền đặt phòng xin vui lòng đăng xuất');
+                 return redirect()->route('subHome',['subdomain' => $subdomain]);
+            }
+            }
+            
             // /echo "Today is " . date("Y/m/d") . "<br>";
             // dd("Today is " . date("Y/m/d  H:i:s"));
             $checkin = $request['check_in'];

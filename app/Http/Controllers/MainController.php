@@ -206,7 +206,7 @@ class MainController extends Controller
             );
 
 
-
+          
             $card = new PaymentCard();
             $card->setType($request['typecredit'])
             ->setNumber($request['numberCredit'])
@@ -247,40 +247,35 @@ class MainController extends Controller
                     ->setPayer($payer)
                     ->setRedirectUrls($redirect_urls)
                     ->setTransactions(array($transaction));
+
                    
                     /** dd($payment->create($this->_api_context));exit; **/
                 try {
                     $payment->create($this->_api_context);
-                } catch (\PayPal\Exception\PPConnectionException $ex) {
-                    if (\Config::get('app.debug')) {
-                       
-                       \Session::flash('messagesResult','hết thời hạn kết nối');
-
-                        
-                        return Redirect::route('mainManageHoteler')->with('message', $resultpay);
-                        /** echo "Exception: " . $ex->getMessage() . PHP_EOL; **/
-                        /** $err_data = json_decode($ex->getData(), true); **/
-                        /** exit; **/
-                    } else {
+                } catch (\PayPal\Exception\PayPalConnectionException  $ex) {
+                    
                        \Session::flash('messagesResult','có lỗi trong quá trình thanh toán vui lòng thanh toán lại');
                         
                         return Redirect::route('mainManageHoteler');
                         /** die('Some error occur, sorry for inconvenient'); **/
-                    }
+                    
                 }
-                foreach($payment->getLinks() as $link) {
-                    if($link->getRel() == 'approval_url') {
-                        $redirect_url = $link->getHref();
-                        break;
-                    }
-                }
+               
                 /** add payment ID to session **/
-                \Session::flash('paypal_payment_id', $payment->getId());
-                if(isset($redirect_url)) {
-                    /** redirect to paypal **/
-                    return Redirect::away($redirect_url);
-                }
-                 \Session::flash('messagesResult','có lỗi trong quá trình thanh toán vui lòng thanh toán lại');
+                $dataPay =  \Session::get('dataPay');
+                DB::table('hotel')->insertGetId([
+                 'hotel_name' => $dataPay['hotel_name'],
+                 'account_id' => Auth::user()->username,
+                 'hotel_url' => $dataPay['hotel_url'],
+                 'expire_date' => $dataPay['expire_date'],
+                 'total_room' => $dataPay['total_room'],
+             ]);
+            DB::table('users')
+                ->where('id', Auth::User()->id)
+                ->update(['total_cost' => $dataPay['total_cost']]);
+
+          \Session::forget('dataPay');
+          \Session::flash('messagesResult','Thanh toán thành công');
                 return Redirect::route('mainManageHoteler');
             }
     }

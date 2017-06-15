@@ -20,7 +20,7 @@ class CreateRoomTable extends Migration
             $table->integer('room_number')->nullable();
             $table->integer('room_type_id')->nullable();
             $table->boolean('is_booked')->default('0');
-            $table->boolean('is_clean')->->default('1');
+            $table->boolean('is_clean')->default('1');
             $table->integer('booked_id')->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));

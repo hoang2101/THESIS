@@ -601,7 +601,7 @@
                                 
                             </div>
                         </div>
-                        <input type="submit" name="Register" class="loginmodal-submit " value="Thêm Phòng">
+                        <input type="submit" name="Register" class="loginmodal-submit " value="Thêm loại phòng">
                        
                     </form>
           </div>

@@ -716,8 +716,13 @@ protected function validator(array $data)
 
        $hotels = DB::table('hotel')->where('account_id', '=', Auth::user()->username)->get();
        // $hotels="zxcx";
-        
-        return view('main.manageHoteler')->with('hotels',$hotels);
+       $totalbook = 0;
+       foreach ($hotels as $key => $hotel) {
+         $totalbook +=count(DB::table('booking')->where('hotel_id', '=', $hotel->hotel_id)->get());
+       }
+       
+       
+        return view('main.manageHoteler')->with('hotels',$hotels)->with('totalbook', $totalbook);
     }
 
     public function addHotelHoteler(Request $request){

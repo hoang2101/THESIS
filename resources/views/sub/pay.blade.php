@@ -199,6 +199,47 @@
                                                 <input disabled type="text" id="last-name" name="amount" required="required" class="form-control col-md-7 col-xs-12" value="{{$infopay['amount']}} VND">
                                             </div>
                                         </div>
+                                        <div class="form-group {{ $errors->has('ho') ? ' has-error' : '' }}">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input  type="text" id="ho" onchange="addFirstName();" name="ho" required="required" placeholder="Họ" class="form-control col-md-7 col-xs-12" value="">
+                                            </div>
+                                            @if ($errors->has('ho'))
+                                              <span class="help-block has-error">
+                                                    <strong class="messageError">{{ $errors->first('ho') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                        <div class="form-group {{ $errors->has('ten') ? ' has-error' : '' }}">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input  type="text" id="ten" onchange="addlastName();" name="ten" required="required" placeholder="Tên" class="form-control col-md-7 col-xs-12" value="">
+                                            </div>
+                                            @if ($errors->has('ten'))
+                                              <span class="help-block has-error">
+                                                    <strong class="messageError">{{ $errors->first('ten') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+                                        <div class="form-group {{ $errors->has('quocgia') ? ' has-error' : '' }}">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                 <select id="quocgia" onchange="addCountry()"  name="quocgia" class="form-control mySelectCountry" placeholder="Country" required>
+                                                    <option value="" disabled selected>Chọn  Quốc gia</option>
+                                    
+                                </select>
+                                            </div>
+
+                                            @if ($errors->has('quocgia'))
+                                              <span class="help-block has-error">
+                                                    <strong class="messageError">{{ $errors->first('quocgia') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
+
                       </div>
                                         
                                         <br>
@@ -210,6 +251,9 @@
                                             <input hidden type="text" name="typePost" value="paypal">
                                             <input hidden type="text" id="name" name="name"   value="{{$infopay['name']}}">
                                           <input hidden type="text" id="last-name" name="amount" value="{{$infopay['amount']}}">
+                                          <input hidden type="text" id="ho1" name="ho" value="">
+                                          <input hidden type="text" id="ten1" name="ten" value="">
+                                          <input hidden type="text" id="quocgia1" name="quocgia" value="">
                                             
                                             
                                              <center> <button type="submit" >
@@ -226,6 +270,9 @@
                                      <input hidden type="text" name="typePost" value="payment">
                                             <input hidden type="text" id="name" name="name" required="required"  value="{{$infopay['name']}}">
                                           <input hidden type="text" id="last-name" name="amount" required="required"  value="{{$infopay['amount']}}">
+                                          <input hidden type="text" id="ho2" name="ho" value="">
+                                          <input hidden type="text" id="ten2" name="ten" value="">
+                                          <input hidden type="text" id="quocgia2" name="quocgia" value="">
                                             
                                         <div class="form-group">
                                         
@@ -313,9 +360,56 @@
     <!-- Morris Charts JavaScript -->
     <script src="{!! asset('vendor/raphael/raphael.min.js') !!}"></script>
     <script src="{!! asset('vendor/morrisjs/morris.min.js') !!}"></script>
+    <script src="{!! asset('js/getlistCountry.js') !!}"></script>
 
     <!-- Custom Theme JavaScript -->
     <script src="{!! asset('js/sb-admin-2.js')!!}"></script>
+    @if (session('messagesResult'))
+   <script type="text/javascript">  
+      alert(" {{ session('messagesResult') }}");
+    </script>
+   
+    @endif
+    <script type="text/javascript">
+            var x1 = document.getElementById("ho1");
+            var x2 = document.getElementById("ho2");
+            var x = document.getElementById("ho");
+            x1.value = x.value;
+            x2.value = x.value;
+            var x1 = document.getElementById("ten1");
+            var x2 = document.getElementById("ten2");
+            var x = document.getElementById("ten");
+            x1.value = x.value;
+            x2.value = x.value;
+            var x1 = document.getElementById("quocgia1");
+            var x2 = document.getElementById("quocgia2");
+            var x = document.getElementById("quocgia");
+            x1.value = x.value;
+            x2.value = x.value;
+
+        function addFirstName(){
+            var x1 = document.getElementById("ho1");
+            var x2 = document.getElementById("ho2");
+            var x = document.getElementById("ho");
+            x1.value = x.value;
+            x2.value = x.value;
+        }
+         function addlastName(){
+            var x1 = document.getElementById("ten1");
+            var x2 = document.getElementById("ten2");
+            var x = document.getElementById("ten");
+            x1.value = x.value;
+            x2.value = x.value;
+        }
+         function addCountry(){
+            var x1 = document.getElementById("quocgia1");
+            var x2 = document.getElementById("quocgia2");
+            var x = document.getElementById("quocgia");
+            x1.value = x.value;
+            x2.value = x.value;
+        }
+    </script>
+
     
 </body>
 

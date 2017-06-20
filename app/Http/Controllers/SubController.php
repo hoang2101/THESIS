@@ -65,9 +65,9 @@ class SubController extends Controller
             "name" => $hotels->hotel_name,
             "subdomain" => $subdomain, 
             );
-             $namepay =  \Session::get('namepay');
-                $amount =  \Session::get('amount');
-                \Session::put('cost', $amount);
+            $namepay =  \Session::get('namepay');
+            $amount =  \Session::get('amount');
+            \Session::put('cost', $amount);
        // dd($dataPay);
          $infopay = array(
             "name" => $namepay,
@@ -99,13 +99,36 @@ class SubController extends Controller
     $amountt = round($converted, 3);
     return round($converted, 3);
   }
-    public function paypalSubmit(Request $request, $subdomain){
 
-        
+    public function paypalSubmit(Request $request, $subdomain){
+ $messages = [];
+        $validator = Validator::make($request->all(),[],$messages);
+        $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+        if($request['ho'] == null || $request['ho'] == ""){
+         
+            $validator->errors()->add('ho', 'Không được để trống họ.');
+             return redirect()->route('subpaypal',['subdomain' => $subdomain])->withErrors($validator)->withInput();
+     }
+ if($request['ten'] == null || $request['ten'] == ""){
+         
+            $validator->errors()->add('ten', 'PKhông được để trống tên.');
+             return redirect()->route('subpaypal',['subdomain' => $subdomain])->withErrors($validator)->withInput();
+     }
+ if($request['quocgia'] == null || $request['quocgia'] == ""){
+         
+            $validator->errors()->add('quocgia', 'Không được để trống quốc gia.');
+             return redirect()->route('subpaypal',['subdomain' => $subdomain])->withErrors($validator)->withInput();
+     }
+        \Session::put("first_name",$request['ho']);
+        \Session::put("last_name",$request['ten']);
+        \Session::put("country",$request['quocgia']);
+
+       
+    
 
         $amountt = null;
         $amountt = $this->convertCurrency($request['amount'],"VND", 'USD', $amountt);
-        
+        $amountt = $amountt*2.9/100 + 0.3;
         // $url  = "https://www.google.com/finance/converter?a=$amount&from=$from&to=$to";
         $resultpayf = array(
             "msg" => "Thanh toán thất bại",
@@ -115,8 +138,9 @@ class SubController extends Controller
             "msg" => "Thanh toán thành công",
             );
         if($request['typePost'] == "paypal"){
+
         \Session::put('type',"Paypal");
-       $payer = new Payer();
+        $payer = new Payer();
          $payer->setPaymentMethod('paypal');
         $item_1 = new Item();
         $item_1->setName($request['name']) /** item name **/
@@ -143,7 +167,7 @@ class SubController extends Controller
             /** dd($payment->create($this->_api_context));exit; **/
          try {
                     $payment->create($this->_api_context);
-                } catch (\PayPal\Exception\PPConnectionException $ex) {
+                } catch (\PayPal\Exception\PayPalHttpConnection $ex) {
                     if (\Config::get('app.debug')) {
                        
                        \Session::flash('messagesResult','hết thời hạn kết nối');
@@ -541,12 +565,7 @@ public function congra($subdomain){
 
 ////////////////////////search rooom
           if($request['typePost']=='searchRoom'){
-            if(Auth::guard('account')->check()){
-                if(Auth::guard('account')->user()->type == 3 || Auth::guard('account')->user()->type == 4){
-                \Session::flash('messagesResult','Bạn không có quyền đặt phòng xin vui lòng đăng xuất');
-                 return redirect()->route('subHome',['subdomain' => $subdomain]);
-            }
-            }
+            
             
             // /echo "Today is " . date("Y/m/d") . "<br>";
             // dd("Today is " . date("Y/m/d  H:i:s"));
@@ -555,9 +574,9 @@ public function congra($subdomain){
             $people = $request['people'];
             $nroom = $request['room'];
             $today =  date('Y-m-d');
-            $first_name = $request['first_name'];
-            $last_name = $request['last_name'];
-            $country = $request['country'];
+            // $first_name = $request['first_name'];
+            // $last_name = $request['last_name'];
+            // $country = $request['country'];
 
             $messages = [];
             $validator = Validator::make($request->all(),[],$messages);
@@ -692,9 +711,9 @@ public function congra($subdomain){
                 \Session::put("checkin",$checkin);
                 \Session::put("checkout",$checkout);
                 \Session::put("people",$people);
-                \Session::put("first_name",$first_name);
-                \Session::put("last_name",$last_name);
-                \Session::put("country",$country);
+                // \Session::put("first_name",$first_name);
+                // \Session::put("last_name",$last_name);
+                // \Session::put("country",$country);
                 \Session::put("subdomain",$subdomain);
 
 
@@ -1186,7 +1205,7 @@ public function configManageSubmit(Request $request,  $subdomain){
 public function bookManage($subdomain){
         $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
         $checkins = DB::table('booking')->leftJoin('account','account.id','=','booking.account_id')->where('booking.hotel_id','=',$hotels->hotel_id)->select('booking.*', 'account.username')->orderBy('booking_id', 'desc')->get();
-        $checkouts = DB::table('checkout')->orderBy('checkout_id', 'desc')->get();
+        // $checkouts = DB::table('checkout')->orderBy('checkout_id', 'desc')->get();
         $rooms = $rooms = DB::table('room')->where('room.hotel_id', '=', $hotels->hotel_id)->orderBy('room_number', 'asc')->get();
         $type_rooms =  DB::table('type_room')->where('hotel_id', '=', $hotels->hotel_id)->get();
         // $users = DB::table('account')->where([['hotel_id', '=', $hotels->hotel_id],['type', '=', 4],])->get();
@@ -1209,7 +1228,7 @@ public function bookManage($subdomain){
             "name" => $hotels->hotel_name,
             "subdomain" => $subdomain, 
             );
-            return view('sub.bookManage')->with('checkins',$checkins)->with('checkouts', $checkouts)->with('info',$info)->with('type_rooms', $type_rooms)->with('rooms',$rooms);
+            return view('sub.bookManage')->with('checkins',$checkins)->with('info',$info)->with('type_rooms', $type_rooms)->with('rooms',$rooms);
             // if(Auth::guard('account')->user()->type == 4 || Auth::guard('account')->user()->type == 3){
             //     return view('sub.mainManageProlife')->with('users',$users)->with('info',$info);
             // }
@@ -1220,10 +1239,18 @@ public function bookManage($subdomain){
 }
 
 public function bookManageSubmit(Request $request,  $subdomain){
+    // dd($request);
+
     $messages = [];
     $validator = Validator::make($request->all(),[],$messages);
      $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+     
     if($request['typePost'] == "addbooking"){
+        if($request['room'] == null || $request['room'] == ""){
+          $validator->errors()->add('typePost', 'addbooking');
+            $validator->errors()->add('room', 'Phòng không thể trống');
+             return redirect()->route('subBookManage',['subdomain' => $subdomain])->withErrors($validator)->withInput();
+     }
         if(strtotime($request['date_checkin']) > strtotime($request['date_checkout'])){ 
             $validator->errors()->add('typePost', 'addbooking');
             $validator->errors()->add('date_checkin', 'Ngày checkin không thể lớn hơn ngày checkout');
@@ -1255,7 +1282,11 @@ public function bookManageSubmit(Request $request,  $subdomain){
         $addrooms =  explode(' ', $request['room']);
         
         $findrooms =  explode(' ', DB::table('booking')->where('booking_id', $request['id'])->first()->room_id);
-       
+       if($request['room'] == null || $request['room'] == ""){
+          $validator->errors()->add('typePost', 'addbooking');
+            $validator->errors()->add('room', 'Phòng không thể trống');
+             return redirect()->route('subBookManage',['subdomain' => $subdomain])->withErrors($validator)->withInput();
+     }
          if(strtotime($request['date_checkin']) > strtotime($request['date_checkout'])){ 
             $validator->errors()->add('typePost', 'updateBooking');
             $validator->errors()->add('date_checkin', 'Ngày checkin không thể lớn hơn ngày checkout');

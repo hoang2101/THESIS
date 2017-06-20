@@ -147,24 +147,24 @@
                                   </div>
              <div class="col-sm-6 col-md-6 form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
               <div>
-                  <label>Họ</label>
-                  <input type="text" class="form-control" name="first_name" value="{{ old('first_name') }}" min="0" required>
-              </div>
-            </div>
-            <div class="col-sm-6 col-md-6 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
-              <div>
-                  <label>Tên</label>
-                  <input type="text" class="form-control"  name="last_name" value="{{ old('last_name') }}" required>
-              </div>
-            </div>
-
-            <div class="col-sm-4 col-md-4 form-group {{ $errors->has('people') ? ' has-error' : '' }}">
-              <div>
                   <label>Số người</label>
                   <input type="number" class="form-control" name="people" min="1" value="{{ old('people') }}" required>
               </div>
             </div>
-            <div class="col-sm-4 col-md-4 form-group{{ $errors->has('room') ? ' has-error' : '' }}">
+            <div class="col-sm-6 col-md-6 form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
+              <div>
+                  <label>Số phòng</label>
+                  <input type="number" class="form-control" name="room" min="1" value="{{ old('room') }}" required>
+              </div>
+            </div>
+
+           <!--  <div class="col-sm-4 col-md-4 form-group {{ $errors->has('people') ? ' has-error' : '' }}">
+              <div>
+                  <label>Số người</label>
+                  <input type="number" class="form-control" name="people" min="1" value="{{ old('people') }}" required>
+              </div>
+            </div> -->
+            <!-- <div class="col-sm-4 col-md-4 form-group{{ $errors->has('room') ? ' has-error' : '' }}">
               <div>
                   <label>Số phòng</label>
                   <input type="number" class="form-control" name="room" min="1" value="{{ old('room') }}" required>
@@ -180,7 +180,7 @@
                                     
                                 </select>
               </div>
-            </div>
+            </div> -->
              <div class=" col-md-12 form-group{{ $errors->has('check_in') ? ' has-error' : '' }}">
                       @if ($errors->has('people'))
                               <span class="help-block has-error">
@@ -477,10 +477,10 @@
 }); </script>
  @endif
   @endif  @if ($errors->has('password'))
-      <script>  <script>  function myFunction() { 
+      <script>   function myFunction() { 
     document.getElementById("register-modal").showModal(); </script>
   @endif @if ($errors->has('email'))
-      <script>  <script>  function myFunction() { 
+      <script>   function myFunction() { 
     document.getElementById("register-modal").showModal(); </script>
   @endif
 <script type="text/javascript">

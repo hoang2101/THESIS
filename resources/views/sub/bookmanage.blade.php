@@ -416,6 +416,9 @@
                                             <input hidden id="id" name="id" value="{{$checkin->booking_id}}">
                                         </form>
                             @endif
+                             @if($checkin->date_checkout != null)
+                                <a data-toggle="tooltip" data-placement="top"  class="btn btn-info btn-xs"><i class="fa-check-square"></i> Đã checkout </a>
+                             @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -509,21 +512,31 @@
                                
                             </div>
                         </div>
-                        <div class=" col-md-3 col-sm-3 col-xs-6 form-group">
+                        <div class=" col-md-3 col-sm-3 col-xs-6 form-group ">
                             <div >
-                            <input id="addroom" type="text" readonly  placeholder="Phòng" name="room" value="{{ old('room') }}" required >
+                            <input id="addroom" type="text" readonly  placeholder="Phòng" name="room" value="" required>
                                
                             </div>
                         </div>
                         
                         <div class=" col-md-3 col-sm-3 col-xs-6 form-group">
                             <div >
-                            <select id="add_room_input"  name="froom" onchange="changeaddroom(this)" placeholder="Số Phòng" >
+                            <select id="add_room_input"  name="froom" onchange="changeaddroom(this)" placeholder="Số Phòng" required>
                                     <option value="-1" disabled selected>Chọn  phòng</option>
                                     <option value="" >clear</option>
                                     
                             </select>
                                
+                            </div>
+                        </div>
+                         <div class="col-md-12 col-sm-12 col-xs-12  form-group {{ $errors->has('room') ? ' has-error' : '' }} {{ $errors->has('date_checkout') ? ' has-error' : '' }}">
+                            <div>
+                                @if ($errors->has('room'))
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('room') }}</strong>
+                                    </span>
+                               
+                                @endif
                             </div>
                         </div>
 

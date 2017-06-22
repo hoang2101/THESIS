@@ -18,7 +18,7 @@ class CreateHotelServiceTable extends Migration
             $table->string('service_name')->nullable();
             $table->integer('cost')->nullable();
             $table->integer('hotel_id')->nullable();
-            $table->string('description')->nullable();
+            $table->longText('description')->nullable();
             $table->integer('discount')->nullable();
             $table->integer('account_id')->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));

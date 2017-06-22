@@ -82,6 +82,8 @@
                                 </li>
                                 <li><a href="{{ route('mainManageHotel') }}"><i class="fa fa-desktop"></i> Quản lý hệ thống khách sạn</a></li>
                                 <li><a  class="active" href="{{ route('mainProfile') }}"><i class="fa fa-user"></i> Quản lý tài khoản</a></li>
+                                
+
                                 @endif
                                 @if(Auth::user()->type == 2)
                                 <li><a href="{{ route('mainHome') }}"><i class="fa fa-home"></i> Home </a>
@@ -92,6 +94,8 @@
                                     
                                 </li>
                                 <li><a class="active" href="{{ route('mainProfile') }}"><i class="fa fa-user"></i> Quản lý tài khoản</a></li>
+                                <li><a href="{{ route('mainReport') }}"><i class="fa fa-cog"></i> Thống kê </a></li>
+
                                 @endif
                            
                             </ul>
@@ -210,7 +214,7 @@
                                             <input hidden id="typePost"" name="typePost" value="updateAvatar">
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <input type="file" name="image" accept="image/*"/>
+                                                    <input type="file" name="image" accept="image/*" required/>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <button type="submit" class="btn btn-success">Thay đổi Avatar</button>
@@ -286,7 +290,7 @@
                                                             
                                                             <input type="text" class="form-control has-feedback-left"  id="email" name="email" placeholder="Email" value="{{$users->email}}">
                                                            
-                                                            <span class="fa fa-user form-control-feedback left" aria-hidden="true" ></span>
+                                                            <span class="fa fa-envelope form-control-feedback left" aria-hidden="true" ></span>
                                                         </div>
                                                     </div>
                                                     <div class="row">
@@ -296,7 +300,7 @@
                                                             
                                                             <!-- <input type="text" class="form-control has-feedback-left"  id="phone_number" name="phone_number" placeholder="{{$users->phone_number}}"> -->
                                                             
-                                                            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                            <span class="fa fa-phone form-control-feedback left" aria-hidden="true"></span>
                                                         </div>
                                                     </div>
                                                     <div class="row">
@@ -304,7 +308,7 @@
                                                            
                                                             <input type="text" class="form-control has-feedback-left"  id="country" name="country" placeholder="Quốc gia" value="{{$users->country}}">
                                                            
-                                                            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                            <span class="fa fa-globe form-control-feedback left" aria-hidden="true"></span>
                                                         </div>
                                                     </div>
                                                     <div class="row">
@@ -312,7 +316,7 @@
                                                            
                                                             <input type="text" onfocus="(this.type='date')" class="form-control has-feedback-left"   id="dob" name="dob" placeholder="Ngày sinh" value="{{$users->dob}}">
                                                            
-                                                            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                            <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
                                                         </div>
                                                     </div>
                                                      <div class="row">
@@ -320,7 +324,7 @@
                                                             
                                                             <input type="text"  class="form-control has-feedback-left"  id="gender" name="gender" placeholder="Giới tính" value="{{$users->gender}}">
                                                            
-                                                            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                            <span class="fa fa-transgender form-control-feedback left" aria-hidden="true"></span>
                                                         </div>
                                                     </div>
                                                     
@@ -331,6 +335,63 @@
                                                         </div>
                                                     </div>
                                                 </form>
+
+                                                <br />
+                                                <div class="ln_solid"></div>
+                                               
+                                                     <h2><i class="fa fa-certificate"></i> Quản lý mật khẩu</h2>
+                                                   
+                                                     <div>
+                                                         <form role="form" method="POST" action="{{ route('mainProfileSubmit') }}">
+                                                        {{ csrf_field() }}
+                                                    <input hidden id="typePost"" name="typePost" value="updatePassword">
+                                                    <input hidden id="idUser" name="id" value="{{$users->id}}">
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback {{ $errors->has('current_pass') ? ' has-error' : '' }}">
+                                                            <label>Nhập mật khẩu củ</label>
+                                                            <input type="password" class="form-control has-feedback-left" id="current_pass" name="current_pass"  value="" required> 
+                                                            
+                                                             <span class="fa fa-key form-control-feedback left" aria-hidden="true"></span>
+                                                             @if ($errors->has('current_pass'))
+                                                          <span class="help-block has-error">
+                                                                <strong class="messageError">{{ $errors->first('current_pass') }}</strong>
+                                                            </span>
+                                                              @endif
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback  {{ $errors->has('now_pass') ? ' has-error' : '' }}">
+                                                            <label>Nhập mật khẩu mới</label>
+                                                            <input type="password" class="form-control has-feedback-left"  id="now_pass" name="now_pass"  value="" required pattern=".{6,}" title="ít nhất 6 kí tự">
+                                                           
+                                                            <span class="fa fa-key form-control-feedback left" aria-hidden="true"></span>
+                                                             @if ($errors->has('now_pass'))
+                                                              <span class="help-block has-error">
+                                                                    <strong class="messageError">{{ $errors->first('now_pass') }}</strong>
+                                                                </span>
+                                                                  @endif
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback ">
+                                                           <label>Nhập lại mật khẩu</label>
+                                                            <input type="password" class="form-control has-feedback-left"  id="last_name" name="now_pass_confirmation"  value="" required pattern=".{6,}" title="ít nhất 6 kí tự"> 
+                                                           
+                                                             <span class="fa fa-key form-control-feedback left" aria-hidden="true"></span>
+                                                        </div>
+                                                    </div>
+                                                   
+                                                    
+                                                    <div class="row">
+                                                        
+                                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                                            <button id="btn_reset_pwd" type="submit" class="btn btn-primary"><i class="fa fa-edit m-right-xs"></i>&nbsp;Thay đổi Password</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                     </div>
+
+
                                             </div>
                                         </div>
                                         
@@ -644,16 +705,11 @@
     @endif
 
 
-@if( ! empty($messagesResult))
-    @if ($messagesResult=="fails")
-      <script type="text/javascript">  
-      window.alert("Thất bại");
+@if (session('messagesResult'))
+   <script type="text/javascript">  
+      alert(" {{ session('messagesResult') }}");
     </script>
-    @endif @if ($messagesResult=="successful")
-     <script type="text/javascript">  
-      alert("thành công");
-    </script>
-    @endif
+   
     @endif
 
 

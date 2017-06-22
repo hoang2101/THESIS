@@ -76,6 +76,7 @@
                                 <li><a href="{{ route('subManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-desktop"></i> Quản lý khách hàng</a></li>
                                 <li><a class="active" href="{{ route('subStaffManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-desktop"></i> Quản lý Nhân viên</a></li>
                                 <li><a  href="{{ route('subRoomManage',['subConfig' =>$info['subdomain']]) }}"><i class="fa fa-university"></i> Quản lý phòng</a>
+                                 <li><a href="{{ route('subServiceManage',['subConfig' =>$info['subdomain']]) }}"><i class="fa fa-server"></i> Quản lý dịch vụ</a>
                                 <li><a  href="{{ route('subProfile',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Quản lý Tài khoản</a></li>
                                  <li><a  href="{{ route('subConfig',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-cogs"></i> Cài Đặt Web</a></li>
                                  <li><a  href="{{ route('subReportManage',['subReportManage' =>$info['subdomain']]) }}"><i class="fa fa-cog"></i>Thống kê</a>
@@ -231,6 +232,7 @@
                           <th id="cel10">Username</th>
                           <th id="cel10">E-mail</th>
                           <th id="cel10">Ngày làm</th>
+                          <th id="cel10">Lương</th>
                           <th class="nosort"  id="cel5">Quản lý</th>
                         </tr>
                       </thead>
@@ -245,10 +247,10 @@
                                 <td>{{$user->username}}</td>
                                 <td>{{$user->email}}</td>
                                 <td>{{$user->created_at}}</td>
-                                
+                                <td>{{$user->Salary}}</td>
                                 <td>
-                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataView('{{$user->id}}','{{$user->first_name}}', '{{$user->last_name}}', '{{$user->email}}', '{{$user->phone_number}}', '{{$user->username}}', '{{$user->country}}', '{{$user->dob}}', '{{$user->gender}}') " data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
-                                    <a href="#" class="btn btn-info btn-xs"  onclick="showDataEdit('{{$user->id}}','{{$user->first_name}}', '{{$user->last_name}}', '{{$user->email}}', '{{$user->phone_number}}', '{{$user->username}}', '{{$user->country}}', '{{$user->dob}}', '{{$user->gender}}') ;" data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
+                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataView('{{$user->id}}','{{$user->first_name}}', '{{$user->last_name}}', '{{$user->email}}', '{{$user->phone_number}}', '{{$user->username}}', '{{$user->country}}', '{{$user->dob}}', '{{$user->gender}}','{{$user->Salary}}') " data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
+                                    <a href="#" class="btn btn-info btn-xs"  onclick="showDataEdit('{{$user->id}}','{{$user->first_name}}', '{{$user->last_name}}', '{{$user->email}}', '{{$user->phone_number}}', '{{$user->username}}', '{{$user->country}}', '{{$user->dob}}', '{{$user->gender}}','{{$user->Salary}}') ;" data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
 
                             <a data-toggle="tooltip" data-placement="top"  class="btn btn-danger btn-xs"
                                             onclick="event.preventDefault();
@@ -322,6 +324,17 @@
                                 @if ($errors->has('email'))
                                     <span class="help-block">
                                         <strong class="messageError">{{ $errors->first('email') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="form-group{{ $errors->has('salary') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="salary" type="number" class="form-control" placeholder="Lương" min="0" name="salary" value="{{ old('salary') }}" required>
+
+                                @if ($errors->has('salary'))
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('salary') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -450,6 +463,22 @@
                                 @endif
                             </div>
                         </div>
+                        <div  >
+                            <div class="col-md-6 col-sm-12 col-xs-6  form-group">
+                            <div >
+                                <input id="e_luong" type="number" class="form-control " placeholder="Luong" min="0" name="salary" required>
+
+
+                                 @if ($errors->has('salary'))
+                                     <span class="help-block">
+                                      <br>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        
                         <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <input id="e_submit" type="submit" name="Register" class="btn btn-info btn-xs pull-left" value="OK">
                         </div>
@@ -641,6 +670,7 @@ function addReadonly(){
     document.getElementById("e_country").removeAttribute("readonly");
     document.getElementById("e_dob").removeAttribute("readonly");
     document.getElementById("e_gender").removeAttribute("readonly");
+    document.getElementById("e_luong").removeAttribute("readonly");
 
     // document.getElementById("e_submit").setAttribute("type", "submit");
     // document.getElementById("e_first_name").removeAttribute("readonly");
@@ -666,6 +696,8 @@ else(document.getElementById("typeEditView").innerHTML == "Xem")
     document.getElementById("e_country").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_dob").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_gender").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_luong").setAttributeNode(document.createAttribute("readonly"));
+
 }
    
 
@@ -685,11 +717,13 @@ function removeReadonly(){
     document.getElementById("e_country").removeAttribute("readonly");
     document.getElementById("e_dob").removeAttribute("readonly");
     document.getElementById("e_gender").removeAttribute("readonly");
+    document.getElementById("e_luong").removeAttribute("readonly");
+
      // document.getElementById("typeEditView").setAttribute("onclick", "addReadonly())");
     
 
 }
-function showDataView(idUser, first_name, last_name,email,phone_number,username,country,dob,gender){
+function showDataView(idUser, first_name, last_name,email,phone_number,username,country,dob,gender,salary){
       
    
     document.getElementById("typeEditView").innerHTML = "Sửa";
@@ -702,6 +736,7 @@ function showDataView(idUser, first_name, last_name,email,phone_number,username,
     document.getElementById("e_country").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_dob").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_gender").setAttributeNode(document.createAttribute("readonly")); 
+    document.getElementById("e_luong").setAttributeNode(document.createAttribute("readonly")); 
 
     document.getElementById("idUser").setAttribute("value", idUser);
     document.getElementById("e_first_name").setAttribute("value", first_name);
@@ -712,10 +747,11 @@ function showDataView(idUser, first_name, last_name,email,phone_number,username,
     document.getElementById("e_country").setAttribute("value", country); 
     document.getElementById("e_dob").setAttribute("value",dob); 
     document.getElementById("e_gender").setAttribute("value", gender);
+    document.getElementById("e_luong").setAttribute("value", salary);
 
 }
 
-function showDataEdit(idUser, first_name, last_name,email,phone_number,username,country,dob,gender){
+function showDataEdit(idUser, first_name, last_name,email,phone_number,username,country,dob,gender,salary){
    
     document.getElementById("e_submit").setAttribute("type", "submit");
     document.getElementById("typeEditView").innerHTML = "Xem";
@@ -727,6 +763,7 @@ function showDataEdit(idUser, first_name, last_name,email,phone_number,username,
     document.getElementById("e_country").removeAttribute("readonly");
     document.getElementById("e_dob").removeAttribute("readonly");
     document.getElementById("e_gender").removeAttribute("readonly");
+    document.getElementById("e_luong").removeAttribute("readonly");
 
     document.getElementById("idUser").setAttribute("value", idUser);
     document.getElementById("e_first_name").setAttribute("value", first_name);
@@ -737,6 +774,7 @@ function showDataEdit(idUser, first_name, last_name,email,phone_number,username,
     document.getElementById("e_country").setAttribute("value", country); 
     document.getElementById("e_dob").setAttribute("value",dob); 
     document.getElementById("e_gender").setAttribute("value", gender);
+    document.getElementById("e_luong").setAttribute("value", salary);
 
 }
 </script>

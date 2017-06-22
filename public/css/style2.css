@@ -46,7 +46,7 @@
 
 
 body {
-    background: #ffffff;
+   
     font-family: "roboto",sans-serif;
     font-style: normal;
     font-weight: 300;
@@ -306,9 +306,7 @@ a{
 .white{
     color: #fff !important;
 }
-.bg-grey{
-    background-color: #f6f6f6;
-}
+
 /*---------------------------------------
    Preloader              
 -----------------------------------------*/
@@ -541,7 +539,7 @@ a:focus {outline:0 !important;}
     font-weight: 400;
 }
 .parallax-window{
-    background: url('../img/bg1.jpg') no-repeat fixed;
+    
     background-size: cover;
 }
 .header-section span.meta-title-top {

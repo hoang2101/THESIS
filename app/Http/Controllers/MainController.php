@@ -8,6 +8,7 @@ use DB;
 use App\User;
 use App\Hotel;
 use URL;
+use Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
@@ -262,6 +263,17 @@ class MainController extends Controller
                 }
                
                 /** add payment ID to session **/
+                $intro = "Chào mừng bạn đến với khách sạn của chúng tôi, khách sạn chúng tôi .
+Khách sạn được chia thành 5 hạng phòng khác nhau, được du khách yêu thích bởi sự sạch sẽ và dịch vụ phòng hoàn hảo. Ngoài ra, khách sạn Đệ Nhất còn trang bị phòng tập thể hình, hồ bơi, 3 sân tennis, CLB trò chơi có thưởng (chỉ dành cho khách nước ngoài) & khu mát-xa – xông hơi để phục vụ khách lưu trú.
+Ẩm thực cũng là một thế mạnh bởi sự đa dạng phong cách và tinh tế trong từng món ăn. Nhà hàng Phố Nướng Đệ Nhất, Korea House và Hanasushi mang đến những món ăn cũng như không gian đặc trưng đậm chất Việt Nam, Hàn Quốc & Nhật Bản. Với nhà hàng Buffet Đệ Nhất là sự tổng hợp hài hòa các món ăn đến từ Việt – Á – Âu, là một bữa tiệc hoành tráng thật sự cho khách lưu trú tại khách sạn nói riêng và thực khách Sài Gòn nói chung.";
+DB::table('web_config')->insertGetId([
+                 'background' => "img/bg1.jpg",
+                 'color1' => "#ffffff",
+                 'color2' => "#f6f6f6",
+                 'author' =>  Auth::user()->id,
+                 'intro' => $intro
+             ]);
+$config = DB::table('web_config')->latest()->first();
                 $dataPay =  \Session::get('dataPay');
                 DB::table('hotel')->insertGetId([
                  'hotel_name' => $dataPay['hotel_name'],
@@ -269,6 +281,7 @@ class MainController extends Controller
                  'hotel_url' => $dataPay['hotel_url'],
                  'expire_date' => $dataPay['expire_date'],
                  'total_room' => $dataPay['total_room'],
+                 'config_id' =>$config->config_id
              ]);
             DB::table('users')
                 ->where('id', Auth::User()->id)
@@ -298,13 +311,27 @@ public function getDone(Request $request)
 
     // Thank the user for the purchase
     $dataPay =  \Session::get('dataPay');
+     $intro = "Chào mừng bạn đến với khách sạn của chúng tôi, khách sạn chúng tôi .
+Khách sạn được chia thành 5 hạng phòng khác nhau, được du khách yêu thích bởi sự sạch sẽ và dịch vụ phòng hoàn hảo. Ngoài ra, khách sạn Đệ Nhất còn trang bị phòng tập thể hình, hồ bơi, 3 sân tennis, CLB trò chơi có thưởng (chỉ dành cho khách nước ngoài) & khu mát-xa – xông hơi để phục vụ khách lưu trú.
+Ẩm thực cũng là một thế mạnh bởi sự đa dạng phong cách và tinh tế trong từng món ăn. Nhà hàng Phố Nướng Đệ Nhất, Korea House và Hanasushi mang đến những món ăn cũng như không gian đặc trưng đậm chất Việt Nam, Hàn Quốc & Nhật Bản. Với nhà hàng Buffet Đệ Nhất là sự tổng hợp hài hòa các món ăn đến từ Việt – Á – Âu, là một bữa tiệc hoành tráng thật sự cho khách lưu trú tại khách sạn nói riêng và thực khách Sài Gòn nói chung.";
+DB::table('web_config')->insertGetId([
+                 'background' => "img/bg1.jpg",
+                 'color1' => "#ffffff",
+                 'color2' => "#f6f6f6",
+                 'author' =>  Auth::user()->id,
+                 'intro' => $intro
+             ]);
+$config = DB::table('web_config')->latest()->first();
     DB::table('hotel')->insertGetId([
                  'hotel_name' => $dataPay['hotel_name'],
                  'account_id' => Auth::user()->username,
                  'hotel_url' => $dataPay['hotel_url'],
                  'expire_date' => $dataPay['expire_date'],
                  'total_room' => $dataPay['total_room'],
+                 'config_id' => $config->config_id,
              ]);
+
+
         DB::table('users')
                 ->where('id', Auth::User()->id)
                 ->update(['total_cost' => $dataPay['total_cost']]);
@@ -401,16 +428,7 @@ public function addUserMain(Request $request){
             $users = $this->getUsersks();
              return redirect()->route('mainManage')->withErrors($validator)->with('users',$users)->withInput();
         }
-        $getUsername = DB::table('users')->where('id', '<>', $request['id'])->where('email','=',$request['email']) ->first();
-        if($getUsername != null){
-           $messagesResult = "fails";
-
-           $validator->errors()->add('typePost', 'updateUser');
-            $validator->errors()->add('id', $request['id']);
-           $validator->errors()->add('email', 'email đã tồn tại!');
-            $users = $this->getUsersks();
-             return redirect()->route('mainManage')->withErrors($validator)->with('users',$users)->withInput();
-        }
+        
 
         DB::table('users')
             ->where('id', $request['id'])
@@ -457,16 +475,7 @@ public function editProlife(Request $request){
 
     if($request['typePost'] == "updateUser"){
 
-        // $getUsername = DB::table('users')->where('id', '<>', $request['id'])->where('email','=',$request['email']) ->first();
-        // if($getUsername != null){
-        //    $messagesResult = "fails";
-
-        //    $validator->errors()->add('typePost', 'updateUser');
-        //     $validator->errors()->add('id', $request['id']);
-        //    $validator->errors()->add('email', 'email đã tồn tại!');
-        //     $users = Auth::user();
-        //      return redirect()->route('manageProlife')->withErrors($validator)->with('users',$users)->withInput();
-        // }
+       
 
         DB::table('users')
             ->where('id', $request['id'])
@@ -495,6 +504,28 @@ public function editProlife(Request $request){
 
          return redirect()->route('mainProfile');
   }
+  if($request['typePost'] == "updatePassword"){
+            $messages = [];
+            $validator = Validator::make($request->all(),[],$messages);
+         
+       if (Hash::check($request['current_pass'],Auth::user()->password))
+        {
+            
+          if($request['now_pass'] != $request['now_pass_confirmation']){
+              $validator->errors()->add('typePost', 'updatePassword');
+                $validator->errors()->add('now_pass', 'Mật khấu nhập lại không giống');
+                return redirect()->route('mainProfile')->withErrors($validator)->withInput();
+          }
+           DB::table('users')
+             ->where('id', Auth::user()->id)
+            ->update( ['password' =>  bcrypt($request['now_pass'])]);
+            \Session::flash('messagesResult',"Thay đổi mật khẩu thành công");
+            return redirect()->route('mainProfile');
+        }
+        $validator->errors()->add('typePost', 'updatePassword');
+                $validator->errors()->add('current_pass', 'Mật khấu củ không giống');
+                return redirect()->route('mainProfile')->withErrors($validator)->withInput();
+              }
     // $users = Auth::user();
     // return view('main.manageProlife')->with('users',$users);
 }
@@ -519,14 +550,14 @@ protected function validator(array $data)
         $messages = [
         'typePost'=>"typePost = addUser",
         'username.unique' => 'Tài khoản đả tồn tại!',
-        'email.unique' => 'Email đả tồn tại!',
+       
         'password.confirmed' => 'password không giống!',
     ];
         return Validator::make($data, [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:6|confirmed',
         ],$messages);
     }
@@ -539,9 +570,74 @@ protected function validator(array $data)
 {
     return [
         'username.unique' => 'Tài khoản đả tồn tại',
-        'email.unique' => 'Email already taken m8',
+        
     ];
 }
+
+public function report(){
+  $first_day_this_month = date('Y-m-01'); // hard-coded '01' for first day date("Y/m/d")
+        
+        $last_day_this_month  = date('Y-m-t');
+        $info = array(
+            
+            "first_day" => $first_day_this_month,
+            "last_day" => $last_day_this_month,
+            );
+
+  for($i = 1; $i <=  date('t'); $i++)
+        {
+            // add the date to the dates array
+            $listDay[] = date('Y') . "-" . date('m') . "-" . str_pad($i, 2, '0', STR_PAD_LEFT);
+        }
+  $hotels = DB::table('hotel')->where('account_id','=',Auth::user()->username)->get();
+  $total_cost= null;
+  $total_spend = null;
+  $abc = null;
+  $cba = null;
+  foreach ( $hotels as $key => $hotel ) {
+    foreach ($listDay as $key2 => $day) {
+     $invoices = DB::table('invoice')->where('hotel_id','=',$hotel->hotel_id)->where('date','=',$day)->get();
+     $total = 0;
+     foreach ($invoices as $key3 => $invoice) {
+        $total = $total + $invoice->cost;
+     }
+     $spends = DB::table('spends')->where('hotel_id','=',$hotel->hotel_id)->where('date','=',$day)->get();
+     foreach ($spends as $key4 => $spend) {
+        $total = $total - $spend->cost;
+     }
+     $abc[$key][$key2] = $total;
+    }
+  }
+// dd($abc); laf hotel theo ngayf  2 -> 30
+
+  foreach ( $listDay   as $key => $day  ) {
+    foreach ($hotels as $key2 => $hotel) {
+     $invoices = DB::table('invoice')->where('hotel_id','=',$hotel->hotel_id)->where('date','=',$day)->get();
+     $total = 0;
+     foreach ($invoices as $key3 => $invoice) {
+        $total = $total + $invoice->cost;
+     }
+     $spends = DB::table('spends')->where('hotel_id','=',$hotel->hotel_id)->where('date','=',$day)->get();
+     foreach ($spends as $key4 => $spend) {
+        $total = $total - $spend->cost;
+     }
+     $cba[$key][$key2] = $total;
+    }
+  }
+
+
+  $hotelname = null;
+foreach ($hotels as $key => $hotel) {
+ $hotelname[] = $hotel->hotel_name;
+}
+  return view('main.report')->with('info',$info)->with('listDay',$listDay)->with('cost',$abc)->with('cost2',$cba)->with('hotels',$hotelname);
+
+}
+
+public function reportsubmit(){
+
+}
+
     public function manageHotel(){
         $usersHotel = DB::table('users')->where('type','=','2' )->get();
         $hotels = DB::table('hotel')->get();
@@ -914,7 +1010,7 @@ public function manageGovermHoteler(){
    $messages = [
         'typePost'=>"typePost = addUser",
         'username.unique' => 'Tài khoản đả tồn tại!',
-        'email.unique' => 'Email đả tồn tại!',
+        
         'password.confirmed' => 'password không giống!',
     ];
 
@@ -923,7 +1019,7 @@ public function manageGovermHoteler(){
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:account',
-            'email' => 'required|string|email|max:255|unique:account',
+            'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:6|confirmed',
         ],$messages);
         if ($validator->fails()) {
@@ -982,16 +1078,7 @@ public function manageGovermHoteler(){
            $validator->errors()->add('username', 'username đã tồn tại!');
              return redirect()->route('mainManageGovermHoteler')->withErrors($validator)->withInput();
         }
-        $getUsername = DB::table('account')->where('id', '<>', $request['id'])->where('email','=',$request['email']) ->first();
-        if($getUsername != null){
-           $messagesResult = "fails";
-
-           $validator->errors()->add('typePost', 'updateUser');
-            $validator->errors()->add('id', $request['id']);
-           $validator->errors()->add('email', 'email đã tồn tại!');
-             return redirect()->route('mainManageGovermHoteler')->withErrors($validator)->withInput();
-        }
-
+        
         DB::table('account')
             ->where('id', $request['id'])
             ->update(['first_name' => $request['first_name'], 'last_name' => $request['last_name'], 'username' => $request['username'],'email' => $request['email'], 'country' => $request['country'], 'phone_number' => $request['phone_number'], 'dob' => $request['dob'], 'gender' => $request['gender']]);

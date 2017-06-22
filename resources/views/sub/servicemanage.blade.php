@@ -75,8 +75,8 @@
                                 
                                 <li><a  href="{{ route('subManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Quản lý khách hàng</a>
                                  <li><a  href="{{ route('subStaffManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Quản lý Nhân viên</a>
-                                 <li><a class="active" href="{{ route('subRoomManage',['subConfig' =>$info['subdomain']]) }}"><i class="fa fa-university"></i> Quản lý phòng</a>
-                                 <li><a href="{{ route('subServiceManage',['subConfig' =>$info['subdomain']]) }}"><i class="fa fa-server"></i> Quản lý dịch vụ</a>
+                                 <li><a  href="{{ route('subRoomManage',['subConfig' =>$info['subdomain']]) }}"><i class="fa fa-university"></i> Quản lý phòng</a>
+                                 <li><a  class="active" href="{{ route('subServiceManage',['subConfig' =>$info['subdomain']]) }}"><i class="fa fa-server"></i> Quản lý dịch vụ</a>
                                  <li><a  href="{{ route('subProfile',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Quản lý Tài khoản</a>
                                  <li><a  href="{{ route('subProfile',['subConfig' =>$info['subdomain']]) }}"><i class="fa fa-cogs"></i> Cài Đặt Web</a>
                                  <li><a  href="{{ route('subReportManage',['subReportManage' =>$info['subdomain']]) }}"><i class="fa fa-cog"></i> Thống kê</a>
@@ -225,10 +225,9 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Danh sách phòng<small></small></h2>
+                    <h2>Danh sách dịch vụ<small></small></h2>
                     <ul class="nav navbar-right panel_toolbox">
-                      <a href="#" class="btn btn-primary btn-xs" onclick="checkHasTypeRoom1()" data-toggle="modal" data-backdrop="static" ><i class="fa fa-folder"></i> Thêm 1 phòng </a>
-                      <a href="#" class="btn btn-primary btn-xs" onclick="checkHasTypeRoom2()" data-toggle="modal" data-backdrop="static" ><i class="fa fa-folder"></i> Thêm nhiều phòng </a>
+                      <a href="#" class="btn btn-primary btn-xs" onclick="checkHasTypeService()" data-toggle="modal" data-backdrop="static" ><i class="fa fa-folder"></i> Thêm Dịch vụ </a>
                     </ul>
                     <div class="clearfix"></div>
                   </div>
@@ -239,8 +238,8 @@
                       <thead>
                         <tr>
                           <th id="cel1">ID</th>
-                          <th white-space:pre-line" id="cel5">Tầng</th>
-                          <th id="cel5">Số phòng</th>
+                          <th white-space:pre-line" id="cel5">Tên dịch vụ</th>
+                          <th id="cel5">Giá</th>
                           <th id="cel10">Loại phòng</th>
                           <th id="cel10">Phòng sạch</th>
                           <th id="cel10">Đã đặt phòng</th>

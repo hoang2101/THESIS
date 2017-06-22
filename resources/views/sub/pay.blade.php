@@ -235,7 +235,7 @@
 
                                             @if ($errors->has('quocgia'))
                                               <span class="help-block has-error">
-                                                    <strong class="messageError">{{ $errors->first('quocgia') }}</strong>
+                                                    <strong class="messageError">{{ $errors->first('quocgia1') }}</strong>
                                                 </span>
                                             @endif
                                         </div>

@@ -81,6 +81,7 @@
                                 </li>
                                 <li><a href="{{ route('mainManageHotel') }}"><i class="fa fa-desktop"></i> Quản lý hệ thống khách sạn</a></li>
                                 <li><a href="{{ route('mainProfile') }}"><i class="fa fa-user"></i> Quản lý tài khoản</a></li>
+
                                <!--  <li><a><i class="fa fa-table"></i>zxczxc  </a>
                                     
                                 </li>

@@ -36,6 +36,9 @@ Route::POST('/payment','MainController@paypalSubmit')->name('paypalSubmit');
 Route::GET('/payresult','MainController@getDone')->name('paypaldone');
 Route::GET('/payresult2','MainController@getCancel')->name('paypalcancel');
 
+Route::GET('/report','MainController@report')->name('mainReport');
+Route::POST('/report','MainController@reportsubmit')->name('mainReportSubmit');
+
 
 Route::get('/mhotelmanage','MainController@manageGovermHoteler')->name('mainManageGovermHoteler');
 Route::POST('/mhotelmanage','MainController@addGovermHoteler')->name('addGovermHotelerSubmit');
@@ -77,6 +80,9 @@ Route::group(['subdomain' => '{subdomain}'], function () {
 
     Route::get('/{subdomain}/roommanage', 'SubController@roomManage' )->name('subRoomManage');
     Route::POST('/{subdomain}/roommanage', 'SubController@roomManageSubmit' )->name('subRoomManageSubmit');
+
+    Route::get('/{subdomain}/servicemanage', 'SubController@serviceManage' )->name('subServiceManage');
+    Route::POST('/{subdomain}/servicemanage', 'SubController@serviceManageSubmit' )->name('subServiceManageSubmit');
 
     Route::get('/{subdomain}/report', 'SubController@reportManage' )->name('subReportManage');
     Route::POST('/{subdomain}/report', 'SubController@reportManageSubmit' )->name('subReportManageSubmit');

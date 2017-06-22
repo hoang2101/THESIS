@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Input;
 use DB;
 use App\User;
 use App\Hotel;
+use Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Redirect;
@@ -475,6 +476,7 @@ public function congra($subdomain){
         //
 
         $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+        $config = DB::table('web_config')->where('config_id','=', $hotels->config_id)->first();
        // return $hotels;
 
          if($hotels != null){
@@ -485,13 +487,15 @@ public function congra($subdomain){
             }
        }
             
-
+            $config->intro = preg_split("/\\r\\n|\\r|\\n/", $config->intro); 
+            // explode('PHP_EOL', $config->intro);
+           
             $info = array(
             "name" => $hotels->hotel_name,
             "subdomain" => $subdomain, 
             );
 
-             return view('sub.index')->with('info',$info);
+             return view('sub.index')->with('info',$info)->with('config',$config);
          }
        return view('sub.404');
     }
@@ -527,14 +531,14 @@ public function congra($subdomain){
         }   
         if($request['typePost']=='register'){
            
-            $messages = ['email.unique' => 'email đã tồn tại',
+            $messages = [
                     'username.unique' => 'Tài khoản đã tồn tại',];
 
              $validator =Validator::make($request->all(), [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:account',
-            'email' => 'required|string|email|max:255|unique:account',
+            'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:6|confirmed',
         ],$messages);
             if ($validator->fails()){
@@ -851,6 +855,38 @@ public function editProlife(Request $request, $subdomain){
 
          return redirect()->route('subProfile',['subdomain' => $subdomain] );
   }
+  
+   if($request['typePost'] == "updatePassword"){
+            $messages = [];
+            $validator = Validator::make($request->all(),[],$messages);
+            
+           
+
+       if (Hash::check($request['current_pass'],Auth::guard('account')->user()->password))
+        {
+
+          if($request['now_pass'] != $request['now_pass_confirmation']){
+              $validator->errors()->add('typePost', 'updatePassword');
+                $validator->errors()->add('now_pass', 'Mật khấu nhập lại không giống');
+                return redirect()->route('subProfile',['subdomain' => $subdomain])->withErrors($validator)->withInput();
+          }
+           DB::table('account')
+             ->where('id', Auth::guard('account')->user()->id)
+            ->update( ['password' =>  bcrypt($request['now_pass'])]);
+            \Session::flash('messagesResult',"Thay đổi mật khẩu thành công");
+            return redirect()->route('subProfile',['subdomain' => $subdomain] );
+        }
+        $validator->errors()->add('typePost', 'updatePassword');
+                $validator->errors()->add('current_pass', 'Mật khấu củ không giống');
+                return redirect()->route('subProfile',['subdomain' => $subdomain])->withErrors($validator)->withInput();
+        
+        
+         // DB::table('account')
+         //    ->where('id', Auth::guard('account')->user()->id)
+         //    ->update( ['image_link' => $imageName]);
+
+         
+  }
     // $users = Auth::user();
     // return view('main.manageProlife')->with('users',$users);
 }
@@ -919,13 +955,7 @@ public function manageSubmit(Request $request,  $subdomain){
             $validator->errors()->add('username', 'Username đã tồn tại!');
              return redirect()->route('subManage',['subdomain' => $subdomain])->withErrors($validator)->withInput();
     }
-    $users = DB::table('account')->where([['hotel_id', '=', $hotels->hotel_id],['email','=',$request['email']],])->first();
-    if($users != null){
-            $messagesResult = "fails";
-            $validator->errors()->add('typePost', 'addUser');
-            $validator->errors()->add('email', 'Email đã tồn tại!');
-            return redirect()->route('subManage',['subdomain' => $subdomain])->withErrors($validator)->withInput();
-    }
+   
     DB::table('account')->insertGetId([
              'first_name' => $request['first_name'],
              'last_name' => $request['last_name'],
@@ -971,16 +1001,7 @@ public function manageSubmit(Request $request,  $subdomain){
            $validator->errors()->add('username', 'username đã tồn tại!');
              return redirect()->route('subManage',['subdomain' => $subdomain])->withErrors($validator)->withInput();
         }
-        $getUsername = DB::table('account')->where('id', '<>', $request['id'])->where('hotel_id','=',$hotels->hotel_id)->where('email','=',$request['email']) ->first();
-        if($getUsername != null){
-           $messagesResult = "fails";
-
-           $validator->errors()->add('typePost', 'updateUser');
-            $validator->errors()->add('id', $request['id']);
-           $validator->errors()->add('email', 'email đã tồn tại!');
-             return redirect()->route('subManage',['subdomain' => $subdomain])->withErrors($validator)->withInput();
-        }
-
+        
         DB::table('account')
             ->where('id', $request['id'])
             ->update(['first_name' => $request['first_name'], 'last_name' => $request['last_name'], 'username' => $request['username'],'email' => $request['email'], 'country' => $request['country'], 'phone_number' => $request['phone_number'], 'dob' => $request['dob'], 'gender' => $request['gender']]);
@@ -1074,13 +1095,7 @@ public function staffManageSubmit(Request $request,  $subdomain){
             $validator->errors()->add('username', 'Username đã tồn tại!');
              return redirect()->route('subStaffManage',['subdomain' => $subdomain])->withErrors($validator)->withInput();
     }
-    $users = DB::table('account')->where([['hotel_id', '=', $hotels->hotel_id],['email','=',$request['email']],])->first();
-    if($users != null){
-            $messagesResult = "fails";
-            $validator->errors()->add('typePost', 'addUser');
-            $validator->errors()->add('email', 'Email đã tồn tại!');
-            return redirect()->route('subStaffManage',['subdomain' => $subdomain])->withErrors($validator)->withInput();
-    }
+   
     DB::table('account')->insertGetId([
              'first_name' => $request['first_name'],
              'last_name' => $request['last_name'],
@@ -1089,6 +1104,7 @@ public function staffManageSubmit(Request $request,  $subdomain){
              'password' => bcrypt($request['password']),
              'type' => 4,
              'hotel_id' => $hotels->hotel_id,
+             'salary' => $request['salary'],
          ]);
         //return view('main.manage')->with('users',$users)->withErrors($errors);
         return redirect()->route('subStaffManage',['subdomain' => $subdomain]);
@@ -1126,15 +1142,7 @@ public function staffManageSubmit(Request $request,  $subdomain){
            $validator->errors()->add('username', 'username đã tồn tại!');
              return redirect()->route('subStaffManage',['subdomain' => $subdomain])->withErrors($validator)->withInput();
         }
-        $getUsername = DB::table('account')->where('id', '<>', $request['id'])->where('hotel_id','=',$hotels->hotel_id)->where('email','=',$request['email']) ->first();
-        if($getUsername != null){
-           $messagesResult = "fails";
-
-           $validator->errors()->add('typePost', 'updateUser');
-            $validator->errors()->add('id', $request['id']);
-           $validator->errors()->add('email', 'email đã tồn tại!');
-             return redirect()->route('subStaffManage',['subdomain' => $subdomain])->withErrors($validator)->withInput();
-        }
+       
 
         DB::table('account')
             ->where('id', $request['id'])
@@ -1199,7 +1207,32 @@ public function configManage($subdomain){
 
 }
 public function configManageSubmit(Request $request,  $subdomain){
-    return $request;
+
+    $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+    $config = DB::table('web_config')->where('config_id', $hotels->config_id)->first();
+    if($request->image == null)
+    {
+      $imageName = $config->background;
+    }else{
+
+        $imageName = 'background.'.$request->image->getClientOriginalExtension();
+        $request->image->move(public_path('img/User/'.Auth::guard('account')->user()->username."/".$hotels->hotel_name), $imageName);
+        $imageName = 'img/User/'.Auth::guard('account')->user()->username."/".$hotels->hotel_name."/".$imageName;
+    }
+    
+     
+        
+        
+         DB::table('web_config')
+            ->where('config_id', $hotels->config_id)
+            ->update( ['background' => $imageName,
+                        'intro' => $request['intro'],
+                        'color1' => $request['color1'],
+                        'color2' => $request['color2']
+                        ]);
+
+            return redirect()->route('subConfig',['subdomain' => $subdomain]);
+
 }
 
 public function bookManage($subdomain){
@@ -1526,6 +1559,41 @@ public function roomManageSubmit(Request $request,  $subdomain){
     }
 }
 
+public function serviceManage($subdomain){
+        $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+        $rooms = DB::table('room')->where('room.hotel_id', '=', $hotels->hotel_id)->join('type_room', 'room.room_type_id', '=', 'type_room.type_room_id')->select('room.*', 'type_room.type_name')->orderBy('room_number', 'asc')->get();
+        $type_rooms =  DB::table('type_room')->where('hotel_id', '=', $hotels->hotel_id)->get();
+       
+        // $users = DB::table('account')->where([['hotel_id', '=', $hotels->hotel_id],['type', '=', 4],])->get();
+        if($hotels != null){
+             
+            if(Auth::guard('account')->Check()){
+
+                if(Auth::guard('account')->user()->hotel_id != $hotels->hotel_id ){
+                    Auth::guard('account')->logout();
+                }
+            }
+            if(!Auth::guard('account')->Check()){
+                return redirect()->route('subHome',['subdomain' => $subdomain]);
+            }
+            if(Auth::guard('account')->user()->type != 3){
+                return view('sub.404');
+            }
+
+            $info = array(
+            "name" => $hotels->hotel_name,
+            "subdomain" => $subdomain, 
+            );
+            return view('sub.servicemanage')->with('rooms',$rooms)->with('info',$info)->with('type_rooms', $type_rooms);
+            // if(Auth::guard('account')->user()->type == 4 || Auth::guard('account')->user()->type == 3){
+            //     return view('sub.mainManageProlife')->with('users',$users)->with('info',$info);
+            // }
+            
+            
+         }
+       return view('sub.404');
+}
+
 public function reportManage( $subdomain){
 
         $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
@@ -1603,12 +1671,13 @@ public function reportManage( $subdomain){
         // retủn list cost room, service, date, spend
         $totalEmpBook = null;
         $totalEmpService = null;
+        $totalLuong = null;
         $employees = DB::table('account')->where('hotel_id','=',$hotels->hotel_id)->where('type','=', 4)->get();
         foreach ($employees as $employee) {
                 
                  $totalEmpBook[] =count(DB::table('booking')->where('account_id','=',$employee->id)->get());
                  $totalEmpService[] =count(DB::table('book_service')->where('account_id','=',$employee->id)->get());
-
+                 $totalLuong[] = $employee->Salary;
             }
        // return $totalEmpService;
 
@@ -1640,7 +1709,7 @@ public function reportManage( $subdomain){
         }
 
             
-            return view('sub.report')->with('info',$info)->with('listDay', $listDay)->with('listCostRoom', $listCostRoom)->with('listCostService', $listCostService)->with('listCostSpend',$listCostSpend)->with('employees',$employees)->with('employeesname',$employeesname)->with('totalEmpBook',$totalEmpBook)->with('totalEmpService',$totalEmpService)->with('tong',$tong)->with('tongEmp',$tongEmp)->with('invoicespayal',$invoicespayal)->with('invoicescard',$invoicescard)->with('invoicesroom',$invoicesroom)->with('invoicesservice',$invoicesservice);
+            return view('sub.report')->with('info',$info)->with('listDay', $listDay)->with('listCostRoom', $listCostRoom)->with('listCostService', $listCostService)->with('listCostSpend',$listCostSpend)->with('employees',$employees)->with('employeesname',$employeesname)->with('totalEmpBook',$totalEmpBook)->with('totalEmpService',$totalEmpService)->with('tong',$tong)->with('tongEmp',$tongEmp)->with('invoicespayal',$invoicespayal)->with('invoicescard',$invoicescard)->with('invoicesroom',$invoicesroom)->with('invoicesservice',$invoicesservice)->with('totalLuong',$totalLuong);
             // if(Auth::guard('account')->user()->type == 4 || Auth::guard('account')->user()->type == 3){
             //     return view('sub.mainManageProlife')->with('users',$users)->with('info',$info);
             // }

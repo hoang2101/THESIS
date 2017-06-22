@@ -22,9 +22,13 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <!-- Main css -->
 <link rel="stylesheet" href="css/style2.css">
-
+<style type="text/css">
+  .bg-grey{
+    background: {{$config->color2}};
+  }
+</style>
 </head>
-<body data-spy="scroll" data-target=".navbar" data-offset="82">
+<body data-spy="scroll" data-target=".navbar" data-offset="82" style="background-color:{{$config->color1}};">
   <!-- Hero Section -->
   <nav class="navbar navbar-default navbar-fixed-top">
 
@@ -110,7 +114,7 @@
     </div>   
   </nav>
   <!-- Search Section -->
-  <section id="home" class="hero hero_full_screen hero_parallax parallax-window" data-stellar-background-ratio="0.5">
+  <section id="home" class="hero hero_full_screen hero_parallax parallax-window" style="background: url('{{$config->background}}') no-repeat fixed;" data-stellar-background-ratio="0.5">
     <div class="bg-overlay opacity-6">
     </div>
     <div class="hero_parallax_inner">
@@ -207,9 +211,10 @@
       <div class="col-md-12">
         <div class="descriptive-title">
           <h2>GIỚI THIỆU KHÁCH SẠN</h2>
-          <p>Chào mừng bạn đến với khách sạn của chúng tôi, khách sạn chúng tôi .</p>
-          <p>Khách sạn được chia thành 5 hạng phòng khác nhau, được du khách yêu thích bởi sự sạch sẽ và dịch vụ phòng hoàn hảo. Ngoài ra, khách sạn Đệ Nhất còn trang bị phòng tập thể hình, hồ bơi, 3 sân tennis, CLB trò chơi có thưởng (chỉ dành cho khách nước ngoài) & khu mát-xa – xông hơi để phục vụ khách lưu trú.</p>
-          <p>Ẩm thực cũng là một thế mạnh bởi sự đa dạng phong cách và tinh tế trong từng món ăn. Nhà hàng Phố Nướng Đệ Nhất, Korea House và Hanasushi mang đến những món ăn cũng như không gian đặc trưng đậm chất Việt Nam, Hàn Quốc & Nhật Bản. Với nhà hàng Buffet Đệ Nhất là sự tổng hợp hài hòa các món ăn đến từ Việt – Á – Âu, là một bữa tiệc hoành tráng thật sự cho khách lưu trú tại khách sạn nói riêng và thực khách Sài Gòn nói chung.</p>
+          @foreach($config->intro as $key => $intro)
+            <p>{{$intro}}</p>
+          @endforeach
+          
 
         </div>
       

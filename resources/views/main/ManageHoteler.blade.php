@@ -79,6 +79,7 @@
                                 <li><a class="active"><i class="fa fa-desktop"></i> Quản lý khách sạn</a>
                                 <li><a href="{{ route('mainManageGovermHoteler') }}"><i class="fa fa-user" "></i> Quản lý Quản trị khách sạn</a></li>
                                  <li><a href="{{ route('mainProfile') }}"><i class="fa fa-user" "></i> Quản lý tài khoản</a></li>
+                                <li><a href="{{ route('mainReport') }}"><i class="fa fa-cog"></i> Thống kê </a></li>
                                 
 
                                <!--  <li><a><i class="fa fa-table"></i>zxczxc  </a>

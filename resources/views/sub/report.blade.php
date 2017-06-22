@@ -76,6 +76,7 @@
                                 <li><a  href="{{ route('subManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Quản lý khách hàng</a>
                                  <li><a  href="{{ route('subStaffManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Quản lý Nhân viên</a>
                                  <li><a  href="{{ route('subRoomManage',['subConfig' =>$info['subdomain']]) }}"><i class="fa fa-university"></i> Quản lý phòng</a>
+                                 <li><a href="{{ route('subServiceManage',['subConfig' =>$info['subdomain']]) }}"><i class="fa fa-server"></i> Quản lý dịch vụ</a>
                                  <li><a  href="{{ route('subProfile',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Quản lý Tài khoản</a>
                                  <li><a  href="{{ route('subConfig',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-cog"></i> Cài Đặt Web</a>
                                  <li><a  class="active" href="{{ route('subReportManage',['subReportManage' =>$info['subdomain']]) }}"><i class="fa fa-cog"></i> Thống kê</a>
@@ -291,13 +292,28 @@
                                       <div class="x_content">
 
                                         <div id="chart" style="height:350px;"></div>
-                                        <canvas id="myChart"></canvas>
+                                        
+
                                       </div>
                                     </div>
                                   </div>
 
+                         <div class="col-md-12 col-sm-12 col-xs-12">
+                                    <div class="x_panel">
+                                         <div class="x_title">
+                                        <h2>Chi tiết</h2>
+                                        <ul class="nav navbar-right panel_toolbox">
+                                          <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                          </li>
+                                          
+                                          <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                          </li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                      </div>
+                                      <div class="x_content">
 
-                          <table id="responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                    <table id="responsiveexport1" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                       <thead>
                         <tr>
                           <th id="cel1">STT</th>
@@ -326,7 +342,7 @@
                                 @endif
                             </tr>
                         @endforeach
-                       
+
 
                         
                       
@@ -334,13 +350,19 @@
                        
                       </tbody>
                     </table>
+                                      </div>
+                                    </div>
+                                  </div>
+                         
+                    <div class="ln_solid"></div>
+                       
                          
                         </div>
                         <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
                           
 
 
-                          <table id="responsive2" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                          <table id="responsiveexport2" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                       <thead>
                         <tr>
                           <th id="cel1">STT</th>
@@ -378,7 +400,7 @@
                           
 
 
-                          <table id="responsive3" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                          <table id="responsiveexport3" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                       <thead>
                         <tr>
                           <th id="cel1">STT</th>
@@ -746,6 +768,53 @@
 
 
 <script type="text/javascript">
+$('#responsiveexport1').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copyFlash',{
+                extend: 'csvFlash',
+                title: 'Chi tiết thu chi'
+            },{
+                extend: 'excelFlash',
+                title: 'Chi tiết thu chi'
+            },{
+                extend: 'pdfFlash',
+                title: 'Chi tiết thu chi'
+            },
+        ]
+    } );
+
+$('#responsiveexport2').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copyFlash',{
+                extend: 'csvFlash',
+                title: 'Chi tiết Nhân viên'
+            },{
+                extend: 'excelFlash',
+                title: 'Chi tiết nhân viên'
+            },{
+                extend: 'pdfFlash',
+                title: 'Chi tiết nhân viên'
+            },
+        ]
+    } );
+
+$('#responsiveexport3').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            'copyFlash',{
+                extend: 'csvFlash',
+                title: 'Chi tiết thanh toán'
+            },{
+                extend: 'excelFlash',
+                title: 'Chi tiết thanh toán'
+            },{
+                extend: 'pdfFlash',
+                title: 'Chi tiết thanh toán'
+            },
+        ]
+    } );
     function removeMessage() {
         $("div").removeClass("has-error");
         $("span").removeClass("help-block");
@@ -890,6 +959,8 @@ function showDataEdit(idUser, first_name, last_name,email,phone_number,username,
 </script>
 <script type="text/javascript">
    
+
+
    var day = {!! json_encode($listDay) !!};
    var room = {!! json_encode($listCostRoom) !!};
    var service = {!! json_encode($listCostService) !!};

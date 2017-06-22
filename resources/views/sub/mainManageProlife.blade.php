@@ -76,6 +76,7 @@
                                 <li><a  href="{{ route('subManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Quản lý khách hàng</a>
                                  <li><a  href="{{ route('subStaffManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Quản lý Nhân viên</a>
                                  <li><a  href="{{ route('subRoomManage',['subConfig' =>$info['subdomain']]) }}"><i class="fa fa-university"></i> Quản lý phòng</a>
+                                 <li><a href="{{ route('subServiceManage',['subConfig' =>$info['subdomain']]) }}"><i class="fa fa-server"></i> Quản lý dịch vụ</a>
                                  <li><a  class="active" href="{{ route('subProfile',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Quản lý Tài khoản</a></li>
                                 <li><a  href="{{ route('subConfig',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-cogs"></i> Cài Đặt Web</a>
                                 <li><a  href="{{ route('subReportManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-cog"></i>Thống kê</a>
@@ -307,7 +308,7 @@
                                                             
                                                             <input type="text" class="form-control has-feedback-left"  id="email" name="email" placeholder="Email" value="{{$users->email}}">
                                                            
-                                                            <span class="fa fa-user form-control-feedback left" aria-hidden="true" ></span>
+                                                            <span class="fa fa-envelope form-control-feedback left" aria-hidden="true" ></span>
                                                         </div>
                                                     </div>
                                                     <div class="row">
@@ -315,9 +316,8 @@
                                                             
                                                             <input type="number" class="form-control has-feedback-left"  id="phone_number" name="phone_number" placeholder="Số điện thoại" value="{{$users->phone_number}}">
                                                             
-                                                            <!-- <input type="text" class="form-control has-feedback-left"  id="phone_number" name="phone_number" placeholder="{{$users->phone_number}}"> -->
-                                                            
-                                                            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                          
+                                                            <span class="fa fa-phone form-control-feedback left" aria-hidden="true"></span>
                                                         </div>
                                                     </div>
                                                     <div class="row">
@@ -325,7 +325,7 @@
                                                            
                                                             <input type="text" class="form-control has-feedback-left"  id="country" name="country" placeholder="Quốc gia" value="{{$users->country}}">
                                                            
-                                                            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                            <span class="fa fa-globe form-control-feedback left" aria-hidden="true"></span>
                                                         </div>
                                                     </div>
                                                     <div class="row">
@@ -333,7 +333,7 @@
                                                            
                                                             <input type="text" onfocus="(this.type='date')" class="form-control has-feedback-left"   id="dob" name="dob" placeholder="Ngày sinh" value="{{$users->dob}}">
                                                            
-                                                            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                            <span class="fa fa-calendar form-control-feedback left" aria-hidden="true"></span>
                                                         </div>
                                                     </div>
                                                      <div class="row">
@@ -341,7 +341,7 @@
                                                             
                                                             <input type="text"  class="form-control has-feedback-left"  id="gender" name="gender" placeholder="Giới tính" value="{{$users->gender}}">
                                                            
-                                                            <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>
+                                                            <span class="fa fa-transgender form-control-feedback left" aria-hidden="true"></span>
                                                         </div>
                                                     </div>
                                                     
@@ -352,6 +352,61 @@
                                                         </div>
                                                     </div>
                                                 </form>
+
+                                                <br />
+                                                <div class="ln_solid"></div>
+                                               
+                                                     <h2><i class="fa fa-certificate"></i> Quản lý mật khẩu</h2>
+                                                   
+                                                     <div>
+                                                         <form role="form" method="POST" action="{{ route('subProfilesubmit',['subdomain' =>$info['subdomain']]) }}">
+                                                        {{ csrf_field() }}
+                                                    <input hidden id="typePost"" name="typePost" value="updatePassword">
+                                                    <input hidden id="idUser" name="id" value="{{$users->id}}">
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback {{ $errors->has('current_pass') ? ' has-error' : '' }}">
+                                                            <label>Nhập mật khẩu củ</label>
+                                                            <input type="password" class="form-control has-feedback-left" id="current_pass" name="current_pass"  value="" required> 
+                                                            
+                                                             <span class="fa fa-key form-control-feedback left" aria-hidden="true"></span>
+                                                             @if ($errors->has('current_pass'))
+                                                          <span class="help-block has-error">
+                                                                <strong class="messageError">{{ $errors->first('current_pass') }}</strong>
+                                                            </span>
+                                                              @endif
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback  {{ $errors->has('now_pass') ? ' has-error' : '' }}">
+                                                            <label>Nhập mật khẩu mới</label>
+                                                            <input type="password" class="form-control has-feedback-left"  id="now_pass" name="now_pass"  value="" required>
+                                                           
+                                                            <span class="fa fa-key form-control-feedback left" aria-hidden="true"></span>
+                                                             @if ($errors->has('now_pass'))
+                                                              <span class="help-block has-error">
+                                                                    <strong class="messageError">{{ $errors->first('now_pass') }}</strong>
+                                                                </span>
+                                                                  @endif
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback ">
+                                                           <label>Nhập lại mật khẩu</label>
+                                                            <input type="password" class="form-control has-feedback-left"  id="last_name" name="now_pass_confirmation"  value="" required>
+                                                           
+                                                             <span class="fa fa-key form-control-feedback left" aria-hidden="true"></span>
+                                                        </div>
+                                                    </div>
+                                                   
+                                                    
+                                                    <div class="row">
+                                                        
+                                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                                            <button id="btn_reset_pwd" type="submit" class="btn btn-primary"><i class="fa fa-edit m-right-xs"></i>&nbsp;Thay đổi Password</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                     </div>
                                             </div>
                                         </div>
                                         
@@ -362,198 +417,7 @@
                     </div>
                 </div>
             </div>
-            <!-- /page content -->
-<!-- modal dialog add user -->
-<!-- <div class="modal fade" id="addUserMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-        <div class="modal-dialog">
-        <div class="loginmodal-container">
-        <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-          <h1>Thêm khách hàng</h1><br>
-          <form class="form-horizontal" role="form" method="POST" action="{{ route('addUserMainSubmit') }}">
-                        {{ csrf_field() }}
-                        <input hidden id="addtypePost"" name="typePost" value="addUser">
-                        <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="first_name" type="text" class="form-control" placeholder="First Name" name="first_name" value="{{old('first_name') }}" required autofocus >
 
-                                
-                            </div>
-                        </div>
-                        <div class="form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="last_name" type="text" class="form-control" placeholder="Last Name" name="last_name" value="{{ old('last_name') }}" required autofocus>
-
-                                
-                            </div>
-                        </div>
-                        <div class="form-group {{ $errors->has('username') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="username" type="text" class="form-control" placeholder="Username" name="username" value="{{ old('username') }}" required autofocus>
-
-                                @if ($errors->has('username'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('username') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="email" type="email" class="form-control" placeholder="E-Mail Address" name="email" value="{{ old('email') }}" required autofocus>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="password" type="password" class="form-control" placeholder="Password" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div >
-                                <input id="password-confirm" type="password" placeholder="Confirm Password" class="form-control" name="password_confirmation" required>
-                            </div>
-                        </div>
-                        <input type="submit" name="Register" class="loginmodal-submit " value="Thêm khách hàng">
-                       
-                    </form>
-          </div>
-        </div>
-      </div>
-
-      <!-- modal dialog view  edit user -->
-      <div class="modal fade" id="viewUserMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-        <div class="modal-dialog">
-        <div class="Registermodal-content">
-        <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-          <h1>Xem chi tiết khách hàng</h1><br>
-          <form class="form-horizontal" role="form" method="POST" action="{{ route('addUserMainSubmit') }}">
-                        {{ csrf_field() }}
-                
-                        <input hidden id="typePost"" name="typePost" value="updateUser">
-                        <input hidden id="idUser" name="id" value="">
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="e_first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" required autofocus>
-
-                                
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="e_last_name" type="text" class="form-control" placeholder="Tên" name="last_name" value="{{ old('last_name') }}" required autofocus>
-
-                                
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="e_email" type="email" class="form-control" placeholder="E-Mail" name="email" value="{{ old('email') }}" required autofocus>
-                          
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group">
-                        
-                            <div >
-                                <input id="e_phone_number" type="number" class="form-control" placeholder="Số điện thoại" name="phone_number" value="{{ old('phone_number') }}" >
-
-                               
-                                @if ($errors->has('email'))
-                                     <span class="help-block">
-                                      <br>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group {{ $errors->has('username') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="e_username" type="text" class="form-control" placeholder="Tên tài khoản" name="username" value="{{ old('username') }}" required>
-
-                                @if ($errors->has('username'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('username') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group">
-                            <div >
-                                <input id="e_country" type="text" class="form-control" placeholder="Quốc qia" name="country" value="{{ old('country') }}" >
-
-                                @if ($errors->has('username'))
-                                 <span class="help-block">
-                                      <br>
-                                    </span>
-                                    
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                            <div >
-                                <input id="e_dob" type="text" onfocus="(this.type='date')" class="form-control" placeholder="Ngày sinh" name="dob" value="{{ old('dob') }}" >
-
-                                @if ($errors->has('dob'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('dob') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group">
-                            <div >
-                                <input id="e_gender" type="text" class="form-control" placeholder="Giới tính" name="gender" >
-
-                                 @if ($errors->has('dob'))
-                                     <span class="help-block">
-                                      <br>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <input id="e_submit" type="submit" name="Register" class="loginmodal-submit" value="Chỉnh sửa khách hàng">
-                        </div>
-                         <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <!-- <a data-toggle="tooltip" data-placement="top"  class="pull-right btn btn-primary btn-xs" href="{{ route('addUserMainSubmit') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('edit-form').submit();"><i class="fa fa-folder"></i> View  </a> -->
-                            <a   class="btn btn-danger btn-xs pull-right" onclick="deleteusers()"><i class="fa fa-trash-o"></i> Xóa </a>
-
-                            
-                            <a href="#" id="typeEditView" class="btn btn-info btn-xs pull-right" onclick="addReadonly()"><i class="fa fa-pencil"></i>Sửa</a>
-                                   
-                        </div>
-                        
-                        
-                    </form>
-                    <!-- <a href="{{ route('editUserMainSubmit') }}" class="btn btn-primary btn-xs" data-toggle="tooltip" data-backdrop="static" data-target="#viewUserMainmodal""><i class="fa fa-folder"></i> View </a> -->
-                    
-          </div>
-        </div>
-      </div>
-      <!-- form post--> 
       
                         
       
@@ -666,16 +530,11 @@
     @endif
 
 
-@if( ! empty($messagesResult))
-    @if ($messagesResult=="fails")
-      <script type="text/javascript">  
-      window.alert("Thất bại");
+@if (session('messagesResult'))
+   <script type="text/javascript">  
+      alert(" {{ session('messagesResult') }}");
     </script>
-    @endif @if ($messagesResult=="successful")
-     <script type="text/javascript">  
-      alert("thành công");
-    </script>
-    @endif
+   
     @endif
 
 

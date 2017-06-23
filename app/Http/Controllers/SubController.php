@@ -1574,7 +1574,9 @@ public function roomManageSubmit(Request $request,  $subdomain){
         
       $imageName = "img/roomhotel.png";
     }else{
-        $imageName = preg_replace('/\s+/', '', $$request['type_name']).'.'.$request->image->getClientOriginalExtension();
+
+        $imageName = preg_replace('/\s+/', '', $request['type_name']).'.'.$request->image->getClientOriginalExtension();
+
         $request->image->move(public_path('img/Hotel/'.$hotels->hotel_name."/room"), $imageName);
         $imageName = 'img/Hotel/'.$hotels->hotel_name."/room/".$imageName;
     }
@@ -1608,7 +1610,7 @@ public function roomManageSubmit(Request $request,  $subdomain){
         {
           
 
-            $imageName = preg_replace('/\s+/', '', $$request['type_name']).'.'.$request->image->getClientOriginalExtension();
+            $imageName = preg_replace('/\s+/', '', $request['type_name']).'.'.$request->image->getClientOriginalExtension();
             $request->image->move(public_path('img/Hotel/'.$hotels->hotel_name."/room"), $imageName);
             $imageName = 'img/Hotel/'.$hotels->hotel_name."/room/".$imageName;
         }
@@ -1768,7 +1770,7 @@ public function serviceManageSubmit(Request $request, $subdomain){
             
           $imageName = "img/servicehotel.png";
         }else{
-            $imageName = preg_replace('/\s+/', '', $$request['service_name']).'.'.$request->image->getClientOriginalExtension();
+            $imageName = preg_replace('/\s+/', '', $request['service_name']).'.'.$request->image->getClientOriginalExtension();
             $request->image->move(public_path('img/Hotel/'.$hotels->hotel_name."/service"), $imageName);
             $imageName = 'img/Hotel/'.$hotels->hotel_name."/service/".$imageName;
         }
@@ -1801,7 +1803,7 @@ public function serviceManageSubmit(Request $request, $subdomain){
         {
           
 
-            $imageName = preg_replace('/\s+/', '', $$request['service_name']).'.'.$request->image->getClientOriginalExtension();
+            $imageName = preg_replace('/\s+/', '', $request['service_name']).'.'.$request->image->getClientOriginalExtension();
         $request->image->move(public_path('img/Hotel/'.$hotels->hotel_name."/service"), $imageName);
         $imageName = 'img/Hotel/'.$hotels->hotel_name."/service/".$imageName;
         }

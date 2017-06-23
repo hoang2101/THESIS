@@ -13,18 +13,20 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="{!! asset('vendors/bootstrap/dist/css/bootstrap.min.css') !!}" rel="stylesheet">
+     <script src="{!! asset('vendors/jquery/dist/jquery.min.js') !!}"></script>
 
     <!-- MetisMenu CSS -->
-    <link href="{!! asset(' vendor/metisMenu/metisMenu.min.css')!!}" rel="stylesheet">
+    
 
     <!-- Custom CSS -->
     <link href="{!! asset('css/sb-admin-2.css')!!}" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
-    <link href="{!! asset('vendor/morrisjs/morris.css')!!}" rel="stylesheet">
+   
 
     <!-- Custom Fonts -->
     <link href="{!! asset('vendors/font-awesome/css/font-awesome.min.css')!!}" rel="stylesheet" type="text/css">
+   
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -32,15 +34,28 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <style type="text/css">
-        .ln_solid {
-    border-top: 1px solid #e5e5e5;
-    color: #fff;
-    background-color: #fff;
-    height: 1px;
-    margin: 20px 0;
+   <style type='text/css'>
+.fa.form-control-feedback {<!-- w  ww.jav a2  s .co m-->
+  line-height: 34px;
+  padding-left: 25px;
+  padding-top: 10px;
 }
-    </style>
+.input-lg ~ .fa.form-control-feedback {
+  line-height: 46px; 
+}
+.has-feedback-left input.form-control {
+  padding-left: 34px; 
+  padding-right: 12px; 
+}
+.has-feedback-left .form-control-feedback {
+  left: 0;
+}
+
+.form-horizontal .has-feedback-left .form-control-feedback {
+  left: 12px;
+
+}
+</style>
 </head>
 
 <body>
@@ -105,21 +120,16 @@
                 <!-- /.dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        @if(!Auth::guard('account')->check()) 
-                        <img style="width: 29px; height: 29px;border-radius: 50%; margin-right: 10px;" src="{!! asset('img/avatar_null.png') !!}" alt="">KHÁCH
-                          
-                        
-                       @elseif(Auth::guard('account')->user()->image_link == null)
+
+                       @if(Auth::guard('account')->user()->image_link == null)
                                 <img style="width: 29px; height: 29px;border-radius: 50%; margin-right: 10px;" src="{!! asset('img/avatar_null.png') !!}" alt="">{{ Auth::guard('account')->user()->first_name }} {{Auth::guard('account')->user()->last_name }}
                                 @else
                                 <img  style="width: 29px; height: 29px;border-radius: 50%; margin-right: 10px;" src="{!! asset('img/User/' .Auth::guard('account')->user()->image_link) !!}" alt="">{{ Auth::guard('account')->user()->first_name }} {{ Auth::guard('account')->user()->last_name }}
-                         @endif
-
-                      
+                                @endif
                                     <span class=" fa fa-angle-down"></span> 
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                       @if(Auth::guard('account')->check()) {
+
                         <li><a href="{{ route('subConfig',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user fa-fw"></i> User Profile</a>
                         </li>
                         
@@ -137,7 +147,6 @@
                                             <input hidden id="typePosts"" name="typePost" value="logout">
                                         </form>
                         </li>
-                        @endif
                     </ul>
                     <!-- /.dropdown-user -->
                 </li>
@@ -150,27 +159,17 @@
                 <div class="profile clearfix">
                        
                     <ul class="nav" id="side-menu">
-                        @if(Auth::guard('account')->check()) 
+
                         <li>
                             <a href="{{ route('subHome',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-home fa-fw"></i> Home</a>
                         </li>
                         <li>
-                            <a href="{{ route('subProfile',['subdomain' =>$info['subdomain']]) }}" class="active"><i class="fa fa-dashboard fa-fw"></i> Profile</a>
-                        </li>
-                         <li>
-                            <a href="{{ route('subHistoryBook',['subdomain' =>$info['subdomain']]) }}" ><i class="fa fa-history fa-fw"></i> Lịch sử đặt phòng</a>
+                            <a href="{{ route('subProfile',['subdomain' =>$info['subdomain']]) }}" ><i class="fa fa-dashboard fa-fw"></i> Profile</a>
                         </li>
                         <li>
-                            <a class="active" href="{{ route('subpaypal',['subdomain' =>$info['subdomain']]) }}" class="active"><i class="fa fa-dashboard fa-fw"></i>Kết quả thanh toán</a>
+                            <a href="{{ route('subHistoryBook',['subdomain' =>$info['subdomain']]) }}" class="active"><i class="fa fa-history fa-fw"></i> Lịch sử đặt phòng</a>
                         </li>
-                        @else
-                        <li>
-                            <a href="{{ route('subHome',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-home fa-fw"></i> Home</a>
-                        </li>
-                        <li>
-                            <a class="active" href="{{ route('subpaypal',['subdomain' =>$info['subdomain']]) }}" class="active"><i class="fa fa-dashboard fa-fw"></i>Kết quả thanh toán</a>
-                        </li>
-                        @endif
+                   
                     </ul>
                 </div>
                 <!-- /.sidebar-collapse -->
@@ -181,32 +180,53 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Kết quả thanh Toán</h1>
+                    <h1 class="page-header">Lịch sử đặt phòng</h1>
                 </div>
-                <div class="x_content">
-                    @if ($message = Session::get('messagesResult'))
-                <div class="custom-alerts alert alert-success fade in">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
-                     {!! $message !!}
-                </div>
-                <?php Session::forget('success');?>
-                @endif
-                @if ($message2 = Session::get('idbooking'))
-                <div class="custom-alerts alert alert-success fade in">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
-                    Mã đặt phòng của quý khách là {!! $message2 !!}
-                </div>
-                <?php Session::forget('idbooking');?>
-                @endif
-                    <center></center>     
-                    
-                </div>
-                  
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
             <div class="row">
-                
+                  <table class="table table-striped projects">
+                      <thead>
+                        <tr>
+                          
+                          <th style="width: 20%">Mã đặt phòng</th>
+                          <th style="width: 20%">Số phòng</th>
+                          <th style="width: 20%">Ngày đến</th>
+                          <th style="width: 20%">Ngày đi</th>
+                          <th style="width: 20%">Phí</th>
+                        </tr>
+                      </thead>
+
+                        @foreach($books as $key=>$book)
+                           <tbody>
+                              <tr>
+                                <td>
+                                  <p>{{$book->booking_id}}</p>
+                                </td>
+                                <td>
+                                <p>{{$book->room_id}}</p>
+                                </td>
+                                <td>
+                                 <p>{{$book->date_from}}</p>
+                                </td>
+                                <td>
+                                 <p>{{$book->date_to}}</p>
+                                </td>
+                                <td>
+                                    <p>{{$book->total_cost_room}}</p>
+                                </td>
+                               
+                             
+                            </tbody>
+
+
+                         @endforeach
+                    
+                      
+                    </table>
+
+               
             </div>
             <!-- /.row -->
             <div class="row">
@@ -221,21 +241,72 @@
     <!-- /#wrapper -->
 
     <!-- jQuery -->
-    <script src="{!! asset('vendors/jquery/dist/jquery.min.js') !!}"></script>
 
+    <script  src="{!! asset('js/jquery.min.js') !!}"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <!-- Bootstrap Core JavaScript -->
-    <script src="{!! asset('vendors/bootstrap/dist/js/bootstrap.min.js') !!}"></script>
-
+ 
     <!-- Metis Menu Plugin JavaScript -->
-    <script src="{!! asset('vendor/metisMenu/metisMenu.min.js') !!}"></script>
-
-    <!-- Morris Charts JavaScript -->
-    <script src="{!! asset('vendor/raphael/raphael.min.js') !!}"></script>
-    <script src="{!! asset('vendor/morrisjs/morris.min.js') !!}"></script>
+    
 
     <!-- Custom Theme JavaScript -->
     <script src="{!! asset('js/sb-admin-2.js')!!}"></script>
-    
+    @if ($errors->has('username') )
+  @if($errors->first('username') == "Tài khoản hoặc mật khẩu không đúng")
+
+    <script type="text/javascript">  
+    $(document).ready(function () {
+      $('#login-modal').modal('show');
+
+}); </script>
+ @endif
+ @if($errors->first('username') != "Tài khoản hoặc mật khẩu không đúng")
+
+    <script type="text/javascript">  
+    $(document).ready(function () {
+      $('#register-modal').modal('show');
+
+}); </script>
+ @endif
+  @endif  @if ($errors->has('password'))
+      <script>  <script>  function myFunction() { 
+    document.getElementById("register-modal").showModal(); </script>
+  @endif @if ($errors->has('email'))
+      <script>  <script>  function myFunction() { 
+    document.getElementById("register-modal").showModal(); </script>
+  @endif
+<script type="text/javascript">
+   
+    function removeMessage() {
+        $("div").removeClass("has-error");
+        $("span").removeClass("help-block");
+
+        var x = document.getElementsByClassName("messageError");
+        for (i = 0; i < x.length; i++) { 
+            x[i].innerHTML = "";
+        }
+        $("strong").removeClass("messageError");
+        // var element = document.getElementsByClassName("help-block");
+        
+}
+</script>
+<script>
+  $( function() {
+    $( "#datepicker" ).datepicker();
+  } );
+</script>
+<script>
+  $( function() {
+    $( "#datepicker2" ).datepicker();
+  } );
+</script>
+@if (session('messagesResult'))
+   <script type="text/javascript">  
+      alert(" {{ session('messagesResult') }}");
+    </script>
+   
+    @endif
+
 </body>
 
 </html>

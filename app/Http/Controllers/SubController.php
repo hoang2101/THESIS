@@ -57,7 +57,7 @@ class SubController extends Controller
 
     public function paypal($subdomain){
         $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
-     $users = Auth::guard('account')->user();
+        $users = Auth::guard('account')->user();
       if($hotels != null){
              
 
@@ -288,7 +288,10 @@ class SubController extends Controller
             $type =  \Session::get("type");
             $resulttype_room = \Session::get("resulttype_room");
 
-          
+            $iduser = null;
+          if(Auth::guard('account')->Check()){
+            $iduser = Auth::guard('account')->user()->id;
+          }
 DB::table('booking')->insertGetId([
              'first_name' => $first_name,
              'last_name' => $last_name,
@@ -297,6 +300,8 @@ DB::table('booking')->insertGetId([
              'number_people' => $people,
              'contry' => $country,
              'hotel_id' => $hotels->hotel_id,
+             'total_cost_room' => $cost,
+             'account_id' => $iduser
          ]);
 
 $book = DB::table('booking')->latest()->first();
@@ -382,7 +387,10 @@ public function getDone(Request $request)
             $type =  \Session::get("type");
             $resulttype_room = \Session::get("resulttype_room");
 
-          
+          $iduser = null;
+          if(Auth::guard('account')->Check()){
+            $iduser = Auth::guard('account')->user()->id;
+          }
 DB::table('booking')->insertGetId([
              'first_name' => $first_name,
              'last_name' => $last_name,
@@ -391,6 +399,8 @@ DB::table('booking')->insertGetId([
              'number_people' => $people,
              'contry' => $country,
              'hotel_id' => $hotels->hotel_id,
+             'total_cost_room' => $cost,
+             'account_id' => $iduser
          ]);
 
 $book = DB::table('booking')->latest()->first();
@@ -477,6 +487,8 @@ public function congra($subdomain){
 
         $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
         $config = DB::table('web_config')->where('config_id','=', $hotels->config_id)->first();
+        $type_rooms = DB::table('type_room')->where('hotel_id','=', $hotels->hotel_id)->get();
+        $services = DB::table('service')->where('hotel_id','=', $hotels->hotel_id)->get();
        // return $hotels;
 
          if($hotels != null){
@@ -495,7 +507,7 @@ public function congra($subdomain){
             "subdomain" => $subdomain, 
             );
 
-             return view('sub.index')->with('info',$info)->with('config',$config);
+             return view('sub.index')->with('info',$info)->with('config',$config)->with('type_rooms', $type_rooms)->with('services', $services);
          }
        return view('sub.404');
     }
@@ -581,7 +593,7 @@ public function congra($subdomain){
             // $first_name = $request['first_name'];
             // $last_name = $request['last_name'];
             // $country = $request['country'];
-
+           
             $messages = [];
             $validator = Validator::make($request->all(),[],$messages);
             $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
@@ -605,6 +617,18 @@ public function congra($subdomain){
                 $validator->errors()->add('people', 'Số phòng không được lớn hơn số người');
                  return redirect()->route('subHome',['subdomain' => $subdomain])->withErrors($validator)->withInput();
             }
+
+             $startTimeStamp = strtotime($checkin);
+            $endTimeStamp = strtotime($checkout);
+
+            $timeDiff = abs($endTimeStamp - $startTimeStamp);
+
+            $numberDays = $timeDiff/86400;  // 86400 seconds in one day
+
+            // and you might want to convert to integer
+            $numberDays = intval($numberDays);
+
+
 
             $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
             $rooms = DB::table('room')->leftJoin('booking', 'booking.booking_id', '=', 'room.booked_id')->where('room.hotel_id', '=', $hotels->hotel_id)->select('room.*', 'booking.date_from','booking.date_to')->get();
@@ -670,7 +694,7 @@ public function congra($subdomain){
 
                 for( $i = 0; $i< count($roomsfortypes); $i++){
                     if($peopleEachRoom <= $type_rooms[$i]->number_people  && count($roomsfortypes[$i]) >= $nroom) {
-                        array_push($resultroom,"Có ".$nroom ." phòng loại " .$type_rooms[$i]->type_name." giá " .$type_rooms[$i]->cost*$nroom);
+                        array_push($resultroom,"Có ".$nroom ." phòng loại " .$type_rooms[$i]->type_name." giá " .$type_rooms[$i]->cost*$nroom ." mỗi ngày");
                         
                         array_push($resulttype_room,$type_rooms[$i]->type_room_id);
                     
@@ -719,8 +743,8 @@ public function congra($subdomain){
                 // \Session::put("last_name",$last_name);
                 // \Session::put("country",$country);
                 \Session::put("subdomain",$subdomain);
-
-
+                \Session::put("numberDays",$numberDays);
+               
                 \Session::put("resultroom",collect($resultroom)) ;
                 \Session::put("resulttype_room",collect($resulttype_room)) ;
 
@@ -766,6 +790,8 @@ public function editRoomResult(Request $request, $subdomain){
             $id = $request['id'];
             $nroom = \Session::get("nroom");
            $resultroom = \Session::get('resultroom');
+           $numberDays = \Session::get('numberDays');
+
            $resulttype_room = \Session::get("resulttype_room") ;
            \Session::put("resulttype_room", $resulttype_room[$id]) ;
            $type_room = DB::table('type_room')->where('type_room_id', '=', $resulttype_room[$id])->first();
@@ -773,7 +799,7 @@ public function editRoomResult(Request $request, $subdomain){
 
             
             \Session::put("namepay","Thanh toán phòng khách sạn" );
-            \Session::put("amount",$nroom *$type_room->cost);
+            \Session::put("amount",$nroom *$type_room->cost * $numberDays);
             
            
              return redirect()->route('subpaypal',['subdomain' => $subdomain]);
@@ -785,6 +811,32 @@ public function editRoomResult(Request $request, $subdomain){
 
 
 public function payment($subdomain){
+
+}
+
+public function historyBook($subdomain){
+
+    $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+     $users = Auth::guard('account')->user();
+
+     $books = DB::table('booking')->where('account_id',"=",$users->id)->get();
+    
+      if($hotels != null){
+             
+
+
+            $info = array(
+            "name" => $hotels->hotel_name,
+            "subdomain" => $subdomain, 
+            );
+            return view('sub.historyBook')->with('users',$users)->with('info',$info)->with('books',$books);
+            
+         }
+       return view('sub.404');
+}
+
+public function historyBookSubmit(Request $request, $subdomain){
+
 
 }
 
@@ -1216,8 +1268,8 @@ public function configManageSubmit(Request $request,  $subdomain){
     }else{
 
         $imageName = 'background.'.$request->image->getClientOriginalExtension();
-        $request->image->move(public_path('img/User/'.Auth::guard('account')->user()->username."/".$hotels->hotel_name), $imageName);
-        $imageName = 'img/User/'.Auth::guard('account')->user()->username."/".$hotels->hotel_name."/".$imageName;
+        $request->image->move(public_path('img/Hotel/'.$hotels->hotel_name), $imageName);
+        $imageName = 'img/Hotel/'.$hotels->hotel_name."/".$imageName;
     }
     
      
@@ -1241,6 +1293,7 @@ public function bookManage($subdomain){
         // $checkouts = DB::table('checkout')->orderBy('checkout_id', 'desc')->get();
         $rooms = $rooms = DB::table('room')->where('room.hotel_id', '=', $hotels->hotel_id)->orderBy('room_number', 'asc')->get();
         $type_rooms =  DB::table('type_room')->where('hotel_id', '=', $hotels->hotel_id)->get();
+        $services =  DB::table('service')->where('hotel_id', '=', $hotels->hotel_id)->get();
         // $users = DB::table('account')->where([['hotel_id', '=', $hotels->hotel_id],['type', '=', 4],])->get();
         if($hotels != null){
              
@@ -1261,7 +1314,7 @@ public function bookManage($subdomain){
             "name" => $hotels->hotel_name,
             "subdomain" => $subdomain, 
             );
-            return view('sub.bookManage')->with('checkins',$checkins)->with('info',$info)->with('type_rooms', $type_rooms)->with('rooms',$rooms);
+            return view('sub.bookManage')->with('checkins',$checkins)->with('info',$info)->with('type_rooms', $type_rooms)->with('rooms',$rooms)->with('services',$services);
             // if(Auth::guard('account')->user()->type == 4 || Auth::guard('account')->user()->type == 3){
             //     return view('sub.mainManageProlife')->with('users',$users)->with('info',$info);
             // }
@@ -1289,8 +1342,26 @@ public function bookManageSubmit(Request $request,  $subdomain){
             $validator->errors()->add('date_checkin', 'Ngày checkin không thể lớn hơn ngày checkout');
              return redirect()->route('subBookManage',['subdomain' => $subdomain])->withErrors($validator)->withInput();
         }
+        $totalcost = 0;
        $addrooms =  explode(' ', $request['room']);
-       
+
+       foreach ($addrooms as $key => $addroom) {
+          $room = DB::table('room')->where('hotel_id',"=", $hotels->hotel_id)->where("room_number","=", $addroom)->first();
+          $typeroom = DB::table('type_room')->where('type_room_id',"=", $room->room_type_id)->first();
+          $totalcost = $totalcost + $typeroom->cost;
+       }
+
+$startTimeStamp = strtotime($request['date_checkin']);
+$endTimeStamp = strtotime($request['date_checkout']);
+
+$timeDiff = abs($endTimeStamp - $startTimeStamp);
+
+$numberDays = $timeDiff/86400;  // 86400 seconds in one day
+
+// and you might want to convert to integer
+$numberDays = intval($numberDays);
+        
+
         DB::table('booking')->insertGetId([
              'first_name' => $request['first_name'],
              'last_name' => $request['last_name'],
@@ -1301,8 +1372,18 @@ public function bookManageSubmit(Request $request,  $subdomain){
              'room_id' => $request['room'],
              'account_id' =>Auth::guard('account')->user()->id,
              'hotel_id' => $hotels->hotel_id,
+             'total_cost_room' =>$totalcost * $numberDays,
          ]);
         $bookings = DB::table('booking')->where('hotel_id', '=', $hotels->hotel_id)->latest()->first();
+
+        DB::table('invoice')->insertGetId([
+            'booking_id' => $bookings->booking_id,
+            'hotel_id' => $hotels->hotel_id,
+            'cost' => $totalcost * $numberDays,
+            'date' => date('Y-m-d'),
+            'name' => "Cash",
+            'type' => "room"
+            ]);
         foreach ($addrooms as $addroom) {
             
             DB::table('room')->where('room_number', '=', $addroom)->update(['is_booked' => 1,'booked_id' => $bookings->booking_id]);
@@ -1374,9 +1455,28 @@ public function bookManageSubmit(Request $request,  $subdomain){
      }
 
      if($request['typePost'] == "checkoutBook"){
+
+        $services =DB::table('book_service')->where('booking_id','=', $request['id'])->get();
+        $total = 0;
+        if(count($services) == 0){
+            $total = 0;
+        }else{
+            foreach ($services as $key => $service) {
+                $total = $total  + $service->total;
+            }
+        }
+        DB::table('invoice')->insertGetId([
+            'booking_id' => $request['id'],
+            'hotel_id' => $hotels->hotel_id,
+            'cost' => $total,
+            'date' => date('Y-m-d'),
+            'name' => "Cash",
+            'type' => "service"
+            ]);
         DB::table('booking')
             ->where('booking_id', $request['id'])
-            ->update([ 'date_checkout' => date("Y/m/d")]);
+            ->update([  'date_checkout' => date("Y/m/d"),
+                        'total_cost_service' => $total]);
             $booked =  DB::table('booking')->where('booking_id', '=', $request['id'])-> first();
              $findrooms =explode(" ", $booked->room_id);
         
@@ -1386,6 +1486,32 @@ public function bookManageSubmit(Request $request,  $subdomain){
             return redirect()->route('subBookManage',['subdomain' => $subdomain]);
 
      }
+      if($request['typePost'] == "addService"){
+
+        $service = DB::table('service')->where('service_id', '=', $request['service_id'])->first();
+        $cost = $service->cost * $request['quantity'];
+        $total = $cost * (100 - $request['discount'])/100;
+
+        
+
+         DB::table('book_service')->insertGetId([
+             'booking_id' => $request['id'],
+             'cost' => $cost,
+             'quantity' => $request['quantity'],
+             'service_id' => $request['service_id'],
+             'discount' => $request['discount'],
+             'account_id' =>Auth::guard('account')->user()->id,
+             'hotel_id' => $hotels->hotel_id,
+             'total' => $total,
+         ]);
+
+         return redirect()->route('subBookManage',['subdomain' => $subdomain]);
+
+
+
+
+      }
+    
     
 
 }
@@ -1442,16 +1568,29 @@ public function roomManageSubmit(Request $request,  $subdomain){
            }
 
        }
+
+    if($request->image == null)
+    {
+        
+      $imageName = "img/roomhotel.png";
+    }else{
+        $imageName = preg_replace('/\s+/', '', $$request['type_name']).'.'.$request->image->getClientOriginalExtension();
+        $request->image->move(public_path('img/Hotel/'.$hotels->hotel_name."/room"), $imageName);
+        $imageName = 'img/Hotel/'.$hotels->hotel_name."/room/".$imageName;
+    }
      DB::table('type_room')->insertGetId([
              'type_name' => $request['type_name'],
              'cost' => $request['cost'],
              'description' => $request['description'],
              'hotel_id' => $hotels->hotel_id,
              'number_people' => $request['number_people'],
+             'image' => $imageName,
          ]);
      return redirect()->route('subRoomManage',['subdomain' => $subdomain]);
     }
+
     if($request['typePost'] == "updateTypeRoom"){
+        $imageName = "";
         $type_rooms =  DB::table('type_room')->where('hotel_id', '=', $hotels->hotel_id)->get();
        foreach ($type_rooms as $type_room ) {
            if($type_room->type_name == $request['type_name'] && $type_room->type_room_id != $request['id'])
@@ -1460,10 +1599,22 @@ public function roomManageSubmit(Request $request,  $subdomain){
             $validator->errors()->add('type_name', 'Tên loại phòng đã tồn tại');
              return redirect()->route('subRoomManage',['subdomain' => $subdomain])->withErrors($validator)->withInput();
            }
-           
+           if($type_room->type_room_id == $request['id']){
+                $imageName = $type_room->image;
+           }
        }
+
+        if($request->image != null)
+        {
+          
+
+            $imageName = preg_replace('/\s+/', '', $$request['type_name']).'.'.$request->image->getClientOriginalExtension();
+            $request->image->move(public_path('img/Hotel/'.$hotels->hotel_name."/room"), $imageName);
+            $imageName = 'img/Hotel/'.$hotels->hotel_name."/room/".$imageName;
+        }
+
        DB::table('type_room')->where('type_room_id', $request['id'])
-        ->update(['type_name' => $request['type_name'], 'cost' => $request['cost'], 'description' => $request['description'],'number_people' => $request['number_people']]);
+        ->update(['type_name' => $request['type_name'], 'cost' => $request['cost'], 'description' => $request['description'],'number_people' => $request['number_people'],'image' => $imageName]);
         return redirect()->route('subRoomManage',['subdomain' => $subdomain]);
     }
     if($request['typePost'] == "deleteTypeRoom"){
@@ -1561,8 +1712,7 @@ public function roomManageSubmit(Request $request,  $subdomain){
 
 public function serviceManage($subdomain){
         $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
-        $rooms = DB::table('room')->where('room.hotel_id', '=', $hotels->hotel_id)->join('type_room', 'room.room_type_id', '=', 'type_room.type_room_id')->select('room.*', 'type_room.type_name')->orderBy('room_number', 'asc')->get();
-        $type_rooms =  DB::table('type_room')->where('hotel_id', '=', $hotels->hotel_id)->get();
+        $services = DB::table('service')->where('hotel_id', '=', $hotels->hotel_id)->get();
        
         // $users = DB::table('account')->where([['hotel_id', '=', $hotels->hotel_id],['type', '=', 4],])->get();
         if($hotels != null){
@@ -1584,7 +1734,7 @@ public function serviceManage($subdomain){
             "name" => $hotels->hotel_name,
             "subdomain" => $subdomain, 
             );
-            return view('sub.servicemanage')->with('rooms',$rooms)->with('info',$info)->with('type_rooms', $type_rooms);
+            return view('sub.servicemanage')->with('services',$services)->with('info',$info);
             // if(Auth::guard('account')->user()->type == 4 || Auth::guard('account')->user()->type == 3){
             //     return view('sub.mainManageProlife')->with('users',$users)->with('info',$info);
             // }
@@ -1592,6 +1742,147 @@ public function serviceManage($subdomain){
             
          }
        return view('sub.404');
+}
+
+public function serviceManageSubmit(Request $request, $subdomain){
+    $messages = [];
+
+
+    $validator = Validator::make($request->all(),[],$messages);
+     $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+    if($request['typePost'] == "addService"){
+        $services =  DB::table('service')->where('hotel_id', '=', $hotels->hotel_id)->get();
+       foreach ($services as $service ) {
+
+           if($service->service_name == $request['service_name'])
+           {
+            $validator->errors()->add('typePost', 'addService');
+            $validator->errors()->add('type_name', 'Tên Dịch vụ đã tồn tại');
+             return redirect()->route('subServiceManage',['subdomain' => $subdomain])->withErrors($validator)->withInput();
+           }
+
+       }
+
+        if($request->image == null)
+        {
+            
+          $imageName = "img/servicehotel.png";
+        }else{
+            $imageName = preg_replace('/\s+/', '', $$request['service_name']).'.'.$request->image->getClientOriginalExtension();
+            $request->image->move(public_path('img/Hotel/'.$hotels->hotel_name."/service"), $imageName);
+            $imageName = 'img/Hotel/'.$hotels->hotel_name."/service/".$imageName;
+        }
+         DB::table('service')->insertGetId([
+                 'service_name' => $request['service_name'],
+                 'cost' => $request['cost'],
+                 'description' => $request['description'],
+                 'hotel_id' => $hotels->hotel_id,
+                 'image' => $imageName,
+             ]);
+         return redirect()->route('subServiceManage',['subdomain' => $subdomain]);
+    }
+
+    if($request['typePost'] == "updateService"){
+        $imageName = "";
+        $services =  DB::table('service')->where('hotel_id', '=', $hotels->hotel_id)->get();
+       foreach ($services as $service ) {
+           if($service->service_name == $request['service_name'] && $service->service_id != $request['id'])
+           {
+            $validator->errors()->add('typePost', 'updateService');
+            $validator->errors()->add('service_name', 'Tên dịch vụ đã tồn tại');
+             return redirect()->route('subServiceManage',['subdomain' => $subdomain])->withErrors($validator)->withInput();
+           }
+           if($service->service_id == $request['id']){
+                $imageName = $service->image;
+           }
+       }
+
+        if($request->image != null)
+        {
+          
+
+            $imageName = preg_replace('/\s+/', '', $$request['service_name']).'.'.$request->image->getClientOriginalExtension();
+        $request->image->move(public_path('img/Hotel/'.$hotels->hotel_name."/service"), $imageName);
+        $imageName = 'img/Hotel/'.$hotels->hotel_name."/service/".$imageName;
+        }
+
+       DB::table('service')->where('service_id', $request['id'])
+        ->update(['service_name' => $request['service_name'], 'cost' => $request['cost'], 'description' => $request['description'],'image' => $imageName]);
+        return redirect()->route('subServiceManage',['subdomain' => $subdomain]);
+    }
+    if($request['typePost'] == "deleteService"){
+    DB::table('service')->where('service_id', $request['id'])->delete();
+     return redirect()->route('subServiceManage',['subdomain' => $subdomain]);
+    }
+
+
+}
+
+public function spendManage($subdomain){
+    
+    $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+    $spends = DB::table('spends')->join('account', 'spends.account_id', '=', 'account.id')->select('spends.*', 'account.first_name','account.last_name')->where('spends.hotel_id',"=", $hotels->hotel_id)->get();
+
+
+     if($hotels != null){
+             
+            if(Auth::guard('account')->Check()){
+
+                if(Auth::guard('account')->user()->hotel_id != $hotels->hotel_id ){
+                    Auth::guard('account')->logout();
+                }
+            }
+            if(!Auth::guard('account')->Check()){
+                return redirect()->route('subHome',['subdomain' => $subdomain]);
+            }
+
+            $info = array(
+            "name" => $hotels->hotel_name,
+            "subdomain" => $subdomain, 
+            );
+            return view('sub.spendManage')->with('spends',$spends)->with('info',$info);
+            // if(Auth::guard('account')->user()->type == 4 || Auth::guard('account')->user()->type == 3){
+            //     return view('sub.mainManageProlife')->with('users',$users)->with('info',$info);
+            // }
+            
+            
+         }
+       return view('sub.404');
+}
+
+public function spendManageSubmit(Request $request, $subdomain){
+    $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+    if($request['typePost'] == "addSpend"){
+        DB::table('spends')->insertGetId([
+                'name' => $request['name'],
+                'cost' => $request['cost'],
+                'detail' => $request['detail'],
+                'date' => $request['date'],
+                'hotel_id' => $hotels->hotel_id,
+                'account_id' => Auth::guard('account')->user()->id,
+            ]);
+
+        return redirect()->route('subSpendManage',['subdomain' => $subdomain]);
+    }
+
+    if($request['typePost'] == "updateSpend"){
+
+        DB::table('spends')->where('id',"=", $request['id'])->update([
+            'name' => $request['name'],
+             'cost' => $request['cost'],
+                'detail' => $request['detail'],
+                'date' => $request['date'],
+                'hotel_id' => $hotels->hotel_id,
+                'account_id' => Auth::guard('account')->user()->id,
+            ]);
+
+        return redirect()->route('subSpendManage',['subdomain' => $subdomain]);
+    }
+
+     if($request['typePost'] == "updateSpend"){
+            DB::table('spends')->where('id',"=", $request['id'])->delete();
+     }
+
 }
 
 public function reportManage( $subdomain){
@@ -1693,8 +1984,9 @@ public function reportManage( $subdomain){
         foreach ($listDay as $key => $Day) {
             $invoicespayal[] = count(DB::table('invoice')->where('date','=',$Day)->where('name','=', 'Paypal')->get());
             $invoicescard[] = count(DB::table('invoice')->where('date','=',$Day)->where('name','=', 'Credit card')->get());
-            $invoicesroom[] = count(DB::table('invoice')->where('date','=',$Day)->where('type','=', 'service')->get());
-            $invoicesservice[] = count(DB::table('invoice')->where('date','=',$Day)->where('name','=', 'room')->get());
+            $invoicescash[] = count(DB::table('invoice')->where('date','=',$Day)->where('name','=', 'Cash')->get());
+            $invoicesroom[] = count(DB::table('invoice')->where('date','=',$Day)->where('type','=', 'room')->get());
+            $invoicesservice[] = count(DB::table('invoice')->where('date','=',$Day)->where('type','=', 'service')->get());
         }
         $type_rooms =  DB::table('type_room')->where('hotel_id', '=', $hotels->hotel_id)->get();
         $tong = null;
@@ -1709,7 +2001,7 @@ public function reportManage( $subdomain){
         }
 
             
-            return view('sub.report')->with('info',$info)->with('listDay', $listDay)->with('listCostRoom', $listCostRoom)->with('listCostService', $listCostService)->with('listCostSpend',$listCostSpend)->with('employees',$employees)->with('employeesname',$employeesname)->with('totalEmpBook',$totalEmpBook)->with('totalEmpService',$totalEmpService)->with('tong',$tong)->with('tongEmp',$tongEmp)->with('invoicespayal',$invoicespayal)->with('invoicescard',$invoicescard)->with('invoicesroom',$invoicesroom)->with('invoicesservice',$invoicesservice)->with('totalLuong',$totalLuong);
+            return view('sub.report')->with('info',$info)->with('listDay', $listDay)->with('listCostRoom', $listCostRoom)->with('listCostService', $listCostService)->with('listCostSpend',$listCostSpend)->with('employees',$employees)->with('employeesname',$employeesname)->with('totalEmpBook',$totalEmpBook)->with('totalEmpService',$totalEmpService)->with('tong',$tong)->with('tongEmp',$tongEmp)->with('invoicespayal',$invoicespayal)->with('invoicescard',$invoicescard)->with('invoicesroom',$invoicesroom)->with('invoicesservice',$invoicesservice)->with('totalLuong',$totalLuong)->with('invoicescash',$invoicescash);
             // if(Auth::guard('account')->user()->type == 4 || Auth::guard('account')->user()->type == 3){
             //     return view('sub.mainManageProlife')->with('users',$users)->with('info',$info);
             // }
@@ -1719,6 +2011,7 @@ public function reportManage( $subdomain){
        return view('sub.404');
 
 }
+
 
 public function reportManageSubmit(Request $request,  $subdomain){
             

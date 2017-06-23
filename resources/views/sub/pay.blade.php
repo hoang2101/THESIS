@@ -155,7 +155,10 @@
                             <a href="{{ route('subHome',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-home fa-fw"></i> Home</a>
                         </li>
                         <li>
-                            <a href="{{ route('subConfig',['subdomain' =>$info['subdomain']]) }}" class="active"><i class="fa fa-dashboard fa-fw"></i> Profile</a>
+                            <a href="{{ route('subProfile',['subdomain' =>$info['subdomain']]) }}" class="active"><i class="fa fa-dashboard fa-fw"></i> Profile</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('subHistoryBook',['subdomain' =>$info['subdomain']]) }}" ><i class="fa fa-history fa-fw"></i> Lịch sử đặt phòng</a>
                         </li>
                         <li>
                             <a class="active" href="{{ route('subpaypal',['subdomain' =>$info['subdomain']]) }}" class="active"><i class="fa fa-dashboard fa-fw"></i>Thanh toán</a>
@@ -203,7 +206,7 @@
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input  type="text" id="ho" onchange="addFirstName();" name="ho" required="required" placeholder="Họ" class="form-control col-md-7 col-xs-12" value="">
+                                                <input  type="text" id="ho" onchange="addFirstName();" name="ho" required="required" placeholder="Họ" class="form-control col-md-7 col-xs-12" value="@if(Auth::guard('account')->check()){{$users->first_name}}  @endif">
                                             </div>
                                             @if ($errors->has('ho'))
                                               <span class="help-block has-error">
@@ -215,7 +218,7 @@
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input  type="text" id="ten" onchange="addlastName();" name="ten" required="required" placeholder="Tên" class="form-control col-md-7 col-xs-12" value="">
+                                                <input  type="text" id="ten" onchange="addlastName();" name="ten" required="required" placeholder="Tên" class="form-control col-md-7 col-xs-12" value="@if(Auth::guard('account')->check()){{$users->last_name}}  @endif">
                                             </div>
                                             @if ($errors->has('ten'))
                                               <span class="help-block has-error">
@@ -251,8 +254,8 @@
                                             <input hidden type="text" name="typePost" value="paypal">
                                             <input hidden type="text" id="name" name="name"   value="{{$infopay['name']}}">
                                           <input hidden type="text" id="last-name" name="amount" value="{{$infopay['amount']}}">
-                                          <input hidden type="text" id="ho1" name="ho" value="">
-                                          <input hidden type="text" id="ten1" name="ten" value="">
+                                          <input hidden type="text" id="ho1" name="ho" value="@if(Auth::guard('account')->check()){{$users->first_name}}  @endif">
+                                          <input hidden type="text" id="ten1" name="ten" value="@if(Auth::guard('account')->check()){{$users->last_name}}  @endif">
                                           <input hidden type="text" id="quocgia1" name="quocgia" value="">
                                             
                                             
@@ -270,8 +273,8 @@
                                      <input hidden type="text" name="typePost" value="payment">
                                             <input hidden type="text" id="name" name="name" required="required"  value="{{$infopay['name']}}">
                                           <input hidden type="text" id="last-name" name="amount" required="required"  value="{{$infopay['amount']}}">
-                                          <input hidden type="text" id="ho2" name="ho" value="">
-                                          <input hidden type="text" id="ten2" name="ten" value="">
+                                          <input hidden type="text" id="ho2" name="ho" value="@if(Auth::guard('account')->check()){{$users->first_name}}  @endif">
+                                          <input hidden type="text" id="ten2" name="ten" value="@if(Auth::guard('account')->check()){{$users->last_name}}  @endif">
                                           <input hidden type="text" id="quocgia2" name="quocgia" value="">
                                             
                                         <div class="form-group">
@@ -279,14 +282,14 @@
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Họ<span class="required">*</span>
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input type="text" id="first-name" name="first_name" required="required" class="form-control col-md-7 col-xs-12">
+                                                <input type="text" id="first-name" name="first_name" required="required" class="form-control col-md-7 col-xs-12" value="@if(Auth::guard('account')->check()){{$users->first_name}}  @endif">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Tên<span class="required">*</span>
                                             </label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input type="text" id="last-name" name="last_name" required="required" class="form-control col-md-7 col-xs-12">
+                                                <input type="text" id="last-name" name="last_name" required="required" class="form-control col-md-7 col-xs-12" value="@if(Auth::guard('account')->check()){{$users->last_name}}  @endif">
                                             </div>
                                         </div>
                                         <div class="form-group">

@@ -225,45 +225,28 @@
   <!-- Service Section -->
   <section id="room" class="pb80 pt80 bg-grey">
     <div class="container">
+    
       <div class="row">
         <div class="header-section text-center mb40">
           <h2 class="meta-title-2">Thông tin phòng</h2>
         </div>
       </div>
+      
      <div class="row">
+     @foreach($type_rooms as $type_room)
         <div class="col-lg-4 col-sm-6 m-bottom4">
           <div class="post-cols">
             <div class="post-thumb">
-              <div class="imgbox"><a href="#"><img src="img/troom1.jpg" alt="" class="img-responsive"></a></div>
+              <div class="imgbox"><a href="#"><img src="{!! asset($type_room->image) !!}" alt="" class="img-responsive"></a></div>
             </div>
             <div class="post-dis m-top2">
-              <h4 class="m-bottom1 m-top1 font18"><a href="#">Phòng đơn</a></h4>
-              <p class="m-top1">Đây là phòng có 1 giường. </p>
+              <h4 class="m-bottom1 m-top1 font18"><a href="#">{{$type_room->type_name}}</a></h4>
+              <p class="m-top1">{{$type_room->description}} </p>
             </div>
           </div>
         </div>
-        <div class="col-lg-4 col-sm-6 m-bottom4">
-          <div class="post-cols">
-            <div class="post-thumb">
-              <div class="imgbox"><a href="#"><img src="img/troom2.jpg" alt="" class="img-responsive"></a></div>
-            </div>
-            <div class="post-dis m-top2">
-              <h4 class="m-bottom1 m-top1 font18"><a href="#">Phòng đôi</a></h4>
-              <p class="m-top1">Đây là phòng có 2 giường </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-sm-6 m-bottom4">
-          <div class="post-cols">
-            <div class="post-thumb">
-              <div class="imgbox"><a href="#"><img src="img/troom3.jpg" alt="" class="img-responsive"></a></div>
-            </div>
-            <div class="post-dis m-top2">
-              <h4 class="m-bottom1 m-top1 font18"><a href="#">Phòng vip</a></h4>
-              <p class="m-top1">Đây là phòng đặt biệt, đẹp, có nhiều dịch vụ đạt biệt </p>
-            </div>
-          </div>
-        </div>
+        @endforeach
+        
       </div>
     </div>
   </section>
@@ -281,39 +264,20 @@
         </div>
       </div>
  <div class="row">
+      @foreach($services as $service)
         <div class="col-lg-4 col-sm-6 m-bottom4">
           <div class="post-cols">
             <div class="post-thumb">
-              <div class="imgbox"><a href="#"><img src="img/dv1.jpg" alt="" class="img-responsive"></a></div>
+              <div class="imgbox"><a href="#"><img src="{!! asset($service->image) !!}" alt="" class="img-responsive"></a></div>
             </div>
             <div class="post-dis m-top2">
-              <h4 class="m-bottom1 m-top1 font18"><a href="#">Ăn uống</a></h4>
-              <p class="m-top1">Khách sạn chúng tôi có nhà ăn 5* với những món ngon nổi tiếng Việt Nam. </p>
+              <h4 class="m-bottom1 m-top1 font18"><a href="#">{{$service->service_name}}</a></h4>
+              <p class="m-top1">{{$service->description}} </p>
             </div>
           </div>
         </div>
-        <div class="col-lg-4 col-sm-6 m-bottom4">
-          <div class="post-cols">
-            <div class="post-thumb">
-              <div class="imgbox"><a href="#"><img src="img/dv2.jpg" alt="" class="img-responsive"></a></div>
-            </div>
-            <div class="post-dis m-top2">
-              <h4 class="m-bottom1 m-top1 font18"><a href="#">Tắm xông hỏi</a></h4>
-              <p class="m-top1">Khách sạn chúng tôi có dịch vụ tắm à xông hỏi giúp khách dàng thư giản </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-sm-6 m-bottom4">
-          <div class="post-cols">
-            <div class="post-thumb">
-              <div class="imgbox"><a href="#"><img src="img/dv3.jpg" alt="" class="img-responsive"></a></div>
-            </div>
-            <div class="post-dis m-top2">
-              <h4 class="m-bottom1 m-top1 font18"><a href="#">buffet</a></h4>
-              <p class="m-top1">Khách sạn chúng tôi có dịch vụ buffet trong những buổi tiệc</p>
-            </div>
-          </div>
-        </div>
+        @endforeach
+       
       </div>
     </div>
   </section>

@@ -110,7 +110,7 @@
                       
                                     <span class=" fa fa-angle-down"></span> 
                     </a>
-                    @if(Auth::guard('account')->check()) {
+                    @if(Auth::guard('account')->check()) 
                     <ul class="dropdown-menu dropdown-user">
                        
                         <li><a href="{{ route('subConfig',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user fa-fw"></i> User Profile</a>
@@ -149,7 +149,10 @@
                             <a href="{{ route('subHome',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-home fa-fw"></i> Home</a>
                         </li>
                         <li>
-                            <a href="{{ route('subConfig',['subdomain' =>$info['subdomain']]) }}" class="active"><i class="fa fa-dashboard fa-fw"></i> Profile</a>
+                            <a href="{{ route('subProfile',['subdomain' =>$info['subdomain']]) }}" class="active"><i class="fa fa-dashboard fa-fw"></i> Profile</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('subHistoryBook',['subdomain' =>$info['subdomain']]) }}" ><i class="fa fa-history fa-fw"></i> Lịch sử đặt phòng</a>
                         </li>
                         <li>
                             <a class="active" href="{{ route('roomResult',['subdomain' =>$info['subdomain']]) }}" class="active"><i class="fa fa-dashboard fa-fw"></i> Kết quả tìm phòng</a>

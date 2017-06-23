@@ -20,6 +20,7 @@ class CreateSpendsTable extends Migration
             $table->integer('cost')->nullable();
             $table->integer('hotel_id')->nullable();
             $table->date('date')->nullable();
+            $table->integer('account_id')->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
         });

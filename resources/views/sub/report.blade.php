@@ -407,6 +407,7 @@
                           <th id="cel1">Ngày</th>
                           <th id="cel1">Paypal</th>
                           <th white-space:pre-line" id="cel5">Credit card</th>
+                          <th>Tiền mặt</th>
                           <th id="cel5">Phòng</th>
                           <th id="cel10">Dịch vụ</th>
                         </tr>
@@ -421,6 +422,7 @@
                                 
                                 <td>{{$invoicespayal[$key]}}</td>
                                 <td>{{$invoicescard[$key]}}</td>
+                                <td>{{$invoicescash[$key]}}</td>
                                 <td>{{$invoicesroom[$key]}}</td>
                                 <td class="">{{$invoicesservice[$key]}}</td>
                              

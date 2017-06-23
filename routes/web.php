@@ -61,10 +61,12 @@ Route::group(['subdomain' => '{subdomain}'], function () {
      Route::GET('/{subdomain}/payresult2','SubController@getCancel')->name('subpaypalcancel');
 
 
-    
 
     Route::get('/{subdomain}/profile', 'SubController@prolife' )->name('subProfile');
     Route::POST('/{subdomain}/profile', 'SubController@editProlife' )->name('subProfilesubmit');
+
+     Route::get('/{subdomain}/spend', 'SubController@spendManage' )->name('subSpendManage');
+    Route::POST('/{subdomain}/spend', 'SubController@spendManageSubmit' )->name('subSpendManageSubmit');
 
     Route::get('/{subdomain}/custommanage', 'SubController@manage' )->name('subManage');
     Route::POST('/{subdomain}/custommanage', 'SubController@manageSubmit' )->name('subManageSubmit');
@@ -86,6 +88,9 @@ Route::group(['subdomain' => '{subdomain}'], function () {
 
     Route::get('/{subdomain}/report', 'SubController@reportManage' )->name('subReportManage');
     Route::POST('/{subdomain}/report', 'SubController@reportManageSubmit' )->name('subReportManageSubmit');
+
+    Route::get('/{subdomain}/historybook', 'SubController@historyBook' )->name('subHistoryBook');
+    Route::POST('/{subdomain}/historybook', 'SubController@historyBookSubmit' )->name('subHistoryBookSubmit');
 
 
 });

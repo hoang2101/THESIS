@@ -78,7 +78,7 @@
                                  <li><a class="active" href="{{ route('subRoomManage',['subConfig' =>$info['subdomain']]) }}"><i class="fa fa-university"></i> Quản lý phòng</a>
                                  <li><a href="{{ route('subServiceManage',['subConfig' =>$info['subdomain']]) }}"><i class="fa fa-server"></i> Quản lý dịch vụ</a>
                                  <li><a  href="{{ route('subProfile',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Quản lý Tài khoản</a>
-                                 <li><a  href="{{ route('subProfile',['subConfig' =>$info['subdomain']]) }}"><i class="fa fa-cogs"></i> Cài Đặt Web</a>
+                                 <li><a  href="{{ route('subConfig',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-cogs"></i> Cài Đặt Web</a>
                                  <li><a  href="{{ route('subReportManage',['subReportManage' =>$info['subdomain']]) }}"><i class="fa fa-cog"></i> Thống kê</a>
                                 <!-- <li><a class="active"><i class="fa fa-user" "></i> Quản lý Quản trị khách sạn</a>
                                     
@@ -324,8 +324,8 @@
                                 <td style="width:10%">{{$type_room->number_people}}</td>
                                 <td>{{$type_room->description}}</td>
                                 <td style="width:10%">
-                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataTypeRoomView('{{$type_room->type_room_id}}','{{$type_room->type_name}}', '{{$type_room->cost}}', '{{$type_room->number_people}}','{{$type_room->description}}');" data-toggle="modal" data-backdrop="static" data-target="#viewTypeRoomMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
-                                    <a href="#" class="btn btn-info btn-xs"  onclick="showDataTypeRoomEdit('{{$type_room->type_room_id}}','{{$type_room->type_name}}', '{{$type_room->cost}}','{{$type_room->number_people}}', '{{$type_room->description}}')" data-toggle="modal" data-backdrop="static" data-target="#viewTypeRoomMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
+                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataTypeRoomView('{{$type_room->type_room_id}}','{{$type_room->type_name}}', '{{$type_room->cost}}', '{{$type_room->number_people}}','{{$type_room->description}}', '{!! asset($type_room->image) !!}');" data-toggle="modal" data-backdrop="static" data-target="#viewTypeRoomMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
+                                    <a href="#" class="btn btn-info btn-xs"  onclick="showDataTypeRoomEdit('{{$type_room->type_room_id}}','{{$type_room->type_name}}', '{{$type_room->cost}}','{{$type_room->number_people}}', '{{$type_room->description}}', '{!! asset($type_room->image) !!}')" data-toggle="modal" data-backdrop="static" data-target="#viewTypeRoomMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
 
                             <a data-toggle="tooltip" data-placement="top"  class="btn btn-danger btn-xs"
                                             onclick="event.preventDefault();
@@ -553,7 +553,7 @@
         <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
           <h1>Thêm loại Phòng</h1><br>
-          <form class="form-horizontal" role="form" method="POST" action="{{ route('subRoomManageSubmit',['subdomain' =>$info['subdomain']]) }}">
+          <form class="form-horizontal" enctype="multipart/form-data" role="form" method="POST" action="{{ route('subRoomManageSubmit',['subdomain' =>$info['subdomain']]) }}">
                         {{ csrf_field() }}
                         <input hidden id="addtypePost"" name="typePost" value="addTypeRoom">
                         <div class="form-group{{ $errors->has('type_name') ? ' has-error' : '' }}">
@@ -602,6 +602,22 @@
                                 
                             </div>
                         </div>
+                        <div class="form-group{{ $errors->has('image') ? ' has-error' : '' }}">
+                            <div >
+
+                                <input type="file" id="imgInp" name="image" accept="image/*" value="" class="hidden" />
+                                <label for="imgInp" class="btn btn-info btn-sm">Chọn Hình ảnh</label>
+                                
+                                 @if ($errors->has('image'))
+
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('image') }}</strong>
+                                    </span>
+                                @endif
+                                
+                            </div>
+                        </div>
+                        
                         <input type="submit" name="Register" class="loginmodal-submit " value="Thêm loại phòng">
                        
                     </form>
@@ -616,7 +632,7 @@
         <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
           <h1>Xem chi tiết loại phòng</h1><br>
-          <form class="form-horizontal" role="form" method="POST" action="{{ route('subRoomManageSubmit', ['subdomain' =>$info['subdomain']]) }}">
+          <form class="form-horizontal" enctype="multipart/form-data" role="form" method="POST" action="{{ route('subRoomManageSubmit', ['subdomain' =>$info['subdomain']]) }}">
                         {{ csrf_field() }}
                 
                         <input hidden id="tr_typePost"" name="typePost" value="updateTypeRoom">
@@ -662,6 +678,20 @@
                                  @if ($errors->has('description'))
                                     <span class="help-block">
                                         <strong class="messageError">{{ $errors->first('description') }}</strong>
+                                    </span>
+                                @endif
+                                
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('image') ? ' has-error' : '' }}">
+                            <div >
+                            <img id="imgroom" class="img-responsive avatar-view hidden" src="" alt="Avatar">
+                               <input type="file" id="imgInp2" name="image" accept="image/*" value="" class="hidden" />
+                                <label id="lbforinput" class="btn btn-info btn-sm hidden" for="imgInp2" class="btn btn-info btn-sm">Chọn Hình ảnh</label>
+                                 @if ($errors->has('image'))
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('image') }}</strong>
                                     </span>
                                 @endif
                                 
@@ -863,7 +893,16 @@
 @endif
 <script type="text/javascript">
 
-
+$("[type=file]").on("change", function(){
+  // Name of file and placeholder
+  var file = this.files[0].name;
+  var dflt = $(this).attr("placeholder");
+  if($(this).val()!=""){
+    $(this).next().text(file);
+  } else {
+    $(this).next().text(dflt);
+  }
+});
 
     function removeMessage() {
         $("div").removeClass("has-error");
@@ -939,6 +978,22 @@ function addReadonly2(){
     document.getElementById("e_tr_cost").removeAttribute("readonly");
     document.getElementById("e_tr_description").removeAttribute("readonly");
     document.getElementById("e_tr_number_people").removeAttribute("readonly");
+
+    document.getElementById("lbforinput").className =
+  document.getElementById("lbforinput").className
+    .replace(new RegExp('(?:^|\\s)'+ 'hidden' + '(?:\\s|$)'), '');
+
+    document.getElementById("lbforinput").className =
+  document.getElementById("lbforinput").className
+    .replace(new RegExp('(?:^|\\s)'+ 'hidden' + '(?:\\s|$)'), '');
+
+    var d = document.getElementById("imgroom");
+    d.className += " hidden";
+
+    
+
+
+
     
 
     return;    
@@ -952,7 +1007,19 @@ else(document.getElementById("typeroomEditView").innerHTML == "Xem")
     document.getElementById("e_tr_cost").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_tr_description").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_tr_number_people").setAttributeNode(document.createAttribute("readonly"));
-   
+
+
+
+    document.getElementById("imgroom").className =
+  document.getElementById("imgroom").className
+    .replace(new RegExp('(?:^|\\s)'+ 'hidden' + '(?:\\s|$)'), '');
+
+    document.getElementById("imgroom").className =
+  document.getElementById("imgroom").className
+    .replace(new RegExp('(?:^|\\s)'+ 'hidden' + '(?:\\s|$)'), '');
+
+    var d = document.getElementById("lbforinput");
+    d.className += " hidden";
 
 }
 }
@@ -1024,7 +1091,7 @@ function showDataEdit(idRoom, room_floor, room_number,type_room, is_clean){
 
 
 }
-function showDataTypeRoomView(idTypeRoom, type_name, cost,number_people,description){
+function showDataTypeRoomView(idTypeRoom, type_name, cost,number_people,description,image){
     document.getElementById("typeroomEditView").innerHTML = "Sửa";
     document.getElementById("e_tr_submit").setAttribute("type", "hidden");
     document.getElementById("e_tr_type_name").setAttributeNode(document.createAttribute("readonly"));
@@ -1038,11 +1105,25 @@ function showDataTypeRoomView(idTypeRoom, type_name, cost,number_people,descript
    document.getElementById("e_tr_cost").setAttribute("value", cost); 
     document.getElementById("e_tr_description").setAttribute("value", description);
     document.getElementById("e_tr_number_people").setAttribute("value", number_people);
+    document.getElementById("imgroom").setAttribute("src", image);
+
+
+
+     document.getElementById("imgroom").className =
+  document.getElementById("imgroom").className
+    .replace(new RegExp('(?:^|\\s)'+ 'hidden' + '(?:\\s|$)'), '');
+
+    document.getElementById("imgroom").className =
+  document.getElementById("imgroom").className
+    .replace(new RegExp('(?:^|\\s)'+ 'hidden' + '(?:\\s|$)'), '');
+
+    var d = document.getElementById("lbforinput");
+    d.className += " hidden";
 
 
 }
 
-function showDataTypeRoomEdit(idTypeRoom, type_name,cost,number_people, description){
+function showDataTypeRoomEdit(idTypeRoom, type_name,cost,number_people, description, image){
    
     document.getElementById("e_tr_submit").setAttribute("type", "submit");
     document.getElementById("typeroomEditView").innerHTML = "Xem";
@@ -1051,11 +1132,24 @@ function showDataTypeRoomEdit(idTypeRoom, type_name,cost,number_people, descript
     document.getElementById("e_tr_description").removeAttribute("readonly");
     document.getElementById("e_tr_number_people").removeAttribute("readonly");
 
+
+document.getElementById("lbforinput").className =
+  document.getElementById("lbforinput").className
+    .replace(new RegExp('(?:^|\\s)'+ 'hidden' + '(?:\\s|$)'), '');
+
+    document.getElementById("lbforinput").className =
+  document.getElementById("lbforinput").className
+    .replace(new RegExp('(?:^|\\s)'+ 'hidden' + '(?:\\s|$)'), '');
+
+    var d = document.getElementById("imgroom");
+    d.className += " hidden";
+
     document.getElementById("idTypeRoom").setAttribute("value", idTypeRoom);
     document.getElementById("e_tr_type_name").setAttribute("value", type_name);
     document.getElementById("e_tr_cost").setAttribute("value", cost); 
     document.getElementById("e_tr_description").setAttribute("value", description); 
     document.getElementById("e_tr_number_people").setAttribute("value", number_people);
+    document.getElementById("imgroom").setAttribute("src", image);
     } 
 </script>
 </body>

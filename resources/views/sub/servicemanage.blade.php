@@ -78,7 +78,7 @@
                                  <li><a  href="{{ route('subRoomManage',['subConfig' =>$info['subdomain']]) }}"><i class="fa fa-university"></i> Quản lý phòng</a>
                                  <li><a  class="active" href="{{ route('subServiceManage',['subConfig' =>$info['subdomain']]) }}"><i class="fa fa-server"></i> Quản lý dịch vụ</a>
                                  <li><a  href="{{ route('subProfile',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Quản lý Tài khoản</a>
-                                 <li><a  href="{{ route('subProfile',['subConfig' =>$info['subdomain']]) }}"><i class="fa fa-cogs"></i> Cài Đặt Web</a>
+                                 <li><a  href="{{ route('subConfig',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-cogs"></i> Cài Đặt Web</a>
                                  <li><a  href="{{ route('subReportManage',['subReportManage' =>$info['subdomain']]) }}"><i class="fa fa-cog"></i> Thống kê</a>
                                 <!-- <li><a class="active"><i class="fa fa-user" "></i> Quản lý Quản trị khách sạn</a>
                                     
@@ -119,50 +119,7 @@
                         @endif
                            
                         </div>
-                        <!-- <div class="menu_section">
-                            <h3>Live On</h3>
-                            <ul class="nav side-menu">
-                                <li><a><i class="fa fa-bug"></i> Additional Pages <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="e_commerce.html">E-commerce</a></li>
-                                        <li><a href="projects.html">Projects</a></li>
-                                        <li><a href="project_detail.html">Project Detail</a></li>
-                                        <li><a href="contacts.html">Contacts</a></li>
-                                        <li><a href="profile.html">Profile</a></li>
-                                    </ul>
-                                </li>
-                                <li><a><i class="fa fa-windows"></i> Extras <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="page_403.html">403 Error</a></li>
-                                        <li><a href="page_404.html">404 Error</a></li>
-                                        <li><a href="page_500.html">500 Error</a></li>
-                                        <li><a href="plain_page.html">Plain Page</a></li>
-                                        <li><a href="login.html">Login Page</a></li>
-                                        <li><a href="pricing_tables.html">Pricing Tables</a></li>
-                                    </ul>
-                                </li>
-                                <li><a><i class="fa fa-sitemap"></i> Multilevel Menu <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="#level1_1">Level One</a>
-                                            <li><a>Level One<span class="fa fa-chevron-down"></span></a>
-                                                <ul class="nav child_menu">
-                                                    <li class="sub_menu"><a href="level2.html">Level Two</a>
-                                                    </li>
-                                                    <li><a href="#level2_1">Level Two</a>
-                                                    </li>
-                                                    <li><a href="#level2_2">Level Two</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li><a href="#level1_2">Level One</a>
-                                            </li>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li><a href="javascript:void(0)"><i class="fa fa-laptop"></i> Landing Page <span class="label label-success pull-right">Coming Soon</span></a></li>
-                            </ul>
-                        </div> -->
-
+                        
                     </div>
                     <!-- /sidebar menu -->
 
@@ -222,78 +179,14 @@
             <!-- page content -->
             <div class="right_col" role="main">
 
-                <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Danh sách dịch vụ<small></small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <a href="#" class="btn btn-primary btn-xs" onclick="checkHasTypeService()" data-toggle="modal" data-backdrop="static" ><i class="fa fa-folder"></i> Thêm Dịch vụ </a>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    
-                    
-                    <table id="responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-                      <thead>
-                        <tr>
-                          <th id="cel1">ID</th>
-                          <th white-space:pre-line" id="cel5">Tên dịch vụ</th>
-                          <th id="cel5">Giá</th>
-                          <th id="cel10">Loại phòng</th>
-                          <th id="cel10">Phòng sạch</th>
-                          <th id="cel10">Đã đặt phòng</th>
-                          <th class="nosort"  id="cel5">Quản lý</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                    
-                      @foreach ($rooms as $room)
-                    
-                            <tr>
-                                <td style="width:5%">{{$room->room_id}}</td>
-                                <td>{{$room->room_floor}}</td>
-                                <td>{{$room->room_number}}</td>
-                                <td>{{$room->type_name}}</td>
-                                <td><input disabled type="checkbox" name="vehicle" value="Car" @if($room->is_clean == 1)checked @endif></td>
-                                <td style="width:10%"><input disabled type="checkbox" name="vehicle" value="Car" @if($room->is_booked == 1)checked @endif></td>
-                                <td style="width:10%">
-                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataView('{{$room->room_id}}','{{$room->room_floor}}', '{{$room->room_number}}', '{{$room->type_name}}','{{$room->is_clean}}');" data-toggle="modal" data-backdrop="static" data-target="#viewRoomMainmodal"><i class="fa fa-folder"></i>Xem</a>
-                                    <a href="#" class="btn btn-info btn-xs"  onclick="showDataEdit('{{$room->room_id}}','{{$room->room_floor}}', '{{$room->room_number}}', '{{$room->type_name}}','{{$room->is_clean}}') ;" data-toggle="modal" data-backdrop="static" data-target="#viewRoomMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
-                            @if($room->is_booked == 0 )
-                            <a  data-toggle="tooltip" data-placement="top"  class="btn btn-danger btn-xs"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('deleteroom{{$room->room_id}}').submit();"><i class="fa fa-trash-o"></i> Xóa </a>
-
-                            <form id="deleteroom{{$room->room_id}}" action="{{ route('subRoomManageSubmit',['subdomain' =>$info['subdomain']]) }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                            <input hidden id="typePosts"" name="typePost" value="deleteRoom">
-                                            <input hidden id="id" name="id" value="{{$room->room_id}}">
-                                        </form>
-                            @endif
-                                </td>
-                            </tr>
-                        @endforeach
-                       
-
-                        
-                      
-                        
-                       
-                      </tbody>
-                    </table>
-                    
-                    
-                  </div>
-                </div>
-              </div>
+              
 
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Danh sách loại phòng<small></small></h2>
+                    <h2>Danh sách Dịch vụ<small></small></h2>
                     <ul class="nav navbar-right panel_toolbox">
-                      <a href="#" class="btn btn-primary btn-xs" data-target="#addTypeRoomMainmodal" data-toggle="modal" data-backdrop="static" ><i class="fa fa-folder"></i> Thêm loại phòng </a>
+                      <a href="#" class="btn btn-primary btn-xs" data-target="#addServiceMainmodal" data-toggle="modal" data-backdrop="static" ><i class="fa fa-folder"></i> Thêm Dịch vụ </a>
                      
                     </ul>
                     <div class="clearfix"></div>
@@ -307,33 +200,31 @@
                           <th id="cel1">ID</th>
                           <th white-space:pre-line" id="cel5">Tên</th>
                           <th id="cel5">Giá</th>
-                          <th id="cel5" >Số người lớn</th>
                           <th id="cel10">mô tả</th>
                           <th class="nosort"  id="cel5">Quản lý</th>
                         </tr>
                       </thead>
                       <tbody>
                     
-                      @foreach ($type_rooms as $type_room)
+                      @foreach ($services as $service)
                     
                             <tr>
-                                <td style="width:5%">{{$type_room->type_room_id}}</td>
-                                <td style="width:15%">{{$type_room->type_name}}</td>
-                                <td style="width:10%">{{$type_room->cost}}</td>
-                                <td style="width:10%">{{$type_room->number_people}}</td>
-                                <td>{{$type_room->description}}</td>
+                                <td style="width:5%">{{$service->service_id}}</td>
+                                <td style="width:15%">{{$service->service_name}}</td>
+                                <td style="width:10%">{{$service->cost}}</td>
+                                <td>{{$service->description}}</td>
                                 <td style="width:10%">
-                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataTypeRoomView('{{$type_room->type_room_id}}','{{$type_room->type_name}}', '{{$type_room->cost}}', '{{$type_room->number_people}}','{{$type_room->description}}');" data-toggle="modal" data-backdrop="static" data-target="#viewTypeRoomMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
-                                    <a href="#" class="btn btn-info btn-xs"  onclick="showDataTypeRoomEdit('{{$type_room->type_room_id}}','{{$type_room->type_name}}', '{{$type_room->cost}}','{{$type_room->number_people}}', '{{$type_room->description}}')" data-toggle="modal" data-backdrop="static" data-target="#viewTypeRoomMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
+                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataServiceView('{{$service->service_id}}','{{$service->service_name}}', '{{$service->cost}}','{{$service->description}}','{!! asset($service->image) !!}');" data-toggle="modal" data-backdrop="static" data-target="#viewServiceMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
+                                    <a href="#" class="btn btn-info btn-xs"  onclick="showDataServiceEdit('{{$service->service_id}}','{{$service->service_name}}', '{{$service->cost}}','{{$service->description}}', '{!! asset($service->image) !!}')" data-toggle="modal" data-backdrop="static" data-target="#viewServiceMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
 
                             <a data-toggle="tooltip" data-placement="top"  class="btn btn-danger btn-xs"
                                             onclick="event.preventDefault();
-                                                     document.getElementById('deletetyperoom{{$type_room->type_room_id}}').submit();"><i class="fa fa-trash-o"></i> Xóa </a>
+                                                     document.getElementById('deletetyperoom{{$service->service_id}}').submit();"><i class="fa fa-trash-o"></i> Xóa </a>
 
-                            <form id="deletetyperoom{{$type_room->type_room_id}}" action="{{ route('subRoomManageSubmit',['subdomain' =>$info['subdomain']]) }}" method="POST" style="display: none;">
+                            <form id="deletetyperoom{{$service->service_id}}" action="{{ route('subServiceManageSubmit',['subdomain' =>$info['subdomain']]) }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
-                                            <input hidden id="typePosts"" name="typePost" value="deleteTypeRoom">
-                                            <input hidden id="id" name="id" value="{{$type_room->type_room_id}}">
+                                            <input hidden id="typePosts"" name="typePost" value="deleteService">
+                                            <input hidden id="id" name="id" value="{{$service->service_id}}">
                                         </form>
                                 </td>
                             </tr>
@@ -353,211 +244,22 @@
 
             </div>
             <!-- /page content -->
-<!-- modal dialog add user -->
-<div class="modal fade" id="add1RoomMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-        <div class="modal-dialog">
-        <div class="loginmodal-container">
-        <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-          <h1>Thêm 1 Phòng</h1><br>
-          <form class="form-horizontal" role="form" method="POST" action="{{ route('subRoomManageSubmit',['subdomain' =>$info['subdomain']]) }}">
-                        {{ csrf_field() }}
-                        <input hidden id="addtypePost"" name="typePost" value="add1Room">
-                        <div class="form-group{{ $errors->has('room_number') ? ' has-error' : '' }}">
-                            <div >
-                                @if ($errors->has('room_number'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('room_number') }}</strong>
-                                    </span>
-                                @endif
-                                <input id="r_room_floor" type="number" class="form-control" placeholder="Tầng" name="room_floor" value="{{old('room_floor') }}" required autofocus >
 
-                                
-                            </div>
-                        </div>
-                        <div class="form-group{{ $errors->has('room_number') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="r_room_number" type="number" class="form-control" placeholder="Số phòng" name="room_number" value="{{ old('room_number') }}" required autofocus>
-
-                                
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div >
-                            <select id="r_type_room" name="type_room" placeholder="khách sạn" required>
-                            <option value="" disabled selected>Chọn loại phòng</option>
-                                @foreach($type_rooms as $type_room)
-                                    <option value="{{$type_room->type_room_id}}">{{$type_room->type_name}}</option>
-                                @endforeach
-    
-   
-                            </select>
-                               
-                            </div>
-                        </div>
-
-                        
-
-                       
-                        <input type="submit" name="Register" class="loginmodal-submit " value="Thêm Phòng">
-                       
-                    </form>
-          </div>
-        </div>
-      </div>
-
-    <div class="modal fade" id="addnRoomMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-        <div class="modal-dialog">
-        <div class="loginmodal-container">
-        <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-          <h1>Thêm nhiều Phòng</h1><br>
-          <form class="form-horizontal" role="form" method="POST" action="{{ route('subRoomManageSubmit',['subdomain' =>$info['subdomain']]) }}">
-                        {{ csrf_field() }}
-                        <input hidden id="addtypePost"" name="typePost" value="addnRoom">
-                        <div class="form-group{{ $errors->has('room_from') ? ' has-error' : '' }}">
-                            <div >
-                                @if ($errors->has('room_from'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('room_from') }}</strong>
-                                    </span>
-                                @endif
-                                <input id="r_room_from2" type="number" class="form-control" placeholder="Từ số phòng" name="room_from" value="{{old('room_from') }}" required autofocus >
-                               
-                                
-                            </div>
-                        </div>
-                        <div class="form-group{{ $errors->has('room_from') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="r_room_to2" type="number" class="form-control" placeholder="đến số phòng" name="room_to" value="{{old('room_to') }}" required autofocus >
-                                 
-                                
-                            </div>
-                        </div>
-                        <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="r_room_floor2" type="number" class="form-control" placeholder="Tầng" name="room_floor" value="{{old('room_floor') }}" required autofocus >
-                                 @if ($errors->has('room_floor'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('room_floor') }}</strong>
-                                    </span>
-                                @endif
-                                
-                            </div>
-                        </div>
-
-                       
-                       <div class="form-group">
-                            <div >
-                            <select id="r_type_room2" name="type_room" placeholder="khách sạn" required>
-                            <option value="" disabled selected>Chọn loại phòng</option>
-                                @foreach($type_rooms as $type_room)
-                                    <option value="{{$type_room->type_room_id}}">{{$type_room->type_name}}</option>
-                                @endforeach
-                            </select>
-                               
-                            </div>
-                        </div>
-
-                        
-
-                       
-                        <input type="submit" name="Register" class="loginmodal-submit " value="Thêm Phòng">
-                       
-                    </form>
-          </div>
-        </div>
-      </div>
-
-      <!-- modal dialog view  edit user -->
-      <div class="modal fade" id="viewRoomMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-        <div class="modal-dialog">
-        <div class="loginmodal-container">
-        <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-          <h1>Xem chi tiết phòng</h1><br>
-          <form class="form-horizontal" role="form" method="POST" action="{{ route('subRoomManageSubmit', ['subdomain' =>$info['subdomain']]) }}">
-                        {{ csrf_field() }}
-                
-                        <input hidden id="typePost"" name="typePost" value="updateRoom">
-                        <input hidden id="idRoom" name="id" value="">
-                        <div class="form-group{{ $errors->has('room_number') ? ' has-error' : '' }}">
-                            <div >
-                                @if ($errors->has('room_number'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('room_number') }}</strong>
-                                    </span>
-                                @endif
-                                <input id="e_r_room_floor" type="text" class="form-control" placeholder="Tầng" name="room_floor" value="{{old('room_floor') }}" required autofocus >
-
-                                
-                            </div>
-                        </div>
-                        <div class="form-group{{ $errors->has('room_number') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="e_r_room_number" type="text" class="form-control" placeholder="Số phòng" name="room_number" value="{{ old('room_number') }}" required autofocus>
-
-                                
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div >
-                            <input readonly hidden id="e_r_type_room1" type="text" class="" placeholder="Loại phòng" name="type_room" value="{{ old('type_room') }}" >
-                            <select id="e_r_type_room2" name="type_room" placeholder="Chọn loại phòng" required>
-                                <option value="" disabled selected>Chọn Loại phòng</option>
-                                @foreach($type_rooms as $type_room)
-                                    <option value="{{$type_room->type_room_id}}">{{$type_room->type_name}}</option>
-                                @endforeach
-                            </select>
-                               
-                            </div>
-                        </div>
-                        <div class="form-group{{ $errors->has('room_number') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="e_r_is_clean" type="checkbox" name="is_clean" value="" >Phòng sạch</input>
-
-                                
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <input id="e_submit" type="submit" name="Register" class="btn btn-info btn-xs pull-left" value="OK">
-                        </div>
-                         <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <!-- <a data-toggle="tooltip" data-placement="top"  class="pull-right btn btn-primary btn-xs" href="{{ route('addUserMainSubmit') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('edit-form').submit();"><i class="fa fa-folder"></i> View  </a> -->
-                            <a   class="btn btn-danger btn-xs pull-right" onclick="event.preventDefault();
-                                                     document.getElementById('deleteroom').submit();"><i class="fa fa-trash-o"></i> Xóa </a>
-
-                            
-                            <a href="#" id="typeEditView" class="btn btn-info btn-xs pull-right" onclick="addReadonly()"><i class="fa fa-pencil"></i>Sửa</a>
-                                   
-                        </div>
-                        
-                        
-                    </form>
-                    <!-- <a href="{{ route('editUserMainSubmit') }}" class="btn btn-primary btn-xs" data-toggle="tooltip" data-backdrop="static" data-target="#viewUserMainmodal""><i class="fa fa-folder"></i> View </a> -->
-                    
-          </div>
-        </div>
-      </div>
 
 
       <!-- Type room -->
-      <div class="modal fade" id="addTypeRoomMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+      <div class="modal fade" id="addServiceMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
         <div class="modal-dialog">
         <div class="loginmodal-container">
         <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-          <h1>Thêm loại Phòng</h1><br>
-          <form class="form-horizontal" role="form" method="POST" action="{{ route('subRoomManageSubmit',['subdomain' =>$info['subdomain']]) }}">
+          <h1>Thêm Dịch vụ</h1><br>
+          <form class="form-horizontal" enctype="multipart/form-data" role="form" method="POST" action="{{ route('subServiceManageSubmit',['subdomain' =>$info['subdomain']]) }}">
                         {{ csrf_field() }}
-                        <input hidden id="addtypePost"" name="typePost" value="addTypeRoom">
+                        <input hidden id="addtypePost"" name="typePost" value="addService">
                         <div class="form-group{{ $errors->has('type_name') ? ' has-error' : '' }}">
                             <div >
-                                <input id="tr_type_name" type="text" class="form-control" placeholder="Tên loại phòng" name="type_name" value="{{old('type_name') }}" required autofocus >
+                                <input id="tr_type_name" type="text" class="form-control" placeholder="Tên dịch vụ" name="service_name" value="{{old('type_name') }}" required autofocus >
                                 @if ($errors->has('type_name'))
                                     <span class="help-block">
                                         <strong class="messageError">{{ $errors->first('type_name') }}</strong>
@@ -568,7 +270,7 @@
                         </div>
                         <div class="form-group{{ $errors->has('cost') ? ' has-error' : '' }}">
                             <div >
-                                <input id="tr_cost" type="number" class="form-control" placeholder="Giá phòng" name="cost" value="{{old('cost') }}" required autofocus >
+                                <input id="tr_cost" type="number" class="form-control" placeholder="Giá dịch vụ" name="cost" value="{{old('cost') }}" required autofocus >
                                  @if ($errors->has('cost'))
                                     <span class="help-block">
                                         <strong class="messageError">{{ $errors->first('cost') }}</strong>
@@ -577,18 +279,7 @@
                                 
                             </div>
                         </div>
-                        <div class="form-group{{ $errors->has('number_people') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="tr_number_people" type="number" min="1" class="form-control" placeholder="Số người lớn" name="number_people" value="{{old('number_people') }}" required autofocus >
-                                 @if ($errors->has('number_people'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('number_people') }}</strong>
-                                    </span>
-                                @endif
-                                
-                            </div>
-                        </div>
-
+                      
                         
                         <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
                             <div >
@@ -601,7 +292,22 @@
                                 
                             </div>
                         </div>
-                        <input type="submit" name="Register" class="loginmodal-submit " value="Thêm loại phòng">
+                        <div class="form-group{{ $errors->has('image') ? ' has-error' : '' }}">
+                            <div >
+
+                                <input type="file" id="imgInp" name="image" accept="image/*" value="" class="hidden" />
+                                <label for="imgInp" class="btn btn-info btn-sm">Chọn Hình ảnh</label>
+                                
+                                 @if ($errors->has('image'))
+
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('image') }}</strong>
+                                    </span>
+                                @endif
+                                
+                            </div>
+                        </div>
+                        <input type="submit" name="Register" class="loginmodal-submit " value="Thêm dịch vụ">
                        
                     </form>
           </div>
@@ -609,31 +315,31 @@
       </div>
 
       <!-- modal dialog view  edit user -->
-      <div class="modal fade" id="viewTypeRoomMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+      <div class="modal fade" id="viewServiceMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
         <div class="modal-dialog">
         <div class="loginmodal-container">
         <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-          <h1>Xem chi tiết loại phòng</h1><br>
-          <form class="form-horizontal" role="form" method="POST" action="{{ route('subRoomManageSubmit', ['subdomain' =>$info['subdomain']]) }}">
+          <h1>Xem chi tiết Dịch vụ</h1><br>
+          <form class="form-horizontal" enctype="multipart/form-data"  role="form" method="POST" action="{{ route('subServiceManageSubmit', ['subdomain' =>$info['subdomain']]) }}">
                         {{ csrf_field() }}
                 
-                        <input hidden id="tr_typePost"" name="typePost" value="updateTypeRoom">
-                        <input hidden id="idTypeRoom" name="id" value="">
-                        <div class="form-group{{ $errors->has('room_from') ? ' has-error' : '' }}">
+                        <input hidden id="tr_typePost"" name="typePost" value="updateService">
+                        <input hidden id="idService" name="id" value="">
+                        <div class="form-group{{ $errors->has('service_name') ? ' has-error' : '' }}">
                             <div >
-                                <input id="e_tr_type_name" type="text" class="form-control" placeholder="Tên loại phòng" name="type_name" value="{{old('type_name') }}" required autofocus >
-                                @if ($errors->has('type_name'))
+                                <input id="e_service_name" type="text" class="form-control" placeholder="Tên dịch vụ" name="service_name" value="{{old('service_name') }}" required autofocus >
+                                @if ($errors->has('service_name'))
                                     <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('type_name') }}</strong>
+                                        <strong class="messageError">{{ $errors->first('service_name') }}</strong>
                                     </span>
                                 @endif
                                 
                             </div>
                         </div>
-                        <div class="form-group{{ $errors->has('room_from') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('cost') ? ' has-error' : '' }}">
                             <div >
-                                <input id="e_tr_cost" type="number" class="form-control" placeholder="Giá phòng" name="cost" value="{{old('cost') }}" required autofocus >
+                                <input id="e_cost" type="number" class="form-control" placeholder="Giá Dịch vụ" name="cost" value="{{old('cost') }}" required autofocus >
                                  @if ($errors->has('cost'))
                                     <span class="help-block">
                                         <strong class="messageError">{{ $errors->first('cost') }}</strong>
@@ -642,25 +348,28 @@
                                 
                             </div>
                         </div>
-                        <div class="form-group{{ $errors->has('number_people') ? ' has-error' : '' }}">
+                      
+                        
+
+                        <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
                             <div >
-                                <input id="e_tr_number_people" type="number"  class="form-control" placeholder="Số người lớn" name="number_people" value="{{old('number_people') }}" required autofocus >
-                                 @if ($errors->has('number_people'))
+                                <input id="e_description" type="Text " class="form-control" placeholder="Mô tả" name="description" value="{{old('description') }}" required autofocus >
+                                 @if ($errors->has('description'))
                                     <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('number_people') }}</strong>
+                                        <strong class="messageError">{{ $errors->first('description') }}</strong>
                                     </span>
                                 @endif
                                 
                             </div>
                         </div>
-                        
-
-                        <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('image') ? ' has-error' : '' }}">
                             <div >
-                                <input id="e_tr_description" type="Text " class="form-control" placeholder="Mô tả" name="description" value="{{old('description') }}" required autofocus >
-                                 @if ($errors->has('description'))
+                            <img id="imgroom" class="img-responsive avatar-view hidden" src="" alt="Avatar">
+                               <input type="file" id="imgInp2" name="image" accept="image/*" value="" class="hidden" />
+                                <label id="lbforinput" class="btn btn-info btn-sm hidden" for="imgInp2" class="btn btn-info btn-sm">Chọn Hình ảnh</label>
+                                 @if ($errors->has('image'))
                                     <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('description') }}</strong>
+                                        <strong class="messageError">{{ $errors->first('image') }}</strong>
                                     </span>
                                 @endif
                                 
@@ -670,13 +379,11 @@
                             <input id="e_tr_submit" type="submit" name="Register" class="btn btn-info btn-xs pull-left" value="OK">
                         </div>
                          <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <!-- <a data-toggle="tooltip" data-placement="top"  class="pull-right btn btn-primary btn-xs" href="{{ route('addUserMainSubmit') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('edit-form').submit();"><i class="fa fa-folder"></i> View  </a> -->
-                            <a   class="btn btn-danger btn-xs pull-right" onclick="deleteTypeRoom()"><i class="fa fa-trash-o"></i> Xóa </a>
+                            
+                            <a   class="btn btn-danger btn-xs pull-right" onclick="deleteService()"><i class="fa fa-trash-o"></i> Xóa </a>
 
                             
-                            <a href="#" id="typeroomEditView" class="btn btn-info btn-xs pull-right" onclick="addReadonly2()"><i class="fa fa-pencil"></i>Sửa</a>
+                            <a href="#" id="typeroomEditView" class="btn btn-info btn-xs pull-right" onclick="addReadonly()"><i class="fa fa-pencil"></i>Sửa</a>
                                    
                         </div>
                         
@@ -690,11 +397,7 @@
 
 
       <!-- forrm delete -->
-      <form id="deleteroom" action="{{ route('subRoomManageSubmit',['subdomain' =>$info['subdomain']]) }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                            <input hidden id="typePosts"" name="typePost" value="deleteRoom">
-                                            <input hidden id="iddeleteRoom" name="id" value="">
-                                        </form>
+      
       <!-- end form delete -->
       <!-- end type room -->
       <!-- form post--> 
@@ -827,39 +530,7 @@
     @endif
     @endif
 
-@if( !count($type_rooms))
-<script type="text/javascript">
-   function checkHasTypeRoom1(){
-  
-    alert("Hệ thống chưa có loại phòng khách sạn, Vui lòng thêm loại phòng khách sạn!");
-    }
- 
-</script>
-@else
-<script type="text/javascript">
-   function checkHasTypeRoom1(){
- $('#add1RoomMainmodal').modal('show'); 
-}
- </script>
-@endif
 
-@if( !count($type_rooms))
-<script type="text/javascript">
-   function checkHasTypeRoom2(){
-  
-    alert("Hệ thống chưa có loại phòng khách sạn, Vui lòng thêm loại phòng khách sạn!");
-    }
- 
-</script>
-@else
-<script type="text/javascript">
-   function checkHasTypeRoom2(){
- $('#addnRoomMainmodal').modal('show'); 
-
-    
-}
- </script>
-@endif
 <script type="text/javascript">
 
 
@@ -880,65 +551,36 @@
 
 
 
-function deleteroom(){
-    document.getElementById("typePost").setAttribute("value", "deleteRoom");
-    var l = document.getElementById('e_submit');
-    l.click();
 
-}
 
-function deleteTypeRoom(){
-    document.getElementById("tr_typePost").setAttribute("value", "deleteTypeRoom");
+function deleteService(){
+    document.getElementById("tr_typePost").setAttribute("value", "deleteService");
     var l = document.getElementById('e_tr_submit');
     l.click();
 
 }
 
+
 function addReadonly(){
-
-    if(document.getElementById("typeEditView").innerHTML == "Sửa")
-    {
-    document.getElementById("e_submit").setAttribute("type", "submit");
-    document.getElementById("typeEditView").innerHTML = "Xem";
-    document.getElementById("e_r_room_floor").removeAttribute("readonly");
-    document.getElementById("e_r_room_number").removeAttribute("readonly");
-    document.getElementById("e_r_is_clean").removeAttribute("disabled");
-
-    document.getElementById("e_r_type_room1").setAttributeNode(document.createAttribute("hidden"));
-    document.getElementById("e_r_type_room2").removeAttribute("hidden");
-
-
-
-
-    return;    
-}
-else(document.getElementById("typeEditView").innerHTML == "Xem")
-{
-    document.getElementById("typeEditView").innerHTML = "Sửa";
-    document.getElementById("e_submit").setAttribute("type", "hidden");
-
-    document.getElementById("e_r_room_floor").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_r_room_number").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_r_is_clean").setAttributeNode(document.createAttribute("disabled"));
-
-    document.getElementById("e_r_type_room1").removeAttribute("hidden");
-    document.getElementById("e_r_type_room2").setAttributeNode(document.createAttribute("hidden"));
-    
-
-}
-}
-
-function addReadonly2(){
 
     if(document.getElementById("typeroomEditView").innerHTML == "Sửa")
     {
     document.getElementById("e_tr_submit").setAttribute("type", "submit");
     document.getElementById("typeroomEditView").innerHTML = "Xem";
-    document.getElementById("e_tr_type_name").removeAttribute("readonly");
-    document.getElementById("e_tr_cost").removeAttribute("readonly");
-    document.getElementById("e_tr_description").removeAttribute("readonly");
-    document.getElementById("e_tr_number_people").removeAttribute("readonly");
-    
+    document.getElementById("e_service_name").removeAttribute("readonly");
+    document.getElementById("e_cost").removeAttribute("readonly");
+    document.getElementById("e_description").removeAttribute("readonly");
+
+    document.getElementById("lbforinput").className =
+  document.getElementById("lbforinput").className
+    .replace(new RegExp('(?:^|\\s)'+ 'hidden' + '(?:\\s|$)'), '');
+
+    document.getElementById("lbforinput").className =
+  document.getElementById("lbforinput").className
+    .replace(new RegExp('(?:^|\\s)'+ 'hidden' + '(?:\\s|$)'), '');
+
+    var d = document.getElementById("imgroom");
+    d.className += " hidden";
 
     return;    
 }
@@ -947,10 +589,20 @@ else(document.getElementById("typeroomEditView").innerHTML == "Xem")
     document.getElementById("typeroomEditView").innerHTML = "Sửa";
     document.getElementById("e_tr_submit").setAttribute("type", "hidden");
 
-    document.getElementById("e_tr_type_name").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_tr_cost").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_tr_description").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_tr_number_people").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_service_name").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_cost").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_description").setAttributeNode(document.createAttribute("readonly"));
+
+    document.getElementById("imgroom").className =
+  document.getElementById("imgroom").className
+    .replace(new RegExp('(?:^|\\s)'+ 'hidden' + '(?:\\s|$)'), '');
+
+    document.getElementById("imgroom").className =
+  document.getElementById("imgroom").className
+    .replace(new RegExp('(?:^|\\s)'+ 'hidden' + '(?:\\s|$)'), '');
+
+    var d = document.getElementById("lbforinput");
+    d.className += " hidden";
    
 
 }
@@ -974,87 +626,61 @@ function removeReadonly(){
     
 
 }
-function showDataView(idRoom, room_floor, room_number,type_room,is_clean){
-      
-   
-    document.getElementById("typeEditView").innerHTML = "Sửa";
-    document.getElementById("e_submit").setAttribute("type", "hidden");
-    document.getElementById("e_r_room_floor").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_r_room_number").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_r_is_clean").setAttributeNode(document.createAttribute("disabled"));
-    document.getElementById("e_r_type_room1").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_r_type_room1").removeAttribute("hidden");
-    document.getElementById("e_r_type_room2").setAttributeNode(document.createAttribute("hidden"));
 
-    if(is_clean == 1){
-    document.getElementById("e_r_is_clean").setAttributeNode(document.createAttribute("checked"));
-
-    }
-    document.getElementById("idRoom").setAttribute("value", idRoom);
-    document.getElementById("e_r_room_floor").setAttribute("value", room_floor);
-    document.getElementById("e_r_room_number").setAttribute("value", room_number); 
-    document.getElementById("e_r_type_room1").setAttribute("value", type_room); 
-    document.getElementById("e_r_is_clean").setAttribute("value", is_clean); 
-    document.getElementById("iddeleteRoom").setAttribute("value", idRoom); 
-
-
-}
-
-function showDataEdit(idRoom, room_floor, room_number,type_room, is_clean){
-   
-    document.getElementById("e_submit").setAttribute("type", "submit");
-    document.getElementById("typeEditView").innerHTML = "Xem";
-    document.getElementById("e_r_room_floor").removeAttribute("readonly");
-    document.getElementById("e_r_room_number").removeAttribute("readonly");
-    document.getElementById("e_r_is_clean").removeAttribute("disabled");
-    document.getElementById("e_r_type_room1").setAttributeNode(document.createAttribute("hidden"));
-    document.getElementById("e_r_type_room2").removeAttribute("hidden");
-
-    if(is_clean == 1){
-    document.getElementById("e_r_is_clean").setAttributeNode(document.createAttribute("checked"));
-
-    }
-    document.getElementById("idRoom").setAttribute("value", idRoom);
-    document.getElementById("e_r_room_floor").setAttribute("value", room_floor);
-    document.getElementById("e_r_room_number").setAttribute("value", room_number); 
-    document.getElementById("e_r_is_clean").setAttribute("value", is_clean); 
-    document.getElementById("e_r_type_room1").setAttribute("value", type_room);
-    document.getElementById("iddeleteRoom").setAttribute("value", idRoom); 
-
-
-}
-function showDataTypeRoomView(idTypeRoom, type_name, cost,number_people,description){
+function showDataServiceView(id, name, cost,description,image){
     document.getElementById("typeroomEditView").innerHTML = "Sửa";
     document.getElementById("e_tr_submit").setAttribute("type", "hidden");
-    document.getElementById("e_tr_type_name").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_tr_cost").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_tr_description").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_tr_number_people").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_service_name").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_cost").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_description").setAttributeNode(document.createAttribute("readonly"));
     
 
-    document.getElementById("idTypeRoom").setAttribute("value", idTypeRoom);
-    document.getElementById("e_tr_type_name").setAttribute("value", type_name);
-   document.getElementById("e_tr_cost").setAttribute("value", cost); 
-    document.getElementById("e_tr_description").setAttribute("value", description);
-    document.getElementById("e_tr_number_people").setAttribute("value", number_people);
+    document.getElementById("idService").setAttribute("value", id);
+    document.getElementById("e_service_name").setAttribute("value", name);
+   document.getElementById("e_cost").setAttribute("value", cost); 
+    document.getElementById("e_description").setAttribute("value", description);
+    document.getElementById("imgroom").setAttribute("src", image);
+
+
+
+     document.getElementById("imgroom").className =
+  document.getElementById("imgroom").className
+    .replace(new RegExp('(?:^|\\s)'+ 'hidden' + '(?:\\s|$)'), '');
+
+    document.getElementById("imgroom").className =
+  document.getElementById("imgroom").className
+    .replace(new RegExp('(?:^|\\s)'+ 'hidden' + '(?:\\s|$)'), '');
+
+    var d = document.getElementById("lbforinput");
+    d.className += " hidden";
 
 
 }
 
-function showDataTypeRoomEdit(idTypeRoom, type_name,cost,number_people, description){
+function showDataServiceEdit(id, name,cost, description,image){
    
     document.getElementById("e_tr_submit").setAttribute("type", "submit");
     document.getElementById("typeroomEditView").innerHTML = "Xem";
-    document.getElementById("e_tr_type_name").removeAttribute("readonly");
-    document.getElementById("e_tr_cost").removeAttribute("readonly");
-    document.getElementById("e_tr_description").removeAttribute("readonly");
-    document.getElementById("e_tr_number_people").removeAttribute("readonly");
+    document.getElementById("e_service_name").removeAttribute("readonly");
+    document.getElementById("e_cost").removeAttribute("readonly");
+    document.getElementById("e_description").removeAttribute("readonly");
 
-    document.getElementById("idTypeRoom").setAttribute("value", idTypeRoom);
-    document.getElementById("e_tr_type_name").setAttribute("value", type_name);
-    document.getElementById("e_tr_cost").setAttribute("value", cost); 
-    document.getElementById("e_tr_description").setAttribute("value", description); 
-    document.getElementById("e_tr_number_people").setAttribute("value", number_people);
+    document.getElementById("idService").setAttribute("value", id);
+    document.getElementById("e_service_name").setAttribute("value", name);
+    document.getElementById("e_cost").setAttribute("value", cost); 
+    document.getElementById("e_description").setAttribute("value", description); 
+    document.getElementById("imgroom").setAttribute("src", image);
+
+    document.getElementById("lbforinput").className =
+  document.getElementById("lbforinput").className
+    .replace(new RegExp('(?:^|\\s)'+ 'hidden' + '(?:\\s|$)'), '');
+
+    document.getElementById("lbforinput").className =
+  document.getElementById("lbforinput").className
+    .replace(new RegExp('(?:^|\\s)'+ 'hidden' + '(?:\\s|$)'), '');
+
+    var d = document.getElementById("imgroom");
+    d.className += " hidden";
     } 
 </script>
 </body>

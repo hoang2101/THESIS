@@ -262,6 +262,26 @@ class MainController extends Controller
                     
                 }
                
+            $dataPay =  \Session::get('dataPay');
+                $work = \Session::get("work");
+
+                if($work == "update"){
+                     DB::table('hotel')->where('hotel_id',"=",$dataPay['hotel_id'])->update([
+                        'hotel_name' => $dataPay['hotel_name'],
+                        'account_id' => Auth::user()->username,
+                        'hotel_url' => $dataPay['hotel_url'],
+                        'expire_date' => $dataPay['expire_date'],
+                        'total_room' => $dataPay['total_room'],
+                        ]);
+
+                      DB::table('users')
+                ->where('id', Auth::User()->id)
+                ->update(['total_cost' => $dataPay['total_cost']]);
+                     \Session::forget('dataPay');
+          \Session::flash('messagesResult','Thanh toán thành công');
+                return Redirect::route('mainManageHoteler');
+                }
+
                 /** add payment ID to session **/
                 $intro = "Chào mừng bạn đến với khách sạn của chúng tôi, khách sạn chúng tôi .
 Khách sạn được chia thành 5 hạng phòng khác nhau, được du khách yêu thích bởi sự sạch sẽ và dịch vụ phòng hoàn hảo. Ngoài ra, khách sạn Đệ Nhất còn trang bị phòng tập thể hình, hồ bơi, 3 sân tennis, CLB trò chơi có thưởng (chỉ dành cho khách nước ngoài) & khu mát-xa – xông hơi để phục vụ khách lưu trú.
@@ -274,7 +294,7 @@ DB::table('web_config')->insertGetId([
                  'intro' => $intro
              ]);
 $config = DB::table('web_config')->latest()->first();
-                $dataPay =  \Session::get('dataPay');
+
                 DB::table('hotel')->insertGetId([
                  'hotel_name' => $dataPay['hotel_name'],
                  'account_id' => Auth::user()->username,
@@ -310,7 +330,28 @@ public function getDone(Request $request)
     // Clear the shopping cart, write to database, send notifications, etc.
 
     // Thank the user for the purchase
+   
     $dataPay =  \Session::get('dataPay');
+                $work = \Session::get("work");
+
+                if($work == "update"){
+                     DB::table('hotel')->where('hotel_id',"=",$dataPay['hotel_id'])->update([
+                        'hotel_name' => $dataPay['hotel_name'],
+                        'account_id' => Auth::user()->username,
+                        'hotel_url' => $dataPay['hotel_url'],
+                        'expire_date' => $dataPay['expire_date'],
+                        'total_room' => $dataPay['total_room'],
+                        ]);
+
+                      DB::table('users')
+                ->where('id', Auth::User()->id)
+                ->update(['total_cost' => $dataPay['total_cost']]);
+                     \Session::forget('dataPay');
+          \Session::flash('messagesResult','Thanh toán thành công');
+                return Redirect::route('mainManageHoteler');
+                }
+
+
      $intro = "Chào mừng bạn đến với khách sạn của chúng tôi, khách sạn chúng tôi .
 Khách sạn được chia thành 5 hạng phòng khác nhau, được du khách yêu thích bởi sự sạch sẽ và dịch vụ phòng hoàn hảo. Ngoài ra, khách sạn Đệ Nhất còn trang bị phòng tập thể hình, hồ bơi, 3 sân tennis, CLB trò chơi có thưởng (chỉ dành cho khách nước ngoài) & khu mát-xa – xông hơi để phục vụ khách lưu trú.
 Ẩm thực cũng là một thế mạnh bởi sự đa dạng phong cách và tinh tế trong từng món ăn. Nhà hàng Phố Nướng Đệ Nhất, Korea House và Hanasushi mang đến những món ăn cũng như không gian đặc trưng đậm chất Việt Nam, Hàn Quốc & Nhật Bản. Với nhà hàng Buffet Đệ Nhất là sự tổng hợp hài hòa các món ăn đến từ Việt – Á – Âu, là một bữa tiệc hoành tráng thật sự cho khách lưu trú tại khách sạn nói riêng và thực khách Sài Gòn nói chung.";
@@ -874,7 +915,7 @@ public function reportsubmit(){
                  'total_room' => $request['total_room'],
                  'total_cost' => $total_cost,
             );
-
+             \Session::put("work","add");
             \Session::put("dataPay",$dataPay);
             
 
@@ -929,38 +970,85 @@ public function reportsubmit(){
             }
             $getUser = Auth::User();
             $date = $getHotel->expire_date;
-            $total_Cost = null;
-             if($request['expire_date'] == 0){
-                $date = Carbon::createFromFormat('Y-m-d', $date)->addMonths(0);
-                $total_Cost = Auth::User()->total_cost;
+            // $total_Cost = null;
+            //  if($request['expire_date'] == 0){
+            //     $date = Carbon::createFromFormat('Y-m-d', $date)->addMonths(0);
+            //     $total_Cost = Auth::User()->total_cost;
+            // }
+            // if($request['expire_date'] == 1){
+            //     $date = Carbon::createFromFormat('Y-m-d', $date)->addMonths(1);
+            //     $total_Cost = 100 + Auth::User()->total_cost;
+            // }
+            // if($request['expire_date'] == 2){
+            //     $date = Carbon::createFromFormat('Y-m-d', $date)->addMonths(2);
+            //     $total_Cost = 150 + Auth::User()->total_cost;
+            // }
+            // if($request['expire_date'] == 3){
+            //     $date = Carbon::createFromFormat('Y-m-d', $date)->addMonths(4);
+            //      $total_Cost = 250 + Auth::User()->total_cost;
+            // }
+            // if($request['expire_date'] == 4){
+            //     $date = Carbon::createFromFormat('Y-m-d', $date)->addMonths(6);
+            //     $total_Cost = 400 + Auth::User()->total_cost;
+            // }
+            
+            $total_cost = null;
+            $amountPay = 1000000 ;
+            $namePay = "Gói BASIS";
+            if($request['expire_date'] == 0){
+                
+
+                 DB::table('hotel')
+                ->where('hotel_id', $request['id'])
+                ->update(['hotel_name' => $request['hotel_name'], 'hotel_url' => $request['hotel_url'], 'total_room' => $request['total_room']]);
+
+                
+                    
+                    return redirect()->route('mainManageHoteler');
+
+
             }
             if($request['expire_date'] == 1){
                 $date = Carbon::createFromFormat('Y-m-d', $date)->addMonths(1);
-                $total_Cost = 100 + Auth::User()->total_cost;
+                $total_cost = 1000000 + Auth::User()->total_cost;
+                $amountPay = 1000000;
+                $namePay = "Gói BASIS";
             }
             if($request['expire_date'] == 2){
                 $date = Carbon::createFromFormat('Y-m-d', $date)->addMonths(2);
-                $total_Cost = 150 + Auth::User()->total_cost;
+                $total_cost = 150000 + Auth::User()->total_cost;
+                $amountPay = 150000;
+                $namePay = "Gói SILVER";
             }
             if($request['expire_date'] == 3){
                 $date = Carbon::createFromFormat('Y-m-d', $date)->addMonths(4);
-                 $total_Cost = 250 + Auth::User()->total_cost;
+                 $total_cost = 250000 + Auth::User()->total_cost;
+                 $amountPay = 250000;
+                 $namePay = "Gói GOLD";
             }
             if($request['expire_date'] == 4){
                 $date = Carbon::createFromFormat('Y-m-d', $date)->addMonths(6);
-                $total_Cost = 400 + Auth::User()->total_cost;
+                 $total_cost = 400000 + Auth::User()->total_cost;
+                 $amountPay = 400000;
+                 $namePay = "Gói VIP";
             }
+             $dataPay = array(
+                'hotel_id' => $request['id'],
+                'namePay' => $namePay,
+                'amountPay' => $amountPay,
+                 'hotel_name' => $request['hotel_name'],
+                 'account_id' => Auth::user()->username,
+                 'hotel_url' => $request['hotel_url'],
+                 'expire_date' => $date,
+                 'total_room' => $request['total_room'],
+                 'total_cost' => $total_cost,
+            );
+             \Session::put("work","update");
+           \Session::put("dataPay",$dataPay);
+            
 
-            DB::table('hotel')
-                ->where('hotel_id', $request['id'])
-                ->update(['hotel_name' => $request['hotel_name'], 'hotel_url' => $request['hotel_url'], 'hotel_star' => $request['hotel_star'], 'expire_date' => $date]);
-
-             DB::table('users')
-                ->where('id', Auth::User()->id)
-                ->update(['total_cost' => $total_Cost]);
-                //return $request;
-                
-                return redirect()->route('mainManageHoteler');
+           
+            return  redirect()->route('paypal');
 
 
          }else{

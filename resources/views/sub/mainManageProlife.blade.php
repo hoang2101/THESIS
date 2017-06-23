@@ -111,6 +111,7 @@
                                 
                                 <li><a  href="{{ route('subManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-desktop"></i> Quản lý khách hàng</a>
                                 <li><a   href="{{ route('subBookManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-desktop"></i> Quản lý đặt phòng</a>
+                                <li><a   href="{{ route('subSpendManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-usd"></i> Quản lý chi</a>
                                 <li><a class="active" href="{{ route('subProfile',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Quản lý Tài khoản</a>
 
 

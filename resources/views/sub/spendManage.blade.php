@@ -110,10 +110,11 @@
                                <li><a href="{{ route('subHome',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-home"></i> Home </a>
                                 </li>
                                 
-                                <li><a  class="active" href="{{ route('subManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-desktop"></i> Quản lý khách hàng</a>
+                                <li><a   href="{{ route('subManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-desktop"></i> Quản lý khách hàng</a>
                                 <li><a   href="{{ route('subBookManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-desktop"></i> Quản lý đặt phòng</a>
-                                <li><a   href="{{ route('subSpendManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-usd"></i> Quản lý chi</a>
+                                <li><a  class="active" href="{{ route('subSpendManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-usd"></i> Quản lý chi</a>
                                 <li><a  href="{{ route('subProfile',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Quản lý Tài khoản</a>
+                                
 
 
                                
@@ -227,9 +228,9 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Danh sách Khách hàng<small></small></h2>
+                    <h2>Danh sách Chi tiêu<small></small></h2>
                     <ul class="nav navbar-right panel_toolbox">
-                      <a href="#" class="btn btn-primary btn-xs" data-target="#addUserMainmodal" data-toggle="modal" data-backdrop="static" ><i class="fa fa-folder"></i> Thêm Khách Hàng </a>
+                      <a href="#" class="btn btn-primary btn-xs" data-target="#addSpendMainmodal" data-toggle="modal" data-backdrop="static" ><i class="fa fa-folder"></i> Thêm Chi tiêu </a>
                     </ul>
                     <div class="clearfix"></div>
                   </div>
@@ -240,39 +241,38 @@
                       <thead>
                         <tr>
                           <th id="cel1">ID</th>
-                          <th white-space:pre-line" id="cel5">Họ</th>
-                          <th id="cel5">Tên</th>
-                          <th id="cel10">Username</th>
-                          <th id="cel10">E-mail</th>
-                          <th id="cel10">Tổng booking</th>
+                          <th white-space:pre-line" id="cel5">Tên</th>
+                          <th id="cel5">Chi phí</th>
+                          <th id="cel10">Chú thích</th>
+                          <th id="cel10">ngày</th>
+                          <th id="cel10">người nhập</th>
                           <th class="nosort"  id="cel5">Quản lý</th>
                         </tr>
                       </thead>
                       <tbody>
                     
-                      @foreach ($users as $user)
+                      @foreach ($spends as $spend)
                     
                             <tr>
-                                <td>{{$user->id}}</td>
-                                <td>{{$user->first_name}}</td>
-                                <td>{{$user->last_name}}</td>
-                                <td>{{$user->username}}</td>
-                                <td>{{$user->email}}</td>
-                                
-                                <td>0</td>
+                                <td>{{$spend->id}}</td>
+                                <td>{{$spend->name}}</td>
+                                <td>{{$spend->cost}}</td>
+                                <td>{{$spend->detail}}</td>
+                                <td>{{$spend->date}}</td>
+                                <td>{{$spend->first_name}} {{$spend->last_name}}</td>
                                 
                                 <td>
-                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataView('{{$user->id}}','{{$user->first_name}}', '{{$user->last_name}}', '{{$user->email}}', '{{$user->phone_number}}', '{{$user->username}}', '{{$user->country}}', '{{$user->dob}}', '{{$user->gender}}') " data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
-                                    <a href="#" class="btn btn-info btn-xs"  onclick="showDataEdit('{{$user->id}}','{{$user->first_name}}', '{{$user->last_name}}', '{{$user->email}}', '{{$user->phone_number}}', '{{$user->username}}', '{{$user->country}}', '{{$user->dob}}', '{{$user->gender}}') ;" data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
+                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataView('{{$spend->id}}','{{$spend->name}}', '{{$spend->cost}}', '{{$spend->detail}}', '{{$spend->date}}') " data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
+                                    <a href="#" class="btn btn-info btn-xs"  onclick="showDataEdit('{{$spend->id}}','{{$spend->name}}', '{{$spend->cost}}', '{{$spend->detail}}', '{{$spend->date}}') ;" data-toggle="modal" data-backdrop="static" data-target="#viewUserMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
 
                             <a data-toggle="tooltip" data-placement="top"  class="btn btn-danger btn-xs"
                                             onclick="event.preventDefault();
-                                                     document.getElementById('deleteUser{{$user->id}}').submit();"><i class="fa fa-trash-o"></i> Xóa </a>
+                                                     document.getElementById('deleteUser{{$spend->id}}').submit();"><i class="fa fa-trash-o"></i> Xóa </a>
 
-                            <form id="deleteUser{{$user->id}}" action="{{ route('subManageSubmit',['subdomain' =>$info['subdomain']]) }}" method="POST" style="display: none;">
+                            <form id="deleteUser{{$spend->id}}" action="{{ route('subSpendManage',['subdomain' =>$info['subdomain']]) }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
-                                            <input hidden id="typePosts"" name="typePost" value="deleteUser">
-                                            <input hidden id="id" name="id" value="{{$user->id}}">
+                                            <input hidden id="typePosts"" name="typePost" value="deleteSpend">
+                                            <input hidden id="id" name="id" value="{{$spend->id}}">
                                         </form>
                                 </td>
                             </tr>
@@ -294,74 +294,48 @@
             </div>
             <!-- /page content -->
 <!-- modal dialog add user -->
-<div class="modal fade" id="addUserMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+<div class="modal fade" id="addSpendMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
         <div class="modal-dialog">
         <div class="loginmodal-container">
         <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-          <h1>Thêm Khách hàng</h1><br>
-          <form class="form-horizontal" role="form" method="POST" action="{{ route('subManageSubmit',['subdomain' =>$info['subdomain']]) }}">
+          <h1>Thêm Chi tiêu</h1><br>
+          <form class="form-horizontal" role="form" method="POST" action="{{ route('subSpendManageSubmit',['subdomain' =>$info['subdomain']]) }}">
                         {{ csrf_field() }}
-                        <input hidden id="addtypePost"" name="typePost" value="addUser">
-                        <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
+                        <input hidden id="addtypePost"" name="typePost" value="addSpend">
+                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                             <div >
-                                <input id="first_name" type="text" class="form-control" placeholder="First Name" name="first_name" value="{{old('first_name') }}" required autofocus >
+                                <input id="first_name" type="text" class="form-control" placeholder="Tên" name="name" value="{{old('name') }}" required  >
 
                                 
                             </div>
                         </div>
-                        <div class="form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('cost') ? ' has-error' : '' }}">
                             <div >
-                                <input id="last_name" type="text" class="form-control" placeholder="Last Name" name="last_name" value="{{ old('last_name') }}" required autofocus>
+                                <input id="last_name" type="number" min="0" class="form-control" placeholder="Chi phí" name="cost" value="{{ old('cost') }}" required >
 
                                 
                             </div>
                         </div>
 
-                        <div class="form-group {{ $errors->has('username') ? ' has-error' : '' }}">
+                        <div class="form-group {{ $errors->has('detail') ? ' has-error' : '' }}">
                             <div >
-                                <input id="username" type="text" class="form-control" placeholder="Username" name="username" value="{{ old('username') }}" required autofocus>
+                                <input id="username" type="text" class="form-control" placeholder="Chú thích" name="detail" value="{{ old('detail') }}" required >
 
-                                @if ($errors->has('username'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('username') }}</strong>
-                                    </span>
-                                @endif
+                               
                             </div>
                         </div>
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <div >
-                                <input id="email" type="email" class="form-control" placeholder="E-Mail Address" name="email" value="{{ old('email') }}" required autofocus>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
+                                <input id="date" type="date" class="form-control" placeholder="Ngày chi" name="date" value="{{ old('date') }}" required >
                             </div>
                         </div>
 
                        
                         
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="password" type="password" class="form-control" placeholder="Password" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div >
-                                <input id="password-confirm" type="password" placeholder="Confirm Password" class="form-control" name="password_confirmation" required>
-                            </div>
-                        </div>
-                        <input type="submit" name="Register" class="loginmodal-submit " value="Thêm Khách hàng">
+                        
+                        <input type="submit" name="Register" class="loginmodal-submit " value="Thêm Chi tiêu">
                        
                     </form>
           </div>
@@ -371,98 +345,41 @@
       <!-- modal dialog view  edit user -->
       <div class="modal fade" id="viewUserMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
         <div class="modal-dialog">
-        <div class="Registermodal-content">
+        <div class="loginmodal-container">
         <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-          <h1>Xem chi tiết khách hàng</h1><br>
+          <h1>Xem chi tiết Chi tiêu</h1><br>
           <form class="form-horizontal" role="form" method="POST" action="{{ route('subManageSubmit', ['subdomain' =>$info['subdomain']]) }}">
                         {{ csrf_field() }}
                 
-                        <input hidden id="typePost"" name="typePost" value="updateUser">
+                        <input hidden id="typePost"" name="typePost" value="updateSpend">
                         <input hidden id="idUser" name="id" value="">
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
+                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                             <div >
-                                <input id="e_first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" required autofocus>
+                                <input id="e_name" type="text" class="form-control" placeholder="Tên" name="name" value="{{old('name') }}" required  >
 
                                 
                             </div>
                         </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('cost') ? ' has-error' : '' }}">
                             <div >
-                                <input id="e_last_name" type="text" class="form-control" placeholder="Tên" name="last_name" value="{{ old('last_name') }}" required autofocus>
+                                <input id="e_cost" type="number" min="0" class="form-control" placeholder="Chi phí" name="cost" value="{{ old('cost') }}" required >
 
                                 
                             </div>
                         </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <div >
-                                <input id="e_email" type="email" class="form-control" placeholder="E-Mail" name="email" value="{{ old('email') }}" required autofocus>
-                          
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
 
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group">
-                        
+                        <div class="form-group {{ $errors->has('detail') ? ' has-error' : '' }}">
                             <div >
-                                <input id="e_phone_number" type="number" class="form-control" placeholder="Số điện thoại" name="phone_number" value="{{ old('phone_number') }}" >
+                                <input id="e_detail" type="text" class="form-control" placeholder="Chú thích" name="detail" value="{{ old('detail') }}" required >
 
                                
-                                @if ($errors->has('email'))
-                                     <span class="help-block">
-                                      <br>
-                                    </span>
-                                @endif
                             </div>
                         </div>
 
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group {{ $errors->has('username') ? ' has-error' : '' }}">
+                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <div >
-                                <input id="e_username" type="text" class="form-control" placeholder="Tên tài khoản" name="username" value="{{ old('username') }}" required>
-
-                                @if ($errors->has('username'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('username') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group">
-                            <div >
-                                <input id="e_country" type="text" class="form-control" placeholder="Quốc qia" name="country" value="{{ old('country') }}" >
-
-                                @if ($errors->has('username'))
-                                 <span class="help-block">
-                                      <br>
-                                    </span>
-                                    
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12 form-group">
-                            <div >
-                                <input id="e_dob" type="text" onfocus="(this.type='date')" class="form-control" placeholder="Ngày sinh" name="dob" value="{{ old('dob') }}" >
-
-                                @if ($errors->has('dob'))
-                                    <span class="help-block">
-                                        <strong class="messageError">{{ $errors->first('dob') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-6 col-xs-12  form-group">
-                            <div >
-                                <input id="e_gender" type="text" class="form-control" placeholder="Giới tính" name="gender" >
-
-                                 @if ($errors->has('dob'))
-                                     <span class="help-block">
-                                      <br>
-                                    </span>
-                                @endif
+                                <input id="e_date" type="date" class="form-control" placeholder="Ngày chi" name="date" value="{{ old('date') }}" required >
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('password') ? ' has-error' : '' }}">
@@ -472,7 +389,7 @@
                             <!-- <a data-toggle="tooltip" data-placement="top"  class="pull-right btn btn-primary btn-xs" href="{{ route('addUserMainSubmit') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('edit-form').submit();"><i class="fa fa-folder"></i> View  </a> -->
-                            <a   class="btn btn-danger btn-xs pull-right" onclick="deleteusers()"><i class="fa fa-trash-o"></i> Xóa </a>
+                            <a   class="btn btn-danger btn-xs pull-right" onclick="deletespend()"><i class="fa fa-trash-o"></i> Xóa </a>
 
                             
                             <a href="#" id="typeEditView" class="btn btn-info btn-xs pull-right" onclick="addReadonly()"><i class="fa fa-pencil"></i>Sửa</a>
@@ -636,8 +553,8 @@ function openViewdialog(){
 function openEditdialog(){
 
 }
-function deleteusers(){
-    document.getElementById("typePost").setAttribute("value", "deleteUser");
+function deletespend(){
+    document.getElementById("typePost").setAttribute("value", "deleteSpend");
     var l = document.getElementById('e_submit');
     l.click();
 
@@ -648,14 +565,10 @@ function addReadonly(){
     {
     document.getElementById("e_submit").setAttribute("type", "submit");
     document.getElementById("typeEditView").innerHTML = "Xem";
-    document.getElementById("e_first_name").removeAttribute("readonly");
-    document.getElementById("e_last_name").removeAttribute("readonly");
-    document.getElementById("e_email").removeAttribute("readonly");
-    document.getElementById("e_phone_number").removeAttribute("readonly");
-    document.getElementById("e_username").removeAttribute("readonly");
-    document.getElementById("e_country").removeAttribute("readonly");
-    document.getElementById("e_dob").removeAttribute("readonly");
-    document.getElementById("e_gender").removeAttribute("readonly");
+    document.getElementById("e_name").removeAttribute("readonly");
+    document.getElementById("e_cost").removeAttribute("readonly");
+    document.getElementById("e_detail").removeAttribute("readonly");
+    document.getElementById("e_date").removeAttribute("readonly");
 
     // document.getElementById("e_submit").setAttribute("type", "submit");
     // document.getElementById("e_first_name").removeAttribute("readonly");
@@ -673,14 +586,10 @@ else(document.getElementById("typeEditView").innerHTML == "Xem")
     document.getElementById("typeEditView").innerHTML = "Sửa";
     document.getElementById("e_submit").setAttribute("type", "hidden");
 
-    document.getElementById("e_first_name").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_last_name").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_email").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_phone_number").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_username").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_country").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_dob").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_gender").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_name").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_cost").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_detail").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_date").setAttributeNode(document.createAttribute("readonly"));
 }
    
 
@@ -692,66 +601,46 @@ function removeReadonly(){
 
     document.getElementById("e_submit").setAttribute("type", "submit");
     document.getElementById("typeEditView").innerHTML = "Xem";
-    document.getElementById("e_first_name").removeAttribute("readonly");
-    document.getElementById("e_last_name").removeAttribute("readonly");
-    document.getElementById("e_email").removeAttribute("readonly");
-    document.getElementById("e_phone_number").removeAttribute("readonly");
-    document.getElementById("e_username").removeAttribute("readonly");
-    document.getElementById("e_country").removeAttribute("readonly");
-    document.getElementById("e_dob").removeAttribute("readonly");
-    document.getElementById("e_gender").removeAttribute("readonly");
+   document.getElementById("e_name").removeAttribute("readonly");
+    document.getElementById("e_cost").removeAttribute("readonly");
+    document.getElementById("e_detail").removeAttribute("readonly");
+    document.getElementById("e_date").removeAttribute("readonly");
      // document.getElementById("typeEditView").setAttribute("onclick", "addReadonly())");
     
 
 }
-function showDataView(idUser, first_name, last_name,email,phone_number,username,country,dob,gender){
+function showDataView(id, name, cost,detail,date){
       
    
     document.getElementById("typeEditView").innerHTML = "Sửa";
     document.getElementById("e_submit").setAttribute("type", "hidden");
-    document.getElementById("e_first_name").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_last_name").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_email").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_phone_number").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_username").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_country").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_dob").setAttributeNode(document.createAttribute("readonly"));
-    document.getElementById("e_gender").setAttributeNode(document.createAttribute("readonly")); 
+    document.getElementById("e_name").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_cost").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_detail").setAttributeNode(document.createAttribute("readonly"));
+    document.getElementById("e_date").setAttributeNode(document.createAttribute("readonly"));
 
-    document.getElementById("idUser").setAttribute("value", idUser);
-    document.getElementById("e_first_name").setAttribute("value", first_name);
-    document.getElementById("e_last_name").setAttribute("value", last_name); 
-    document.getElementById("e_email").setAttribute("value", email); 
-    document.getElementById("e_phone_number").setAttribute("value", phone_number); 
-    document.getElementById("e_username").setAttribute("value", username);
-    document.getElementById("e_country").setAttribute("value", country); 
-    document.getElementById("e_dob").setAttribute("value",dob); 
-    document.getElementById("e_gender").setAttribute("value", gender);
+    document.getElementById("idUser").setAttribute("value", id);
+    document.getElementById("e_name").setAttribute("value", name);
+    document.getElementById("e_cost").setAttribute("value", cost); 
+    document.getElementById("e_detail").setAttribute("value", detail); 
+    document.getElementById("e_date").setAttribute("value", date); 
 
 }
 
-function showDataEdit(idUser, first_name, last_name,email,phone_number,username,country,dob,gender){
+function showDataEdit(id, name, cost,detail,date){
    
     document.getElementById("e_submit").setAttribute("type", "submit");
     document.getElementById("typeEditView").innerHTML = "Xem";
-    document.getElementById("e_first_name").removeAttribute("readonly");
-    document.getElementById("e_last_name").removeAttribute("readonly");
-    document.getElementById("e_email").removeAttribute("readonly");
-    document.getElementById("e_phone_number").removeAttribute("readonly");
-    document.getElementById("e_username").removeAttribute("readonly");
-    document.getElementById("e_country").removeAttribute("readonly");
-    document.getElementById("e_dob").removeAttribute("readonly");
-    document.getElementById("e_gender").removeAttribute("readonly");
+    document.getElementById("e_name").removeAttribute("readonly");
+    document.getElementById("e_cost").removeAttribute("readonly");
+    document.getElementById("e_detail").removeAttribute("readonly");
+    document.getElementById("e_date").removeAttribute("readonly");
 
-    document.getElementById("idUser").setAttribute("value", idUser);
-    document.getElementById("e_first_name").setAttribute("value", first_name);
-    document.getElementById("e_last_name").setAttribute("value", last_name); 
-    document.getElementById("e_email").setAttribute("value", email); 
-    document.getElementById("e_phone_number").setAttribute("value", phone_number); 
-    document.getElementById("e_username").setAttribute("value", username);
-    document.getElementById("e_country").setAttribute("value", country); 
-    document.getElementById("e_dob").setAttribute("value",dob); 
-    document.getElementById("e_gender").setAttribute("value", gender);
+    document.getElementById("idUser").setAttribute("value", id);
+    document.getElementById("e_name").setAttribute("value", name);
+    document.getElementById("e_cost").setAttribute("value", cost); 
+    document.getElementById("e_detail").setAttribute("value", detail); 
+    document.getElementById("e_date").setAttribute("value", date); 
 
 }
 </script>

@@ -78,7 +78,7 @@
                                  <li><a  href="{{ route('subRoomManage',['subConfig' =>$info['subdomain']]) }}"><i class="fa fa-university"></i> Quản lý phòng</a>
                                  <li><a href="{{ route('subServiceManage',['subConfig' =>$info['subdomain']]) }}"><i class="fa fa-server"></i> Quản lý dịch vụ</a>
                                  <li><a  href="{{ route('subProfile',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Quản lý Tài khoản</a>
-                                 <li><a  href="{{ route('subProfile',['subConfig' =>$info['subdomain']]) }}"><i class="fa fa-cogs"></i> Cài Đặt Web</a>
+                                 <li><a  href="{{ route('subConfig',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-cogs"></i> Cài Đặt Web</a>
                                 <!-- <li><a class="active"><i class="fa fa-user" "></i> Quản lý Quản trị khách sạn</a>
                                     
                                 </li>
@@ -110,8 +110,9 @@
                                 
                                 <li><a href="{{ route('subManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-desktop"></i> Quản lý khách hàng</a>
                                 <li><a   class="active"  href="{{ route('subBookManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-desktop"></i> Quản lý đặt phòng</a>
-                              
+                               <li><a  href="{{ route('subSpendManage',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-usd"></i> Quản lý chi</a>
                                 <li><a  href="{{ route('subProfile',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user"></i> Quản lý Tài khoản</a>
+                               
 
                                
                             </ul>
@@ -360,14 +361,13 @@
                     <table id="responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                       <thead>
                         <tr>
-                          <th id="cel1">ID</th>
-                          <th white-space:pre-line" id="cel5">Họ Tên</th>
-                          <th id="cel5">phòng</th>
-                          <th id="cel10">Ngày đến</th>
-                          <th id="cel10">Ngày đi</th>
-                          <th id="cel10">Số người</th>
-                          <th id="cel10">Quốc gia</th>
-                          <th class="nosort"  id="cel5">Quản lý</th>
+                          <th width="5%">ID</th>
+                          <th width="15%">Họ Tên</th>
+                          <th width="10%" >phòng</th>
+                          <th width="5%">Số người</th>
+                          <th width="5%">Tiền phòng</th>
+                          <th width="5%">Tiền dịch vụ</th>
+                          <th class="nosort" >Quản lý</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -378,10 +378,9 @@
                                 <td>{{$checkin->booking_id}}</td>
                                 <td>{{$checkin->first_name.' '.$checkin->last_name}}</td>
                                 <td>{{$checkin->room_id}}</td>
-                                <td>{{$checkin->date_from}}</td>
-                                <td>{{$checkin->date_to}}</td>
                                 <td>{{$checkin->number_people}}</td>
-                                <td>{{$checkin->contry}}</td>
+                                <td>{{$checkin->total_cost_room}}</td>
+                                <td>{{$checkin->total_cost_service}}</td>
                                 <td>
                                     <a href="#" class="btn btn-primary btn-xs" onclick="showDataView('{{$checkin->booking_id}}','{{$checkin->room_id}}', '{{$checkin->date_from}}', '{{$checkin->date_to}}', '{{$checkin->first_name}}', '{{$checkin->last_name}}', '{{$checkin->number_people}}', '{{$checkin->contry}}', '{{$checkin->username}}') " data-toggle="modal" data-backdrop="static" data-target="#viewCheckinMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
                                     <a href="#" class="btn btn-info btn-xs"  onclick="showDataEdit('{{$checkin->booking_id}}','{{$checkin->room_id}}', '{{$checkin->date_from}}', '{{$checkin->date_to}}', '{{$checkin->first_name}}', '{{$checkin->last_name}}', '{{$checkin->number_people}}', '{{$checkin->contry}}', '{{$checkin->username}}') ;" data-toggle="modal" data-backdrop="static" data-target="#editCheckinMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
@@ -396,6 +395,8 @@
                                             <input hidden id="id" name="id" value="{{$checkin->booking_id}}">
                                         </form>
                             @if($checkin->date_checkin == null)
+                            <a href="#" class="btn btn-primary btn-xs" onclick="addService('{{$checkin->booking_id}}')" data-target="#addServiceMainmodal" data-toggle="modal" data-backdrop="static" ><i class="fa fa-folder"></i> Thêm dịch vụ </a>
+
                             <a data-toggle="tooltip" data-placement="top"  class="btn btn-info btn-xs"
                                             onclick="event.preventDefault();
                                                      document.getElementById('checkinBook{{$checkin->booking_id}}').submit();"><i class="fa-check-square"></i> Checkin </a>
@@ -407,6 +408,7 @@
                                         </form>
                             @endif
                             @if($checkin->date_checkin != null && $checkin->date_checkout == null)
+                            <a href="#" class="btn btn-primary btn-xs" onclick="addService('{{$checkin->booking_id}}')" data-target="#addServiceMainmodal" data-toggle="modal" data-backdrop="static" ><i class="fa fa-folder"></i> Thêm dịch vụ </a>
                             <a data-toggle="tooltip" data-placement="top"  class="btn btn-info btn-xs"
                                             onclick="event.preventDefault();
                                                      document.getElementById('checkoutBook{{$checkin->booking_id}}').submit();"><i class="fa-check-square"></i> Checkout </a>
@@ -502,6 +504,7 @@
                                 @endif
                             </div>
                         </div>
+
                         <div class=" col-md-6 col-sm-6 col-xs-12 form-group">
                             <div >
                             <select id="add_type_room" onchange="changetyperoom()" name="type_room" placeholder="Loại phòng" required>
@@ -513,6 +516,18 @@
                                
                             </div>
                         </div>
+
+                        <div class=" col-md-3 col-sm-3 col-xs-6 form-group">
+                            <div >
+                            <select id="add_room_input"  name="froom" onchange="changeaddroom(this)" placeholder="Số Phòng" required>
+                                    <option value="-1" disabled selected>Chọn  phòng</option>
+                                    <option value="" >Xóa danh sách</option>
+                                    
+                            </select>
+                               
+                            </div>
+                        </div>
+
                         <div class=" col-md-3 col-sm-3 col-xs-6 form-group ">
                             <div >
                             <input id="addroom" type="text" readonly  placeholder="Phòng" name="room" value="" required>
@@ -520,16 +535,7 @@
                             </div>
                         </div>
                         
-                        <div class=" col-md-3 col-sm-3 col-xs-6 form-group">
-                            <div >
-                            <select id="add_room_input"  name="froom" onchange="changeaddroom(this)" placeholder="Số Phòng" required>
-                                    <option value="-1" disabled selected>Chọn  phòng</option>
-                                    <option value="" >clear</option>
-                                    
-                            </select>
-                               
-                            </div>
-                        </div>
+                        
                          <div class="col-md-12 col-sm-12 col-xs-12  form-group {{ $errors->has('room') ? ' has-error' : '' }} {{ $errors->has('date_checkout') ? ' has-error' : '' }}">
                             <div>
                                 @if ($errors->has('room'))
@@ -654,7 +660,7 @@
                         </div>
                         <div class="col-md-6 col-sm-6 col-xs-12  form-group {{ $errors->has('number_people') ? ' has-error' : '' }}">
                             <div >
-                                <input id="v_number_people" type="number" min="1" class="form-control" placeholder="Số người" name="number_people" value="{{ old('number_people') }}" required>
+                                <input readonly id="v_number_people" type="number" min="1" class="form-control" placeholder="Số người" name="number_people" value="{{ old('number_people') }}" required>
 
                                
                             </div>
@@ -664,7 +670,7 @@
                         
                         <div class="col-md-6 col-sm-6 col-xs-12  form-group">
                             <div >
-                                <input id="v_country" type="text" class="form-control" placeholder="Quốc qia" name="country" value="{{ old('country') }}" >
+                                <input readonly id="v_country" type="text" class="form-control" placeholder="Quốc qia" name="country" value="{{ old('country') }}" >
 
                                 
                             </div>
@@ -686,6 +692,7 @@
           </div>
         </div>
       </div>
+
       <div class="modal fade" id="editCheckinMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
         <div class="modal-dialog">
         <div class="Registermodal-content">
@@ -762,6 +769,18 @@
                                
                             </div>
                         </div>
+
+                         <div class=" col-md-3 col-sm-3 col-xs-6 form-group">
+                            <div >
+                           
+                            <select id="e_room"  name="froom" onchange="changeaddroom2(this)" placeholder="Số Phòng" >
+                                    <option value="" disabled selected>Chọn  phòng</option>
+                                    <option value="" >Xóa danh sách</option>
+                            </select>
+                               
+                            </div>
+                        </div>
+
                         <div class=" col-md-3 col-sm-3 col-xs-6 form-group">
                             <div >
                             <input id="e_addroom" type="text" readonly  placeholder="Phòng" name="room" value="{{ old('room') }}" required >
@@ -778,16 +797,7 @@
                                
                             </div>
                         </div> -->
-                        <div class=" col-md-3 col-sm-3 col-xs-6 form-group">
-                            <div >
-                           
-                            <select id="e_room"  name="froom" onchange="changeaddroom2(this)" placeholder="Số Phòng" >
-                                    <option value="" disabled selected>Chọn  phòng</option>
-                                    <option value="" >clear</option>
-                            </select>
-                               
-                            </div>
-                        </div>
+                       
 
                         
                         <div class="col-md-6 col-sm-6 col-xs-12  form-group {{ $errors->has('number_people') ? ' has-error' : '' }}">
@@ -841,6 +851,62 @@
                     </form>
                     <!-- <a href="{{ route('editUserMainSubmit') }}" class="btn btn-primary btn-xs" data-toggle="tooltip" data-backdrop="static" data-target="#viewUserMainmodal""><i class="fa fa-folder"></i> View </a> -->
                     
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="addServiceMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog">
+        <div class="loginmodal-container">
+        <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+          <h1>Thêm Dịch vụ</h1><br>
+          <form class="form-horizontal"  role="form" method="POST" action="{{ route('subBookManageSubmit',['subdomain' =>$info['subdomain']]) }}">
+                        {{ csrf_field() }}
+                        <input hidden id="addtypePost"" name="typePost" value="addService">
+                        <input hidden id="service_book_id"" name="id" value="">
+
+                        <div class=" form-group">
+                            <div >
+                            <select id="service_id"  name="service_id" placeholder="loại dịch vụ" required>
+                                    <option value="" disabled selected>Chọn Dịch vụ</option>
+                                   @foreach ($services as $service)
+                                   <option value="{{$service->service_id}}"  >{{$service->service_name}}</option>
+                                   @endforeach
+                            </select>
+                               
+                            </div>
+                        </div>
+
+                       
+                        <div class="form-group{{ $errors->has('quantity') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="tr_cost" type="number" class="form-control" min="1" placeholder="Số lượng" name="quantity" value="{{old('quantity') }}" required >
+                                 @if ($errors->has('quantity'))
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('quantity') }}</strong>
+                                    </span>
+                                @endif
+                                
+                            </div>
+                        </div>
+                      
+                        
+                        <div class="form-group{{ $errors->has('discount') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="discount" type="number" class="form-control" min="0" placeholder="Giảm giá" name="discount" value="{{old('discount') }}" required >
+                                 @if ($errors->has('discount'))
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('discount') }}</strong>
+                                    </span>
+                                @endif
+                                
+                            </div>
+                        </div>
+                       
+                        <input type="submit" name="Register" class="loginmodal-submit " value="Thêm dịch vụ">
+                       
+                    </form>
           </div>
         </div>
       </div>
@@ -1040,7 +1106,7 @@ function changetyperoom2(){
 function changeaddroom2(sel){
  var x = sel.options[sel.selectedIndex].text;
  
- if(x =="clear"){
+ if(x =="Xóa danh sách"){
     document.getElementById("e_addroom").value = "";
     changetyperoom2();
     return null;
@@ -1055,7 +1121,7 @@ function changeaddroom2(sel){
 function changeaddroom(sel){
  var x = sel.options[sel.selectedIndex].text;
  
- if(x =="clear"){
+ if(x =="Xóa danh sách"){
     document.getElementById("addroom").value = "";
     changetyperoom();
     return null;
@@ -1140,6 +1206,11 @@ function deleteusers(){
 
 // }
 
+function addService(id){
+
+     document.getElementById("service_book_id").setAttribute("value", id);
+
+}
 function removeReadonly(){
     
 

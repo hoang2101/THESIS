@@ -21,6 +21,7 @@ class CreateTypeRoomTable extends Migration
             $table->string('description')->nullable();
             $table->integer('number_people')->nullable();
             $table->integer('number_kid')->nullable();
+            $table->string('image')->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
         });

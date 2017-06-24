@@ -45,6 +45,9 @@ class SubController extends Controller
     // }
 
     private $_api_context;
+   
+
+
 
     public function __construct()
     {
@@ -496,6 +499,7 @@ public function congra($subdomain){
 
             if(Auth::guard('account')->user()->hotel_id != $hotels->hotel_id ){
                 Auth::guard('account')->logout();
+                
             }
        }
             
@@ -574,7 +578,10 @@ public function congra($subdomain){
 
         }
           if($request['typePost']=='logout'){
-                Auth::guard('account')->logout();
+            if(Auth::guard('account')->check()){
+                 Auth::guard('account')->logout();
+            }
+               
                 return redirect()->route('subHome',['subdomain' => $subdomain]);
           }
 

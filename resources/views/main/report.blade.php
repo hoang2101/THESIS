@@ -217,7 +217,12 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    
+                   @if(count($hotels)== 0)
+                           <center>
+                                <H3> Bạn chưa có khách sạn nào, Mời bạn tạo khách sạn</H3>
+                                <a style="color:red" href="{{ route('mainManageHoteler') }}"> Click vào đây để chuyển đến trang tạo khách sạn</a>
+                           </center>  
+                    @else
                     <center>
                         
                     
@@ -336,8 +341,11 @@
 
                         
                     
-                    
+                    @endif
                   </div>
+
+
+
                 </div>
               </div>
 

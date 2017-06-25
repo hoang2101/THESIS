@@ -295,10 +295,12 @@
                         <tr>
                           <th style="width='5%'">STT</th>
                           <th style="width='10%'">Ngày</th>
+                          @if(count($hotels)!= 0)
                           @foreach ($hotels as $key=> $hotel)
                           <th >{{$hotel}}</th>
                           
                           @endforeach
+                          @endif
                         </tr>
                       </thead>
                       <tbody>
@@ -308,10 +310,12 @@
                             <tr>
                                 <td >{{$key +1}}</td>
                                 <td>{{$Day}}</td>
+                                @if(count($hotels)!= 0)
                                  @foreach ($hotels as $key2 => $hotel)
                                 <th >{{$cost2[$key][$key2]}}</th>
                           
                                 @endforeach
+                                @endif
                                
                             </tr>
                         @endforeach
@@ -651,6 +655,7 @@ function showDataEdit(idUser, first_name, last_name,email,phone_number,username,
         }
     ],
     series : [
+            @if(count($hotels)!= 0)
             @foreach($hotels as $key => $hotel)
         {
             name: "{{$hotel}}",
@@ -660,6 +665,7 @@ function showDataEdit(idUser, first_name, last_name,email,phone_number,username,
             data: {!! json_encode($cost[$key]) !!}
         },
         @endforeach
+        @endif
         
     ]
 };

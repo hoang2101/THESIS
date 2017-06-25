@@ -222,130 +222,7 @@
 
             <!-- page content -->
             <div class="right_col" role="main">
-<!-- <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h2>Danh sách Khách hàng<small></small></h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                      <a href="#" class="btn btn-primary btn-xs" data-target="#addCheckinMainmodal" data-toggle="modal" data-backdrop="static" ><i class="fa fa-folder"></i> Đặt phòng </a>
-                    </ul>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    
-                    <form id="demo-form2" method="POST" action="{{ route('subReportManageSubmit',['subdomain' =>$info['subdomain']])}}" data-parsley-validate class="form-inline form-label-left">
-                    {{ csrf_field() }}
-                    
-                                <div class="col-md-2 col-sm-2 col-xs-12  form-group{{ $errors->has('date_checkin') ? ' has-error' : '' }}">
-                                <div >
-                                
-                               <label>Hiẻn thì từ</label>
 
-                                </div>
-                                </div>
-                                <div class="col-md-3 col-sm-3 col-xs-12  form-group{{ $errors->has('date_checkin') ? ' has-error' : '' }}">
-                                <div >
-                                
-                                <input id="date_checkin" type="date"  class="" placeholder="Ngày checkin" name="date_checkin" value="{{ old('date_checkin') }}" required >
-
-                                
-                                </div>
-                            </div>
-                            <div class="col-md-1 col-sm-1 col-xs-12" style="!important"  form-group{{ $errors->has('date_checkin') ? ' has-error' : '' }}">
-                                <div >
-                                
-                               <label>  Đến</label>
-
-                                </div>
-                                </div>
-                              
-                                <div class="col-md-3 col-sm-3 col-xs-12  form-group{{ $errors->has('date_checkin') ? ' has-error' : '' }}">
-                                <div >
-                                
-                                <input id="date_checkin" type="date"  class="" placeholder="Ngày checkin" name="date_checkin" value="{{ old('date_checkin') }}" required >
-
-                                
-                                </div>
-                            </div>
-                                <div class="form-group">
-                                        
-                                
-                                <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input type="submit" class="btn"  name="submit"  value="Hiển thị">
-                                </div>
-                                </div>
-                       
-
-                    </form>
-                    <table id="responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
-                      <thead>
-                        <tr>
-                          <th id="cel5"></th>
-                            <th id="cel5">1</th>
-                          <th id="cel10">2</th>
-                          <th id="cel10">3</th>
-                          <th id="cel10">4</th>
-                          <th id="cel10">5</th>
-                          <th id="cel10">4</th>
-                          <th id="cel10">7</th>
-                          <th id="cel10">8</th>
-                          <th id="cel10">9</th>
-                          <th id="cel10">10</th>
-                          <th id="cel10">11</th>
-                          <th id="cel10">12</th>
-                          <th id="cel10">13</th>
-                          <th id="cel10">14</th>
-                          <th id="cel10">15</th>
-                          <th id="cel10">5</th>
-                          <th id="cel10">5</th>
-                          <th id="cel10">5</th>
-                          <th id="cel10">5</th>
-                          <th id="cel10">5</th>
-                          <th id="cel10">5</th>
-                          <th id="cel10">5</th>
-                          <th id="cel10">5</th>
-                          <th id="cel10">5</th>
-                          <th id="cel10">5</th>
-                          <th id="cel10">5</th>
-                          <th id="cel10">5</th>
-                          <th id="cel10">5</th>
-                          <th id="cel10">5</th>
-                          <th id="cel10">5</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                    
-                      @foreach ($checkins as $checkin)
-                    
-                            <tr>
-                                <td>{{$checkin->booking_id}}</td>
-                                <td>{{$checkin->first_name.' '.$checkin->last_name}}</td>
-                                <td>{{$checkin->room_id}}</td>
-                                <td>{{$checkin->date_from}}</td>
-                                <td>{{$checkin->date_to}}</td>
-                                <td>{{$checkin->number_people}}</td>
-                                <td>{{$checkin->contry}}</td>
-                                <td>
-                                   
-                                </td>
-                            </tr>
-                        @endforeach
-                       
-
-                        
-                      
-                        
-                       
-                      </tbody>
-                    </table>
-                    
-                    
-                  </div>
-                </div>
-              </div>
- -->
-
-              <!-- rooômmnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn-->
                 <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
@@ -366,6 +243,7 @@
                           <th width="10%" >phòng</th>
                           <th width="5%">Số người</th>
                           <th width="5%">Tiền phòng</th>
+                          <th width="5%">Trả Trước</th>
                           <th width="5%">Tiền dịch vụ</th>
                           <th class="nosort" >Quản lý</th>
                         </tr>
@@ -380,10 +258,11 @@
                                 <td>{{$checkin->room_id}}</td>
                                 <td>{{$checkin->number_people}}</td>
                                 <td>{{$checkin->total_cost_room}}</td>
+                                <td>{{$checkin->deposit}}</td>
                                 <td>{{$checkin->total_cost_service}}</td>
                                 <td>
-                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataView('{{$checkin->booking_id}}','{{$checkin->room_id}}', '{{$checkin->date_from}}', '{{$checkin->date_to}}', '{{$checkin->first_name}}', '{{$checkin->last_name}}', '{{$checkin->number_people}}', '{{$checkin->contry}}', '{{$checkin->username}}') " data-toggle="modal" data-backdrop="static" data-target="#viewCheckinMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
-                                    <a href="#" class="btn btn-info btn-xs"  onclick="showDataEdit('{{$checkin->booking_id}}','{{$checkin->room_id}}', '{{$checkin->date_from}}', '{{$checkin->date_to}}', '{{$checkin->first_name}}', '{{$checkin->last_name}}', '{{$checkin->number_people}}', '{{$checkin->contry}}', '{{$checkin->username}}') ;" data-toggle="modal" data-backdrop="static" data-target="#editCheckinMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
+                                    <a href="#" class="btn btn-primary btn-xs" onclick="showDataView('{{$checkin->booking_id}}','{{$checkin->room_id}}', '{{$checkin->date_from}}', '{{$checkin->date_to}}', '{{$checkin->first_name}}', '{{$checkin->last_name}}', '{{$checkin->number_people}}', '{{$checkin->contry}}', '{{$checkin->username}}', '{{$checkin->deposit}}', '{{$checkin->passport}}') " data-toggle="modal" data-backdrop="static" data-target="#viewCheckinMainmodal "  ><i class="fa fa-folder"></i>Xem</a>
+                                    <a href="#" class="btn btn-info btn-xs"  onclick="showDataEdit('{{$checkin->booking_id}}','{{$checkin->room_id}}', '{{$checkin->date_from}}', '{{$checkin->date_to}}', '{{$checkin->first_name}}', '{{$checkin->last_name}}', '{{$checkin->number_people}}', '{{$checkin->contry}}', '{{$checkin->username}}', '{{$checkin->deposit}}', '{{$checkin->passport}}') ;" data-toggle="modal" data-backdrop="static" data-target="#editCheckinMainmodal"><i class="fa fa-pencil"></i>Sửa</a>
 
                             <a data-toggle="tooltip" data-placement="top"  class="btn btn-danger btn-xs"
                                             onclick="event.preventDefault();
@@ -396,16 +275,9 @@
                                         </form>
                             @if($checkin->date_checkin == null)
                             <a href="#" class="btn btn-primary btn-xs" onclick="addService('{{$checkin->booking_id}}')" data-target="#addServiceMainmodal" data-toggle="modal" data-backdrop="static" ><i class="fa fa-folder"></i> Thêm dịch vụ </a>
+                            <a href="#" class="btn btn-primary btn-xs" onclick="addCheck('{{$checkin->booking_id}}')" data-target="#addCheckMainmodal" data-toggle="modal" data-backdrop="static" ><i class="fa fa-folder"></i> Checkin</a>
 
-                            <a data-toggle="tooltip" data-placement="top"  class="btn btn-info btn-xs"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('checkinBook{{$checkin->booking_id}}').submit();"><i class="fa-check-square"></i> Checkin </a>
-
-                            <form id="checkinBook{{$checkin->booking_id}}" action="{{ route('subBookManage',['subdomain' =>$info['subdomain']]) }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                            <input hidden id="typePosts"" name="typePost" value="checkinBook">
-                                            <input hidden id="id" name="id" value="{{$checkin->booking_id}}">
-                                        </form>
+                            
                             @endif
                             @if($checkin->date_checkin != null && $checkin->date_checkout == null)
                             <a href="#" class="btn btn-primary btn-xs" onclick="addService('{{$checkin->booking_id}}')" data-target="#addServiceMainmodal" data-toggle="modal" data-backdrop="static" ><i class="fa fa-folder"></i> Thêm dịch vụ </a>
@@ -675,6 +547,20 @@
                                 
                             </div>
                         </div>
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group {{ $errors->has('number_people') ? ' has-error' : '' }}">
+                            <div >
+                                <input readonly id="v_prepay" type="number" min="1" class="form-control" placeholder="Trả trước" name="number_people" value="{{ old('number_people') }}" required>
+
+                               
+                            </div>
+                        </div>
+                        <div class=" col-md-6 col-sm-6 col-xs-12 form-group">
+                            <div >
+                            <input readonly id="v_passport" type="text" class="" placeholder="CMND/PASSPORT" name="" value="{{ old('username') }}" >
+                            
+                               
+                            </div>
+                        </div>
    
                          <div class="col-md-12 col-sm-12 col-xs-12  form-group " ;">
                             
@@ -833,7 +719,20 @@
                             </div>
                         </div>
 
+                        <div class="col-md-6 col-sm-6 col-xs-12  form-group {{ $errors->has('prepay') ? ' has-error' : '' }}">
+                            <div >
+                                <input readonly id="e_prepay" type="number" min="1" class="form-control" placeholder="Trả trước" name="prepay" value="{{ old('prepay') }}" required>
 
+                               
+                            </div>
+                        </div>
+                        <div class=" col-md-6 col-sm-6 col-xs-12 form-group">
+                            <div >
+                            <input readonly id="e_passport" type="text" class="" placeholder="CMND/PASSPORT" name="cmnd" value="{{ old('cmnd') }}" >
+                            
+                               
+                            </div>
+                        </div>
                        
                         <div class="col-md-6 col-sm-6 col-xs-12  form-group">
                             <input id="e_submit" type="submit" name="Register" class="btn btn-info btn-xs pull-left" value="OK">
@@ -854,7 +753,83 @@
           </div>
         </div>
       </div>
+      
+      <div class="modal fade" id="addCheckMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog">
+        <div class="loginmodal-container">
+        <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+          <h1>Checkin</h1><br>
+          <form class="form-horizontal"  role="form" method="POST" action="{{ route('subBookManageSubmit',['subdomain' =>$info['subdomain']]) }}">
+                        {{ csrf_field() }}
+                        <input hidden id="addtypePost"" name="typePost" value="checkinBook">
+                        <input hidden id="Check_book_id"" name="id" value="">
 
+                        
+
+                       
+                        <div class="form-group{{ $errors->has('cmnd') ? ' has-error' : '' }}">
+                            <div >
+                                <input id="cmnd" type="number" class="form-control" min="0" placeholder="CMND/PASSPORT" name="cmnd" value="{{old('cmnd')}}" required >
+                                 @if ($errors->has('cmnd'))
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('cmnd') }}</strong>
+                                    </span>
+                                @endif
+                                
+                            </div>
+                        </div>
+                      
+                        
+                        
+                        <input type="submit" name="Register" class="loginmodal-submit " value="OK">
+                       
+                    </form>
+          </div>
+        </div>
+      </div>
+<div class="modal fade" id="addPrepayMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog">
+        <div class="loginmodal-container">
+        <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+          <h1>Trả trước</h1><br>
+          <form class="form-horizontal"  role="form" method="POST" action="{{ route('subBookManageSubmit',['subdomain' =>$info['subdomain']]) }}">
+                        {{ csrf_field() }}
+                        <input hidden id="addtypePost"" name="typePost" value="addPrepay">
+                        <input hidden id="Prepay_book_id"" name="id" value="">
+
+                        
+                         <div class="form-group{{ $errors->has('prepay') ? ' has-error' : '' }}">
+                            <div >
+                            <label>Tổng tiền</label>
+                                <input readonly id="tr_total_cost_room" type="number" class="form-control" min="0" name="prepay" value=""  >
+                                
+                                
+                            </div>
+                        </div>
+                       
+                        <div class="form-group{{ $errors->has('prepay') ? ' has-error' : '' }}">
+                            <div >
+                            <label>Trả trước</label>
+                                <input id="tr_pay_cost" type="number" class="form-control" min="0" placeholder="Trả trước" name="prepay" value="{{old('prepay')}}" required >
+                                 @if ($errors->has('prepay'))
+                                    <span class="help-block">
+                                        <strong class="messageError">{{ $errors->first('prepay') }}</strong>
+                                    </span>
+                                @endif
+                                
+                            </div>
+                        </div>
+                      
+                        
+                        
+                        <input type="submit" name="Register" class="loginmodal-submit " value="OK">
+                       
+                    </form>
+          </div>
+        </div>
+      </div>
       <div class="modal fade" id="addServiceMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
         <div class="modal-dialog">
         <div class="loginmodal-container">
@@ -998,6 +973,14 @@
     }); </script>
     
     @endif
+    @if($errors->first('typePost')=="addPrepay")
+     
+      <script type="text/javascript">  
+    $(document).ready(function () {
+      $('#addPrepayMainmodal').modal('show');
+    }); </script>
+    
+    @endif
      @if($errors->first('typePost')=="updateBooking")
      
       <script type="text/javascript">  
@@ -1007,6 +990,16 @@
     
     @endif
 
+@if (session('showPrepay'))
+   <script type="text/javascript"> 
+   document.getElementById("Prepay_book_id").setAttribute("value", {{ session('id_book') }});
+     document.getElementById("tr_total_cost_room").setAttribute("value", {{ session('total_cost_room') }}); 
+      $(document).ready(function () {
+      $('#addPrepayMainmodal').modal('show');
+    }); 
+    </script>
+   
+    @endif
 
 @if( ! empty($messagesResult))
     @if ($messagesResult=="fails")
@@ -1211,6 +1204,22 @@ function addService(id){
      document.getElementById("service_book_id").setAttribute("value", id);
 
 }
+
+
+
+function addPrepay(id, cost,total_cost_room){
+
+     document.getElementById("Prepay_book_id").setAttribute("value", id);
+     document.getElementById("tr_pay_cost").setAttribute("value", cost);
+     document.getElementById("tr_total_cost_room").setAttribute("value", total_cost_room);
+
+
+}
+
+function addCheck(id) {
+    document.getElementById("Check_book_id").setAttribute("value", id);
+
+}
 function removeReadonly(){
     
 
@@ -1230,7 +1239,7 @@ function removeReadonly(){
 
 }
 
-function showDataView(booking_id, room_number, date_checkin,date_checkout,first_name,last_name,number_people,contry,username){
+function showDataView(booking_id, room_number, date_checkin,date_checkout,first_name,last_name,number_people,contry,username,Prepay,passport){
       
    
     // document.getElementById("typeEditView").innerHTML = "Sửa";
@@ -1271,11 +1280,16 @@ function showDataView(booking_id, room_number, date_checkin,date_checkout,first_
     document.getElementById("e_country").setAttribute("value", contry); 
     document.getElementById("e_number_people").setAttribute("value",number_people); 
     document.getElementById("d_idPost").setAttribute("value", booking_id);
+    document.getElementById("e_prepay").setAttribute("value", Prepay);
+    document.getElementById("e_passport").setAttribute("value", passport);
+    document.getElementById("v_prepay").setAttribute("value", Prepay);
+    document.getElementById("v_passport").setAttribute("value", passport);
+
 
 
 }
 
-function showDataEdit(booking_id, room_number, date_checkin,date_checkout,first_name,last_name,number_people,contry,username){
+function showDataEdit(booking_id, room_number, date_checkin,date_checkout,first_name,last_name,number_people,contry,username,Prepay,passport){
    
      document.getElementById("v_idPost").setAttribute("value", booking_id);
     document.getElementById("v_first_name").setAttribute("value", first_name);
@@ -1301,6 +1315,10 @@ function showDataEdit(booking_id, room_number, date_checkin,date_checkout,first_
     document.getElementById("e_country").setAttribute("value", contry); 
     document.getElementById("e_number_people").setAttribute("value",number_people); 
     document.getElementById("d_idPost").setAttribute("value", booking_id);
+    document.getElementById("v_prepay").setAttribute("value", Prepay);
+    document.getElementById("v_passport").setAttribute("value", passport);
+    document.getElementById("e_prepay").setAttribute("value", Prepay);
+    document.getElementById("e_passport").setAttribute("value", passport);
 
 
 }

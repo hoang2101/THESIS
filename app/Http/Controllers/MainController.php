@@ -28,7 +28,9 @@ use PayPal\Api\ExecutePayment;
 use PayPal\Api\PaymentExecution;
 use PayPal\Api\Transaction;
 use PayPal\Api\FundingInstrument;
-
+ use DatePeriod; 
+  use DateTime; 
+  use DateInterval;
  
 
 class MainController extends Controller
@@ -678,8 +680,69 @@ foreach ($hotels as $key => $hotel) {
 
 }
 
-public function reportsubmit(){
+public function reportsubmit(Request $request){
 
+  $first_day_this_month = $request['date_from'];// hard-coded '01' for first day date("Y/m/d")
+        
+        $last_day_this_month  = $request['date_to'];
+        $info = array(
+            
+            "first_day" => $first_day_this_month,
+            "last_day" => $last_day_this_month,
+            );
+
+$period = new DatePeriod(
+     new DateTime($first_day_this_month),
+     new DateInterval('P1D'),
+     new DateTime($last_day_this_month)
+);
+    $listDay = null;
+    foreach($period as $dt){
+       $listDay[] = $dt->format("Y-m-d");
+    }
+ 
+  $hotels = DB::table('hotel')->where('account_id','=',Auth::user()->username)->get();
+  $total_cost= null;
+  $total_spend = null;
+  $abc = null;
+  $cba = null;
+  foreach ( $hotels as $key => $hotel ) {
+    foreach ($listDay as $key2 => $day) {
+     $invoices = DB::table('invoice')->where('hotel_id','=',$hotel->hotel_id)->where('date','=',$day)->get();
+     $total = 0;
+     foreach ($invoices as $key3 => $invoice) {
+        $total = $total + $invoice->cost;
+     }
+     $spends = DB::table('spends')->where('hotel_id','=',$hotel->hotel_id)->where('date','=',$day)->get();
+     foreach ($spends as $key4 => $spend) {
+        $total = $total - $spend->cost;
+     }
+     $abc[$key][$key2] = $total;
+    }
+  }
+// dd($abc); laf hotel theo ngayf  2 -> 30
+
+  foreach ( $listDay   as $key => $day  ) {
+    foreach ($hotels as $key2 => $hotel) {
+     $invoices = DB::table('invoice')->where('hotel_id','=',$hotel->hotel_id)->where('date','=',$day)->get();
+     $total = 0;
+     foreach ($invoices as $key3 => $invoice) {
+        $total = $total + $invoice->cost;
+     }
+     $spends = DB::table('spends')->where('hotel_id','=',$hotel->hotel_id)->where('date','=',$day)->get();
+     foreach ($spends as $key4 => $spend) {
+        $total = $total - $spend->cost;
+     }
+     $cba[$key][$key2] = $total;
+    }
+  }
+
+
+  $hotelname = null;
+foreach ($hotels as $key => $hotel) {
+ $hotelname[] = $hotel->hotel_name;
+}
+  return view('main.report')->with('info',$info)->with('listDay',$listDay)->with('cost',$abc)->with('cost2',$cba)->with('hotels',$hotelname);
 }
 
     public function manageHotel(){

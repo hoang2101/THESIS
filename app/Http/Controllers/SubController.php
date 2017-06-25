@@ -304,7 +304,7 @@ DB::table('booking')->insertGetId([
              'contry' => $country,
              'hotel_id' => $hotels->hotel_id,
              'total_cost_room' => $cost,
-             'cost_spend' => $cost,
+             'deposit' => $cost,
              'account_id' => $iduser
          ]);
 
@@ -404,7 +404,7 @@ DB::table('booking')->insertGetId([
              'contry' => $country,
              'hotel_id' => $hotels->hotel_id,
              'total_cost_room' => $cost,
-             'cost_spend' => $cost,
+             'deposit' => $cost,
              'account_id' => $iduser
          ]);
 
@@ -1384,15 +1384,11 @@ $numberDays = intval($numberDays);
              'total_cost_room' =>$totalcost * $numberDays,
          ]);
         $bookings = DB::table('booking')->where('hotel_id', '=', $hotels->hotel_id)->latest()->first();
+        \Session::flash('showPrepay',"ShowPrePay");
+        \Session::flash('id_book',$bookings->booking_id);
+        \Session::flash('total_cost_room', $totalcost * $numberDays);
 
-        DB::table('invoice')->insertGetId([
-            'booking_id' => $bookings->booking_id,
-            'hotel_id' => $hotels->hotel_id,
-            'cost' => $totalcost * $numberDays,
-            'date' => date('Y-m-d'),
-            'name' => "Cash",
-            'type' => "room"
-            ]);
+        
         foreach ($addrooms as $addroom) {
             
             DB::table('room')->where('room_number', '=', $addroom)->update(['is_booked' => 1,'booked_id' => $bookings->booking_id]);
@@ -1457,9 +1453,13 @@ $numberDays = intval($numberDays);
          return redirect()->route('subBookManage',['subdomain' => $subdomain]);
      }
      if($request['typePost'] == "checkinBook"){
+
+
+
         DB::table('booking')
             ->where('booking_id', $request['id'])
-            ->update([ 'date_checkin' => date("Y/m/d")]);
+            ->update([ 'date_checkin' => date("Y/m/d"),
+                'passport' => $request['cmnd']]);
             return redirect()->route('subBookManage',['subdomain' => $subdomain]);
      }
 
@@ -1519,6 +1519,35 @@ $numberDays = intval($numberDays);
 
 
 
+      }
+
+       if($request['typePost'] == "addPrepay"){
+        $messages = [];
+
+
+        $validator = Validator::make($request->all(),[],$messages);
+     $book = DB::table('booking')->where('booking_id', $request['id'])->first();
+    if($request['prepay'] > $book->total_cost_room){
+       
+            $validator->errors()->add('typePost', 'addPrepay');
+            $validator->errors()->add('prepay', 'Tiền đặt cọc không thể lớn hơn tiền phòng');
+             return redirect()->route('subBookManage',['subdomain' => $subdomain])->withErrors($validator)->withInput();
+         
+       }
+        DB::table('booking')
+            ->where('booking_id', $request['id'])
+            ->update([  'deposit' => $request['prepay']]);
+
+            DB::table('invoice')->insertGetId([
+            'booking_id' =>  $request['id'],
+            'hotel_id' => $hotels->hotel_id,
+            'cost' =>  $request['prepay'],
+            'date' => date('Y-m-d'),
+            'name' => "Cash",
+            'type' => "room"
+            ]);
+
+         return redirect()->route('subBookManage',['subdomain' => $subdomain]);
       }
     
     

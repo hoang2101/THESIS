@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Quản lý khách hàng</title>
+    <title>Thống kê</title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -212,7 +212,7 @@
                   <div class="x_title">
                     <h2>Danh sách Khách hàng<small></small></h2>
                     <ul class="nav navbar-right panel_toolbox">
-                      <a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-backdrop="static" data-target="#addUserMainmodal"><i class="fa fa-folder"></i> Thêm khách hàng </a>
+                     
                     </ul>
                     <div class="clearfix"></div>
                   </div>
@@ -238,7 +238,7 @@
                                         
                                 
                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                    <input type="text" id="date_from" name="date_to" required="required" value="{{$info['last_day']}}">
+                                    <input type="text" onfocus="this.type='date'" id="date_from" name="date_to" required="required" value="{{$info['last_day']}}">
                                     </div>
                                 </div>
                                 <div class="form-group">

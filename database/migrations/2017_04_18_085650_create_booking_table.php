@@ -35,6 +35,7 @@ class CreateBookingTable extends Migration
             $table->date('date_checkout')->nullable();
             $table->boolean('is_checkin')->default('0');
             $table->integer('total_cost_room')->nullable();
+            $table->integer('cost_spend')->nullable();
             $table->integer('total_cost_service')->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));

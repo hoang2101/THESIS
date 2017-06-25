@@ -304,6 +304,7 @@ DB::table('booking')->insertGetId([
              'contry' => $country,
              'hotel_id' => $hotels->hotel_id,
              'total_cost_room' => $cost,
+             'cost_spend' => $cost,
              'account_id' => $iduser
          ]);
 
@@ -403,6 +404,7 @@ DB::table('booking')->insertGetId([
              'contry' => $country,
              'hotel_id' => $hotels->hotel_id,
              'total_cost_room' => $cost,
+             'cost_spend' => $cost,
              'account_id' => $iduser
          ]);
 

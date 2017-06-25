@@ -392,8 +392,11 @@ public function getCancel()
 
     public function index()
     {
+      if(Auth::check()){
         if(Auth::user()->type !=1 && Auth::user()->type !=2)
              Auth::guard()->logout();
+      }
+        
         return view('main.index');
     }
 

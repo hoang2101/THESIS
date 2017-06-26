@@ -398,8 +398,11 @@ public function getCancel()
         if(Auth::user()->type !=1 && Auth::user()->type !=2)
              Auth::guard()->logout();
       }
-        
-        return view('main.index');
+        $hotels = count(DB::table('hotel')->get());
+        $users = count(DB::table('users')->where('type',"=", 2)->get());
+        $accounts = count(DB::table('account')->get());
+        $rooms = count(DB::table('room')->get());
+        return view('main.index')->with('hotels',$hotels)->with('users',$users)->with('accounts',$accounts)->with('rooms',$rooms);
     }
 
     public function manage()

@@ -302,7 +302,7 @@
                 <!--counter box-->
 
                 <div class="counter_box text-center fadeInDown  wow animated" data-wow-delay=".1s" style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInDown;">
-                    <div class="counter_number counter">276</div>
+                    <div class="counter_number counter">{{$users}}</div>
                     <h4 class="counter_name">Nhà đầu tư</h4>
                 </div>
                 <!--counter box end-->
@@ -310,7 +310,7 @@
             <div class="col-sm-3 col-xs-6">
                 <!--counter box-->
                 <div class="counter_box text-center fadeInDown  wow animated" data-wow-delay=".2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInDown;">
-                    <div class="counter_number counter">153</div>
+                    <div class="counter_number counter">{{$hotels}}</div>
                     <h4 class="counter_name">Khách sạn</h4>
                 </div>
                 <!--counter box end-->
@@ -318,7 +318,7 @@
             <div class="col-sm-3 col-xs-6">
                 <!--counter box-->
                 <div class="counter_box text-center fadeInDown  wow animated" data-wow-delay=".4s" style="visibility: visible; animation-delay: 0.4s; animation-name: fadeInDown;">
-                    <div class="counter_number counter">780</div>
+                    <div class="counter_number counter">{{$rooms}}</div>
                     <h4 class="counter_name">Phòng</h4>
                 </div>
                 <!--counter box end-->
@@ -326,7 +326,7 @@
             <div class="col-sm-3 col-xs-6">
                 <!--counter box-->
                 <div class="counter_box text-center fadeInDown  wow animated" data-wow-delay=".6s" style="visibility: visible; animation-delay: 0.6s; animation-name: fadeInDown;">
-                    <div class="counter_number counter">1276</div>
+                    <div class="counter_number counter">{{$accounts}}</div>
                     <h4 class="counter_name">Tài khoản</h4>
                 </div>
                 <!--counter box end-->

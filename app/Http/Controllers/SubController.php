@@ -1303,6 +1303,8 @@ public function bookManage($subdomain){
         $rooms = $rooms = DB::table('room')->where('room.hotel_id', '=', $hotels->hotel_id)->orderBy('room_number', 'asc')->get();
         $type_rooms =  DB::table('type_room')->where('hotel_id', '=', $hotels->hotel_id)->get();
         $services =  DB::table('service')->where('hotel_id', '=', $hotels->hotel_id)->get();
+        $bookings = DB::table('booking')->where('hotel_id','=',$hotels->hotel_id)->where('date_checkout',"=" , null)->get();
+        
         // $users = DB::table('account')->where([['hotel_id', '=', $hotels->hotel_id],['type', '=', 4],])->get();
         if($hotels != null){
              
@@ -1323,7 +1325,7 @@ public function bookManage($subdomain){
             "name" => $hotels->hotel_name,
             "subdomain" => $subdomain, 
             );
-            return view('sub.bookManage')->with('checkins',$checkins)->with('info',$info)->with('type_rooms', $type_rooms)->with('rooms',$rooms)->with('services',$services);
+            return view('sub.bookManage')->with('checkins',$checkins)->with('info',$info)->with('type_rooms', $type_rooms)->with('rooms',$rooms)->with('services',$services)->with('bookings',$bookings);
             // if(Auth::guard('account')->user()->type == 4 || Auth::guard('account')->user()->type == 3){
             //     return view('sub.mainManageProlife')->with('users',$users)->with('info',$info);
             // }

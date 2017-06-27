@@ -352,7 +352,7 @@
                         
                         <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('date_checkin') ? ' has-error' : '' }}">
                             <div >
-                                <input id="date_checkin" type="text" onfocus="(this.type='date')" class="" placeholder="Ngày checkin" name="date_checkin" value="{{ old('date_checkin') }}" required >
+                                <input id="date_checkin" type="text" onfocus="(this.type='date')" class="" onchange="resetselecttyperoom()" placeholder="Ngày checkin" name="date_checkin" value="{{ old('date_checkin') }}" required >
 
                                 
                             </div>
@@ -360,7 +360,7 @@
                         
                         <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('date_checkout') ? ' has-error' : '' }}">
                             <div >
-                                <input id="date_checkout" type="text"  onfocus="(this.type='date')" class="" placeholder="Ngày checkout" name="date_checkout" value="{{ old('date_checkout') }}" required >
+                                <input id="date_checkout" type="text"  onfocus="(this.type='date')" class="" onchange="resetselecttyperoom()" placeholder="Ngày checkout" name="date_checkout" value="{{ old('date_checkout') }}" required >
                             </div>
                         </div>
                         <div class="col-md-12 col-sm-12 col-xs-12  form-group {{ $errors->has('date_checkin') ? ' has-error' : '' }} {{ $errors->has('date_checkout') ? ' has-error' : '' }}">
@@ -619,7 +619,7 @@
                         
                         <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('date_checkin') ? ' has-error' : '' }}">
                             <div >
-                                <input id="e_date_checkin" type="text" onfocus="(this.type='date')" class="" placeholder="Ngày checkin" name="date_checkin" value="{{ old('date_checkin') }}" required >
+                                <input id="e_date_checkin" type="text" onfocus="(this.type='date')" onchange="resetselecttyperoom()" class="" placeholder="Ngày checkin" name="date_checkin" value="{{ old('date_checkin') }}" required >
 
                                 
                             </div>
@@ -627,7 +627,7 @@
                         
                         <div class="col-md-6 col-sm-6 col-xs-12  form-group{{ $errors->has('date_checkout') ? ' has-error' : '' }}">
                             <div >
-                                <input id="e_date_checkout" type="text"  onfocus="(this.type='date')" class="" placeholder="Ngày checkout" name="date_checkout" value="{{ old('date_checkout') }}" required >
+                                <input id="e_date_checkout" type="text"  onfocus="(this.type='date')" onchange="resetselecttyperoom()" class="" placeholder="Ngày checkout" name="date_checkout" value="{{ old('date_checkout') }}" required >
                             </div>
                         </div>
                         <div class="col-md-12 col-sm-12 col-xs-12  form-group {{ $errors->has('date_checkin') ? ' has-error' : '' }} {{ $errors->has('date_checkout') ? ' has-error' : '' }}">
@@ -1042,16 +1042,78 @@ function openeditmodal(){
  $('#editCheckinMainmodal').modal('show');
   $('#viewCheckinMainmodal').modal('hide');
 }
+
+function resetselecttyperoom() {
+    var element = document.getElementById("add_type_room");
+    var element2 = document.getElementById("e_add_type_room");
+    element.selectedIndex = "0";
+    element2.selectedIndex = "0";
+    document.getElementById("addroom").value = "";
+    document.getElementById("e_addroom").value = "";
+}
+function dateCheck(from,to,check1,check2) {
+
+    var fDate,lDate,cDate;
+    fDate = Date.parse(from);
+    lDate = Date.parse(to);
+    cDate = Date.parse(check1);
+    cDate2 = Date.parse(check2);
+
+    if((cDate <= lDate && cDate >= fDate)) {
+        return true;
+    }
+    if((cDate2 <= lDate && cDate2 >= fDate)) {
+        return true;
+    }
+    if((cDate2 <= fDate && cDate2 >= lDate)) {
+        return true;
+    }
+    return false;
+}
+function checkroomhasbook(room, listroom) {
+    // console.log("list phong k cho dat" + listroom);
+    // console.log(" phong cần check" + room);
+    for(ii = 0; ii <= listroom.length; ii++){
+        if(listroom[ii] == room)
+            return false;
+    }
+    return true;
+    
+}
 function changetyperoom(){
     var x = document.getElementById("add_type_room").value;
     // if(x != "")
     {
        
        var object = {!! json_encode($rooms->toArray()) !!};
+       var object2 = {!! json_encode($bookings->toArray()) !!};
+       var arrival = document.getElementById('date_checkin').value;
+       var departure = document.getElementById('date_checkout').value;
+
+        // console.log("đến:" + arrival); 
+        // console.log("đi:" + departure);
+        // console.log("số booking:" + object2.length);
+       var listRoombook = [];
+       for(i = 0; i < object2.length ; i++){
+        // console.log("ngày dến:" + object2[i].date_from);
+        // console.log("ngày đi:" + object2[i].date_to);
+
+            if(dateCheck(arrival,departure,object2[i].date_from, object2[i].date_to)){
+                 // console.log("phong:" + object2[i].room_id);
+                 var rooms = object2[i].room_id.split(" ");
+                 // alert(rooms.length);
+                 for(i = 0; i < rooms.length ; i++)
+                    listRoombook.push(rooms[i]);
+
+            }
+       }
+
+       // alert(listRoombook + " " + listRoombook.length);
 $('.addroomclass').remove();
        for(i = 0; i < object.length ; i++)
        {
-        if(object[i].room_type_id == x && object[i].is_booked != 1){
+        // console.log(object[i].room_number + ":" +checkroomhasbook(object[i].room_number,listRoombook));
+        if((object[i].room_type_id == x && object[i].is_booked != 1) || (object[i].room_type_id == x && object[i].is_booked == 1 && checkroomhasbook(object[i].room_number,listRoombook)) ){
             // <option value="" disabled selected>Chọn số phòng</option>
 
             var para = document.createElement("option");
@@ -1074,12 +1136,33 @@ function changetyperoom2(){
     // if(x != "")
     {
 
-       var object = {!! json_encode($rooms->toArray()) !!};
+      var object = {!! json_encode($rooms->toArray()) !!};
+       var object2 = {!! json_encode($bookings->toArray()) !!};
+       var arrival = document.getElementById('e_date_checkin').value;
+       var departure = document.getElementById('e_date_checkout').value;
 
-       $('.addroomclass').remove();
+        // console.log("đến:" + arrival); 
+        // console.log("đi:" + departure);
+        // console.log("số booking:" + object2.length);
+       var listRoombook = [];
+       for(i = 0; i < object2.length ; i++){
+        // console.log("ngày dến:" + object2[i].date_from);
+        // console.log("ngày đi:" + object2[i].date_to);
+
+            if(dateCheck(arrival,departure,object2[i].date_from, object2[i].date_to)){
+                 // console.log("phong:" + object2[i].room_id);
+                 var rooms = object2[i].room_id.split(" ");
+                 // alert(rooms.length);
+                 for(i = 0; i < rooms.length ; i++)
+                    listRoombook.push(rooms[i]);
+
+            }
+       }
+
+   
        for(i = 0; i < object.length ; i++)
        {
-        if(object[i].room_type_id == x && object[i].is_booked != 1){
+        if((object[i].room_type_id == x && object[i].is_booked != 1) || (object[i].room_type_id == x && object[i].is_booked == 1 && checkroomhasbook(object[i].room_number,listRoombook))){
             // <option value="" disabled selected>Chọn số phòng</option>
 
             var para = document.createElement("option");
@@ -1090,7 +1173,6 @@ function changetyperoom2(){
             var element = document.getElementById("e_room");
             element.appendChild(para);
         }
-        // alert(object[i].room_number);
        }
         
     }
@@ -1155,49 +1237,7 @@ function deleteusers(){
     l.click();
 
 }
-// function addReadonly(){
 
-//     if(document.getElementById("typeEditView").innerHTML == "Sửa")
-//     {
-//     document.getElementById("e_submit").setAttribute("type", "submit");
-//     document.getElementById("typeEditView").innerHTML = "Xem";
-//     document.getElementById("e_first_name").setAttribute("value", first_name);
-//     document.getElementById("e_last_name").setAttribute("value", last_name); 
-//     document.getElementById("e_room1").setAttributeNode(document.createAttribute("hidden"));
-//     document.getElementById("e_room2").removeAttribute("hidden");
-//     document.getElementById("e_date_checkin").setAttribute("value", date_checkin); 
-//     document.getElementById("e_date_checkout").setAttribute("value", date_checkout);
-//     document.getElementById("e_country").setAttribute("value", contry); 
-//     document.getElementById("e_number_people").setAttribute("value",number_people); 
-
-//     // document.getElementById("e_submit").setAttribute("type", "submit");
-//     // document.getElementById("e_first_name").removeAttribute("readonly");
-//     // document.getElementById("e_last_name").removeAttribute("readonly");
-//     // document.getElementById("e_email").removeAttribute("readonly");
-//     // document.getElementById("e_phone_number").removeAttribute("readonly");
-//     // document.getElementById("e_username").removeAttribute("readonly");
-//     // document.getElementById("e_country").removeAttribute("readonly");
-//     // document.getElementById("e_dob").removeAttribute("readonly");
-//     // document.getElementById("e_gender").removeAttribute("readonly");
-//     return;    
-// }
-// else(document.getElementById("typeEditView").innerHTML == "Xem")
-// {
-//     document.getElementById("typeEditView").innerHTML = "Sửa";
-//     document.getElementById("e_submit").setAttribute("type", "hidden");
-
-//     document.getElementById("e_first_name").setAttributeNode(document.createAttribute("readonly"));
-//     document.getElementById("e_last_name").setAttributeNode(document.createAttribute("readonly"));
-//     document.getElementById("e_room1").removeAttribute("hidden");
-//     document.getElementById("e_room2").setAttributeNode(document.createAttribute("hidden"));
-//     document.getElementById("e_date_checkin").setAttributeNode(document.createAttribute("readonly"));
-//     document.getElementById("e_date_checkout").setAttributeNode(document.createAttribute("readonly"));
-//     document.getElementById("e_country").setAttributeNode(document.createAttribute("readonly"));
-//     document.getElementById("e_number_people").setAttributeNode(document.createAttribute("readonly"));
-// }
-   
-
-// }
 
 function addService(id){
 

@@ -210,103 +210,167 @@
             <!-- page content -->
             <div class="right_col" role="main">
 
-                <div class="col-md-12 col-sm-12 col-xs-12">
+             <div class="col-md-12 col-sm-12 col-xs-12" >
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Cài Đặt Web<small></small></h2>
+                    <h2>Cài đặt web<small></small></h2>
+                   
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                        <form  id="config_form" enctype="multipart/form-data" role="form" method="POST" action="{{ route('subConfigSubmit',['subdomain' =>$info['subdomain']]) }}">
+                       {{ csrf_field() }}
+                       <input hidden id="typePost"" name="typePost" value="updateUser">
+                       <input hidden id="idUser" name="id" value="{{Auth::guard('account')->user()->id}}">
+                       <div class="row">
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+
+                          <input type="text" class="form-control has-feedback-left" readonly id="username" name="username" placeholder="Tên Khách sạn" value="{{$info['name']}}"> 
+
+                          <span class="fa fa-home form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+
+                            <label>Chọn màu nền 1</label>
+                          <input type="color" class="form-control has-feedback-left"  id="color1" name="color1"  value="{{$config->color1}}">
+
+                          <span class="fa fa-yelp form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+
+                            <label>Chọn màu nền 2</label>
+                          <input type="color" class="form-control has-feedback-left"  id="color2" name="color2"  value="{{$config->color2}}">
+
+                          <span class="fa fa-yelp form-control-feedback left" aria-hidden="true"></span>
+                        </div>
+                      </div>
+
+              
+           
+
+                        <div class="row">
+                            <div class="col-md-12">
+                            <div class="profile_img">
+                                <div id="crop-avatar">
+                                    <!-- Current avatar -->
+                                    <div class="col-md-3">
+                                    <label>Chọn ảnh nền</label>
+                                        <img class="img-responsive avatar-view" src="{!! asset($config->background) !!}" id="blah" alt="Avatar">
+                                        <input type="file" id="imgInp" name="image" accept="image/*" value="{{$config->background}}" />
+                                    </div>
+                                    
+
+                                </div>
+                            </div>
+                               
+                        </div>
+                    
+                        </div>
+                         <div class="row">
+                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+
+                            <label>Chỉnh sửa nội dung miêu tả khách sạn</label>
+                          <textarea form ="config_form" class="form-control has-feedback-left"  id="intro" name="intro" rows="4" cols="35" wrap="soft">{{$config->intro}}</textarea>
+
+                         
+                        </div>
+                      </div>
+
+                
+                      
+
+                      <div class="row">
+
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <button id="btn_reset_pwd" type="submit" class="btn btn-primary"><i class="fa fa-edit m-right-xs"></i>&nbsp;Thay đổi Cài đặt</button>
+                        </div>
+                      </div>
+                    </form>
+                    
+                            
+
+                    <!-- end conten -->
+                  </div>
+                </div>
+              </div>
+
+          <!--     <div class="col-md-12 col-sm-12 col-xs-12" >
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Nội dung<small></small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       
+                     <li class="dropdown">
+                        <a href="#" class="dropdown-toggle btn btn-xs" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-folder">Thêm Nội dung</i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#"  data-target="#addTextMainmodal" data-toggle="modal" data-backdrop="static" ><i class="fa fa-folder"></i> Thêm Đoạn text </a>
+                          </li>
+                          <li><a href="#"  data-target="#addTypeRoomMainmodal" data-toggle="modal" data-backdrop="static" ><i class="fa fa-folder"></i> Thêm Thêm blog </a>
+                          </li>
+                        </ul>
+                      </li>
                     </ul>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    
-                    
-            <form  id="config_form" enctype="multipart/form-data" role="form" method="POST" action="{{ route('subConfigSubmit',['subdomain' =>$info['subdomain']]) }}">
-           {{ csrf_field() }}
-           <input hidden id="typePost"" name="typePost" value="updateUser">
-           <input hidden id="idUser" name="id" value="{{Auth::guard('account')->user()->id}}">
-           <div class="row">
-            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-
-              <input type="text" class="form-control has-feedback-left" readonly id="username" name="username" placeholder="Tên Khách sạn" value="{{$info['name']}}"> 
-
-              <span class="fa fa-home form-control-feedback left" aria-hidden="true"></span>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-
-                <label>Chọn màu nền 1</label>
-              <input type="color" class="form-control has-feedback-left"  id="color1" name="color1"  value="{{$config->color1}}">
-
-              <span class="fa fa-yelp form-control-feedback left" aria-hidden="true"></span>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
-
-                <label>Chọn màu nền 2</label>
-              <input type="color" class="form-control has-feedback-left"  id="color2" name="color2"  value="{{$config->color2}}">
-
-              <span class="fa fa-yelp form-control-feedback left" aria-hidden="true"></span>
-            </div>
-          </div>
-
-          
-       
-
-            <div class="row">
-                <div class="col-md-12">
-                <div class="profile_img">
-                    <div id="crop-avatar">
-                        <!-- Current avatar -->
-                        <div class="col-md-3">
-                        <label>Chọn ảnh nền</label>
-                            <img class="img-responsive avatar-view" src="{!! asset($config->background) !!}" id="blah" alt="Avatar">
-                            <input type="file" id="imgInp" name="image" accept="image/*" value="{{$config->background}}" />
-                        </div>
+                      
                         
+                            
+                              
 
-                    </div>
-                </div>
-                   
-                </div>
-                
-            </div>
-            </br>
-             <div class="row">
-            <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                            
 
-                <label>Chỉnh sửa nội dung miêu tả khách sạn</label>
-              <textarea form ="config_form" class="form-control has-feedback-left"  id="intro" name="intro" rows="4" cols="35" wrap="soft">{{$config->intro}}</textarea>
-
-             
-            </div>
-          </div>
-
-            
-        </br>
-          
-
-          <div class="row">
-
-            <div class="col-md-6 col-sm-6 col-xs-12">
-              <button id="btn_reset_pwd" type="submit" class="btn btn-primary"><i class="fa fa-edit m-right-xs"></i>&nbsp;Thay đổi Cài đặt</button>
-            </div>
-          </div>
-        </form>
-      
+                    <!-- end conten -->
                   </div>
                 </div>
+              </div> -->
 
-              </div>
+               
 
             </div>
             <!-- /page content -->
 <!-- modal dialog add user -->
+<div class="modal fade" id="addTextMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog">
+        <div class="loginmodal-container">
+        <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+          <h1>Thêm đoạn text</h1><br>
+          <form class="form-horizontal" role="form" method="POST" action="{{ route('subRoomManageSubmit',['subdomain' =>$info['subdomain']]) }}">
+                        {{ csrf_field() }}
+                        <input hidden id="addtypePost"" name="typePost" value="addText">
+                         <div class="row">
+                            <div class=" form-group has-feedback">
 
+                                <label>Tiêu đề</label>
+                                <input type="text" class="form-control has-feedback-left"  id="color1" name="tieude" placeholder="Tiêu đề"  value="">
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class=" form-group has-feedback">
+
+                                <label>Nội dung</label>
+                                <textarea form ="content_form" class="form-control has-feedback-left"  id="intro" name="intro" rows="4" cols="35" wrap="soft"></textarea>
+
+                                  
+                            </div>
+                        </div>
+
+                        
+
+                       
+                        <input type="submit" name="Register" class="loginmodal-submit " value="Thêm Phòng">
+                       
+                    </form>
+          </div>
+        </div>
+      </div>
 
    <!-- jQuery -->
     <script src="{!! asset('vendors/jquery/dist/jquery.min.js') !!}"></script>

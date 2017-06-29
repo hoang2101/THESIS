@@ -128,7 +128,7 @@
                                 @endif
                                     <span class=" fa fa-angle-down"></span> 
                     </a>
-                    <ul class="dropdown-menu dropdown-user">
+                    <ul class="dropdown-menu">
 
                         <li><a href="{{ route('subConfig',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user fa-fw"></i> User Profile</a>
                         </li>
@@ -158,7 +158,7 @@
                 <div class="sidebar-nav navbar-collapse">
                 <div class="profile clearfix">
                        
-                    <ul class="nav" id="side-menu">
+                    <ul class="nav" >
 
                         <li>
                             <a href="{{ route('subHome',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-home fa-fw"></i> Home</a>
@@ -408,7 +408,7 @@
     
 
     <!-- Custom Theme JavaScript -->
-    <script src="{!! asset('js/sb-admin-2.js')!!}"></script>
+
     @if ($errors->has('username') )
   @if($errors->first('username') == "Tài khoản hoặc mật khẩu không đúng")
 

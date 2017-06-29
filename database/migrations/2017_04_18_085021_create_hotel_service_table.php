@@ -15,11 +15,11 @@ class CreateHotelServiceTable extends Migration
     {
         Schema::create('service', function (Blueprint $table) {
              $table->increments('service_id');
-            $table->string('service_name')->nullable();
+            $table->string('service_name',100)->nullable();
             $table->integer('cost')->nullable();
             $table->integer('hotel_id')->nullable();
             $table->longText('description')->nullable();
-            $table->string('image')->nullable();
+            $table->string('image',150)->nullable();
             $table->integer('discount')->nullable();
             $table->integer('account_id')->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));

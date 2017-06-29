@@ -30,7 +30,10 @@ use PayPal\Api\FundingInstrument;
  use DatePeriod; 
   use DateTime; 
   use DateInterval;
-
+use Mail;
+use Swift_Transport;
+use Swift_Message;
+use Swift_Mailer;
 class SubController extends Controller
 {
     /**
@@ -57,7 +60,23 @@ class SubController extends Controller
         $this->_api_context->setConfig($paypal_conf['settings']);
        
     }
+function RandomString()
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
+        $randstring = '';
+        for ($i = 0; $i < 10; $i++) {
+            $randstring =  $randstring.$characters[rand(0, strlen($characters)-1)];
+        }
+        return $randstring;
+    }
+   
+public function reset(Request $request,$subdomain)
+    {
+        
+ 
 
+
+    }
     public function paypal($subdomain){
         $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
         $users = Auth::guard('account')->user();
@@ -491,12 +510,13 @@ public function congra($subdomain){
         //
 
         $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
-        $config = DB::table('web_config')->where('config_id','=', $hotels->config_id)->first();
-        $type_rooms = DB::table('type_room')->where('hotel_id','=', $hotels->hotel_id)->get();
-        $services = DB::table('service')->where('hotel_id','=', $hotels->hotel_id)->get();
+        
        // return $hotels;
 
          if($hotels != null){
+          $config = DB::table('web_config')->where('config_id','=', $hotels->config_id)->first();
+        $type_rooms = DB::table('type_room')->where('hotel_id','=', $hotels->hotel_id)->get();
+        $services = DB::table('service')->where('hotel_id','=', $hotels->hotel_id)->get();
            if(Auth::guard('account')->Check()){
 
             if(Auth::guard('account')->user()->hotel_id != $hotels->hotel_id ){
@@ -587,7 +607,79 @@ public function congra($subdomain){
                 return redirect()->route('subHome',['subdomain' => $subdomain]);
           }
 
+///////////////////////reset
+          if($request['typePost']=='reset'){
+            $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+       $messages = [];
+        $validator = Validator::make($request->all(),[],$messages);
+        $user = DB::table('account')->where('username' , '=', $request['username2'])->where('email','=',$request['email'])->where('hotel_id','=',$hotels->hotel_id)->first();
+        if($user == null){
+            \Session::flash('username2', 'Tài khoản hoặc email không đúng');
+          
+        redirect()->route('subHome',['subdomain' => $subdomain])->withInput();
+     }
+        // thesismanagehotel@gmail.com
+     // pass luanhoang
 
+
+            $data_toview = array();
+            $mk = $this->RandomString();
+            DB::table('account')
+                ->where('username', '=',  $request['username2'])
+                ->update(['password' => bcrypt($mk)]);
+            $data_toview['bodymessage'] = "mật khẩu của bạn là: ".$mk;
+ 
+            $email_sender   = 'thesismanagehotel@gmail.com';
+            $email_pass     = 'luanhoang';
+            $email_to       = $request['email'];
+ 
+            // Backup your default mailer
+            $backup = \Mail::getSwiftMailer();
+ 
+            try{
+ 
+                        //https://accounts.google.com/DisplayUnlockCaptcha
+                        // Setup your gmail mailer
+                        $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 587, 'tls');
+                        $transport->setUsername($email_sender);
+                        $transport->setPassword($email_pass);
+ 
+                        // Any other mailer configuration stuff needed...
+                        $gmail = new Swift_Mailer($transport);
+ 
+                        // Set the mailer as gmail
+                        \Mail::setSwiftMailer($gmail);
+ 
+                        $data['emailto'] = $email_to;
+                        $data['sender'] = $email_sender;
+                        $data['hotel_name'] =$hotels->hotel_name;
+                        $data['subdomain'] =$subdomain;
+                        //Sender dan Reply harus sama
+                        // Mail::to($data['emailto'])
+                        // ->cc($data['sender'], $data['hotel_name'].' hotel manage')
+                        // ->send($data_toview);
+                        Mail::send('emails', $data_toview, function($message) use ($data)
+                        {
+ 
+                            $message->from($data['sender'], $data['hotel_name'].' hotel manage');
+                            $message->to($data['emailto'])
+                            ->replyTo($data['sender'], $data['hotel_name'].' hotel manage')
+                            ->subject('Cấp lại mật khẩu');
+ 
+                            \Session::flash('resetmessage','Mật khẩu mới đươc gửi vào email của bạn.');
+                            
+                        });
+            return redirect()->route('subHome',['subdomain' =>  $data['subdomain']]);
+            }catch(\Swift_TransportException $e){
+                $response = $e->getMessage() ;
+                echo $response;
+            }
+            
+ 
+            // Restore your original mailer
+            Mail::setSwiftMailer($backup);
+           return redirect()->route('subHome',['subdomain' =>  $data['subdomain']]);
+          }
 ////////////////////////search rooom
           if($request['typePost']=='searchRoom'){
             

@@ -15,6 +15,7 @@
 //     return view('main.index');
 // });
 Route::get('/','MainController@index')->name('mainHome');
+Route::post('resetPassword', 'Auth\ResetPasswordController@reset')->name('resetHome');
 Auth::routes();
 Route::get('/custommanage','MainController@manage')->name('mainManage');
 Route::POST('/manageEdit','MainController@editUserMain')->name('editUserMainSubmit');

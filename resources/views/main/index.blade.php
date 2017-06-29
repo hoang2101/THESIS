@@ -146,7 +146,44 @@
                   
                   <input type="submit" name="login" class="btn btn-primary btn-lg" value="Đăng nhập">
                   </form>
-                           <a href="#login" data-toggle="modal" data-backdrop="static" data-target="#register-modal">Đăng kí</a> - <a href="#">Quên mật khẩu</a>
+                           <a href="#login" data-toggle="modal" data-backdrop="static" data-target="#register-modal" onclick="openregister()">Đăng kí</a> - <a href="#" data-toggle="modal" data-backdrop="static" data-target="#reset-modal" onclick="openreset()">Quên mật khẩu</a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="modal fade" id="reset-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+                <div class="modal-dialog">
+                <div class="loginmodal-container">
+                <button type="button" class="close" data-dismiss="modal" onclick="removeMessage()" aria-label="Close"><span aria-hidden="true">&times;</span>
+                        </button>
+                  <h1>Cấp lại mật khẩu</h1><br>
+                  <form role="form" method="POST" action="{{ route('resetHome') }}">
+                  {{csrf_field()}}
+                   <div class="form-group @if(session('username2')) has-error @endif">
+                        <div class="input-group">
+                          <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                          <input id="username" type="text" class="form-control" name="username2" placeholder="Tên đăng nhập" value="{{ old('username2') }}" required autofocus>
+                        </div>
+                         @if ($message = Session::get('username2'))
+                                 
+                                                <span class="help-block">
+                                                <strong class="messageError">{{ $message }}</strong>
+                                            </span>
+                                        
+                                      @endif
+                   </div>
+                   <div class="form-group">
+                      <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                        <input id="email" type="email" class="form-control" name="email" placeholder="Email" required>
+                      </div>                              
+                  </div>
+                 
+                               
+                  
+                  <input type="submit" name="login" class="btn btn-primary btn-lg" value="OK">
+                  </form>
+                          
                   </div>
                 </div>
               </div>
@@ -426,7 +463,7 @@
             <div class="pricing-table-column">
               <h3>BASIC</h3>
               
-                <h2>$100</h2>
+                <h2>1000000 VND</h2>
                 <p>1 tháng</p>
           
                <div class="info text-left">
@@ -443,7 +480,7 @@
             <div class="pricing-table-column">
               <h3>SILVER</h3>
               
-                <h2>$150</h2>
+                <h2>1500000 VND</h2>
                 <p>2 tháng</p>
              
               <div class="info text-left">
@@ -460,7 +497,7 @@
             <div class="pricing-table-column">
               <h3>GOLD</h3>
               
-                <h2>$250</h2>
+                <h2>2500000 VND</h2>
                 <p>4 tháng</p>
              
               <div class="info text-left">
@@ -477,7 +514,7 @@
             <div class="pricing-table-column">
               <h3>VIP</h3>
               
-                <h2>$400</h2>
+                <h2>4000000 VND</h2>
                 <p>6 tháng</p>
              
               <div class="info text-left">
@@ -589,6 +626,7 @@
     Template Design By WpFreeware Team.
     Author URI : http://www.wpfreeware.com/
     ====================================================-->
+
 @if ($errors->has('username') )
   @if($errors->first('username') == "These credentials do not match our records.")
 
@@ -620,8 +658,29 @@
 }); </script>
   @endif
 
+  @if (session('username2'))
+     <script type="text/javascript">  
+    $(document).ready(function () {
+      $('#reset-modal').modal('show');
+
+}); </script>
+  @endif
+  @if (session('resetmessage'))
+     <script type="text/javascript">  
+     alert(" {{ session('resetmessage') }}");
+   </script>
+   {{session()->forget('resetmessage')}}
+@endif
+
       <script type="text/javascript">
-         
+          function openregister() {
+            // body...
+            $('#login-modal').modal('hide');
+          }
+          function openreset() {
+            // body...
+            $('#login-modal').modal('hide');
+          }
           function removeMessage() {
               $("div").removeClass("has-error");
               $("span").removeClass("help-block");

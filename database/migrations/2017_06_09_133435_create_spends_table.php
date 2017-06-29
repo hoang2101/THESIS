@@ -15,7 +15,7 @@ class CreateSpendsTable extends Migration
     {
         Schema::create('spends', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->nullable();
+            $table->string('name',100)->nullable();
             $table->string('detail')->nullable();
             $table->integer('cost')->nullable();
             $table->integer('hotel_id')->nullable();

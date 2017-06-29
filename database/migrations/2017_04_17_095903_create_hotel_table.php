@@ -15,11 +15,11 @@ class CreateHotelTable extends Migration
     {
         Schema::create('hotel', function (Blueprint $table) {
             $table->increments('hotel_id');
-            $table->string('hotel_name')->nullable();
-            $table->string('hotel_address')->nullable();
+            $table->string('hotel_name',100)->nullable();
+            $table->string('hotel_address',150)->nullable();
             $table->string('hotel_star')->nullable();
-            $table->string('account_id')->nullable();
-            $table->string('hotel_url')->nullable();
+            $table->string('account_id',150)->nullable();
+            $table->string('hotel_url',150)->nullable();
             $table->integer('config_id')->nullable();
             $table->date('expire_date')->nullable();
             $table->integer('total_booking')->nullable();

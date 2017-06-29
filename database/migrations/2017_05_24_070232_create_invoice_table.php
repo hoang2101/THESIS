@@ -18,11 +18,11 @@ class CreateInvoiceTable extends Migration
             $table->integer('booking_id')->nullable();
             $table->integer('hotel_id')->nullable();
             $table->integer('cost')->nullable();
-            $table->string('bank_id')->nullable();
+            $table->string('bank_id',150)->nullable();
             $table->date('date')->nullable();
-            $table->string('name')->nullable();
+            $table->string('name',100)->nullable();
             $table->date('exp_date')->nullable();
-            $table->String("type")->nullable();
+            $table->String("type",100)->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
         });

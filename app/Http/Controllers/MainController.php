@@ -404,7 +404,7 @@ public function getCancel()
         $rooms = count(DB::table('room')->get());
         return view('main.index')->with('hotels',$hotels)->with('users',$users)->with('accounts',$accounts)->with('rooms',$rooms);
     }
-
+    
     public function manage()
 
     {
@@ -783,19 +783,19 @@ foreach ($hotels as $key => $hotel) {
             $total_cost = null;
             if($request['expire_date'] == 1){
                 $date = Carbon::now()->addMonths(1);
-                $total_cost = 100 + $getUser->total_cost;
+                $total_cost = 1000000 + $getUser->total_cost;
             }
             if($request['expire_date'] == 2){
                 $date = Carbon::now()->addMonths(2);
-                $total_cost = 150 + $getUser->total_cost;
+                $total_cost = 1500000 + $getUser->total_cost;
             }
             if($request['expire_date'] == 3){
                 $date = Carbon::now()->addMonths(4);
-                 $total_cost = 250 + $getUser->total_cost;
+                 $total_cost = 2500000 + $getUser->total_cost;
             }
             if($request['expire_date'] == 4){
                 $date = Carbon::now()->addMonths(6);
-                 $total_cost = 400 + $getUser->total_cost;
+                 $total_cost = 4000000 + $getUser->total_cost;
             }
         DB::table('hotel')->insertGetId([
                  'hotel_name' => $request['hotel_name'],
@@ -853,19 +853,19 @@ foreach ($hotels as $key => $hotel) {
             }
             if($request['expire_date'] == 1){
                 $date = Carbon::createFromFormat('Y-m-d', $date)->addMonths(1);
-                $total_Cost = 100 + $getUser->total_cost;
+                $total_Cost = 1000000 + $getUser->total_cost;
             }
             if($request['expire_date'] == 2){
                 $date = Carbon::createFromFormat('Y-m-d', $date)->addMonths(2);
-                $total_Cost = 150 + $getUser->total_cost;
+                $total_Cost = 1500000 + $getUser->total_cost;
             }
             if($request['expire_date'] == 3){
                 $date = Carbon::createFromFormat('Y-m-d', $date)->addMonths(4);
-                 $total_Cost = 250 + $getUser->total_cost;
+                 $total_Cost = 2500000 + $getUser->total_cost;
             }
             if($request['expire_date'] == 4){
                 $date = Carbon::createFromFormat('Y-m-d', $date)->addMonths(6);
-                $total_Cost = 400 + $getUser->total_cost;
+                $total_Cost = 4000000 + $getUser->total_cost;
             }
 
             DB::table('hotel')
@@ -958,20 +958,20 @@ foreach ($hotels as $key => $hotel) {
             }
             if($request['expire_date'] == 2){
                 $date = Carbon::now()->addMonths(2);
-                $total_cost = 150000 + Auth::User()->total_cost;
-                $amountPay = 150000;
+                $total_cost = 1500000 + Auth::User()->total_cost;
+                $amountPay = 1500000;
                 $namePay = "Gói SILVER";
             }
             if($request['expire_date'] == 3){
                 $date = Carbon::now()->addMonths(4);
-                 $total_cost = 250000 + Auth::User()->total_cost;
-                 $amountPay = 250000;
+                 $total_cost = 2500000 + Auth::User()->total_cost;
+                 $amountPay = 2500000;
                  $namePay = "Gói GOLD";
             }
             if($request['expire_date'] == 4){
                 $date = Carbon::now()->addMonths(6);
-                 $total_cost = 400000 + Auth::User()->total_cost;
-                 $amountPay = 400000;
+                 $total_cost = 4000000 + Auth::User()->total_cost;
+                 $amountPay = 4000000;
                  $namePay = "Gói VIP";
             }
              $dataPay = array(
@@ -1085,20 +1085,20 @@ foreach ($hotels as $key => $hotel) {
             }
             if($request['expire_date'] == 2){
                 $date = Carbon::createFromFormat('Y-m-d', $date)->addMonths(2);
-                $total_cost = 150000 + Auth::User()->total_cost;
-                $amountPay = 150000;
+                $total_cost = 1500000 + Auth::User()->total_cost;
+                $amountPay = 1500000;
                 $namePay = "Gói SILVER";
             }
             if($request['expire_date'] == 3){
                 $date = Carbon::createFromFormat('Y-m-d', $date)->addMonths(4);
-                 $total_cost = 250000 + Auth::User()->total_cost;
-                 $amountPay = 250000;
+                 $total_cost = 2500000 + Auth::User()->total_cost;
+                 $amountPay = 2500000;
                  $namePay = "Gói GOLD";
             }
             if($request['expire_date'] == 4){
                 $date = Carbon::createFromFormat('Y-m-d', $date)->addMonths(6);
-                 $total_cost = 400000 + Auth::User()->total_cost;
-                 $amountPay = 400000;
+                 $total_cost = 4000000 + Auth::User()->total_cost;
+                 $amountPay = 4000000;
                  $namePay = "Gói VIP";
             }
              $dataPay = array(

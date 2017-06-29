@@ -15,22 +15,21 @@ class CreateAccountTable extends Migration
     {
         Schema::create('account', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('first_name')->nullable();
-            $table->string('last_name')->nullable();
-            $table->string('email')->nullable();
-            $table->string('phone_number')->nullable();
-            $table->string('pay_number')->nullable();
-            $table->string('country')->nullable();
+            $table->string('first_name',100)->nullable();
+            $table->string('last_name',100)->nullable();
+            $table->string('email',150)->nullable();
+            $table->string('phone_number',100)->nullable();
+            $table->string('pay_number',150)->nullable();
+            $table->string('country',100)->nullable();
             $table->integer('type')->nullable();
-            $table->string('username')->nullable();
-            $table->string('password')->nullable();
+            $table->string('username',150)->nullable();
+            $table->string('password',150)->nullable();
             $table->date('dob')->nullable();
             $table->integer('number_visit')->nullable();
-            $table->string('gender')->nullable();
-            $table->string('image_link')->nullable();
+            $table->string('gender',100)->nullable();
+            $table->string('image_link',200)->nullable();
             $table->integer('hotel_id')->nullable();
             $table->integer('mn_user')->nullable();
-            $table->integer('total_cost')->nullable();
             $table->integer('Salary')->nullable();
             $table->rememberToken();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));

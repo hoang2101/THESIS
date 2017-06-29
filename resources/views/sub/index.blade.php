@@ -322,10 +322,48 @@
           
           <input type="submit" name="login" class="btn btn-primary btn-lg" value="Login">
           </form>
-                   <a hhref="#login" data-toggle="modal" data-backdrop="static" data-target="#register-modal">Register</a> - <a href="#">Forgot Password</a>
+                   <a hhref="#login" data-toggle="modal" data-backdrop="static" data-target="#register-modal" onclick="closelogin()">Register</a> - <a href="#" data-toggle="modal" data-backdrop="static" data-target="#reset-modal" onclick="closelogin()">Quên mật khẩu</a>
           </div>
     </div>
   </div>
+
+  <div class="modal fade" id="reset-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+                <div class="modal-dialog">
+                <div class="loginmodal-container">
+                <button type="button" class="close" data-dismiss="modal" onclick="removeMessage()" aria-label="Close"><span aria-hidden="true">&times;</span>
+                        </button>
+                  <h1>Cấp lại mật khẩu</h1><br>
+                  <form role="form" method="POST" action="{{ route('subHomesubmit',['subdomain' =>$info['subdomain']]) }}">
+                  {{csrf_field()}}
+                  <input hidden id="typePosts"" name="typePost" value="reset">
+                   <div class="form-group @if(session('username2')) has-error @endif">
+                        <div class="input-group">
+                          <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                          <input id="username" type="text" class="form-control" name="username2" placeholder="Tên đăng nhập" value="{{ old('username2') }}" required autofocus>
+                        </div>
+                         @if ($message = Session::get('username2'))
+                                 
+                                                <span class="help-block">
+                                                <strong class="messageError">{{ $message }}</strong>
+                                            </span>
+                                        
+                                      @endif
+                   </div>
+                   <div class="form-group">
+                      <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                        <input id="email" type="email" class="form-control" name="email" placeholder="Email" required>
+                      </div>                              
+                  </div>
+                 
+                               
+                  
+                  <input type="submit" name="login" class="btn btn-primary btn-lg" value="OK">
+                  </form>
+                          
+                  </div>
+                </div>
+              </div>
 
   <div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
     <div class="modal-dialog">
@@ -452,6 +490,20 @@
       <script>   function myFunction() { 
     document.getElementById("register-modal").showModal(); </script>
   @endif
+  @if (session('username2'))
+     <script type="text/javascript">  
+    $(document).ready(function () {
+      $('#reset-modal').modal('show');
+
+}); </script>
+@endif
+
+
+@if (session('resetmessage'))
+     <script type="text/javascript">  
+     alert(" {{ session('resetmessage') }}");
+   </script>
+@endif
 <script type="text/javascript">
    
     function removeMessage() {
@@ -468,6 +520,12 @@
 }
 </script>
 <script>
+function closelogin() {
+  $(document).ready(function () {
+      $('#login-modal').modal('hide');
+
+}); 
+}
   $( function() {
     $( "#datepicker" ).datepicker({
       format: 'yyyy/mm/dd'

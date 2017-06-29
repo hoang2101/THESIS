@@ -34,7 +34,7 @@ class ResetPasswordController extends Controller
         $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
         $randstring = '';
         for ($i = 0; $i < 10; $i++) {
-            $randstring =  $randstring.$characters[rand(0, strlen($characters))];
+            $randstring =  $randstring.$characters[rand(0, strlen($characters)-1)];
         }
         return $randstring;
     }

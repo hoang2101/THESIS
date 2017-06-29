@@ -58,6 +58,11 @@ class SubController extends Controller
         $paypal_conf = Config('paypal');
         $this->_api_context = new ApiContext(new OAuthTokenCredential($paypal_conf['client_id'], $paypal_conf['secret']));
         $this->_api_context->setConfig($paypal_conf['settings']);
+        \Cloudinary::config(array( 
+      "cloud_name" => "khtn", 
+      "api_key" => "557229639398344", 
+      "api_secret" => "v88_pABUmR0rIp3ZsjhmqmU-CyI" 
+    ));
        
     }
 function RandomString()
@@ -999,12 +1004,13 @@ public function editProlife(Request $request, $subdomain){
 
   if($request['typePost'] == "updateAvatar"){
    
-        $imageName = Auth::guard('account')->user()->username.'/avatar2.'.$request->image->getClientOriginalExtension();
+        // $imageName = Auth::guard('account')->user()->username.'/avatar2.'.$request->image->getClientOriginalExtension();
         
-        $request->image->move(public_path('img/User/'.Auth::guard('account')->user()->username), $imageName);
+        // $request->image->move(public_path('img/User/'.Auth::guard('account')->user()->username), $imageName);
+          $ten = \Cloudinary\Uploader::upload($request->image, array("use_filename" => TRUE, "width" => 250, "height" => 250));
          DB::table('account')
             ->where('id', Auth::guard('account')->user()->id)
-            ->update( ['image_link' => $imageName]);
+            ->update( ['image_link' =>  $ten['url']]);
 
          return redirect()->route('subProfile',['subdomain' => $subdomain] );
   }
@@ -1363,14 +1369,17 @@ public function configManageSubmit(Request $request,  $subdomain){
 
     $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
     $config = DB::table('web_config')->where('config_id', $hotels->config_id)->first();
+    $imageName = null;
     if($request->image == null)
     {
       $imageName = $config->background;
     }else{
 
-        $imageName = 'background.'.$request->image->getClientOriginalExtension();
-        $request->image->move(public_path('img/Hotel/'.$hotels->hotel_name), $imageName);
-        $imageName = 'img/Hotel/'.$hotels->hotel_name."/".$imageName;
+        // $imageName = 'background.'.$request->image->getClientOriginalExtension();
+        // $request->image->move(public_path('img/Hotel/'.$hotels->hotel_name), $imageName);
+        // $imageName = 'img/Hotel/'.$hotels->hotel_name."/".$imageName;
+        $ten = \Cloudinary\Uploader::upload($request->image, array("use_filename" => TRUE, "width" => 1382, "height" => 778));
+        $imageName = $ten['url'];
     }
     
      
@@ -1707,10 +1716,12 @@ public function roomManageSubmit(Request $request,  $subdomain){
       $imageName = "img/roomhotel.png";
     }else{
 
-        $imageName = preg_replace('/\s+/', '', $request['type_name']).'.'.$request->image->getClientOriginalExtension();
+        // $imageName = preg_replace('/\s+/', '', $request['type_name']).'.'.$request->image->getClientOriginalExtension();
 
-        $request->image->move(public_path('img/Hotel/'.$hotels->hotel_name."/room"), $imageName);
-        $imageName = 'img/Hotel/'.$hotels->hotel_name."/room/".$imageName;
+        // $request->image->move(public_path('img/Hotel/'.$hotels->hotel_name."/room"), $imageName);
+        // $imageName = 'img/Hotel/'.$hotels->hotel_name."/room/".$imageName;
+      $ten = \Cloudinary\Uploader::upload($request->image, array("use_filename" => TRUE, "width" => 360, "height" => 230));
+      $imageName = $ten['url'];
     }
      DB::table('type_room')->insertGetId([
              'type_name' => $request['type_name'],
@@ -1742,9 +1753,12 @@ public function roomManageSubmit(Request $request,  $subdomain){
         {
           
 
-            $imageName = preg_replace('/\s+/', '', $request['type_name']).'.'.$request->image->getClientOriginalExtension();
-            $request->image->move(public_path('img/Hotel/'.$hotels->hotel_name."/room"), $imageName);
-            $imageName = 'img/Hotel/'.$hotels->hotel_name."/room/".$imageName;
+            // $imageName = preg_replace('/\s+/', '', $request['type_name']).'.'.$request->image->getClientOriginalExtension();
+            // $request->image->move(public_path('img/Hotel/'.$hotels->hotel_name."/room"), $imageName);
+            // $imageName = 'img/Hotel/'.$hotels->hotel_name."/room/".$imageName;
+
+          $ten = \Cloudinary\Uploader::upload($request->image, array("use_filename" => TRUE, "width" => 360, "height" => 230));
+          $imageName = $ten['url'];
         }
 
        DB::table('type_room')->where('type_room_id', $request['id'])
@@ -1902,9 +1916,11 @@ public function serviceManageSubmit(Request $request, $subdomain){
             
           $imageName = "img/servicehotel.png";
         }else{
-            $imageName = preg_replace('/\s+/', '', $request['service_name']).'.'.$request->image->getClientOriginalExtension();
-            $request->image->move(public_path('img/Hotel/'.$hotels->hotel_name."/service"), $imageName);
-            $imageName = 'img/Hotel/'.$hotels->hotel_name."/service/".$imageName;
+            // $imageName = preg_replace('/\s+/', '', $request['service_name']).'.'.$request->image->getClientOriginalExtension();
+            // $request->image->move(public_path('img/Hotel/'.$hotels->hotel_name."/service"), $imageName);
+            // $imageName = 'img/Hotel/'.$hotels->hotel_name."/service/".$imageName;
+          $ten = \Cloudinary\Uploader::upload($request->image, array("use_filename" => TRUE, "width" => 360, "height" => 230));
+          $imageName = $ten['url'];
         }
          DB::table('service')->insertGetId([
                  'service_name' => $request['service_name'],
@@ -1935,9 +1951,12 @@ public function serviceManageSubmit(Request $request, $subdomain){
         {
           
 
-            $imageName = preg_replace('/\s+/', '', $request['service_name']).'.'.$request->image->getClientOriginalExtension();
-        $request->image->move(public_path('img/Hotel/'.$hotels->hotel_name."/service"), $imageName);
-        $imageName = 'img/Hotel/'.$hotels->hotel_name."/service/".$imageName;
+        //     $imageName = preg_replace('/\s+/', '', $request['service_name']).'.'.$request->image->getClientOriginalExtension();
+        // $request->image->move(public_path('img/Hotel/'.$hotels->hotel_name."/service"), $imageName);
+        // $imageName = 'img/Hotel/'.$hotels->hotel_name."/service/".$imageName;
+
+          $ten = \Cloudinary\Uploader::upload($request->image, array("use_filename" => TRUE, "width" => 360, "height" => 230));
+          $imageName = $ten['url'];
         }
 
        DB::table('service')->where('service_id', $request['id'])

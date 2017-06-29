@@ -52,7 +52,7 @@
                             <img src="{!! asset('img/avatar_null.png') !!}" alt="..." class="img-circle profile_img">
                            
                             @else
-                            <img src="{!! asset('img/User/' .Auth::guard('account')->user()->image_link) !!}" alt="..." class="img-circle profile_img">
+                            <img src="{{Auth::guard('account')->user()->image_link}}" alt="..." class="img-circle profile_img">
                             @endif
                         </div>
                         <div class="profile_info">
@@ -181,7 +181,7 @@
                                 @if(Auth::guard('account')->user()->image_link == null)
                                 <img src="{!! asset('img/avatar_null.png') !!}" alt="">{{ Auth::guard('account')->user()->first_name }} {{Auth::guard('account')->user()->last_name }}
                                 @else
-                                <img src="{!! asset('img/User/' .Auth::guard('account')->user()->image_link) !!}" alt="">{{ Auth::guard('account')->user()->first_name }} {{ Auth::guard('account')->user()->last_name }}
+                                <img src="{{Auth::guard('account')->user()->image_link}}" alt="">{{ Auth::guard('account')->user()->first_name }} {{ Auth::guard('account')->user()->last_name }}
                                 @endif
                                     <span class=" fa fa-angle-down"></span>
                                 </a>

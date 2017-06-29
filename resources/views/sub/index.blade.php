@@ -62,7 +62,7 @@
                   <li class="dropdown">
                    <a href="#" class="user-profile dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 @if(Auth::guard('account')->user()->image_link != null)
-                                <img src="img/User/{{Auth::guard('account')->user()->image_link}}" alt="">{{ Auth::guard('account')->user()->first_name }} {{Auth::guard('account')->user()->last_name }}
+                                <img src="{{Auth::guard('account')->user()->image_link}}" alt="">{{ Auth::guard('account')->user()->first_name }} {{Auth::guard('account')->user()->last_name }}
                                 @else
                                 <img src="img/avatar_null.png" alt="">{{ Auth::guard('account')->user()->first_name }} {{ Auth::guard('account')->user()->last_name }}
                                 @endif
@@ -237,7 +237,7 @@
         <div class="col-lg-4 col-sm-6 m-bottom4">
           <div class="post-cols">
             <div class="post-thumb">
-              <div class="imgbox"><a href="#"><img src="{!! asset($type_room->image) !!}" alt="" class="img-responsive"></a></div>
+              <div class="imgbox"><a href="#"><img src="{{$type_room->image}}" alt="" class="img-responsive"></a></div>
             </div>
             <div class="post-dis m-top2">
               <h4 class="m-bottom1 m-top1 font18"><a href="#">{{$type_room->type_name}}</a></h4>
@@ -268,7 +268,7 @@
         <div class="col-lg-4 col-sm-6 m-bottom4">
           <div class="post-cols">
             <div class="post-thumb">
-              <div class="imgbox"><a href="#"><img src="{!! asset($service->image) !!}" alt="" class="img-responsive"></a></div>
+              <div class="imgbox"><a href="#"><img src="{{$service->image}}" alt="" class="img-responsive"></a></div>
             </div>
             <div class="post-dis m-top2">
               <h4 class="m-bottom1 m-top1 font18"><a href="#">{{$service->service_name}}</a></h4>

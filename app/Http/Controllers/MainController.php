@@ -28,10 +28,11 @@ use PayPal\Api\ExecutePayment;
 use PayPal\Api\PaymentExecution;
 use PayPal\Api\Transaction;
 use PayPal\Api\FundingInstrument;
- use DatePeriod; 
-  use DateTime; 
-  use DateInterval;
- 
+use DatePeriod; 
+use DateTime; 
+use DateInterval;
+
+
 
 class MainController extends Controller
 {
@@ -42,7 +43,7 @@ class MainController extends Controller
      public $_resultPay = null;
      public $_actionPay = null;
      public $_data = null;
-
+     
     public function __construct()
     {
         $this->middleware('auth');
@@ -50,7 +51,11 @@ class MainController extends Controller
         $this->_api_context = new ApiContext(new OAuthTokenCredential($paypal_conf['client_id'], $paypal_conf['secret']));
         $this->_api_context->setConfig($paypal_conf['settings']);
         $this->_namePay = "zxc";
-       
+       \Cloudinary::config(array( 
+      "cloud_name" => "khtn", 
+      "api_key" => "557229639398344", 
+      "api_secret" => "v88_pABUmR0rIp3ZsjhmqmU-CyI" 
+    ));
     }
 
     /**
@@ -543,13 +548,15 @@ public function editProlife(Request $request){
   }
 
   if($request['typePost'] == "updateAvatar"){
-   
-        $imageName = Auth::user()->username.'/avatar2.'.$request->image->getClientOriginalExtension();
+       
         
-        $request->image->move(public_path('img/User/'.Auth::user()->username), $imageName);
+        // $imageName = Auth::user()->username.'/avatar2.'.$request->image->getClientOriginalExtension();
+        
+        // $request->image->move(public_path('img/User/'.Auth::user()->username), $imageName);
+    $ten = \Cloudinary\Uploader::upload($request->image, array("use_filename" => TRUE, "width" => 250, "height" => 250));
          DB::table('users')
             ->where('id', Auth::user()->id)
-            ->update( ['image_link' => $imageName]);
+            ->update( ['image_link' => $ten['url']]);
 
          return redirect()->route('mainProfile');
   }

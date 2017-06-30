@@ -512,7 +512,7 @@ public function congra($subdomain){
     }
     public function index($subdomain)
     {
-        
+      
         $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
         
        // return $hotels;

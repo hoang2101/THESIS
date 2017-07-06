@@ -48,50 +48,50 @@ Route::POST('/mhotelmanage','MainController@addGovermHoteler')->name('addGovermH
 
 
 
-Route::group(['domain' => '{subdomain}.hotelsaas.com'],function () {
-    Route::get('/hotel', 'SubController@index' )->name('subHome');
-    Route::POST('/hotel', 'SubController@account' )->name('subHomesubmit');
+Route::group(['subdomain' => '{subdomain}'], function () {
+    Route::get('{subdomain}', 'SubController@index' )->name('subHome');
+    Route::POST('{subdomain}', 'SubController@account' )->name('subHomesubmit');
 
-     Route::get('/hotel/booking/roomresult', 'SubController@roomResult' )->name('roomResult');
-     Route::POST('/hotel/booking/roomresult', 'SubController@editRoomResult' )->name('subRoomResultsubmit');
-     Route::get('/hotel/booking/payment', 'SubController@payment' )->name('subPayment');
-     Route::get('/hotel/congra', 'SubController@congra' )->name('subCongra');
-     Route::get('/hotel/payment','SubController@paypal')->name('subpaypal');
-     Route::POST('/hotel/payment','SubController@paypalSubmit')->name('subpaypalSubmit');
-     Route::GET('/hotel/payresult','SubController@getDone')->name('subpaypaldone');
-     Route::GET('/hotel/payresult2','SubController@getCancel')->name('subpaypalcancel');
+     Route::get('{subdomain}/booking/roomresult', 'SubController@roomResult' )->name('roomResult');
+     Route::POST('{subdomain}/booking/roomresult', 'SubController@editRoomResult' )->name('subRoomResultsubmit');
+     Route::get('{subdomain}/booking/payment', 'SubController@payment' )->name('subPayment');
+     Route::get('{subdomain}/congra', 'SubController@congra' )->name('subCongra');
+     Route::get('{subdomain}/payment','SubController@paypal')->name('subpaypal');
+     Route::POST('{subdomain}/payment','SubController@paypalSubmit')->name('subpaypalSubmit');
+     Route::GET('{subdomain}/payresult','SubController@getDone')->name('subpaypaldone');
+     Route::GET('{subdomain}/payresult2','SubController@getCancel')->name('subpaypalcancel');
 
 
 
-    Route::get('/hotel/profile', 'SubController@prolife' )->name('subProfile');
-    Route::POST('/hotel/profile', 'SubController@editProlife' )->name('subProfilesubmit');
+    Route::get('{subdomain}/profile', 'SubController@prolife' )->name('subProfile');
+    Route::POST('{subdomain}/profile', 'SubController@editProlife' )->name('subProfilesubmit');
 
-     Route::get('/hotel/spend', 'SubController@spendManage' )->name('subSpendManage');
-    Route::POST('/hotel/spend', 'SubController@spendManageSubmit' )->name('subSpendManageSubmit');
+     Route::get('{subdomain}/spend', 'SubController@spendManage' )->name('subSpendManage');
+    Route::POST('{subdomain}/spend', 'SubController@spendManageSubmit' )->name('subSpendManageSubmit');
 
-    Route::get('/hotel/custommanage', 'SubController@manage' )->name('subManage');
-    Route::POST('/hotel/custommanage', 'SubController@manageSubmit' )->name('subManageSubmit');
+    Route::get('{subdomain}/custommanage', 'SubController@manage' )->name('subManage');
+    Route::POST('{subdomain}/custommanage', 'SubController@manageSubmit' )->name('subManageSubmit');
 
-    Route::get('/hotel/staffmanage', 'SubController@staffManage' )->name('subStaffManage');
-    Route::POST('/hotel/staffmanage', 'SubController@staffManageSubmit' )->name('subStaffManageSubmit');
+    Route::get('{subdomain}/staffmanage', 'SubController@staffManage' )->name('subStaffManage');
+    Route::POST('{subdomain}/staffmanage', 'SubController@staffManageSubmit' )->name('subStaffManageSubmit');
 
-    Route::get('/hotel/config', 'SubController@configManage' )->name('subConfig');
-    Route::POST('/hotel/config', 'SubController@configManageSubmit' )->name('subConfigSubmit');
+    Route::get('{subdomain}/config', 'SubController@configManage' )->name('subConfig');
+    Route::POST('{subdomain}/config', 'SubController@configManageSubmit' )->name('subConfigSubmit');
 
-     Route::get('/hotel/bookmanage', 'SubController@bookManage' )->name('subBookManage');
-    Route::POST('/hotel/bookmanage', 'SubController@bookManageSubmit' )->name('subBookManageSubmit');
+     Route::get('{subdomain}/bookmanage', 'SubController@bookManage' )->name('subBookManage');
+    Route::POST('{subdomain}/bookmanage', 'SubController@bookManageSubmit' )->name('subBookManageSubmit');
 
-    Route::get('/hotel/roommanage', 'SubController@roomManage' )->name('subRoomManage');
-    Route::POST('/hotel/roommanage', 'SubController@roomManageSubmit' )->name('subRoomManageSubmit');
+    Route::get('{subdomain}/roommanage', 'SubController@roomManage' )->name('subRoomManage');
+    Route::POST('{subdomain}/roommanage', 'SubController@roomManageSubmit' )->name('subRoomManageSubmit');
 
-    Route::get('/hotel/servicemanage', 'SubController@serviceManage' )->name('subServiceManage');
-    Route::POST('/hotel/servicemanage', 'SubController@serviceManageSubmit' )->name('subServiceManageSubmit');
+    Route::get('{subdomain}/servicemanage', 'SubController@serviceManage' )->name('subServiceManage');
+    Route::POST('{subdomain}/servicemanage', 'SubController@serviceManageSubmit' )->name('subServiceManageSubmit');
 
-    Route::get('/hotel/report', 'SubController@reportManage' )->name('subReportManage');
-    Route::POST('/hotel/report', 'SubController@reportManageSubmit' )->name('subReportManageSubmit');
+    Route::get('{subdomain}/report', 'SubController@reportManage' )->name('subReportManage');
+    Route::POST('{subdomain}/report', 'SubController@reportManageSubmit' )->name('subReportManageSubmit');
 
-    Route::get('/hotel/historybook', 'SubController@historyBook' )->name('subHistoryBook');
-    Route::POST('/hotel/historybook', 'SubController@historyBookSubmit' )->name('subHistoryBookSubmit');
+    Route::get('{subdomain}/historybook', 'SubController@historyBook' )->name('subHistoryBook');
+    Route::POST('{subdomain}/historybook', 'SubController@historyBookSubmit' )->name('subHistoryBookSubmit');
 
 
 });

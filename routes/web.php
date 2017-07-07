@@ -48,7 +48,7 @@ Route::POST('/mhotelmanage','MainController@addGovermHoteler')->name('addGovermH
 
 
 
-Route::group(['domain' => '{subdomain}.hotelsaas.com'],function () {
+Route::group(['domain' => '{subdomain}.localhost'],function () {
     Route::get('/hotel', 'SubController@index' )->name('subHome');
     Route::POST('/hotel', 'SubController@account' )->name('subHomesubmit');
      Route::get('/hotel/booking/roomresult', 'SubController@roomResult' )->name('roomResult');

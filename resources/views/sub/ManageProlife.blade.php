@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
     <meta charset="utf-8">
@@ -13,19 +12,20 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="{!! asset('vendors/bootstrap/dist/css/bootstrap.min.css') !!}" rel="stylesheet">
-     <script src="{!! asset('vendors/jquery/dist/jquery.min.js') !!}"></script>
+    <link href="{!! asset('vendors/font-awesome/css/font-awesome.min.css')!!}" rel="stylesheet" type="text/css">
 
     <!-- MetisMenu CSS -->
-    
+    <link href="{!! asset(' vendor/metisMenu/metisMenu.min.css')!!}" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="{!! asset('css/sb-admin-2.css')!!}" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
-   
+    <link href="{!! asset('vendor/morrisjs/morris.css')!!}" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="{!! asset('vendors/font-awesome/css/font-awesome.min.css')!!}" rel="stylesheet" type="text/css">
+
+    
    
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -400,8 +400,22 @@
 
     <!-- jQuery -->
 
-    <script  src="{!! asset('js/jquery.min.js') !!}"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="{!! asset('vendors/jquery/dist/jquery.min.js') !!}"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{!! asset('vendors/bootstrap/dist/js/bootstrap.min.js') !!}"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="{!! asset('vendor/metisMenu/metisMenu.min.js') !!}"></script>
+
+    <!-- Morris Charts JavaScript -->
+    <script src="{!! asset('vendor/raphael/raphael.min.js') !!}"></script>
+    <script src="{!! asset('vendor/morrisjs/morris.min.js') !!}"></script>
+    <script src="{!! asset('js/getlistCountry.js') !!}"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="{!! asset('js/sb-admin-2.js')!!}"></script>
+    
     <!-- Bootstrap Core JavaScript -->
  
     <!-- Metis Menu Plugin JavaScript -->

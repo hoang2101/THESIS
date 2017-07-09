@@ -587,6 +587,13 @@ public function congra($subdomain){
                 return redirect()->route('subHome',['subdomain' => $subdomain])->withErrors($validator)->withInput();
             }
             $getHotel = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+            $userHotels = DB::table('account')->where('hotel_id', '=', $getHotel->hotel_id)->where('email','=', $request['email'])->first();
+            if($userHotels != null)
+            {
+              $validator->errors()->add('email', 'Email đã tồn tại');
+                 return redirect()->route('subHome',['subdomain' => $subdomain])->withErrors($validator)->withInput();
+            }
+            
              // $getUsername = DB::table('users')->where('username', '=', $request['username'])->first();
             DB::table('account')->insertGetId([
              'first_name' => $request['first_name'],

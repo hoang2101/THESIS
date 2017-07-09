@@ -113,7 +113,7 @@
                     @if(Auth::guard('account')->check()) 
                     <ul class="dropdown-menu dropdown-user">
                        
-                        <li><a href="{{ route('subConfig',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        <li><a href="{{ route('subProfile',['subdomain' =>$info['subdomain']]) }}"><i class="fa fa-user fa-fw"></i> User Profile</a>
                         </li>
                         
                         <!-- <li class="divider"></li>  dung de gach ngang--> 

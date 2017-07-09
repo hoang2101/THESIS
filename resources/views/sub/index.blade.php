@@ -483,12 +483,19 @@
 
 }); </script>
  @endif
-  @endif  @if ($errors->has('password'))
-      <script>   function myFunction() { 
-    document.getElementById("register-modal").showModal(); </script>
+  @endif 
+   @if ($errors->has('password'))
+      <script type="text/javascript">  
+    $(document).ready(function () {
+      $('#register-modal').modal('show');
+
+}); </script>
   @endif @if ($errors->has('email'))
-      <script>   function myFunction() { 
-    document.getElementById("register-modal").showModal(); </script>
+      <script type="text/javascript">  
+    $(document).ready(function () {
+      $('#register-modal').modal('show');
+
+}); </script>
   @endif
   @if (session('username2'))
      <script type="text/javascript">  

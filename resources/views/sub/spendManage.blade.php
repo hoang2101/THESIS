@@ -196,7 +196,7 @@
                                 @if(Auth::guard('account')->user()->image_link == null)
                                 <img src="{!! asset('img/avatar_null.png') !!}" alt="">{{ Auth::guard('account')->user()->first_name }} {{Auth::guard('account')->user()->last_name }}
                                 @else
-                                <img src="{{Auth::guard('account')->user()->image_link)}}" alt="">{{ Auth::guard('account')->user()->first_name }} {{ Auth::guard('account')->user()->last_name }}
+                                <img src="{{Auth::guard('account')->user()->image_link}}" alt="">{{ Auth::guard('account')->user()->first_name }} {{ Auth::guard('account')->user()->last_name }}
                                 @endif
                                     <span class=" fa fa-angle-down"></span>
                                 </a>
@@ -349,7 +349,7 @@
         <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
           <h1>Xem chi tiết Chi tiêu</h1><br>
-          <form class="form-horizontal" role="form" method="POST" action="{{ route('subManageSubmit', ['subdomain' =>$info['subdomain']]) }}">
+          <form class="form-horizontal" role="form" method="POST" action="{{ route('subSpendManage',['subdomain' =>$info['subdomain']]) }}">
                         {{ csrf_field() }}
                 
                         <input hidden id="typePost"" name="typePost" value="updateSpend">

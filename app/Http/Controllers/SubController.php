@@ -2038,8 +2038,9 @@ public function spendManageSubmit(Request $request, $subdomain){
         return redirect()->route('subSpendManage',['subdomain' => $subdomain]);
     }
 
-     if($request['typePost'] == "updateSpend"){
+     if($request['typePost'] == "deleteSpend"){
             DB::table('spends')->where('id',"=", $request['id'])->delete();
+             return redirect()->route('subSpendManage',['subdomain' => $subdomain]);
      }
 
 }

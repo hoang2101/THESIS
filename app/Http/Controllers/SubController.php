@@ -627,7 +627,7 @@ public function congra($subdomain){
         if($user == null){
             \Session::flash('username2', 'Tài khoản hoặc email không đúng');
           
-        redirect()->route('subHome',['subdomain' => $subdomain])->withInput();
+        return redirect()->route('subHome',['subdomain' => $subdomain])->withInput();
      }
         // thesismanagehotel@gmail.com
      // pass luanhoang

@@ -15,7 +15,7 @@
     <link href="{!! asset('vendors/bootstrap/dist/css/bootstrap.min.css') !!}" rel="stylesheet">
 
     <!-- MetisMenu CSS -->
-    <link href="{!! asset(' vendor/metisMenu/metisMenu.min.css')!!}" rel="stylesheet">
+    <link href="{!! asset('vendor/metisMenu/metisMenu.min.css')!!}" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="{!! asset('css/sb-admin-2.css')!!}" rel="stylesheet">
@@ -39,7 +39,25 @@
     background-color: #fff;
     height: 1px;
     margin: 20px 0;
-}
+
+    }
+     .nopadding
+    {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+    
+    }
+    .shadow
+    {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+    .cover {
+
+      margin-top: 40px;
+        width: 100%;
+        
+       padding: 10px;
+    }
     </style>
 </head>
 
@@ -180,27 +198,94 @@
 
         <div id="page-wrapper">
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-12 nopadding">
                     <h1 class="page-header">Kết quả thanh Toán</h1>
                 </div>
-                <div class="x_content">
+            </div>
+            <div class="row">    
                     @if ($message = Session::get('messagesResult'))
                 <div class="custom-alerts alert alert-success fade in">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
-                     {!! $message !!}
+                     Đã đặt phòng thành công, chúng tôi đã gửi vào email của bạn!
                 </div>
+
                 <?php Session::forget('success');?>
                 @endif
-                @if ($message2 = Session::get('idbooking'))
-                <div class="custom-alerts alert alert-success fade in">
+                
+            </div>
+                @if ($book != null)
+                <div class="row shadow">
+                 <div class="col-md-3 col-sm-3 col-xs-12 profile_left nopadding">
+                    <div class="profile_img">
+                        <div id="crop-avatar">
+                        @if($type_roombook->image == "img/roomhotel.png")
+                            <img class="img-responsive avatar-view cover" src="../{{$type_roombook->image}}" alt="Avatar">
+                        @else
+                            <img class="img-responsive avatar-view cover" src="{{$type_roombook->image}}" alt="Avatar">
+                        @endif
+                        </div>
+                    </div>
+                 </div>
+
+                 <div class="col-md-9 col-sm-9 col-xs-12 nopadding">
+                    <div id="profile_info">
+                        <div class="profile_title">
+                            <div class="form-group">
+                                <div class="col-md-10 col-sm-10 col-xs-6">
+                                    <p><span><strong>Họ Tên: </strong></span>{{$book->first_name}} {{$book->last_name}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10 col-sm-10 col-xs-6">
+                                    <p><span><strong>Ngày Checkin: </strong></span>{{$book->date_from}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10 col-sm-10 col-xs-6">
+                                    <p><span><strong>Ngày Checkout: </strong></span>{{$book->date_to}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10 col-sm-10 col-xs-6">
+                                    <p><span><strong>Mã đặt phòng: </strong></span>{{$book->booking_id}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10 col-sm-10 col-xs-6">
+                                    <p><span><strong>Loại phòng: </strong></span>{{$book->hotel_id}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10 col-sm-10 col-xs-6">
+                                    <p><span><strong>Mã phòng: </strong></span>{{$book->room_id}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10 col-sm-10 col-xs-6">
+                                    <p><span><strong>Số người: </strong></span>{{$book->number_people}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10 col-sm-10 col-xs-6">
+                                    <p><span><strong>Tổng tiền: </strong></span>{{$book->total_cost_room}}</p>
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <!-- 
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
-                    Mã đặt phòng của quý khách là {!! $message2 !!}
-                </div>
+                    Mã đặt phòng của quý khách là 
+                </div> -->
                 <?php Session::forget('idbooking');?>
+    
                 @endif
-                    <center></center>     
+                     
                     
-                </div>
+                
                   
                 <!-- /.col-lg-12 -->
             </div>

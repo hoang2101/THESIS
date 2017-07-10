@@ -226,6 +226,18 @@
                                                 </span>
                                             @endif
                                         </div>
+                                        <div class="form-group {{ $errors->has('email') ? ' has-error' : '' }}">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
+                                            </label>
+                                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                                <input  type="email" id="email" onchange="addemail();" name="email" required="required" placeholder="Email" class="form-control col-md-7 col-xs-12" value="@if(Auth::guard('account')->check()){{$users->email}}  @endif">
+                                            </div>
+                                            @if ($errors->has('email'))
+                                              <span class="help-block has-error">
+                                                    <strong class="messageError">{{ $errors->first('email') }}</strong>
+                                                </span>
+                                            @endif
+                                        </div>
                                         <div class="form-group {{ $errors->has('quocgia') ? ' has-error' : '' }}">
                                             <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">
                                             </label>
@@ -256,7 +268,8 @@
                                           <input hidden type="text" id="last-name" name="amount" value="{{$infopay['amount']}}">
                                           <input hidden type="text" id="ho1" name="ho" value="@if(Auth::guard('account')->check()){{$users->first_name}}  @endif">
                                           <input hidden type="text" id="ten1" name="ten" value="@if(Auth::guard('account')->check()){{$users->last_name}}  @endif">
-                                          <input hidden type="text" id="quocgia1" name="quocgia" value="">
+                                          <input hidden type="text" id="email1" name="email" value="@if(Auth::guard('account')->check()){{$users->email}}  @endif">
+                                          <input hidden type="text" id="quocgia1" name="quocgia" value="@if(Auth::guard('account')->check()){{$users->country}}@endif">
                                             
                                             
                                              <center> <button type="submit" >
@@ -275,7 +288,8 @@
                                           <input hidden type="text" id="last-name" name="amount" required="required"  value="{{$infopay['amount']}}">
                                           <input hidden type="text" id="ho2" name="ho" value="@if(Auth::guard('account')->check()){{$users->first_name}}  @endif">
                                           <input hidden type="text" id="ten2" name="ten" value="@if(Auth::guard('account')->check()){{$users->last_name}}  @endif">
-                                          <input hidden type="text" id="quocgia2" name="quocgia" value="">
+                                          <input hidden type="text" id="email2" name="email" value="@if(Auth::guard('account')->check()){{$users->email}}  @endif">
+                                          <input hidden type="text" id="quocgia2" name="quocgia" value="@if(Auth::guard('account')->check()){{$users->country}}@endif">
                                             
                                         <div class="form-group">
                                         
@@ -411,6 +425,14 @@
             x1.value = x.value;
             x2.value = x.value;
         }
+        function addemail(){
+            var x1 = document.getElementById("email1");
+            var x2 = document.getElementById("email2");
+            var x = document.getElementById("email");
+            x1.value = x.value;
+            x2.value = x.value;
+        }
+        
     </script>
 
     

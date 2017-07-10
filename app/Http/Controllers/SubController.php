@@ -153,6 +153,7 @@ public function reset(Request $request,$subdomain)
         \Session::put("first_name",$request['ho']);
         \Session::put("last_name",$request['ten']);
         \Session::put("country",$request['quocgia']);
+        \Session::put("email",$request['email']);
 
        
     
@@ -496,19 +497,117 @@ public function getCancel()
 }
 public function congra($subdomain){
     $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+
     if($hotels != null){
+      $book = null;
+            $book = DB::table('booking')->latest()->first();
+            $email = \Session::get('email');
+            //dd($email);
+            $resulttype_room = \Session::get("resulttype_room");
+            $type_roombook = DB::table('type_room')->where('type_room_id', '=', $resulttype_room)->first();
+            /////////////// add email
+            $data_toview = array();
+            
+            $data_toview['bodymessage'] = "Cảm ơn bạn đã đặt phòng tại khách sạn ".$hotels->hotel_name." của chúng tôi.<br>"
+                                          ."Dưới đây là thông tin đặt phòng của bạn:<br>"
+                                          ."Họ Tên: ".$book->first_name." ".$book->last_name ."."."<br>"
+                                          ."Ngày checkin: ".$book->date_from."."."<br>"
+                                          ."Ngày checkout: ".$book->date_to."."."<br>"
+                                          ."Mã đặt phòng: ".$book->booking_id."."."<br>"
+                                          ."Loại phòng: ".$type_roombook->type_name."."."<br>"
+                                          ."Mã phòng: ".$book->room_id."."."<br>"
+                                          ."Số người: ".$book->number_people."."."<br>"
+                                          ."Tổng tiền: ".$book->total_cost_room."."."<br>";
+          
+            $email_sender   = 'thesismanagehotel@gmail.com';
+            $email_pass     = 'luanhoang';
+            $email_to       = $email;
+ 
+            // Backup your default mailer
+            $backup = \Mail::getSwiftMailer();
+ 
+            try{
+ 
+                        //https://accounts.google.com/DisplayUnlockCaptcha
+                        // Setup your gmail mailer
+                        $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 587, 'tls');
+                        $transport->setUsername($email_sender);
+                        $transport->setPassword($email_pass);
+ 
+                        // Any other mailer configuration stuff needed...
+                        $gmail = new Swift_Mailer($transport);
+ 
+                        // Set the mailer as gmail
+                        \Mail::setSwiftMailer($gmail);
+ 
+                        $data['emailto'] = $email_to;
+                        $data['sender'] = $email_sender;
+                        $data['hotel_name'] =$hotels->hotel_name;
+                        $data['subdomain'] =$subdomain;
+                        //Sender dan Reply harus sama
+                        // Mail::to($data['emailto'])
+                        // ->cc($data['sender'], $data['hotel_name'].' hotel manage')
+                        // ->send($data_toview);
+                        Mail::send('emails', $data_toview, function($message) use ($data)
+                        {
+ 
+                            $message->from($data['sender'], $data['hotel_name'].' hotel manage');
+                            $message->to($data['emailto'])
+                            ->replyTo($data['sender'], $data['hotel_name'].' hotel manage')
+                            ->subject('Thông tin đặt phòng');
+ 
+                           
+                            
+                        });
+
             $users = Auth::guard('account')->user();
             
 
 
-
-           
+            
             $info = array(
                     "name" => $hotels->hotel_name,
                     "subdomain" => $subdomain, 
                     );
            
-            return view('sub.congra')->with('users',$users)->with('info',$info);
+            return view('sub.congra')->with('users',$users)->with('info',$info)->with('book',$book)->with('type_roombook',$type_roombook);
+
+           
+            }catch(\Swift_TransportException $e){
+                $response = $e->getMessage() ;
+                echo $response;
+            }
+            
+ 
+            // Restore your original mailer
+            Mail::setSwiftMailer($backup);
+
+           $users = Auth::guard('account')->user();
+            
+
+
+            $book = null;
+            $book = DB::table('booking')->latest()->first();
+            $info = array(
+                    "name" => $hotels->hotel_name,
+                    "subdomain" => $subdomain, 
+                    );
+           
+            return view('sub.congra')->with('users',$users)->with('info',$info)->with('book',$book);
+
+           //////////// end add email
+            // $users = Auth::guard('account')->user();
+            
+
+
+            // $book = null;
+            // $book = DB::table('booking')->latest()->first();
+            // $info = array(
+            //         "name" => $hotels->hotel_name,
+            //         "subdomain" => $subdomain, 
+            //         );
+           
+            // return view('sub.congra')->with('users',$users)->with('info',$info)->with('book',$book);
         
          }
        return view('sub.404');

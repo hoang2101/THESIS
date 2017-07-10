@@ -533,7 +533,7 @@ public function editProlife(Request $request){
 
         DB::table('users')
             ->where('id', $request['id'])
-            ->update(['first_name' => $request['first_name'], 'last_name' => $request['last_name'], 'username' => $request['username'],'email' => $request['email'], 'country' => $request['country'], 'phone_number' => $request['phone_number'], 'dob' => $request['dob'], 'gender' => $request['gender']]);
+            ->update(['first_name' => $request['first_name'], 'last_name' => $request['last_name'], 'username' => $request['username'],'email' => $request['email'], 'country' => $request['country'], 'phone_number' => $request['phone_number'], 'dob' => $request['dob'], 'gender' => $request['gender'], 'accountpaypal' => $request['accountpaypal']]);
             //return $request;
             // $user = DB::table('users')->where('id', '=',  Auth::user()->id)->get(); 
             // Auth::setUser($user);

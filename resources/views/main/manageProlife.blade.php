@@ -293,6 +293,16 @@
                                                             <span class="fa fa-envelope form-control-feedback left" aria-hidden="true" ></span>
                                                         </div>
                                                     </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                                                            
+                                                            <input type="text" class="form-control has-feedback-left"  id="accountpaypal" name="accountpaypal" placeholder="Email" value="{{$users->accountpaypal}}">
+                                                           
+                                                            <span class="fa fa-paypal form-control-feedback left" aria-hidden="true" ></span>
+                                                        </div>
+                                                    </div>
+                                                    
                                                     <div class="row">
                                                         <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
                                                             

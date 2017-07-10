@@ -970,7 +970,7 @@ public function congra($subdomain){
                 \Session::put("subdomain",$subdomain);
                 \Session::put("numberDays",$numberDays);
                
-               
+
                 \Session::put("rsnameroom",collect($rsnameroom)) ;
                 \Session::put("rsimage",collect($rsimage)) ;
                 \Session::put("resultcost",collect($resultcost)) ;
@@ -1690,15 +1690,22 @@ $numberDays = intval($numberDays);
 
      if($request['typePost'] == "checkoutBook"){
 
-        $services =DB::table('book_service')->where('booking_id','=', $request['id'])->get();
+        $services =DB::table('book_service')->join('service', 'service.service_id', '=', 'book_service.service_id')->where('book_service.booking_id','=', $request['id'])->select('book_service.*', 'service.service_name')->get();
+
         $total = 0;
+        $sericename = array();
+        $sericecode = array();
+        $servicequanti = array();
         if(count($services) == 0){
             $total = 0;
         }else{
             foreach ($services as $key => $service) {
-                $total = $total  + $service->total;
-            }
+                $total = $total  + $service->cost*$service->quantity;
+                array_push($sericename, $service->service_name);
+                array_push($sericecode, $service->cost);
+                array_push($servicequanti, $service->quantity);
         }
+      }
         DB::table('invoice')->insertGetId([
             'booking_id' => $request['id'],
             'hotel_id' => $hotels->hotel_id,
@@ -1717,6 +1724,11 @@ $numberDays = intval($numberDays);
             foreach ($findrooms as $findroom) {
                 DB::table('room')->where('room_number', '=', $findroom)->update(['is_booked' => 0,'is_clean' => 1]);
             }
+            \Session::flash("booked",collect($booked)) ;
+            \Session::flash("sericename",collect($sericename)) ;
+            \Session::flash("sericecode",collect($sericecode)) ;
+            \Session::flash("servicequanti",collect($servicequanti)) ;
+            \Session::flash("total",$total) ;
             return redirect()->route('subBookManage',['subdomain' => $subdomain]);
 
      }

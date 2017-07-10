@@ -788,6 +788,48 @@
           </div>
         </div>
       </div>
+
+      <div class="modal fade" id="addCheckOutMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-dialog">
+        <div class="loginmodal-container">
+        <button type="button" class="close" id="closeDialog" onclick="removeMessage()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+          <h1>Thanh toán</h1><br>
+                    <h2>Tiền phòng</h2>
+                        @if ($booked = session('booked'))
+                        <div class="form-group">
+                                <p><span><strong>Tiền phòng: </strong></span>{{$booked['total_cost_room']}}</p>
+                                <p><span><strong>Trả trước: </strong></span>{{$booked['deposit']}}</p>
+                       
+                                <p class="text-right"><span><strong>Còn lại: </strong></span>{{$booked['total_cost_room'] - $booked['deposit']}}</p>
+                        </div>
+                        
+                        <div class="ln_solid"></div>
+                        <h2>Tiền Dịch vụ</h2>
+                        @if($sericename = session('sericename'))
+                        <?php
+                         $sericecode = session('sericecode');
+                         $servicequanti = session('servicequanti');
+
+                         ?>
+                        <div class="form-group">
+                            @foreach($sericename as $key => $name)
+                                <p><span><strong>{{$name}}: </strong></span>{{$sericecode[$key]}}*{{$servicequanti[$key]}}= {{$sericecode[$key]*$servicequanti[$key]}}</p>
+                            @endforeach
+                        </div>
+                      
+                        <div class="ln_solid"></div>
+                        <p class="text-right"><span><strong>Tổng: </strong></span>{{$booked['total_cost_room'] - $booked['deposit']+ session('total')}}</p>
+                        
+
+                       @endif
+                       @endif
+                       
+                    
+          </div>
+        </div>
+      </div>
+
 <div class="modal fade" id="addPrepayMainmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
         <div class="modal-dialog">
         <div class="loginmodal-container">
@@ -965,6 +1007,7 @@
     <!-- My Cutom Scripts -->
     <script src="{!! asset('js/custom-scripts.js') !!}"></script>
     <script src="{!! asset('js/getlistCountry.js') !!}"></script>
+
    @if($errors->first('typePost')=="addbooking")
      
       <script type="text/javascript">  
@@ -1000,6 +1043,13 @@
     </script>
    
     @endif
+@if(session('booked'))
+     <script type="text/javascript"> 
+        $(document).ready(function () {
+        $('#addCheckOutMainmodal').modal('show');
+        });
+    </script>
+ @endif
 
 @if( ! empty($messagesResult))
     @if ($messagesResult=="fails")
@@ -1016,6 +1066,8 @@
 
 
 <script type="text/javascript">
+
+
     function removeMessage() {
         $("div").removeClass("has-error");
         $("span").removeClass("help-block");

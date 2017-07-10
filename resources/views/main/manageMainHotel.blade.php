@@ -266,6 +266,7 @@
                        
                       </tbody>
                     </table>
+                    {{ $hotels->links() }}
                     
                     
                   </div>
@@ -296,18 +297,16 @@
                             </div>
                         </div>
                         
-                        <div class="form-group">
+                        
+                        <div class="form-group{{ $errors->has('account_id') ? ' has-error' : '' }}">
                             <div >
-                            <select name="account_id" placeholder="khách sạn" required>
-                            <option value="" disabled selected>Chọn Khách hàng</option>
-                                @foreach($usersHotel as $userHotel)
-                                    <option value="{{$userHotel->username}}">{{$userHotel->username}}</option>
-                                    
-                                @endforeach
-    
-   
-                            </select>
-                               
+                                <input id="account_id" type="text" class="form-control" placeholder="Tên tài khoản" name="account_id" value="{{ old('account_id') }}" required autofocus>
+
+                                @if ($errors->has('account_id'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('account_id') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
                         <div class="form-group{{ $errors->has('hotel_url') ? ' has-error' : '' }}">
@@ -381,22 +380,16 @@
                         </div>
                         <div class="form-group{{ $errors->has('account_id') ? ' has-error' : '' }}">
                             <div >
-                                <input readonly id="e_account_id1" type="text"  placeholder="Username" name="account_id2" value="{{ old('account_id') }}" >
+                                <input id="e_account_id1" type="text" class="form-control" placeholder="Tên tài khoản" name="account_id" value="{{ old('account_id') }}" required autofocus>
 
-                              
-                                <select id="e_account_id2"  name="account_id" placeholder="khách sạn" required>
-                                    <option value="" disabled selected>Chọn Khách hàng</option>
-                                        @foreach($usersHotel as $userHotel)
-                                            <option value="{{$userHotel->username}}">{{$userHotel->username}}</option>
-                                            
-                                        @endforeach
-            
-       
-                                </select>
-                               
-                           
+                                @if ($errors->has('account_id'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('account_id') }}</strong>
+                                    </span>
+                                @endif
                             </div>
                         </div>
+                       
                         
                         <div class="form-group{{ $errors->has('hotel_url') ? ' has-error' : '' }}">
                             <div >
@@ -594,7 +587,12 @@
 <script type="text/javascript">
 
     $('#responsiveHotel').DataTable( {
-    responsive: true
+    responsive: true,
+    "bPaginate": false,
+    'aoColumnDefs': [{
+           'bSortable': false,
+           'aTargets': 'nosort'
+        }]
 } );
     function removeMessage() {
         $("div").removeClass("has-error");
@@ -629,7 +627,6 @@ function addReadHotelonly(){
     document.getElementById("typeEditView").innerHTML = "Xem";
     document.getElementById("e_hotel_name").removeAttribute("readonly");
     document.getElementById("e_account_id1").setAttributeNode(document.createAttribute("hidden"));
-    document.getElementById("e_account_id2").removeAttribute("hidden");
     document.getElementById("e_hotel_url").removeAttribute("readonly");
    document.getElementById("e_expire_date1").setAttributeNode(document.createAttribute("hidden"));
     document.getElementById("e_expire_date2").removeAttribute("hidden");
@@ -653,7 +650,6 @@ else(document.getElementById("typeEditView").innerHTML == "Xem")
     document.getElementById("e_submit").setAttribute("type", "hidden");
     document.getElementById("e_hotel_name").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_account_id1").removeAttribute("hidden");
-    document.getElementById("e_account_id2").setAttributeNode(document.createAttribute("hidden"));
     document.getElementById("e_hotel_url").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_expire_date1").removeAttribute("hidden");
     document.getElementById("e_expire_date2").setAttributeNode(document.createAttribute("hidden"));
@@ -686,7 +682,6 @@ function showHotelView(idHotel, hotel_name, account_id,hotel_url,expire_date,tot
     document.getElementById("e_submit").setAttribute("type", "hidden");
     document.getElementById("e_hotel_name").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_account_id1").removeAttribute("hidden");
-    document.getElementById("e_account_id2").setAttributeNode(document.createAttribute("hidden"));
     document.getElementById("e_hotel_url").setAttributeNode(document.createAttribute("readonly"));
     document.getElementById("e_expire_date1").removeAttribute("hidden");
     document.getElementById("e_expire_date2").setAttributeNode(document.createAttribute("hidden"));
@@ -708,7 +703,6 @@ function showHotelEdit(idHotel, hotel_name, account_id,hotel_url,expire_date,tot
     document.getElementById("typeEditView").innerHTML = "Xem";
     document.getElementById("e_hotel_name").removeAttribute("readonly");
     document.getElementById("e_account_id1").setAttributeNode(document.createAttribute("hidden"));
-    document.getElementById("e_account_id2").removeAttribute("hidden");
     document.getElementById("e_hotel_url").removeAttribute("readonly");
     document.getElementById("e_expire_date1").setAttributeNode(document.createAttribute("hidden"));
     document.getElementById("e_expire_date2").removeAttribute("hidden");

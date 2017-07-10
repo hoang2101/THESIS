@@ -1,6 +1,15 @@
 $(document).ready(function() {
 
  // By class
+ var table = $('#responsive_nopage').DataTable({
+       
+        "bPaginate": false,
+        'aoColumnDefs': [{
+           'bSortable': false,
+           'aTargets': 'nosort'
+        }]
+    });
+
     var table = $('#responsive').DataTable({
        'aoColumnDefs': [{
            'bSortable': false,

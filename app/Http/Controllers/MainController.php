@@ -587,7 +587,7 @@ public function editProlife(Request $request){
 }
 
 public function getUsersks(){
-    return $users = DB::table('users')->where('type', '=',2)->get();
+    return $users = DB::table('users')->where('type', '=',2)->paginate(15);
 }
 protected function validatorUpdate(arrray $data){
     $messages = [
@@ -756,8 +756,8 @@ foreach ($hotels as $key => $hotel) {
 }
 
     public function manageHotel(){
-        $usersHotel = DB::table('users')->where('type','=','2' )->get();
-        $hotels = DB::table('hotel')->get();
+        $usersHotel = DB::table('users')->where('type','=','2' )->first();
+        $hotels = DB::table('hotel')->paginate(15);
         return view('main.manageMainHotel')->with('hotels',$hotels)->with('usersHotel', $usersHotel);
     }
 

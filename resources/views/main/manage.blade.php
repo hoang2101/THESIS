@@ -220,7 +220,7 @@
                   <div class="x_content">
                     
                     
-                    <table id="responsive" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
+                    <table id="responsive_nopage" class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
                       <thead>
                         <tr>
                           <th id="cel1">ID</th>
@@ -267,6 +267,7 @@
                        
                       </tbody>
                     </table>
+                    {{ $users->links() }}
                     
                     
                   </div>

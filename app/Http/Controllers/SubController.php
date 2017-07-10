@@ -460,7 +460,7 @@ for($i = 0; $i < $nroom; $i++){
         if($room->is_booked == 0){
             DB::table('room')->where('room_id', '=', $room->room_id)->update(['is_booked' => 1, 'booked_id' => $book->booking_id]);
             $roombook =$roombook .((string)($room->room_number) ." ");
-           
+           $rooms = DB::table('room')->where('hotel_id', '=', $hotels->hotel_id)->where('room_type_id', '=', $resulttype_room)->get();
             break;
         }
     }
@@ -888,7 +888,10 @@ public function congra($subdomain){
                 
                 
                 $resultroom = array();
+                $rsnameroom = array();
+                $rsimage = array();
                 $resultcost = array();
+
                 $resulttype_room =array();
 
                 
@@ -907,20 +910,23 @@ public function congra($subdomain){
                 $roomsfortypes = null;
                 foreach ($type_rooms as $type_room) {
                     // dd($type_room);
-                   $roomsfortypes[] = DB::table('room')->where('room_type_id', '=', $type_room->type_room_id)->get();
+                   $roomsfortypes[] = DB::table('room')->where('room_type_id', '=', $type_room->type_room_id)->where('is_booked','=',0)->get();
 
                 }
 
                 for( $i = 0; $i< count($roomsfortypes); $i++){
                     if($peopleEachRoom <= $type_rooms[$i]->number_people  && count($roomsfortypes[$i]) >= $nroom) {
-                        array_push($resultroom,"Có ".$nroom ." phòng loại " .$type_rooms[$i]->type_name." giá " .$type_rooms[$i]->cost*$nroom ." mỗi ngày");
-                        
+                        // array_push($resultroom,"Có ".$nroom ." phòng loại " .$type_rooms[$i]->type_name." giá " .$type_rooms[$i]->cost*$nroom ." mỗi ngày");
+                        array_push($rsnameroom, $type_rooms[$i]->type_name);
+                        array_push($rsimage, $type_rooms[$i]->image);
+                        array_push($resultcost, $type_rooms[$i]->cost*$nroom);
+
                         array_push($resulttype_room,$type_rooms[$i]->type_room_id);
                     
                     }
                 }
 
-                if(count($resultroom) < 1){
+                if(count($resulttype_room) < 1){
                     \Session::flash('messagesResult','không có kết quả nào phù hợp');
                     return  redirect()->route('subHome',['subdomain' => $subdomain]);
                 }
@@ -964,7 +970,10 @@ public function congra($subdomain){
                 \Session::put("subdomain",$subdomain);
                 \Session::put("numberDays",$numberDays);
                
-                \Session::put("resultroom",collect($resultroom)) ;
+               
+                \Session::put("rsnameroom",collect($rsnameroom)) ;
+                \Session::put("rsimage",collect($rsimage)) ;
+                \Session::put("resultcost",collect($resultcost)) ;
                 \Session::put("resulttype_room",collect($resulttype_room)) ;
 
                 return  redirect()->route('roomResult',['subdomain' => $subdomain]);

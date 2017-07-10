@@ -33,6 +33,34 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style type="text/css"></style>
+    <style type="text/css">
+        .ln_solid {
+    border-top: 1px solid #e5e5e5;
+    color: #fff;
+    background-color: #fff;
+    height: 1px;
+    margin: 20px 0;
+
+    }
+     .nopadding
+    {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+    
+    }
+    .shadow
+    {
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+    .cover {
+
+      
+        width: 100%;
+        
+       padding: 10px;
+    }
+    </style>
 </head>
 
 <body>
@@ -181,41 +209,64 @@
             </div>
             <!-- /.row -->
             <div class="row">
-                @if (session('resultroom'))
-                  <table class="table table-striped projects">
-                      <thead>
-                        <tr>
-                          
-                          <th style="width: 80%">Nội dung</th>
-                          <th style="width: 20%">Đặt phòng</th>
-                        </tr>
-                      </thead>
+                @if ($resulttype_room = session('resulttype_room'))
+                <?php 
+                $rsimage = \Session::get('rsimage');
+                $rsnameroom = \Session::get('rsnameroom');
+                $resultcost = \Session::get('resultcost');
+                $nroom = \Session::get('nroom');
+                ?>
+                @foreach ($resulttype_room as $key => $type_room)
+                <div class="row shadow">
+                 <div class="col-md-3 col-sm-3 col-xs-12 profile_left nopadding">
+                    <div class="profile_img">
+                        <div id="crop-avatar">
+                        @if($rsimage[$key] == "img/roomhotel.png")
+                            <img class="img-responsive avatar-view cover" src="../../{{$rsimage[$key]}}" alt="Avatar">
+                        @else
+                            <img class="img-responsive avatar-view cover" src="{{$rsimage[$key]}}" alt="Avatar">
+                        @endif
+                        </div>
+                    </div>
+                 </div>
 
-                        @foreach(session('resultroom') as $key=>$result)
-                           <tbody>
-                              <tr>
-                                <td>
-                                  <p>{{$result}}</p>
-                                </td>
-                                <td>
-
-                                  <form role="form" method="POST" action="{{ route('subRoomResultsubmit',['subdomain' =>$info['subdomain']]) }}">
+                 <div class="col-md-9 col-sm-9 col-xs-12 nopadding">
+                    <div id="profile_info">
+                        <div class="profile_title">
+                            <div class="form-group">
+                                <div class="col-md-10 col-sm-10 col-xs-6">
+                                    <p><span><strong>Loại phòng: </strong></span>{{$rsnameroom[$key]}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10 col-sm-10 col-xs-6">
+                                    <p><span><strong>Số phòng: </strong></span>{{$nroom}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10 col-sm-10 col-xs-6">
+                                    <p><span><strong>Giá: </strong></span>{{$resultcost[$key]}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10 col-sm-10 col-xs-6">
+                                   <form role="form" method="POST" action="{{ route('subRoomResultsubmit',['subdomain' =>$info['subdomain']]) }}">
                                   {{ csrf_field() }}
                                     <input hidden type="id" name="id" value="{{$key}}">
-                                    <input type="submit" name="datphong" value="Đặt phòng">
+                                    <input type="submit" class="btn btn-primary btn-xs" name="datphong" value="Đặt phòng">
                                   </form>
-                                </td>
-                               
-                             
-                            </tbody>
+                                </div>
+                            </div>
+                            
 
+                        </div>
+                    </div>
+                </div>
+                </div>
 
-                         @endforeach
-                    
-                      
-                    </table>
-
-                 
+              
+    
+                 @endforeach
                @endif
             </div>
             <!-- /.row -->

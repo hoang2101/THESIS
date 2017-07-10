@@ -206,7 +206,7 @@
                     @if ($message = Session::get('messagesResult'))
                 <div class="custom-alerts alert alert-success fade in">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
-                     Đã đặt phòng thành công, chúng tôi đã gửi vào email của bạn!
+                     Đã đặt phòng thành công, chúng tôi đã gửi thông tin đặt phòng vào email của bạn!
                 </div>
 
                 <?php Session::forget('success');?>

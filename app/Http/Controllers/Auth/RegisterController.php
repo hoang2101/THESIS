@@ -55,6 +55,7 @@ class RegisterController extends Controller
             'last_name' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users',
             'email' => 'required|string|email|max:255|unique:users',
+            'paypalemail' => 'required|string|email|max:255',
             'password' => 'required|string|min:6|confirmed',
         ]);
     }
@@ -71,6 +72,7 @@ class RegisterController extends Controller
             'first_name' => $data['first_name'],
             'last_name' => $data['last_name'],
             'email' => $data['email'],
+            'accountpaypal' => $data['paypalemail'],
             'username' => $data['username'],
             'password' => bcrypt($data['password']),
             'type' => 2,

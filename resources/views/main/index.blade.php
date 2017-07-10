@@ -237,6 +237,21 @@
                             @endif   
                             </div>
                      </div>   
+
+                     <div class="row">             
+                            <div class="col-xs-12 form-group{{ $errors->has('paypalemail') ? ' has-error' : '' }}">
+                            <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+                                    <input id="paypalemail" type="email" class="form-control" placeholder="Tài khoản paypal" name="paypalemail" value="{{ old('paypalemail') }}" required>
+                            </div>
+                            @if ($errors->has('paypalemail'))
+                                <span class="help-block">
+                                    <strong class="messageError">{{ $errors->first('paypalemail') }}</strong>
+                                </span>
+                            @endif   
+                            </div>
+                     </div> 
+
                       <div class="row">      
                           <div class="col-xs-6 form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                               <div >

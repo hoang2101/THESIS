@@ -27,6 +27,7 @@ use PayPal\Api\ExecutePayment;
 use PayPal\Api\PaymentExecution;
 use PayPal\Api\Transaction;
 use PayPal\Api\FundingInstrument;
+use PayPal\Api\Payee;
  use DatePeriod; 
   use DateTime; 
   use DateInterval;
@@ -132,6 +133,8 @@ public function reset(Request $request,$subdomain)
  $messages = [];
         $validator = Validator::make($request->all(),[],$messages);
         $hotels = DB::table('hotel')->where('hotel_url', '=', $subdomain)->first();
+        $userpay = DB::table('users')->where('username', '=', $hotels->account_id)->first();
+
         if($request['ho'] == null || $request['ho'] == ""){
          
             $validator->errors()->add('ho', 'Không được để trống họ.');
@@ -180,10 +183,15 @@ public function reset(Request $request,$subdomain)
         $amount = new Amount();
         $amount->setCurrency('USD')
             ->setTotal($amountt);
+
+        $payee = new Payee();
+        $payee->setEmail($userpay->accountpaypal);
+
         $transaction = new Transaction();
         $transaction->setAmount($amount)
             ->setItemList($item_list)
-            ->setDescription('Thanh Toán');
+            ->setDescription('Thanh Toán')
+            ->setPayee($payee);
         $redirect_urls = new RedirectUrls();
         $redirect_urls->setReturnUrl(route('subpaypaldone',['subdomain' => $subdomain])) /** Specify return URL **/
             ->setCancelUrl(route('subpaypalcancel',['subdomain' => $subdomain]));

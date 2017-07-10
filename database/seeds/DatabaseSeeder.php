@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 use Illuminate\Database\Seeder;
 use Carbon\Carbon;
@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         	DB::table('users')->insert([
             'username' => $f.$l,
             'email' => $f.$l.'@gmail.com',
+	    'accountpaypal' => 'thanhluand01@gmail.com'
             'last_name' => $l,
             'first_name' => $f,
             'phone_number' => '0123456789',

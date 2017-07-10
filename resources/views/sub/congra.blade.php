@@ -252,7 +252,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-md-10 col-sm-10 col-xs-6">
-                                    <p><span><strong>Loại phòng: </strong></span>{{$book->hotel_id}}</p>
+                                    <p><span><strong>Loại phòng: </strong></span>{{$type_roombook->type_name}}</p>
                                 </div>
                             </div>
                             <div class="form-group">

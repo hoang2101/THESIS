@@ -377,12 +377,12 @@
               <div class="row">
                 <div class="col-xs-6 form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
                     <div >
-                        <input id="first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" required autofocus>
+                        <input id="first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" required >
                     </div>
                 </div>
                 <div class="col-xs-6 form-group {{ ($errors->has('last_name') && $errors->first('username') != 'These credentials do not match our records.') ? ' has-error' : '' }}">
                     <div >
-                        <input id="last_name" type="text" class="form-control" placeholder="Tên" name="last_name" value="{{ old('last_name') }}" required autofocus>
+                        <input id="last_name" type="text" class="form-control" placeholder="Tên" name="last_name" value="{{ old('last_name') }}" required >
                     </div>
                 </div>
               </div>
@@ -390,7 +390,7 @@
                 <div class="col-xs-12 form-group{{ $errors->has('username') ? ' has-error' : '' }}">
                      <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
-                        <input id="username" type="text" class="form-control" placeholder="Username" name="username" required autofocus> 
+                        <input id="username" type="text" class="form-control" placeholder="Username" name="username" required > 
                     </div>           
                     @if ($errors->has('username'))
                     <!-- day la text tieng viet -->

@@ -283,28 +283,28 @@
                                         <div class="form-group">
                                             <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Loại thẻ<span class="required">*</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input id="typeCredit" name="typecredit" class="form-control col-md-7 col-xs-12" type="text" name="typeCredit">
+                                                <input id="typeCredit" name="typecredit" class="form-control col-md-7 col-xs-12" type="text" name="typeCredit" required>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="middle-name"  class="control-label col-md-3 col-sm-3 col-xs-12">Mã thẻ<span class="required">*</label>
                                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                                <input id="typecredit" name="numberCredit" class="form-control col-md-7 col-xs-12" type="text" name="typeCredit">
+                                                <input id="typecredit" name="numberCredit" class="form-control col-md-7 col-xs-12" type="text" name="typeCredit" required>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Ngày hết hạn<span class="required">*</label>
                                             <div class="col-md-2 col-sm-2 col-xs-6">
-                                                <input id="expiredcredit"  name="month" class="form-control col-md-7 col-xs-12" type="number" placeholder="Tháng" min="1" max = "12">
+                                                <input id="expiredcredit"  name="month" class="form-control col-md-7 col-xs-12" type="number" placeholder="Tháng" min="1" max = "12" required>
                                             </div>
 
                                             <div class="col-md-2 col-sm-2 col-xs-6">
-                                                <input id="expiredcredit" placeholder="năm" name="year" class="form-control col-md-7 col-xs-12" type="number" min="2000">
+                                                <input id="expiredcredit" placeholder="năm" name="year" class="form-control col-md-7 col-xs-12" type="number" min="2000" required>
                                             </div>
                                         
                                             <label for="middle-name" class="control-label col-md-1 col-sm-1 col-xs-12">CCV/CVV<span class="required">*</label>
                                             <div class="col-md-1 col-sm-1 col-xs-12">
-                                                <input id="typeCredit" class="form-control col-md-7 col-xs-12" type="text" name="ccv">
+                                                <input id="typeCredit" class="form-control col-md-7 col-xs-12" type="text" name="ccv" required>
                                             </div>
                                         </div>
                                         

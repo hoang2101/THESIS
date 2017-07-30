@@ -265,7 +265,7 @@
                                                     <div class="row">
                                                         <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback has-feedback-left">
                                                             
-                                                            <input type="text" class="form-control has-feedback-left"  id="first_name" name="first_name" placeholder="Họ" value="{{$users->first_name}}">
+                                                            <input type="text" class="form-control has-feedback-left"  id="first_name" name="first_name" placeholder="Họ" value="{{$users->first_name}}" required>
                                                            
                                                             <span class="fa fa-user form-control-feedback " aria-hidden="true"></span>
                                                         </div>
@@ -273,7 +273,7 @@
                                                     <div class="row">
                                                         <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback has-feedback-left">
                                                            
-                                                            <input type="text" class="form-control has-feedback-left"  id="last_name" name="last_name" placeholder="Tên" value="{{$users->last_name}}">
+                                                            <input type="text" class="form-control has-feedback-left"  id="last_name" name="last_name" placeholder="Tên" value="{{$users->last_name}}" required>
                                                            
                                                             <span class="fa fa-user form-control-feedback " aria-hidden="true"></span>
                                                         </div>
@@ -281,7 +281,7 @@
                                                     <div class="row">
                                                         <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback has-feedback-left">
                                                             
-                                                            <input type="text" class="form-control has-feedback-left"  id="email" name="email" placeholder="Email" value="{{$users->email}}">
+                                                            <input type="text" class="form-control has-feedback-left"  id="email" name="email" placeholder="Email" value="{{$users->email}}" required>
                                                            
                                                             <span class="fa fa-envelope form-control-feedback " aria-hidden="true" ></span>
                                                         </div>

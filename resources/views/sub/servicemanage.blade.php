@@ -270,7 +270,7 @@
                         </div>
                         <div class="form-group{{ $errors->has('cost') ? ' has-error' : '' }}">
                             <div >
-                                <input id="tr_cost" type="number" class="form-control" placeholder="Giá dịch vụ" name="cost" value="{{old('cost') }}" required autofocus >
+                                <input id="tr_cost" type="number" class="form-control" placeholder="Giá dịch vụ" name="cost" value="{{old('cost') }}" required autofocus min="0">
                                  @if ($errors->has('cost'))
                                     <span class="help-block">
                                         <strong class="messageError">{{ $errors->first('cost') }}</strong>
@@ -339,7 +339,7 @@
                         </div>
                         <div class="form-group{{ $errors->has('cost') ? ' has-error' : '' }}">
                             <div >
-                                <input id="e_cost" type="number" class="form-control" placeholder="Giá Dịch vụ" name="cost" value="{{old('cost') }}" required autofocus >
+                                <input id="e_cost" type="number" class="form-control" placeholder="Giá Dịch vụ" name="cost" value="{{old('cost') }}" required autofocus min="0">
                                  @if ($errors->has('cost'))
                                     <span class="help-block">
                                         <strong class="messageError">{{ $errors->first('cost') }}</strong>

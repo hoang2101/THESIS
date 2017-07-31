@@ -327,7 +327,7 @@
                          <div class="col-md-6 col-sm-6 col-xs-12  form-group">
                         
                             <div >
-                                <input id="first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" >
+                                <input id="first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" required>
                             </div>
                         </div>
 
@@ -489,7 +489,7 @@
                         
                             <div >
 
-                                <input id="v_first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" >
+                                <input id="v_first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" required>
 
                             </div>
                         </div>
@@ -594,7 +594,7 @@
                          <div class="col-md-6 col-sm-6 col-xs-12  form-group">
                         
                             <div >
-                                <input id="e_first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" >
+                                <input id="e_first_name" type="text" class="form-control" placeholder="Họ" name="first_name" value="{{ old('first_name') }}" required>
                             </div>
                         </div>
 
@@ -659,7 +659,7 @@
                          <div class=" col-md-3 col-sm-3 col-xs-6 form-group">
                             <div >
                            
-                            <select id="e_room"  name="froom" onchange="changeaddroom2(this)" placeholder="Số Phòng" >
+                            <select id="e_room"  name="froom" onchange="changeaddroom2(this)" placeholder="Số Phòng">
                                     <option value="" disabled selected>Chọn  phòng</option>
                                     <option value="" >Xóa danh sách</option>
                             </select>
